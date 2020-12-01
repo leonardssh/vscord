@@ -93,5 +93,23 @@
 	],
 	"engines": {
 		"vscode": "^1.47.0"
+	},
+	"contributes": {
+		"configuration": {
+			"title": "VSCord Configuration",
+			"type": "Object",
+			"properties": {
+				"VSCord.id": {
+					"type": "string",
+					"default": "782685898163617802",
+					"description": "Application ID. Change only if you known exactly what you're doing."
+				},
+				"VSCord.enabled": {
+					"type": "boolean",
+					"default": true,
+					"description": "Controls if the Discord Rich Presence should show across all workspaces."
+				}
+			}
+		}
 	}
 }
