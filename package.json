@@ -1,0 +1,64 @@
+{
+	"name": "typescript-template",
+	"version": "1.0.0",
+	"description": "An awesome Typescript Template for awesome projects!",
+	"main": "dist/index.js",
+	"scripts": {
+		"lint": "eslint src --ext ts --fix",
+		"format": "prettier --write src/**/*.ts",
+		"format:check": "prettier --check src/**/*.ts",
+		"update": "yarn upgrade-interactive --latest",
+		"build": "tsc -b src",
+		"clean": "tsc -b src --clean",
+		"watch": "tsc -b src -w",
+		"commit": "git-cz",
+		"cz": "git-cz"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/LeonardSSH/typescript-template.git"
+	},
+	"author": "LeonardSSH <leonardssh22@gmail.com> (https://leonard.sh)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/LeonardSSH/typescript-template/issues"
+	},
+	"homepage": "https://github.com/LeonardSSH/typescript-template#readme",
+	"dependencies": {},
+	"devDependencies": {
+		"@commitlint/cli": "^11.0.0",
+		"@commitlint/config-conventional": "^11.0.0",
+		"@types/node": "^14.14.0",
+		"@typescript-eslint/eslint-plugin": "^4.5.0",
+		"@typescript-eslint/parser": "^4.5.0",
+		"cz-conventional-changelog": "^3.3.0",
+		"eslint": "^7.11.0",
+		"eslint-config-prettier": "^6.13.0",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-prettier": "^3.1.4",
+		"husky": "^4.3.0",
+		"lint-staged": "^10.4.2",
+		"prettier": "^2.1.2",
+		"pretty-quick": "^3.1.0",
+		"typescript": "^4.0.3"
+	},
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+			"pre-commit": "yarn pretty-quick --staged && yarn lint-staged"
+		}
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
+	},
+	"lint-staged": {
+		"*.{mjs,js,ts}": "eslint --fix --ext mjs,js,ts"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
+}
