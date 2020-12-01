@@ -30,15 +30,15 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/LeonardSSH/typescript-template.git"
+		"url": "git+https://github.com/LeonardSSH/vscord.git"
 	},
 	"author": "LeonardSSH <leonardssh22@gmail.com> (https://leonard.sh)",
 	"license": "MIT",
 	"publisher": "LeonardSSH",
 	"bugs": {
-		"url": "https://github.com/LeonardSSH/typescript-template/issues"
+		"url": "https://github.com/LeonardSSH/vscord/issues"
 	},
-	"homepage": "https://github.com/LeonardSSH/typescript-template#readme",
+	"homepage": "https://github.com/LeonardSSH/vscord#readme",
 	"dependencies": {
 		"discord-rpc": "^3.1.4"
 	},
