@@ -12,6 +12,21 @@ Remember to 🌟 this Github if you 💖 it.
 
 > NOTE: Much of the code in this repository is inspired and based on the ideas from [discord-vscode] & [vscode-discord].
 
+## 📌 Features
+
+* Shows what you're working on in VSCode
+* Shows the amount of problems in your workspace
+* Shows the number of lines in your file and which line you're editing
+* Respects Discords 15sec limit when it comes to updating your status
+* Support for over 130 of the most popular languages
+* Enable/Disable RPC for individual workspaces
+* Custom string support
+* Stable or Insiders build detection
+* Debug mode detection
+* Easily manually reconnect to Discord Gateway
+
+> All texts is fully customizable using variables and a multitude of config options
+
 ## 👨‍💻 Contributing
 
 To contribute to this repository, feel free to create a new fork of the repository and submit a pull request.
