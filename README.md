@@ -6,6 +6,20 @@
     😎 Another awesome and fully customizable VS Code extension to get Discord Rich Presence integration.
 </h3>
 
+<div align="center">
+  <p>
+    <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
+        <img src="https://vsmarketplacebadge.apphb.com/version-short/LeonardSSH.vscord.svg" />
+    </a>
+    <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
+        <img src="https://vsmarketplacebadge.apphb.com/downloads-short/LeonardSSH.vscord.svg" />
+    </a>
+    <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
+        <img src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg" />
+    </a>
+  </p>
+</div>
+
 ---
 
 Remember to 🌟 this Github if you 💖 it.
