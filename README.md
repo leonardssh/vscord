@@ -10,7 +10,7 @@
 
 Remember to 🌟 this Github if you 💖 it.
 
-> NOTE: Much of the code in this repository is inspired and based on the ideas from [discord-vscode] & [vscode-discord].
+> **NOTE:** Much of the code in this repository is part of **[discord-vscode]** & **[vscode-discord]**.
 
 ## 📌 Features
 
