@@ -1,34 +1,53 @@
 {
-	"name": "typescript-template",
+	"name": "vscord",
+	"displayName": "Discord Rich Presence",
 	"version": "1.0.0",
-	"description": "An awesome Typescript Template for awesome projects!",
+	"description": "😎 Another awesome and fully customizable VS Code extension to get Discord Rich Presence integration.",
 	"main": "dist/index.js",
+	"private": true,
+	"icon": "assets/icon.png",
+	"galleryBanner": {
+		"color": "#6477C1",
+		"theme": "dark"
+	},
 	"scripts": {
 		"lint": "eslint src --ext ts --fix",
 		"format": "prettier --write src/**/*.ts",
 		"format:check": "prettier --check src/**/*.ts",
 		"update": "yarn upgrade-interactive --latest",
+		"prebuild": "yarn format && yarn lint",
 		"build": "tsc -b src",
 		"clean": "tsc -b src --clean",
 		"watch": "tsc -b src -w",
 		"commit": "git-cz",
 		"cz": "git-cz"
 	},
+	"activationEvents": [
+		"*"
+	],
+	"extensionKind": [
+		"ui"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/LeonardSSH/typescript-template.git"
 	},
 	"author": "LeonardSSH <leonardssh22@gmail.com> (https://leonard.sh)",
 	"license": "MIT",
+	"publisher": "LeonardSSH",
 	"bugs": {
 		"url": "https://github.com/LeonardSSH/typescript-template/issues"
 	},
 	"homepage": "https://github.com/LeonardSSH/typescript-template#readme",
-	"dependencies": {},
+	"dependencies": {
+		"discord-rpc": "^3.1.4"
+	},
 	"devDependencies": {
 		"@commitlint/cli": "^11.0.0",
 		"@commitlint/config-conventional": "^11.0.0",
+		"@types/discord-rpc": "^3.0.4",
 		"@types/node": "^14.14.0",
+		"@types/vscode": "^1.51.0",
 		"@typescript-eslint/eslint-plugin": "^4.5.0",
 		"@typescript-eslint/parser": "^4.5.0",
 		"cz-conventional-changelog": "^3.3.0",
@@ -60,5 +79,19 @@
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
 		}
+	},
+	"keywords": [
+		"discord",
+		"vscode",
+		"rich",
+		"presence",
+		"rich presence",
+		"rpc"
+	],
+	"categories": [
+		"Other"
+	],
+	"engines": {
+		"vscode": "^1.47.0"
 	}
 }
