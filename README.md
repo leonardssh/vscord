@@ -9,13 +9,16 @@
 <div align="center">
   <p>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://vsmarketplacebadge.apphb.com/version-short/LeonardSSH.vscord.svg" />
+        <img src="https://vsmarketplacebadge.apphb.com/version-short/LeonardSSH.vscord.svg?color=crimson&style=flat-square" />
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://vsmarketplacebadge.apphb.com/downloads-short/LeonardSSH.vscord.svg" />
+        <img src="https://img.shields.io/visual-studio-marketplace/d/LeonardSSH.vscord?color=crimson&style=flat-square" />
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg" />
+        <img src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord?color=crimson&style=flat-square" />
+    </a>
+    <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
+        <img src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg?color=crimson&style=flat-square" />
     </a>
   </p>
 </div>
@@ -40,6 +43,29 @@ Remember to 🌟 this Github if you 💖 it.
 -   Easily manually reconnect to Discord Gateway
 
 > All texts is fully customizable using variables and a multitude of config options
+
+![a1](https://i.imgur.com/9kjM9rr.png)
+![a2](https://i.imgur.com/v9tgyHN.png)
+![a3](https://i.imgur.com/mvecFVN.png)
+
+## 📥 Installation
+
+### Prerequisites
+
+**[Visual Studio Code](https://code.visualstudio.com/)** or **[Visual Studio Code Insiders](https://code.visualstudio.com/insiders/)**
+
+### Install
+
+Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
+```
+ext install LeonardSSH.vscord
+```
+
+**OR**
+
+Use the **[Extension Marketplace](https://code.visualstudio.com/docs/editor/extension-gallery)**
+
+![a4](https://i.imgur.com/qMzox38.gif)
 
 ## 🤖 Commands
 
