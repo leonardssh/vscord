@@ -55,7 +55,7 @@ export default class Client implements Disposable {
 		this.setActivity();
 
 		activityTimer = setInterval(() => {
-			this.config = workspace.getConfiguration('rpc');
+			this.config = workspace.getConfiguration('VSCord');
 
 			this.setActivity();
 		}, 1000);
