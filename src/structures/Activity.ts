@@ -1,0 +1,269 @@
+/* eslint-disable prefer-destructuring */
+import { basename, parse, sep } from 'path';
+import {
+	debug,
+	Disposable,
+	env,
+	window,
+	workspace,
+	DiagnosticSeverity,
+	languages,
+	WorkspaceConfiguration
+} from 'vscode';
+
+import type Client from '../client/Client';
+import lang from '../language/languages.json';
+
+const knownExtensions: { [key: string]: { image: string } } = lang.knownExtensions;
+const knownLanguages: string[] = lang.knownLanguages;
+
+const empty = '\u200b\u200b';
+
+export interface State {
+	details?: string;
+	state?: string;
+	startTimestamp?: number | null;
+	largeImageKey?: string;
+	largeImageText?: string;
+	smallImageKey?: string;
+	smallImageText?: string;
+}
+
+interface FileDetail {
+	size?: string;
+	totalLines?: string;
+	currentLine?: string;
+	currentColumn?: string;
+}
+
+export default class Activity implements Disposable {
+	public config: WorkspaceConfiguration;
+
+	private _state: State | null = null;
+
+	private problems = 0;
+
+	public constructor(private readonly client: Client) {
+		this.config = client.config;
+	}
+
+	public onDiagnosticsChange() {
+		const diag = languages.getDiagnostics();
+
+		let counted = 0;
+
+		diag.forEach((i: any) => {
+			if (i[1]) {
+				i[1].forEach((i: any) => {
+					if (i.severity === DiagnosticSeverity.Warning || i.severity === DiagnosticSeverity.Error) {
+						counted++;
+					}
+				});
+			}
+		});
+
+		this.problems = counted;
+	}
+
+	public async generate(workspaceElapsedTime = false) {
+		let largeImageKey: any = 'vscord-logo';
+
+		if (window.activeTextEditor) {
+			const filename = basename(window.activeTextEditor.document.fileName);
+
+			largeImageKey =
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				knownExtensions[
+					Object.keys(knownExtensions).find((key) => {
+						if (filename.endsWith(key)) {
+							return true;
+						}
+
+						const match = /^\/(.*)\/([mgiy]+)$/.exec(key);
+						if (!match) {
+							return false;
+						}
+
+						const regex = new RegExp(match[1], match[2]);
+						return regex.test(filename);
+					})!
+				] ??
+				(knownLanguages.includes(window.activeTextEditor.document.languageId)
+					? window.activeTextEditor.document.languageId
+					: null);
+		}
+
+		let previousTimestamp = null;
+
+		if (this._state?.startTimestamp) {
+			previousTimestamp = this._state.startTimestamp;
+		}
+
+		this._state = {
+			...this._state,
+			details: await this._generateDetails('detailsDebugging', 'detailsEditing', 'detailsIdle', largeImageKey),
+			startTimestamp:
+				window.activeTextEditor && previousTimestamp && workspaceElapsedTime
+					? previousTimestamp
+					: window.activeTextEditor
+					? new Date().getTime()
+					: null,
+			state: await this._generateDetails(
+				'lowerDetailsDebugging',
+				'lowerDetailsEditing',
+				'lowerDetailsIdle',
+				largeImageKey
+			),
+			largeImageKey: largeImageKey ? largeImageKey.image || largeImageKey : 'text',
+			largeImageText: window.activeTextEditor
+				? this.client.config
+						.get<string>('largeImage')!
+						.replace('{lang}', largeImageKey ? largeImageKey.image || largeImageKey : 'txt')
+						.replace(
+							'{Lang}',
+							largeImageKey
+								? (largeImageKey.image || largeImageKey)
+										.toLowerCase()
+										.replace(/^\w/, (c: string) => c.toUpperCase())
+								: 'Txt'
+						)
+						.replace(
+							'{LANG}',
+							largeImageKey ? (largeImageKey.image || largeImageKey).toUpperCase() : 'TXT'
+						) || window.activeTextEditor.document.languageId.padEnd(2, '\u200b')
+				: this.client.config.get<string>('largeImageIdle'),
+			smallImageKey: debug.activeDebugSession
+				? 'debug'
+				: env.appName.includes('Insiders')
+				? 'vscode-insiders'
+				: 'vscode',
+			smallImageText: this.client.config.get<string>('smallImage')!.replace('{appname}', env.appName)
+		};
+
+		return this._state;
+	}
+
+	public dispose() {
+		this._state = null;
+		this.problems = 0;
+	}
+
+	private _generateDetails(debugging: string, editing: string, idling: string, largeImageKey: any) {
+		let raw = this.client.config.get<string>(idling)!.replace('{null}', empty);
+		let filename = null;
+		let dirname = null;
+		let checkState = false;
+		let workspaceName = null;
+		let workspaceFolder = null;
+		let fullDirname = null;
+
+		if (window.activeTextEditor) {
+			filename = basename(window.activeTextEditor.document.fileName);
+
+			const { dir } = parse(window.activeTextEditor.document.fileName);
+			const split = dir.split(sep);
+
+			dirname = split[split.length - 1];
+
+			checkState = Boolean(workspace.getWorkspaceFolder(window.activeTextEditor.document.uri));
+			workspaceName = workspace.name;
+			workspaceFolder = checkState ? workspace.getWorkspaceFolder(window.activeTextEditor.document.uri) : null;
+
+			if (workspaceFolder) {
+				const { name } = workspaceFolder;
+				const relativePath = workspace.asRelativePath(window.activeTextEditor.document.fileName).split(sep);
+
+				relativePath.splice(-1, 1);
+				fullDirname = `${name}${sep}${relativePath.join(sep)}`;
+			}
+
+			raw = debug.activeDebugSession
+				? (raw = this.client.config.get<string>(debugging)!)
+				: (raw = this.client.config.get<string>(editing)!);
+
+			const { totalLines, size, currentLine, currentColumn } = this._generateFileDetails(raw);
+			const problems = this.client.config.get<boolean>('showProblems')
+				? this.client.config.get<string>('problemsText')!.replace('{count}', this.problems.toString())
+				: '';
+
+			raw = raw
+				.replace('{null}', empty)
+				.replace('{filename}', filename)
+				.replace('{dirname}', dirname)
+				.replace('{fulldirname}', fullDirname!)
+				.replace(
+					'{workspace}',
+					workspaceName
+						? workspaceName
+						: checkState && workspaceFolder
+						? workspaceFolder.name
+						: this.client.config.get<string>('lowerDetailsNotFound')!.replace('{null}', empty)
+				)
+				.replace(
+					'{workspaceFolder}',
+					checkState && workspaceFolder
+						? workspaceFolder.name
+						: this.client.config.get<string>('lowerDetailsNotFound')!.replace('{null}', empty)
+				)
+				.replace(
+					'{workspaceAndFolder}',
+					checkState && workspaceName && workspaceFolder
+						? `${workspaceName} - ${workspaceFolder.name}`
+						: this.client.config.get<string>('lowerDetailsNotFound')!.replace('{null}', empty)
+				)
+				.replace('{problems}', problems)
+				.replace('{lang}', largeImageKey ? largeImageKey.image || largeImageKey : 'txt')
+				.replace(
+					'{Lang}',
+					largeImageKey
+						? (largeImageKey.image || largeImageKey)
+								.toLowerCase()
+								.replace(/^\w/, (c: string) => c.toUpperCase())
+						: 'Txt'
+				)
+				.replace('{LANG}', largeImageKey ? (largeImageKey.image || largeImageKey).toUpperCase() : 'TXT');
+
+			if (totalLines) {
+				raw = raw.replace('{totallines}', totalLines);
+			}
+
+			if (size) {
+				raw = raw.replace('{filesize}', size);
+			}
+
+			if (currentLine) {
+				raw = raw.replace('{currentline}', currentLine);
+			}
+
+			if (currentColumn) {
+				raw = raw.replace('{currentcolumn}', currentColumn);
+			}
+		}
+
+		return raw;
+	}
+
+	private _generateFileDetails(str?: string) {
+		const fileDetail: FileDetail = {};
+
+		if (!str) {
+			return fileDetail;
+		}
+
+		if (window.activeTextEditor) {
+			if (str.includes('{totallines}')) {
+				fileDetail.totalLines = window.activeTextEditor.document.lineCount.toLocaleString();
+			}
+
+			if (str.includes('{currentline}')) {
+				fileDetail.currentLine = (window.activeTextEditor.selection.active.line + 1).toLocaleString();
+			}
+
+			if (str.includes('{currentcolumn}')) {
+				fileDetail.currentColumn = (window.activeTextEditor.selection.active.character + 1).toLocaleString();
+			}
+		}
+
+		return fileDetail;
+	}
+}

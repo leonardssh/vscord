@@ -6,5 +6,5 @@
 		"composite": true,
 		"preserveConstEnums": true
 	},
-	"include": ["."]
+	"include": [".", "./language/languages.json"]
 }

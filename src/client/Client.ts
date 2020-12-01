@@ -1,5 +1,8 @@
 import { Client as RPClient } from 'discord-rpc';
 import { Disposable, ExtensionContext, WorkspaceConfiguration, StatusBarItem, workspace } from 'vscode';
+
+import Activity from '../structures/Activity';
+import { Listener } from '../structures/Listener';
 import Logger from '../structures/Logger';
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
@@ -7,6 +10,10 @@ let activityTimer: NodeJS.Timer | undefined;
 
 export default class Client implements Disposable {
 	private rpc?: any;
+
+	private readonly activity = new Activity(this);
+
+	private readonly listener = new Listener(this.activity);
 
 	public constructor(public config: WorkspaceConfiguration, public statusBarIcon: StatusBarItem) {}
 
@@ -52,33 +59,37 @@ export default class Client implements Disposable {
 			clearInterval(activityTimer);
 		}
 
-		this.setActivity();
+		this.listener.listen();
+
+		void this.setActivity(this.config.get<boolean>('workspaceElapsedTime'));
 
 		activityTimer = setInterval(() => {
 			this.config = workspace.getConfiguration('VSCord');
 
-			this.setActivity();
+			void this.setActivity(this.config.get<boolean>('workspaceElapsedTime'));
 		}, 1000);
 	}
 
-	public setActivity() {
+	public async setActivity(workspaceElapsedTime = false) {
 		if (!this.rpc) {
+			return;
+		}
+
+		const activity = await this.activity.generate(workspaceElapsedTime);
+
+		if (!activity) {
 			return;
 		}
 
 		Logger.log('Sending activity to Discord Gateway.');
 
-		this.rpc.setActivity({
-			details: 'test',
-			state: 'test',
-			smallImageKey: 'vscord-logo',
-			smallImageText: 'Visual Studio Code',
-			largeImageKey: 'vscord-logo',
-			largeImageText: 'Visual Studio Code'
-		});
+		this.rpc.setActivity(activity);
 	}
 
 	public dispose() {
+		this.activity.dispose();
+		this.listener.dispose();
+
 		if (this.rpc) {
 			this.rpc.destroy;
 		}

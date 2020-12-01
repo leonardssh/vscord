@@ -17,6 +17,26 @@ let loginTimeout: NodeJS.Timer | undefined;
 export const activate = async (ctx: ExtensionContext) => {
 	Logger.log('Extension activated, trying to connect to Discord Gateway.');
 
+	let isWorkspaceIgnored = false;
+
+	const ignorePatterns = config.get<string[]>('ignoreWorkspaces');
+
+	if (ignorePatterns?.length) {
+		for (const pattern of ignorePatterns) {
+			const regex = new RegExp(pattern);
+			const folders = workspace.workspaceFolders;
+
+			if (!folders) {
+				break;
+			}
+
+			if (folders.some((folder) => regex.test(folder.uri.fsPath))) {
+				isWorkspaceIgnored = true;
+				break;
+			}
+		}
+	}
+
 	const enableCommand = commands.registerCommand('rpc.enable', () => {
 		client.dispose();
 
@@ -83,23 +103,25 @@ export const activate = async (ctx: ExtensionContext) => {
 
 	ctx.subscriptions.push(enableCommand, disableCommand, reconnectCommand, disconnectCommand);
 
-	statusBarIcon.show();
+	if (!isWorkspaceIgnored && config.get<boolean>('enabled')) {
+		statusBarIcon.show();
 
-	try {
-		await client.connect(ctx);
-	} catch (error) {
-		Logger.log(`Encountered following error after trying to login:\n${error as string}`);
+		try {
+			await client.connect(ctx);
+		} catch (error) {
+			Logger.log(`Encountered following error after trying to login:\n${error as string}`);
 
-		client.dispose();
+			client.dispose();
 
-		void window.showErrorMessage(
-			error?.message?.includes('ENOENT')
-				? 'No Discord Client detected!'
-				: `Couldn't connect to Discord via RPC: ${error as string}`
-		);
+			void window.showErrorMessage(
+				error?.message?.includes('ENOENT')
+					? 'No Discord Client detected!'
+					: `Couldn't connect to Discord via RPC: ${error as string}`
+			);
 
-		client.statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
-		client.statusBarIcon.command = 'rpc.reconnect';
+			client.statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
+			client.statusBarIcon.command = 'rpc.reconnect';
+		}
 	}
 };
 
