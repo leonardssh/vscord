@@ -42,7 +42,7 @@ Remember to 🌟 this Github if you 💖 it.
 
 Application ID. Change only if you known exactly what you're doing.
 
-Default: `768090036633206815`
+Default: `782685898163617802`
 
 #### **VSCord.enabled**
 
