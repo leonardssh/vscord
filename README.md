@@ -57,6 +57,7 @@ Remember to 🌟 this Github if you 💖 it.
 ### Install
 
 Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
+
 ```
 ext install LeonardSSH.vscord
 ```
@@ -144,7 +145,7 @@ Custom string for the details section of the rich presence when idling.
 
 Default: `Idling`
 
--   `{null}` will be replaced with an empty space.
+-   `{null}` will be replaced with an empty space
 
 #### **VSCord.lowerDetailsEditing**
 
@@ -190,6 +191,16 @@ Default: `Idling`
 
 -   `{null}` will be replaced with an empty space.
 
+#### **VSCord.lowerDetailsNotFound**
+
+Custom string for the state section of the rich presence when no workspace is found.
+
+Default: `No workspace.`
+
+-   `{null}` will be replaced with an empty space
+-   `{currentline}` will get replaced with the current line number
+-   `{totallines}` will get replaced with the total line number
+
 #### **VSCord.largeImage**
 
 Custom string for the largeImageText section of the rich presence.
@@ -198,7 +209,7 @@ Default: `Editing a {LANG} file`
 
 -   `{lang}` will be replaced with the lowercased language ID
 -   `{Lang}` will be replaced with the language ID, first letter being uppercase
--   `{LANG}` will be replaced with the uppercased language ID.
+-   `{LANG}` will be replaced with the uppercased language ID
 
 #### **VSCord.largeImageIdle**
 
@@ -226,7 +237,7 @@ Custom string of the text displaying the amount of problems in your workspace.
 
 Default: `- {count} problems found`
 
--   `{count}` will be replaced by the respective amount of problems.
+-   `{count}` will be replaced by the respective amount of problems
 
 ## 👨‍💻 Contributing
 
