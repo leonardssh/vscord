@@ -134,6 +134,11 @@
 					"default": "Idling",
 					"description": "Custom string for the state section of the rich presence when idling\n\t- {null} will be replaced with an empty space."
 				},
+				"VSCord.lowerDetailsNotFound": {
+					"type": "string",
+					"default": "No workspace.",
+					"description": "Custom string for the state section of the rich presence when no workspace is found.\n- {null} will be replaced with an empty space.\n\t- {currentline} will get replaced with the current line number.\n\t- {totallines} will get replaced with the total line number."
+				},
 				"VSCord.largeImage": {
 					"type": "string",
 					"default": "Editing a {LANG} file",
