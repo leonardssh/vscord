@@ -47,6 +47,7 @@ Remember to 🌟 this Github if you 💖 it.
 ![a1](https://i.imgur.com/9kjM9rr.png)
 ![a2](https://i.imgur.com/v9tgyHN.png)
 ![a3](https://i.imgur.com/mvecFVN.png)
+![a4](https://i.imgur.com/3GZtZeP.png)
 
 ## 📥 Installation
 
