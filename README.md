@@ -108,7 +108,7 @@ Default: `false`
 
 Custom string for the details section of the rich presence.
 
-Default: `Editing {filename} {problems}`
+Default: `{workspace} {problems}`
 
 -   `{null}` will be replaced with an empty space
 -   `{filename}` will be replaced with the current file name
@@ -152,7 +152,7 @@ Default: `Idling`
 
 Custom string for the state section of the rich presence.
 
-Default: `Workspace: {workspace}`
+Default: `Working on {filename}:{currentline}:{currentcolumn}`
 
 -   `{null}` will be replaced with an empty space
 -   `{filename}` will be replaced with the current file name
