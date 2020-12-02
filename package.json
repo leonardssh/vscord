@@ -95,6 +95,28 @@
 		"vscode": "^1.51.0"
 	},
 	"contributes": {
+		"commands": [
+			{
+				"command": "rpc.enable",
+				"title": "Enables RPC in the current workspace.",
+				"category": "Discord Rich Presence"
+			},
+			{
+				"command": "rpc.disable",
+				"title": "Disables RPC in the current workspace",
+				"category": "Discord Rich Presence"
+			},
+			{
+				"command": "rpc.disconnect",
+				"title": "Disconnects you from Discord Gateway.",
+				"category": "Discord Rich Presence"
+			},
+			{
+				"command": "rpc.reconnect",
+				"title": "Reconnects you to Discord Gateway.",
+				"category": "Discord Rich Presence"
+			}
+		],
 		"configuration": {
 			"title": "VSCord Configuration",
 			"type": "Object",
