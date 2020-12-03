@@ -91,7 +91,7 @@ export default class Client implements Disposable {
 		this.listener.dispose();
 
 		if (this.rpc) {
-			this.rpc.destroy;
+			this.rpc.destroy();
 		}
 
 		this.rpc = undefined;
