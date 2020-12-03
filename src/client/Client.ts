@@ -19,7 +19,7 @@ export default class Client implements Disposable {
 
 	public async connect(ctx?: ExtensionContext) {
 		if (this.rpc) {
-			await this.dispose();
+			this.dispose();
 		}
 
 		Logger.log('Logging into RPC...');
