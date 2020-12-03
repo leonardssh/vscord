@@ -27,7 +27,7 @@
 
 Remember to 🌟 this Github if you 💖 it.
 
-> **NOTE:** Much of the code in this repository is part of **[discord-vscode]** & **[vscode-discord]**.
+> **NOTE:** That is just an extension between **[iCrawl's extension](https://github.com/iCrawl/discord-vscode)** and **[Satoqz's extension](https://github.com/Satoqz/vscode-discord)** with a few small changes, bug fixs and new pretty icons.
 
 ## 📌 Features
 
@@ -253,6 +253,3 @@ To contribute to this repository, feel free to create a new fork of the reposito
 ## 📋 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-[discord-vscode]: https://github.com/iCrawl/discord-vscode/
-[vscode-discord]: https://github.com/Satoqz/vscode-discord
