@@ -15,6 +15,7 @@ import {
 } from 'vscode';
 
 import { getConfig, resolveIcon } from '../util/util';
+import { RESTART_TO_ENABLE } from '../util/messages';
 
 import type Client from '../client/Client';
 
@@ -146,9 +147,11 @@ export default class Activity implements Disposable {
 
 	public onConfigChange(e: ConfigurationChangeEvent) {
 		if (e.affectsConfiguration('VSCord.workspaceElapsedTime')) {
-			void window.showInformationMessage(
-				'To enable or disable workspaceElapsedTime setting, you must restart VS Code.'
-			);
+			void window.showInformationMessage(RESTART_TO_ENABLE('workspaceElapsedTime'));
+		}
+
+		if (e.affectsConfiguration('VSCord.ignoreWorkspaces')) {
+			void window.showInformationMessage(RESTART_TO_ENABLE('ignoreWorkspaces'));
 		}
 	}
 
