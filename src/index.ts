@@ -1,6 +1,6 @@
 import Client from './client/Client';
-import Logger from './structures/Logger';
 
+import { LoggingService } from './structures/LoggingService';
 import { ExtensionContext, workspace, window, StatusBarAlignment, StatusBarItem, commands } from 'vscode';
 
 const config = workspace.getConfiguration('VSCord');
@@ -14,8 +14,14 @@ const client: Client = new Client(config, statusBarIcon);
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let loginTimeout: NodeJS.Timer | undefined;
 
+const extensionName = process.env.EXTENSION_NAME || 'dev.vscord';
+const extensionVersion = process.env.EXTENSION_VERSION || '0.0.0';
+
+const loggingService = new LoggingService();
+
 export const activate = async (ctx: ExtensionContext) => {
-	Logger.log('Extension activated, trying to connect to Discord Gateway.');
+	loggingService.logInfo(`Extension Name: ${extensionName}.`);
+	loggingService.logInfo(`Extension Version: ${extensionVersion}.`);
 
 	let isWorkspaceIgnored = false;
 
@@ -73,7 +79,7 @@ export const activate = async (ctx: ExtensionContext) => {
 			try {
 				await client.connect(ctx);
 			} catch (error) {
-				Logger.log(`Encountered following error after trying to login:\n${error as string}`);
+				loggingService.logError(`Encountered following error after trying to login.`, error);
 
 				client.dispose();
 
@@ -109,7 +115,7 @@ export const activate = async (ctx: ExtensionContext) => {
 		try {
 			await client.connect(ctx);
 		} catch (error) {
-			Logger.log(`Encountered following error after trying to login:\n${error as string}`);
+			loggingService.logError('Encountered following error after trying to login.', error);
 
 			client.dispose();
 
@@ -126,8 +132,7 @@ export const activate = async (ctx: ExtensionContext) => {
 };
 
 export const deactivate = () => {
-	Logger.log('Extension deactivated, trying to disconnect from Discord Gateway.');
 	client.dispose();
 };
 
-process.on('unhandledRejection', (err) => Logger.log(err as string));
+process.on('unhandledRejection', (err) => loggingService.logError('Unhandled Rejection:', err as string));

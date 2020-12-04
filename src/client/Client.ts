@@ -3,7 +3,6 @@ import { Disposable, ExtensionContext, WorkspaceConfiguration, StatusBarItem, wo
 
 import Activity from '../structures/Activity';
 import { Listener } from '../structures/Listener';
-import Logger from '../structures/Logger';
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let activityTimer: NodeJS.Timer | undefined;
@@ -21,8 +20,6 @@ export default class Client implements Disposable {
 		if (this.rpc) {
 			this.dispose();
 		}
-
-		Logger.log('Logging into RPC...');
 
 		this.rpc = new RPClient({ transport: 'ipc' });
 
@@ -48,8 +45,6 @@ export default class Client implements Disposable {
 	}
 
 	public ready(_ctx?: ExtensionContext) {
-		Logger.log('Successfully connected to Discord Gateway.');
-
 		this.statusBarIcon.text = '$(smiley) Connected to Discord Gateway.';
 		this.statusBarIcon.tooltip = 'Connected to Discord Gateway.';
 
@@ -80,8 +75,6 @@ export default class Client implements Disposable {
 		if (!activity) {
 			return;
 		}
-
-		Logger.log('Sending activity to Discord Gateway.');
 
 		this.rpc.setActivity(activity);
 	}
