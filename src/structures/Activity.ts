@@ -50,15 +50,16 @@ export default class Activity implements Disposable {
 			this.presence.startTimestamp = Date.now();
 		}
 
-		this.presence = {
-			...this.presence,
-			details: detailsIdle.replace('{null}', empty),
-			state: lowerDetailsIdle.replace('{null}', empty),
-			largeImageKey: defaultIcons.standard,
-			largeImageText: largeImageIdle,
-			smallImageKey: this.debugging ? 'debug' : env.appName.includes('Insiders') ? 'vscode-insiders' : 'vscode',
-			smallImageText: smallImage.replace('{appname}', env.appName)
-		};
+		this.presence.details = detailsIdle.replace('{null}', empty);
+		this.presence.state = lowerDetailsIdle.replace('{null}', empty);
+		this.presence.largeImageKey = defaultIcons.standard;
+		this.presence.largeImageText = largeImageIdle;
+		this.presence.smallImageKey = this.debugging
+			? 'debug'
+			: env.appName.includes('Insiders')
+			? 'vscode-insiders'
+			: 'vscode';
+		this.presence.smallImageText = smallImage.replace('{appname}', env.appName);
 
 		this.update();
 	}
