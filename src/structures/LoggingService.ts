@@ -2,9 +2,9 @@ import { window } from 'vscode';
 
 type LogLevel = 'INFO' | 'WARN' | 'ERROR' | 'NONE';
 
-export class LoggingService {
-	private outputChannel = window.createOutputChannel('VSCord');
+const outputChannel = window.createOutputChannel('VSCord');
 
+export class LoggingService {
 	private logLevel: LogLevel = 'INFO';
 
 	public setOutputLevel(logLevel: LogLevel) {
@@ -35,24 +35,24 @@ export class LoggingService {
 		this.logMessage(message, 'ERROR');
 
 		if (typeof error === 'string') {
-			this.outputChannel.appendLine(error);
+			outputChannel.appendLine(error);
 		} else if (error?.message || error?.stack) {
 			if (error?.message) {
 				this.logMessage(error.message, 'ERROR');
 			}
 
 			if (error?.stack) {
-				this.outputChannel.appendLine(error.stack);
+				outputChannel.appendLine(error.stack);
 			}
 		}
 	}
 
 	public show() {
-		this.outputChannel.show();
+		outputChannel.show();
 	}
 
 	private logMessage(message: string, logLevel: LogLevel) {
 		const title = new Date().toLocaleDateString();
-		this.outputChannel.appendLine(`["${logLevel}" - ${title}] ${message}`);
+		outputChannel.appendLine(`["${logLevel}" - ${title}] ${message}`);
 	}
 }
