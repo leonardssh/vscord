@@ -274,6 +274,10 @@
 		".jar": { "image": "jar" },
 		".java": { "image": "java" },
 		"jest.config.js": { "image": "jest" },
+		"/webpack(\\.dev|\\.development|\\.prod|\\.production)?\\.config(\\.babel)?\\.(js|jsx|coffee|ts|json|json5|yaml|yml)/i": {
+			"image": "webpack"
+		},
+		"prettier.config.js": { "image": "prettier" },
 		".js": { "image": "js" },
 		".es6": { "image": "js" },
 		".es": { "image": "js" },
@@ -391,7 +395,6 @@
 		".ps1xml": { "image": "powershell" },
 		".prettierignore": { "image": "prettier" },
 		"/\\.prettier((rc)|(\\.(toml|yml|yaml|json|js))?$){2}/i": { "image": "prettier" },
-		"prettier.config.js": { "image": "prettier" },
 		"prisma.yml": { "image": "prisma" },
 		".pde": { "image": "processing" },
 		".jade": { "image": "pug" },
@@ -498,9 +501,6 @@
 		".wat": { "image": "wasm" },
 		".wast": { "image": "wasm" },
 		".wasm": { "image": "wasm" },
-		"/webpack(\\.dev|\\.development|\\.prod|\\.production)?\\.config(\\.babel)?\\.(js|jsx|coffee|ts|json|json5|yaml|yml)/i": {
-			"image": "webpack"
-		},
 		".xml": { "image": "xml" },
 		"/\\.ya?ml$/i": { "image": "yaml" },
 		"/^yarn(\\.lock)?$/i": { "image": "yarn" },
