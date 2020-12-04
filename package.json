@@ -43,10 +43,8 @@
 		"bufferutil": "^4.0.2",
 		"discord-rpc": "^3.1.4",
 		"electron": "^11.0.3",
+		"register-scheme": "^0.0.2",
 		"utf-8-validate": "^5.0.3"
-	},
-	"optionalDependencies": {
-		"register-scheme": "devsnek/node-register-scheme"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^11.0.0",
