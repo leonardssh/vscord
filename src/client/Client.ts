@@ -1,12 +1,9 @@
-import { Client as RPClient } from 'discord-rpc';
-import { Disposable, ExtensionContext, WorkspaceConfiguration, StatusBarItem, workspace } from 'vscode';
+import { Client as RPClient, Presence } from 'discord-rpc';
+import type { Disposable, ExtensionContext, WorkspaceConfiguration, StatusBarItem } from 'vscode';
 
 import Activity from '../structures/Activity';
 import { Listener } from '../structures/Listener';
 import { getConfig } from '../util/util';
-
-// eslint-disable-next-line @typescript-eslint/init-declarations
-let activityTimer: NodeJS.Timer | undefined;
 
 export default class Client implements Disposable {
 	private rpc?: any;
@@ -55,35 +52,16 @@ export default class Client implements Disposable {
 
 		setTimeout(() => (this.statusBarIcon.text = '$(smiley)'), 5000);
 
-		if (activityTimer) {
-			clearInterval(activityTimer);
-		}
-
+		this.activity.init();
 		this.listener.listen();
-
-		const { workspaceElapsedTime } = getConfig();
-
-		void this.setActivity(workspaceElapsedTime);
-
-		activityTimer = setInterval(() => {
-			this.config = workspace.getConfiguration('VSCord');
-
-			void this.setActivity(workspaceElapsedTime);
-		}, 1000);
 	}
 
-	public async setActivity(workspaceElapsedTime = false) {
+	public setActivity(presence: Presence) {
 		if (!this.rpc) {
 			return;
 		}
 
-		const activity = await this.activity.generate(workspaceElapsedTime);
-
-		if (!activity) {
-			return;
-		}
-
-		this.rpc.setActivity(activity);
+		this.rpc.setActivity(presence).catch(() => this.dispose());
 	}
 
 	public dispose() {
@@ -96,9 +74,5 @@ export default class Client implements Disposable {
 
 		this.rpc = undefined;
 		this.statusBarIcon.tooltip = '';
-
-		if (activityTimer) {
-			clearInterval(activityTimer);
-		}
 	}
 }

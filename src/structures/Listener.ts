@@ -1,4 +1,4 @@
-import { Disposable, languages } from 'vscode';
+import { Disposable, languages, window, workspace, debug, TextEditor, TextDocumentChangeEvent } from 'vscode';
 import { getConfig } from '../util/util';
 
 import type Activity from './Activity';
@@ -12,12 +12,25 @@ export class Listener {
 	public listen() {
 		this.dispose();
 
+		const fileSwitch = window.onDidChangeActiveTextEditor;
+		const fileEdit = workspace.onDidChangeTextDocument;
+		const debugStart = debug.onDidStartDebugSession;
+		const debugEnd = debug.onDidTerminateDebugSession;
 		const diagnostictsChange = languages.onDidChangeDiagnostics;
 
-		const { showProblems } = getConfig();
+		const { enabled, showProblems } = getConfig();
 
-		if (showProblems) {
-			this.disposables.push(diagnostictsChange(() => this.activity.onDiagnosticsChange()));
+		if (enabled) {
+			const onFileSwitch = fileSwitch((e: TextEditor | undefined) => this.activity.onFileSwitch(e!));
+			const onFileEdit = fileEdit((e: TextDocumentChangeEvent) => this.activity.onFileEdit(e));
+			const onDebugStart = debugStart(() => this.activity.toggleDebug());
+			const onDebugEnd = debugEnd(() => this.activity.toggleDebug());
+
+			this.disposables.push(onFileSwitch, onFileEdit, onDebugStart, onDebugEnd);
+
+			if (showProblems) {
+				this.disposables.push(diagnostictsChange(() => this.activity.onDiagnosticsChange()));
+			}
 		}
 	}
 
