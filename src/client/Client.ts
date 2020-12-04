@@ -3,6 +3,7 @@ import { Disposable, ExtensionContext, WorkspaceConfiguration, StatusBarItem, wo
 
 import Activity from '../structures/Activity';
 import { Listener } from '../structures/Listener';
+import { getConfig } from '../util/util';
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let activityTimer: NodeJS.Timer | undefined;
@@ -26,7 +27,9 @@ export default class Client implements Disposable {
 		this.rpc.once('ready', () => this.ready(ctx));
 
 		this.rpc.transport.once('close', () => {
-			if (!this.config.get<boolean>('enabled')) {
+			const { enabled } = getConfig();
+
+			if (!enabled) {
 				return;
 			}
 
@@ -38,7 +41,9 @@ export default class Client implements Disposable {
 		});
 
 		try {
-			await this.rpc.login({ clientId: this.config.get<string>('id') });
+			const { id } = getConfig();
+
+			await this.rpc.login({ clientId: id });
 		} catch (error) {
 			throw error;
 		}
@@ -56,12 +61,14 @@ export default class Client implements Disposable {
 
 		this.listener.listen();
 
-		void this.setActivity(this.config.get<boolean>('workspaceElapsedTime'));
+		const { workspaceElapsedTime } = getConfig();
+
+		void this.setActivity(workspaceElapsedTime);
 
 		activityTimer = setInterval(() => {
 			this.config = workspace.getConfiguration('VSCord');
 
-			void this.setActivity(this.config.get<boolean>('workspaceElapsedTime'));
+			void this.setActivity(workspaceElapsedTime);
 		}, 1000);
 	}
 

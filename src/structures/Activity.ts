@@ -1,18 +1,11 @@
 /* eslint-disable prefer-destructuring */
 import { basename, parse, sep } from 'path';
-import {
-	debug,
-	Disposable,
-	env,
-	window,
-	workspace,
-	DiagnosticSeverity,
-	languages,
-	WorkspaceConfiguration
-} from 'vscode';
+import { debug, Disposable, env, window, workspace, DiagnosticSeverity, languages } from 'vscode';
+import { getConfig } from '../util/util';
+
+import lang from '../language/languages.json';
 
 import type Client from '../client/Client';
-import lang from '../language/languages.json';
 
 const knownExtensions: { [key: string]: { image: string } } = lang.knownExtensions;
 const knownLanguages: string[] = lang.knownLanguages;
@@ -37,15 +30,11 @@ interface FileDetail {
 }
 
 export default class Activity implements Disposable {
-	public config: WorkspaceConfiguration;
-
 	private _state: State | null = null;
 
 	private problems = 0;
 
-	public constructor(private readonly client: Client) {
-		this.config = client.config;
-	}
+	public constructor(private readonly client: Client) {}
 
 	public onDiagnosticsChange() {
 		const diag = languages.getDiagnostics();
@@ -99,6 +88,8 @@ export default class Activity implements Disposable {
 			previousTimestamp = this._state.startTimestamp;
 		}
 
+		const { largeImage, largeImageIdle, smallImage } = getConfig();
+
 		this._state = {
 			...this._state,
 			details: await this._generateDetails('detailsDebugging', 'detailsEditing', 'detailsIdle', largeImageKey),
@@ -116,8 +107,7 @@ export default class Activity implements Disposable {
 			),
 			largeImageKey: largeImageKey ? largeImageKey.image || largeImageKey : 'text',
 			largeImageText: window.activeTextEditor
-				? this.client.config
-						.get<string>('largeImage')!
+				? largeImage
 						.replace('{lang}', largeImageKey ? largeImageKey.image || largeImageKey : 'txt')
 						.replace(
 							'{Lang}',
@@ -131,13 +121,13 @@ export default class Activity implements Disposable {
 							'{LANG}',
 							largeImageKey ? (largeImageKey.image || largeImageKey).toUpperCase() : 'TXT'
 						) || window.activeTextEditor.document.languageId.padEnd(2, '\u200b')
-				: this.client.config.get<string>('largeImageIdle'),
+				: largeImageIdle,
 			smallImageKey: debug.activeDebugSession
 				? 'debug'
 				: env.appName.includes('Insiders')
 				? 'vscode-insiders'
 				: 'vscode',
-			smallImageText: this.client.config.get<string>('smallImage')!.replace('{appname}', env.appName)
+			smallImageText: smallImage.replace('{appname}', env.appName)
 		};
 
 		return this._state;
@@ -182,9 +172,10 @@ export default class Activity implements Disposable {
 				: (raw = this.client.config.get<string>(editing)!);
 
 			const { totalLines, size, currentLine, currentColumn } = this._generateFileDetails(raw);
-			const problems = this.client.config.get<boolean>('showProblems')
-				? this.client.config.get<string>('problemsText')!.replace('{count}', this.problems.toString())
-				: '';
+			const { showProblems, problemsText } = getConfig();
+			const problems = showProblems ? problemsText.replace('{count}', this.problems.toString()) : '';
+
+			const { lowerDetailsNotFound } = getConfig();
 
 			raw = raw
 				.replace('{null}', empty)
@@ -197,19 +188,17 @@ export default class Activity implements Disposable {
 						? workspaceName
 						: checkState && workspaceFolder
 						? workspaceFolder.name
-						: this.client.config.get<string>('lowerDetailsNotFound')!.replace('{null}', empty)
+						: lowerDetailsNotFound.replace('{null}', empty)
 				)
 				.replace(
 					'{workspaceFolder}',
-					checkState && workspaceFolder
-						? workspaceFolder.name
-						: this.client.config.get<string>('lowerDetailsNotFound')!.replace('{null}', empty)
+					checkState && workspaceFolder ? workspaceFolder.name : lowerDetailsNotFound.replace('{null}', empty)
 				)
 				.replace(
 					'{workspaceAndFolder}',
 					checkState && workspaceName && workspaceFolder
 						? `${workspaceName} - ${workspaceFolder.name}`
-						: this.client.config.get<string>('lowerDetailsNotFound')!.replace('{null}', empty)
+						: lowerDetailsNotFound.replace('{null}', empty)
 				)
 				.replace('{problems}', problems)
 				.replace('{lang}', largeImageKey ? largeImageKey.image || largeImageKey : 'txt')

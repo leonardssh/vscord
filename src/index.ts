@@ -1,15 +1,14 @@
 import Client from './client/Client';
 
-import { LoggingService } from './structures/LoggingService';
 import { ExtensionContext, workspace, window, StatusBarAlignment, StatusBarItem, commands } from 'vscode';
-
-const config = workspace.getConfiguration('VSCord');
+import { LoggingService } from './structures/LoggingService';
+import { getConfig } from './util/util';
 
 const statusBarIcon: StatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
 
 statusBarIcon.text = '$(search-refresh) Connecting to Discord Gateway...';
 
-const client: Client = new Client(config, statusBarIcon);
+const client: Client = new Client(getConfig(), statusBarIcon);
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let loginTimeout: NodeJS.Timer | undefined;
@@ -25,10 +24,10 @@ export const activate = async (ctx: ExtensionContext) => {
 
 	let isWorkspaceIgnored = false;
 
-	const ignorePatterns = config.get<string[]>('ignoreWorkspaces');
+	const { ignoreWorkspaces } = getConfig();
 
-	if (ignorePatterns?.length) {
-		for (const pattern of ignorePatterns) {
+	if (ignoreWorkspaces?.length) {
+		for (const pattern of ignoreWorkspaces) {
 			const regex = new RegExp(pattern);
 			const folders = workspace.workspaceFolders;
 
@@ -46,7 +45,7 @@ export const activate = async (ctx: ExtensionContext) => {
 	const enableCommand = commands.registerCommand('rpc.enable', () => {
 		client.dispose();
 
-		void config.update('enabled', true);
+		void getConfig().update('enabled', true);
 
 		client.config = workspace.getConfiguration('VSCord');
 
@@ -58,7 +57,7 @@ export const activate = async (ctx: ExtensionContext) => {
 	});
 
 	const disableCommand = commands.registerCommand('rpc.disable', () => {
-		void config.update('enabled', false);
+		void getConfig().update('enabled', false);
 
 		client.config = workspace.getConfiguration('rpc');
 
@@ -109,7 +108,9 @@ export const activate = async (ctx: ExtensionContext) => {
 
 	ctx.subscriptions.push(enableCommand, disableCommand, reconnectCommand, disconnectCommand);
 
-	if (!isWorkspaceIgnored && config.get<boolean>('enabled')) {
+	const { enabled } = getConfig();
+
+	if (!isWorkspaceIgnored && enabled) {
 		statusBarIcon.show();
 
 		try {

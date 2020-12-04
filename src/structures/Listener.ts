@@ -1,23 +1,22 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { Disposable, languages, WorkspaceConfiguration } from 'vscode';
+import { Disposable, languages } from 'vscode';
+import { getConfig } from '../util/util';
 
 import type Activity from './Activity';
 
 export class Listener {
 	private disposables: Disposable[] = [];
 
-	private config: WorkspaceConfiguration;
-
-	constructor(private activity: Activity) {
-		this.config = activity.config;
-	}
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	constructor(private activity: Activity) {}
 
 	public listen() {
 		this.dispose();
 
 		const diagnostictsChange = languages.onDidChangeDiagnostics;
 
-		if (this.config.get<boolean>('showProblems')) {
+		const { showProblems } = getConfig();
+
+		if (showProblems) {
 			this.disposables.push(diagnostictsChange(() => this.activity.onDiagnosticsChange()));
 		}
 	}
