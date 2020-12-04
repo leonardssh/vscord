@@ -1,5 +1,5 @@
 import { Client as RPClient, Presence } from 'discord-rpc';
-import type { Disposable, ExtensionContext, WorkspaceConfiguration, StatusBarItem } from 'vscode';
+import type { Disposable, WorkspaceConfiguration, StatusBarItem } from 'vscode';
 
 import Activity from '../structures/Activity';
 import { Listener } from '../structures/Listener';
@@ -14,14 +14,14 @@ export default class Client implements Disposable {
 
 	public constructor(public config: WorkspaceConfiguration, public statusBarIcon: StatusBarItem) {}
 
-	public async connect(ctx?: ExtensionContext) {
+	public async connect() {
 		if (this.rpc) {
 			this.dispose();
 		}
 
 		this.rpc = new RPClient({ transport: 'ipc' });
 
-		this.rpc.once('ready', () => this.ready(ctx));
+		this.rpc.once('ready', () => this.ready());
 
 		this.rpc.transport.once('close', () => {
 			const { enabled } = getConfig();
@@ -46,7 +46,7 @@ export default class Client implements Disposable {
 		}
 	}
 
-	public ready(_ctx?: ExtensionContext) {
+	public ready() {
 		this.statusBarIcon.text = '$(smiley) Connected to Discord Gateway.';
 		this.statusBarIcon.tooltip = 'Connected to Discord Gateway.';
 

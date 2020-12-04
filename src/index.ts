@@ -56,7 +56,7 @@ export const activate = async (ctx: ExtensionContext) => {
 
 		loginTimeout = setTimeout(async () => {
 			try {
-				await client.connect(ctx);
+				await client.connect();
 			} catch (error) {
 				loggingService.logError(`Encountered following error after trying to login.`, error);
 
@@ -112,7 +112,7 @@ export const activate = async (ctx: ExtensionContext) => {
 		statusBarIcon.show();
 
 		try {
-			await client.connect(ctx);
+			await client.connect();
 		} catch (error) {
 			loggingService.logError('Encountered following error after trying to login.', error);
 
