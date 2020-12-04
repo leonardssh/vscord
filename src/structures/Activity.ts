@@ -17,14 +17,14 @@ import { getConfig, resolveIcon } from '../util/util';
 
 import type Client from '../client/Client';
 
-const empty = '\u200b\u200b';
-
 interface FileDetail {
 	size?: string;
 	totalLines?: string;
 	currentLine?: string;
 	currentColumn?: string;
 }
+
+const empty = '\u200b\u200b';
 
 const enum defaultIcons {
 	'standard' = 'vscord-logo'
