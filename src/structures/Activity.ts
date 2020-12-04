@@ -10,7 +10,8 @@ import {
 	DiagnosticSeverity,
 	TextDocument,
 	window,
-	workspace
+	workspace,
+	ConfigurationChangeEvent
 } from 'vscode';
 
 import { getConfig, resolveIcon } from '../util/util';
@@ -131,6 +132,14 @@ export default class Activity implements Disposable {
 				.replace('{LANG}', icon.toUpperCase()) || document.languageId.padEnd(2, '\u200b');
 
 		this.update();
+	}
+
+	public onConfigChange(e: ConfigurationChangeEvent) {
+		if (e.affectsConfiguration('VSCord.workspaceElapsedTime')) {
+			void window.showInformationMessage(
+				'To enable or disable workspaceElapsedTime setting, you must restart VS Code.'
+			);
+		}
 	}
 
 	public toggleDebug() {
