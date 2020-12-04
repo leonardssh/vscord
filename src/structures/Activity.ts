@@ -11,7 +11,8 @@ import {
 	TextDocument,
 	window,
 	workspace,
-	ConfigurationChangeEvent
+	ConfigurationChangeEvent,
+	WindowState
 } from 'vscode';
 
 import { getConfig, resolveIcon } from '../util/util';
@@ -29,7 +30,8 @@ interface FileDetail {
 const empty = '\u200b\u200b';
 
 const enum defaultIcons {
-	'standard' = 'vscord-logo'
+	standard = 'vscord-logo',
+	idle = 'idle'
 }
 
 export default class Activity implements Disposable {
@@ -156,6 +158,20 @@ export default class Activity implements Disposable {
 		}
 	}
 
+	public onChangeWindowState({ focused }: WindowState) {
+		const { idleTimeout } = getConfig();
+
+		if (focused) {
+			this.idle(false);
+		} else {
+			setTimeout(() => {
+				if (!window.state.focused) {
+					this.idle(true);
+				}
+			}, idleTimeout * 1000);
+		}
+	}
+
 	public toggleDebug() {
 		this.debugging = !this.debugging;
 	}
@@ -182,6 +198,20 @@ export default class Activity implements Disposable {
 		this.presence = {};
 		this.problems = 0;
 		this.viewing = false;
+	}
+
+	public idle(status: boolean) {
+		const { smallImage, idleText } = getConfig();
+
+		this.presence.smallImageKey = status
+			? defaultIcons.idle
+			: this.debugging
+			? 'debug'
+			: env.appName.includes('Insiders')
+			? 'vscode-insiders'
+			: 'vscode';
+		this.presence.smallImageText = status ? idleText : smallImage.replace('{appname}', env.appName);
+		this.update();
 	}
 
 	private generateDetails(

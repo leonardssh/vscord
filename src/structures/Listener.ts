@@ -6,7 +6,8 @@ import {
 	debug,
 	TextEditor,
 	TextDocumentChangeEvent,
-	ConfigurationChangeEvent
+	ConfigurationChangeEvent,
+	WindowState
 } from 'vscode';
 import { getConfig } from '../util/util';
 
@@ -27,8 +28,9 @@ export class Listener {
 		const debugEnd = debug.onDidTerminateDebugSession;
 		const configChange = workspace.onDidChangeConfiguration;
 		const diagnostictsChange = languages.onDidChangeDiagnostics;
+		const changeWindowState = window.onDidChangeWindowState;
 
-		const { enabled, showProblems } = getConfig();
+		const { enabled, showProblems, checkIdle } = getConfig();
 
 		if (enabled) {
 			const onFileSwitch = fileSwitch((e: TextEditor | undefined) => this.activity.onFileSwitch(e!));
@@ -41,6 +43,10 @@ export class Listener {
 
 			if (showProblems) {
 				this.disposables.push(diagnostictsChange(() => this.activity.onDiagnosticsChange()));
+			}
+
+			if (checkIdle) {
+				this.disposables.push(changeWindowState((e: WindowState) => this.activity.onChangeWindowState(e)));
 			}
 		}
 	}

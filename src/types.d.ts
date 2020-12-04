@@ -6,8 +6,11 @@ interface IExtensionConfig {
 	detailsEditing: string;
 	detailsIdle: string;
 	detailsDebugging: string;
+	detailsViewing: string;
 	lowerDetailsEditing: string;
 	lowerDetailsIdle: string;
+	lowerDetailsDebugging: string;
+	lowerDetailsViewing: string;
 	lowerDetailsNotFound: string;
 	largeImage: string;
 	largeImageIdle: string;
@@ -16,6 +19,9 @@ interface IExtensionConfig {
 	showProblems: boolean;
 	problemsText: string;
 	ignoreWorkspaces: string[];
+	checkIdle: boolean;
+	idleTimeout: number;
+	idleText: string;
 }
 
 export type VSCordConfig = IExtensionConfig & WorkspaceConfiguration;
