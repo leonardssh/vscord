@@ -36,6 +36,8 @@ export default class Activity implements Disposable {
 
 	private debugging = false;
 
+	private viewing = false;
+
 	private problems = 0;
 
 	public constructor(private readonly client: Client) {}
@@ -69,10 +71,13 @@ export default class Activity implements Disposable {
 
 		const { largeImage, largeImageIdle } = getConfig();
 
+		this.viewing = true;
+
 		this.presence.details = this.generateDetails(
 			'detailsDebugging',
 			'detailsEditing',
 			'detailsIdle',
+			'detailsViewing',
 			icon,
 			editor?.document
 		);
@@ -81,6 +86,7 @@ export default class Activity implements Disposable {
 			'lowerDetailsDebugging',
 			'lowerDetailsEditing',
 			'lowerDetailsIdle',
+			'lowerDetailsViewing',
 			icon,
 			editor?.document
 		);
@@ -106,10 +112,13 @@ export default class Activity implements Disposable {
 		const icon = resolveIcon(document);
 		const { largeImage } = getConfig();
 
+		this.viewing = false;
+
 		this.presence.details = this.generateDetails(
 			'detailsDebugging',
 			'detailsEditing',
 			'detailsIdle',
+			undefined,
 			icon,
 			document
 		);
@@ -118,6 +127,7 @@ export default class Activity implements Disposable {
 			'lowerDetailsDebugging',
 			'lowerDetailsEditing',
 			'lowerDetailsIdle',
+			undefined,
 			icon,
 			document
 		);
@@ -167,12 +177,14 @@ export default class Activity implements Disposable {
 	public dispose() {
 		this.presence = {};
 		this.problems = 0;
+		this.viewing = false;
 	}
 
 	private generateDetails(
 		debugging: string,
 		editing: string,
 		idling: string,
+		viewing: string | undefined,
 		largeImageKey: any,
 		document?: TextDocument
 	) {
@@ -207,6 +219,10 @@ export default class Activity implements Disposable {
 			}
 
 			raw = this.debugging ? (raw = config[debugging]) : (raw = config[editing]);
+
+			if (this.viewing && viewing) {
+				raw = config[viewing];
+			}
 
 			const { totalLines, size, currentLine, currentColumn } = this.generateFileDetails(raw, document);
 			const { showProblems, problemsText, lowerDetailsNotFound } = getConfig();
