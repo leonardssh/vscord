@@ -22,26 +22,6 @@ export const activate = async (ctx: ExtensionContext) => {
 	loggingService.logInfo(`Extension Name: ${extensionName}.`);
 	loggingService.logInfo(`Extension Version: ${extensionVersion}.`);
 
-	let isWorkspaceIgnored = false;
-
-	const { ignoreWorkspaces } = getConfig();
-
-	if (ignoreWorkspaces?.length) {
-		for (const pattern of ignoreWorkspaces) {
-			const regex = new RegExp(pattern);
-			const folders = workspace.workspaceFolders;
-
-			if (!folders) {
-				break;
-			}
-
-			if (folders.some((folder) => regex.test(folder.uri.fsPath))) {
-				isWorkspaceIgnored = true;
-				break;
-			}
-		}
-	}
-
 	const enableCommand = commands.registerCommand('rpc.enable', () => {
 		client.dispose();
 
@@ -108,7 +88,25 @@ export const activate = async (ctx: ExtensionContext) => {
 
 	ctx.subscriptions.push(enableCommand, disableCommand, reconnectCommand, disconnectCommand);
 
-	const { enabled } = getConfig();
+	let isWorkspaceIgnored = false;
+
+	const { ignoreWorkspaces, enabled } = getConfig();
+
+	if (ignoreWorkspaces?.length) {
+		for (const pattern of ignoreWorkspaces) {
+			const regex = new RegExp(pattern);
+			const folders = workspace.workspaceFolders;
+
+			if (!folders) {
+				break;
+			}
+
+			if (folders.some((folder) => regex.test(folder.uri.fsPath))) {
+				isWorkspaceIgnored = true;
+				break;
+			}
+		}
+	}
 
 	if (!isWorkspaceIgnored && enabled) {
 		statusBarIcon.show();
