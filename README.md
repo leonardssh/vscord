@@ -35,19 +35,20 @@ Remember to 🌟 this Github if you 💖 it.
 -   Shows the amount of problems in your workspace
 -   Shows the number of lines in your file and which line you're editing
 -   Respects Discords 15sec limit when it comes to updating your status
--   Support for over 130 of the most popular languages
+-   Support for over 130+ of the most popular languages
 -   Enable/Disable RPC for individual workspaces
 -   Custom string support
 -   Stable or Insiders build detection
 -   Debug mode detection
 -   Easily manually reconnect to Discord Gateway
+-   Idle indication when you tab out for a while
 
 > All texts is fully customizable using variables and a multitude of config options
 
-![a1](https://i.imgur.com/9kjM9rr.png)
-![a2](https://i.imgur.com/v9tgyHN.png)
-![a3](https://i.imgur.com/mvecFVN.png)
-![a4](https://i.imgur.com/3GZtZeP.png)
+![a1](https://i.imgur.com/ia3lqws.png)
+![a2](https://i.imgur.com/rgAjHFm.png)
+![a3](https://i.imgur.com/UqNHUlO.png)
+![a4](https://i.imgur.com/0v9wQiy.png)
 
 ## 📥 Installation
 
@@ -104,6 +105,24 @@ Controls if the RPC should display elapsed time for a workspace or a single file
 
 Default: `false`
 
+#### **VSCord.checkIdle**
+
+Whether or not to check if you are still active or idle and react accordingly.
+
+Default: `true`
+
+#### **VSCord.idleTimeout**
+
+How long the window should be unfocused (in seconds) to either disable rich presence or display you as idle.
+
+Default: `60`
+
+#### **VSCord.idleText**
+
+Custom string of the text displaying if you're idle when hovering over the small icon.
+
+Default: `Idle`
+
 #### **VSCord.detailsEditing**
 
 Custom string for the details section of the rich presence.
@@ -148,6 +167,24 @@ Default: `Idling`
 
 -   `{null}` will be replaced with an empty space
 
+#### **VSCord.detailsViewing**
+
+Custom string for the details section of the rich presence when viewing.
+
+Default: `In {workspace} {problems}`
+
+-   `{null}` will be replaced with an empty space
+-   `{filename}` will be replaced with the current file name
+-   `{dirname}` will get replaced with the folder name that has the current file
+-   `{fulldirname}` will get replaced with the full directory name without the current file name
+-   `{workspace}` will be replaced with the current workspace name, if any
+-   `{workspaceFolder}` will be replaced with the currently accessed workspace folder, if any
+-   `{workspaceAndFolder}` will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - WorkspaceFolder'
+-   `{currentcolumn}` will get replaced with the current column of the current line
+-   `{currentline}` will get replaced with the current line number
+-   `{totallines}` will get replaced with the total line number
+-   `{problems}` will be replaced with the count of problems (warnings, errors) present in your workspace
+
 #### **VSCord.lowerDetailsEditing**
 
 Custom string for the state section of the rich presence.
@@ -191,6 +228,24 @@ Custom string for the state section of the rich presence when idling.
 Default: `Idling`
 
 -   `{null}` will be replaced with an empty space.
+
+#### **VSCord.lowerDetailsViewing**
+
+Custom string for the state section of the rich presence when viewing.
+
+Default: `Viewing {filename}`
+
+-   `{null}` will be replaced with an empty space
+-   `{filename}` will be replaced with the current file name
+-   `{dirname}` will get replaced with the folder name that has the current file
+-   `{fulldirname}` will get replaced with the full directory name without the current file name
+-   `{workspace}` will be replaced with the current workspace name, if any
+-   `{workspaceFolder}` will be replaced with the currently accessed workspace folder, if any
+-   `{workspaceAndFolder}` will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - WorkspaceFolder'
+-   `{currentcolumn}` will get replaced with the current column of the current line
+-   `{currentline}` will get replaced with the current line number
+-   `{totallines}` will get replaced with the total line number
+-   `{problems}` will be replaced with the count of problems (warnings, errors) present in your workspace
 
 #### **VSCord.lowerDetailsNotFound**
 

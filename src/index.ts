@@ -1,46 +1,31 @@
 import Client from './client/Client';
-import Logger from './structures/Logger';
 
 import { ExtensionContext, workspace, window, StatusBarAlignment, StatusBarItem, commands } from 'vscode';
-
-const config = workspace.getConfiguration('VSCord');
+import { LoggingService } from './structures/LoggingService';
+import { getConfig } from './util/util';
 
 const statusBarIcon: StatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
 
 statusBarIcon.text = '$(search-refresh) Connecting to Discord Gateway...';
 
-const client: Client = new Client(config, statusBarIcon);
+const client: Client = new Client(getConfig(), statusBarIcon);
 
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let loginTimeout: NodeJS.Timer | undefined;
 
+const extensionName = process.env.EXTENSION_NAME || 'dev.vscord';
+const extensionVersion = process.env.EXTENSION_VERSION || '0.0.0';
+
+const loggingService = new LoggingService();
+
 export const activate = async (ctx: ExtensionContext) => {
-	Logger.log('Extension activated, trying to connect to Discord Gateway.');
-
-	let isWorkspaceIgnored = false;
-
-	const ignorePatterns = config.get<string[]>('ignoreWorkspaces');
-
-	if (ignorePatterns?.length) {
-		for (const pattern of ignorePatterns) {
-			const regex = new RegExp(pattern);
-			const folders = workspace.workspaceFolders;
-
-			if (!folders) {
-				break;
-			}
-
-			if (folders.some((folder) => regex.test(folder.uri.fsPath))) {
-				isWorkspaceIgnored = true;
-				break;
-			}
-		}
-	}
+	loggingService.logInfo(`Extension Name: ${extensionName}.`);
+	loggingService.logInfo(`Extension Version: ${extensionVersion}.`);
 
 	const enableCommand = commands.registerCommand('rpc.enable', () => {
 		client.dispose();
 
-		void config.update('enabled', true);
+		void getConfig().update('enabled', true);
 
 		client.config = workspace.getConfiguration('VSCord');
 
@@ -52,7 +37,7 @@ export const activate = async (ctx: ExtensionContext) => {
 	});
 
 	const disableCommand = commands.registerCommand('rpc.disable', () => {
-		void config.update('enabled', false);
+		void getConfig().update('enabled', false);
 
 		client.config = workspace.getConfiguration('rpc');
 
@@ -71,9 +56,9 @@ export const activate = async (ctx: ExtensionContext) => {
 
 		loginTimeout = setTimeout(async () => {
 			try {
-				await client.connect(ctx);
+				await client.connect();
 			} catch (error) {
-				Logger.log(`Encountered following error after trying to login:\n${error as string}`);
+				loggingService.logError(`Encountered following error after trying to login.`, error);
 
 				client.dispose();
 
@@ -103,13 +88,33 @@ export const activate = async (ctx: ExtensionContext) => {
 
 	ctx.subscriptions.push(enableCommand, disableCommand, reconnectCommand, disconnectCommand);
 
-	if (!isWorkspaceIgnored && config.get<boolean>('enabled')) {
+	let isWorkspaceIgnored = false;
+
+	const { ignoreWorkspaces, enabled } = getConfig();
+
+	if (ignoreWorkspaces?.length) {
+		for (const pattern of ignoreWorkspaces) {
+			const regex = new RegExp(pattern);
+			const folders = workspace.workspaceFolders;
+
+			if (!folders) {
+				break;
+			}
+
+			if (folders.some((folder) => regex.test(folder.uri.fsPath))) {
+				isWorkspaceIgnored = true;
+				break;
+			}
+		}
+	}
+
+	if (!isWorkspaceIgnored && enabled) {
 		statusBarIcon.show();
 
 		try {
-			await client.connect(ctx);
+			await client.connect();
 		} catch (error) {
-			Logger.log(`Encountered following error after trying to login:\n${error as string}`);
+			loggingService.logError('Encountered following error after trying to login.', error);
 
 			client.dispose();
 
@@ -126,8 +131,7 @@ export const activate = async (ctx: ExtensionContext) => {
 };
 
 export const deactivate = () => {
-	Logger.log('Extension deactivated, trying to disconnect from Discord Gateway.');
 	client.dispose();
 };
 
-process.on('unhandledRejection', (err) => Logger.log(err as string));
+process.on('unhandledRejection', (err) => loggingService.logError('Unhandled Rejection:', err as string));

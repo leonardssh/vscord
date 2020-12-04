@@ -1,12 +1,9 @@
-import { Client as RPClient } from 'discord-rpc';
-import { Disposable, ExtensionContext, WorkspaceConfiguration, StatusBarItem, workspace } from 'vscode';
+import { Client as RPClient, Presence } from 'discord-rpc';
+import type { Disposable, WorkspaceConfiguration, StatusBarItem } from 'vscode';
 
 import Activity from '../structures/Activity';
 import { Listener } from '../structures/Listener';
-import Logger from '../structures/Logger';
-
-// eslint-disable-next-line @typescript-eslint/init-declarations
-let activityTimer: NodeJS.Timer | undefined;
+import { getConfig } from '../util/util';
 
 export default class Client implements Disposable {
 	private rpc?: any;
@@ -17,19 +14,19 @@ export default class Client implements Disposable {
 
 	public constructor(public config: WorkspaceConfiguration, public statusBarIcon: StatusBarItem) {}
 
-	public async connect(ctx?: ExtensionContext) {
+	public async connect() {
 		if (this.rpc) {
 			this.dispose();
 		}
 
-		Logger.log('Logging into RPC...');
-
 		this.rpc = new RPClient({ transport: 'ipc' });
 
-		this.rpc.once('ready', () => this.ready(ctx));
+		this.rpc.once('ready', () => this.ready());
 
 		this.rpc.transport.once('close', () => {
-			if (!this.config.get<boolean>('enabled')) {
+			const { enabled } = getConfig();
+
+			if (!enabled) {
 				return;
 			}
 
@@ -41,49 +38,30 @@ export default class Client implements Disposable {
 		});
 
 		try {
-			await this.rpc.login({ clientId: this.config.get<string>('id') });
+			const { id } = getConfig();
+
+			await this.rpc.login({ clientId: id });
 		} catch (error) {
 			throw error;
 		}
 	}
 
-	public ready(_ctx?: ExtensionContext) {
-		Logger.log('Successfully connected to Discord Gateway.');
-
+	public ready() {
 		this.statusBarIcon.text = '$(smiley) Connected to Discord Gateway.';
 		this.statusBarIcon.tooltip = 'Connected to Discord Gateway.';
 
 		setTimeout(() => (this.statusBarIcon.text = '$(smiley)'), 5000);
 
-		if (activityTimer) {
-			clearInterval(activityTimer);
-		}
-
+		this.activity.init();
 		this.listener.listen();
-
-		void this.setActivity(this.config.get<boolean>('workspaceElapsedTime'));
-
-		activityTimer = setInterval(() => {
-			this.config = workspace.getConfiguration('VSCord');
-
-			void this.setActivity(this.config.get<boolean>('workspaceElapsedTime'));
-		}, 1000);
 	}
 
-	public async setActivity(workspaceElapsedTime = false) {
+	public setActivity(presence: Presence) {
 		if (!this.rpc) {
 			return;
 		}
 
-		const activity = await this.activity.generate(workspaceElapsedTime);
-
-		if (!activity) {
-			return;
-		}
-
-		Logger.log('Sending activity to Discord Gateway.');
-
-		this.rpc.setActivity(activity);
+		this.rpc.setActivity(presence).catch(() => this.dispose());
 	}
 
 	public dispose() {
@@ -96,9 +74,5 @@ export default class Client implements Disposable {
 
 		this.rpc = undefined;
 		this.statusBarIcon.tooltip = '';
-
-		if (activityTimer) {
-			clearInterval(activityTimer);
-		}
 	}
 }

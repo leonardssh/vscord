@@ -3,7 +3,7 @@
 	"displayName": "Discord Rich Presence",
 	"version": "2.0.5",
 	"description": "😎 Another awesome and fully customizable VS Code extension to get Discord Rich Presence integration.",
-	"main": "dist/index.js",
+	"main": "dist/extension.js",
 	"private": true,
 	"icon": "assets/icon.png",
 	"galleryBanner": {
@@ -15,9 +15,9 @@
 		"format": "prettier --write src/**/*.ts",
 		"format:check": "prettier --check src/**/*.ts",
 		"update": "yarn upgrade-interactive --latest",
-		"prebuild": "yarn format && yarn lint",
-		"build": "tsc -b src",
-		"clean": "tsc -b src --clean",
+		"prebuild": "yarn clean && yarn format && yarn lint",
+		"build": "webpack --mode production",
+		"clean": "rimraf dist",
 		"watch": "tsc -b src -w",
 		"commit": "git-cz",
 		"cz": "git-cz"
@@ -40,7 +40,13 @@
 	},
 	"homepage": "https://github.com/LeonardSSH/vscord#readme",
 	"dependencies": {
-		"discord-rpc": "^3.1.4"
+		"bufferutil": "^4.0.2",
+		"discord-rpc": "^3.1.4",
+		"electron": "^11.0.3",
+		"utf-8-validate": "^5.0.3"
+	},
+	"optionalDependencies": {
+		"register-scheme": "devsnek/node-register-scheme"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^11.0.0",
@@ -50,6 +56,7 @@
 		"@types/vscode": "^1.51.0",
 		"@typescript-eslint/eslint-plugin": "^4.5.0",
 		"@typescript-eslint/parser": "^4.5.0",
+		"clean-webpack-plugin": "^3.0.0",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^7.11.0",
 		"eslint-config-prettier": "^6.13.0",
@@ -59,7 +66,13 @@
 		"lint-staged": "^10.4.2",
 		"prettier": "^2.1.2",
 		"pretty-quick": "^3.1.0",
-		"typescript": "^4.0.3"
+		"rimraf": "^3.0.2",
+		"terser-webpack-plugin": "^5.0.3",
+		"ts-loader": "^8.0.11",
+		"typescript": "^4.0.3",
+		"vscode-nls-dev": "^3.3.2",
+		"webpack": "^5.9.0",
+		"webpack-cli": "^4.2.0"
 	},
 	"husky": {
 		"hooks": {
@@ -133,7 +146,7 @@
 				},
 				"VSCord.detailsEditing": {
 					"type": "string",
-					"default": "{workspace} {problems}",
+					"default": "In {workspace} {problems}",
 					"description": "Custom string for the details section of the rich presence\n\t- {null} will be replaced with an empty space\n\t- {filename} will be replaced with the current file name\n\t- {dirname} will get replaced with the folder name that has the current file\n\t- {fulldirname} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspaceFolder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspaceAndFolder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - WorkspaceFolder'\n\t- {currentcolumn} will get replaced with the current column of the current line\n\t- {currentline} will get replaced with the current line number\n\t- {totallines} will get replaced with the total line number\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
 				},
 				"VSCord.detailsIdle": {
@@ -146,6 +159,11 @@
 					"default": "Debugging {filename}",
 					"description": "Custom string for the details section of the rich presence when debugging\n\t- {null} will be replaced with an empty space\n\t- {filename} will be replaced with the current file name\n\t- {dirname} will get replaced with the folder name that has the current file\n\t- {fulldirname} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspaceFolder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspaceAndFolder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - WorkspaceFolder'\n\t- {currentcolumn} will get replaced with the current column of the current line\n\t- {currentline} will get replaced with the current line number\n\t- {totallines} will get replaced with the total line number\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
 				},
+				"VSCord.detailsViewing": {
+					"type": "string",
+					"default": "In {workspace} {problems}",
+					"description": "Custom string for the details section of the rich presence when viewing\n\t- {null} will be replaced with an empty space\n\t- {filename} will be replaced with the current file name\n\t- {dirname} will get replaced with the folder name that has the current file\n\t- {fulldirname} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspaceFolder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspaceAndFolder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - WorkspaceFolder'\n\t- {currentcolumn} will get replaced with the current column of the current line\n\t- {currentline} will get replaced with the current line number\n\t- {totallines} will get replaced with the total line number\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
+				},
 				"VSCord.lowerDetailsEditing": {
 					"type": "string",
 					"default": "Working on {filename}:{currentline}:{currentcolumn}",
@@ -155,6 +173,16 @@
 					"type": "string",
 					"default": "Idling",
 					"description": "Custom string for the state section of the rich presence when idling\n\t- {null} will be replaced with an empty space."
+				},
+				"VSCord.lowerDetailsDebugging": {
+					"type": "string",
+					"default": "Idling",
+					"description": "Custom string for the state section of the rich presence when debugging\n\t- {null} will be replaced with an empty space\n\t- {filename} will be replaced with the current file name\n\t- {dirname} will get replaced with the folder name that has the current file\n\t- {fulldirname} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspaceFolder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspaceAndFolder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - WorkspaceFolder'\n\t- {currentcolumn} will get replaced with the current column of the current line\n\t- {currentline} will get replaced with the current line number\n\t- {totallines} will get replaced with the total line number\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
+				},
+				"VSCord.lowerDetailsViewing": {
+					"type": "string",
+					"default": "Viewing {filename}",
+					"description": "Custom string for the state section of the rich presence when viewing\n\t- {null} will be replaced with an empty space\n\t- {filename} will be replaced with the current file name\n\t- {dirname} will get replaced with the folder name that has the current file\n\t- {fulldirname} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspaceFolder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspaceAndFolder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - WorkspaceFolder'\n\t- {currentcolumn} will get replaced with the current column of the current line\n\t- {currentline} will get replaced with the current line number\n\t- {totallines} will get replaced with the total line number\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
 				},
 				"VSCord.lowerDetailsNotFound": {
 					"type": "string",
@@ -198,6 +226,21 @@
 					},
 					"default": [],
 					"description": "List of patterns to match workspace names that should prevent the extension from starting."
+				},
+				"VSCord.checkIdle": {
+					"type": "boolean",
+					"default": true,
+					"description": "Whether or not to check if you are still active or idle and react accordingly."
+				},
+				"VSCord.idleTimeout": {
+					"type": "number",
+					"default": 60,
+					"description": "How long the window should be unfocused (in seconds) to either disable rich presence or display you as idle."
+				},
+				"VSCord.idleText": {
+					"type": "string",
+					"default": "Idle",
+					"description": "Custom string of the text displaying if you're idle when hovering over the small icon."
 				}
 			}
 		}

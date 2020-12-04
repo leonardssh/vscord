@@ -60,6 +60,4 @@ jobs:
         run: yarn --ignore-scripts --frozen-lockfile
 
       - name: Build Code
-        uses: icrawl/action-tsc@v1
-        with:
-          build: src
+        run: yarn build

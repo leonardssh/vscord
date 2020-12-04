@@ -1,33 +1,24 @@
 /* eslint-disable prefer-destructuring */
+import type { Presence } from 'discord-rpc';
 import { basename, parse, sep } from 'path';
 import {
-	debug,
 	Disposable,
+	TextDocumentChangeEvent,
+	TextEditor,
 	env,
+	languages,
+	DiagnosticSeverity,
+	TextDocument,
 	window,
 	workspace,
-	DiagnosticSeverity,
-	languages,
-	WorkspaceConfiguration
+	ConfigurationChangeEvent,
+	WindowState
 } from 'vscode';
 
+import { getConfig, resolveIcon } from '../util/util';
+import { RESTART_TO_ENABLE } from '../util/messages';
+
 import type Client from '../client/Client';
-import lang from '../language/languages.json';
-
-const knownExtensions: { [key: string]: { image: string } } = lang.knownExtensions;
-const knownLanguages: string[] = lang.knownLanguages;
-
-const empty = '\u200b\u200b';
-
-export interface State {
-	details?: string;
-	state?: string;
-	startTimestamp?: number | null;
-	largeImageKey?: string;
-	largeImageText?: string;
-	smallImageKey?: string;
-	smallImageText?: string;
-}
 
 interface FileDetail {
 	size?: string;
@@ -36,15 +27,153 @@ interface FileDetail {
 	currentColumn?: string;
 }
 
-export default class Activity implements Disposable {
-	public config: WorkspaceConfiguration;
+const empty = '\u200b\u200b';
 
-	private _state: State | null = null;
+const enum defaultIcons {
+	standard = 'vscord-logo',
+	idle = 'idle'
+}
+
+export default class Activity implements Disposable {
+	private presence: Presence = {};
+
+	private debugging = false;
+
+	private viewing = false;
 
 	private problems = 0;
 
-	public constructor(private readonly client: Client) {
-		this.config = client.config;
+	public constructor(private readonly client: Client) {}
+
+	public init() {
+		const { workspaceElapsedTime, largeImageIdle, detailsIdle, lowerDetailsIdle, smallImage } = getConfig();
+
+		if (workspaceElapsedTime) {
+			this.presence.startTimestamp = Date.now();
+		}
+
+		this.presence.details = detailsIdle.replace('{null}', empty);
+		this.presence.state = lowerDetailsIdle.replace('{null}', empty);
+		this.presence.largeImageKey = defaultIcons.standard;
+		this.presence.largeImageText = largeImageIdle;
+		this.presence.smallImageKey = this.debugging
+			? 'debug'
+			: env.appName.includes('Insiders')
+			? 'vscode-insiders'
+			: 'vscode';
+		this.presence.smallImageText = smallImage.replace('{appname}', env.appName);
+
+		this.update();
+	}
+
+	public onFileSwitch(editor: TextEditor) {
+		let icon: string = defaultIcons.standard;
+
+		if (editor) {
+			icon = resolveIcon(editor.document);
+		}
+
+		const { largeImage, largeImageIdle } = getConfig();
+
+		this.viewing = true;
+
+		this.presence.details = this.generateDetails(
+			'detailsDebugging',
+			'detailsEditing',
+			'detailsIdle',
+			'detailsViewing',
+			icon,
+			editor?.document
+		);
+
+		this.presence.state = this.generateDetails(
+			'lowerDetailsDebugging',
+			'lowerDetailsEditing',
+			'lowerDetailsIdle',
+			'lowerDetailsViewing',
+			icon,
+			editor?.document
+		);
+		this.presence.largeImageKey = icon;
+		this.presence.largeImageText = editor
+			? largeImage
+					.replace('{lang}', icon)
+					.replace(
+						'{Lang}',
+						icon.toLowerCase().replace(/^\w/, (c: string) => c.toUpperCase())
+					)
+					.replace('{LANG}', icon.toUpperCase()) || editor?.document.languageId.padEnd(2, '\u200b')
+			: largeImageIdle;
+
+		this.update();
+	}
+
+	public onFileEdit({ document }: TextDocumentChangeEvent) {
+		if (!window.activeTextEditor || document.fileName.endsWith('.git') || document.languageId === 'scminput') {
+			return;
+		}
+
+		const icon = resolveIcon(document);
+		const { largeImage } = getConfig();
+
+		this.viewing = false;
+
+		this.presence.details = this.generateDetails(
+			'detailsDebugging',
+			'detailsEditing',
+			'detailsIdle',
+			undefined,
+			icon,
+			document
+		);
+
+		this.presence.state = this.generateDetails(
+			'lowerDetailsDebugging',
+			'lowerDetailsEditing',
+			'lowerDetailsIdle',
+			undefined,
+			icon,
+			document
+		);
+		this.presence.largeImageKey = icon;
+		this.presence.largeImageText =
+			largeImage
+				.replace('{lang}', icon)
+				.replace(
+					'{Lang}',
+					icon.toLowerCase().replace(/^\w/, (c: string) => c.toUpperCase())
+				)
+				.replace('{LANG}', icon.toUpperCase()) || document.languageId.padEnd(2, '\u200b');
+
+		this.update();
+	}
+
+	public onConfigChange(e: ConfigurationChangeEvent) {
+		if (e.affectsConfiguration('VSCord.workspaceElapsedTime')) {
+			void window.showInformationMessage(RESTART_TO_ENABLE('workspaceElapsedTime'));
+		}
+
+		if (e.affectsConfiguration('VSCord.ignoreWorkspaces')) {
+			void window.showInformationMessage(RESTART_TO_ENABLE('ignoreWorkspaces'));
+		}
+	}
+
+	public onChangeWindowState({ focused }: WindowState) {
+		const { idleTimeout } = getConfig();
+
+		if (focused) {
+			this.idle(false);
+		} else {
+			setTimeout(() => {
+				if (!window.state.focused) {
+					this.idle(true);
+				}
+			}, idleTimeout * 1000);
+		}
+	}
+
+	public toggleDebug() {
+		this.debugging = !this.debugging;
 	}
 
 	public onDiagnosticsChange() {
@@ -65,91 +194,37 @@ export default class Activity implements Disposable {
 		this.problems = counted;
 	}
 
-	public async generate(workspaceElapsedTime = false) {
-		let largeImageKey: any = 'vscord-logo';
-
-		if (window.activeTextEditor) {
-			const filename = basename(window.activeTextEditor.document.fileName);
-
-			largeImageKey =
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				knownExtensions[
-					Object.keys(knownExtensions).find((key) => {
-						if (filename.endsWith(key)) {
-							return true;
-						}
-
-						const match = /^\/(.*)\/([mgiy]+)$/.exec(key);
-						if (!match) {
-							return false;
-						}
-
-						const regex = new RegExp(match[1], match[2]);
-						return regex.test(filename);
-					})!
-				] ??
-				(knownLanguages.includes(window.activeTextEditor.document.languageId)
-					? window.activeTextEditor.document.languageId
-					: null);
-		}
-
-		let previousTimestamp = null;
-
-		if (this._state?.startTimestamp) {
-			previousTimestamp = this._state.startTimestamp;
-		}
-
-		this._state = {
-			...this._state,
-			details: await this._generateDetails('detailsDebugging', 'detailsEditing', 'detailsIdle', largeImageKey),
-			startTimestamp:
-				window.activeTextEditor && previousTimestamp && workspaceElapsedTime
-					? previousTimestamp
-					: window.activeTextEditor
-					? new Date().getTime()
-					: null,
-			state: await this._generateDetails(
-				'lowerDetailsDebugging',
-				'lowerDetailsEditing',
-				'lowerDetailsIdle',
-				largeImageKey
-			),
-			largeImageKey: largeImageKey ? largeImageKey.image || largeImageKey : 'text',
-			largeImageText: window.activeTextEditor
-				? this.client.config
-						.get<string>('largeImage')!
-						.replace('{lang}', largeImageKey ? largeImageKey.image || largeImageKey : 'txt')
-						.replace(
-							'{Lang}',
-							largeImageKey
-								? (largeImageKey.image || largeImageKey)
-										.toLowerCase()
-										.replace(/^\w/, (c: string) => c.toUpperCase())
-								: 'Txt'
-						)
-						.replace(
-							'{LANG}',
-							largeImageKey ? (largeImageKey.image || largeImageKey).toUpperCase() : 'TXT'
-						) || window.activeTextEditor.document.languageId.padEnd(2, '\u200b')
-				: this.client.config.get<string>('largeImageIdle'),
-			smallImageKey: debug.activeDebugSession
-				? 'debug'
-				: env.appName.includes('Insiders')
-				? 'vscode-insiders'
-				: 'vscode',
-			smallImageText: this.client.config.get<string>('smallImage')!.replace('{appname}', env.appName)
-		};
-
-		return this._state;
-	}
-
 	public dispose() {
-		this._state = null;
+		this.presence = {};
 		this.problems = 0;
+		this.viewing = false;
 	}
 
-	private _generateDetails(debugging: string, editing: string, idling: string, largeImageKey: any) {
-		let raw = this.client.config.get<string>(idling)!.replace('{null}', empty);
+	public idle(status: boolean) {
+		const { smallImage, idleText } = getConfig();
+
+		this.presence.smallImageKey = status
+			? defaultIcons.idle
+			: this.debugging
+			? 'debug'
+			: env.appName.includes('Insiders')
+			? 'vscode-insiders'
+			: 'vscode';
+		this.presence.smallImageText = status ? idleText : smallImage.replace('{appname}', env.appName);
+		this.update();
+	}
+
+	private generateDetails(
+		debugging: string,
+		editing: string,
+		idling: string,
+		viewing: string | undefined,
+		largeImageKey: any,
+		document?: TextDocument
+	) {
+		const config = getConfig();
+
+		let raw = config[idling].replace('{null}', empty);
 		let filename = null;
 		let dirname = null;
 		let checkState = false;
@@ -157,34 +232,36 @@ export default class Activity implements Disposable {
 		let workspaceFolder = null;
 		let fullDirname = null;
 
-		if (window.activeTextEditor) {
-			filename = basename(window.activeTextEditor.document.fileName);
+		if (window.activeTextEditor && document) {
+			filename = basename(document.fileName);
 
-			const { dir } = parse(window.activeTextEditor.document.fileName);
+			const { dir } = parse(document.fileName);
 			const split = dir.split(sep);
 
 			dirname = split[split.length - 1];
 
-			checkState = Boolean(workspace.getWorkspaceFolder(window.activeTextEditor.document.uri));
+			checkState = Boolean(workspace.getWorkspaceFolder(document.uri));
 			workspaceName = workspace.name;
-			workspaceFolder = checkState ? workspace.getWorkspaceFolder(window.activeTextEditor.document.uri) : null;
+			workspaceFolder = checkState ? workspace.getWorkspaceFolder(document.uri) : null;
 
 			if (workspaceFolder) {
 				const { name } = workspaceFolder;
-				const relativePath = workspace.asRelativePath(window.activeTextEditor.document.fileName).split(sep);
+				const relativePath = workspace.asRelativePath(document.fileName).split(sep);
 
 				relativePath.splice(-1, 1);
 				fullDirname = `${name}${sep}${relativePath.join(sep)}`;
 			}
 
-			raw = debug.activeDebugSession
-				? (raw = this.client.config.get<string>(debugging)!)
-				: (raw = this.client.config.get<string>(editing)!);
+			raw = this.debugging ? (raw = config[debugging]) : (raw = config[editing]);
 
-			const { totalLines, size, currentLine, currentColumn } = this._generateFileDetails(raw);
-			const problems = this.client.config.get<boolean>('showProblems')
-				? this.client.config.get<string>('problemsText')!.replace('{count}', this.problems.toString())
-				: '';
+			if (this.viewing && viewing) {
+				raw = config[viewing];
+			}
+
+			const { totalLines, size, currentLine, currentColumn } = this.generateFileDetails(raw, document);
+			const { showProblems, problemsText, lowerDetailsNotFound } = getConfig();
+
+			const problems = showProblems ? problemsText.replace('{count}', this.problems.toString()) : '';
 
 			raw = raw
 				.replace('{null}', empty)
@@ -197,31 +274,25 @@ export default class Activity implements Disposable {
 						? workspaceName
 						: checkState && workspaceFolder
 						? workspaceFolder.name
-						: this.client.config.get<string>('lowerDetailsNotFound')!.replace('{null}', empty)
+						: lowerDetailsNotFound.replace('{null}', empty)
 				)
 				.replace(
 					'{workspaceFolder}',
-					checkState && workspaceFolder
-						? workspaceFolder.name
-						: this.client.config.get<string>('lowerDetailsNotFound')!.replace('{null}', empty)
+					checkState && workspaceFolder ? workspaceFolder.name : lowerDetailsNotFound.replace('{null}', empty)
 				)
 				.replace(
 					'{workspaceAndFolder}',
 					checkState && workspaceName && workspaceFolder
 						? `${workspaceName} - ${workspaceFolder.name}`
-						: this.client.config.get<string>('lowerDetailsNotFound')!.replace('{null}', empty)
+						: lowerDetailsNotFound.replace('{null}', empty)
 				)
 				.replace('{problems}', problems)
-				.replace('{lang}', largeImageKey ? largeImageKey.image || largeImageKey : 'txt')
+				.replace('{lang}', largeImageKey)
 				.replace(
 					'{Lang}',
-					largeImageKey
-						? (largeImageKey.image || largeImageKey)
-								.toLowerCase()
-								.replace(/^\w/, (c: string) => c.toUpperCase())
-						: 'Txt'
+					largeImageKey.toLowerCase().replace(/^\w/, (c: string) => c.toUpperCase())
 				)
-				.replace('{LANG}', largeImageKey ? (largeImageKey.image || largeImageKey).toUpperCase() : 'TXT');
+				.replace('{LANG}', largeImageKey.toUpperCase());
 
 			if (totalLines) {
 				raw = raw.replace('{totallines}', totalLines);
@@ -243,27 +314,31 @@ export default class Activity implements Disposable {
 		return raw;
 	}
 
-	private _generateFileDetails(str?: string) {
+	private generateFileDetails(raw: string, document: TextDocument) {
 		const fileDetail: FileDetail = {};
 
-		if (!str) {
+		if (!raw) {
 			return fileDetail;
 		}
 
 		if (window.activeTextEditor) {
-			if (str.includes('{totallines}')) {
-				fileDetail.totalLines = window.activeTextEditor.document.lineCount.toLocaleString();
+			if (raw.includes('{totallines}')) {
+				fileDetail.totalLines = document.lineCount.toLocaleString();
 			}
 
-			if (str.includes('{currentline}')) {
+			if (raw.includes('{currentline}')) {
 				fileDetail.currentLine = (window.activeTextEditor.selection.active.line + 1).toLocaleString();
 			}
 
-			if (str.includes('{currentcolumn}')) {
+			if (raw.includes('{currentcolumn}')) {
 				fileDetail.currentColumn = (window.activeTextEditor.selection.active.character + 1).toLocaleString();
 			}
 		}
 
 		return fileDetail;
+	}
+
+	private update() {
+		this.client.setActivity(this.presence);
 	}
 }
