@@ -497,6 +497,7 @@
 		".vbproj": { "image": "vb" },
 		".vba": { "image": "vba" },
 		".vcxproj": { "image": "vcxproj" },
+		".vscodeignore": { "image": "vscodeignore" },
 		".vue": { "image": "vue" },
 		".wat": { "image": "wasm" },
 		".wast": { "image": "wasm" },
