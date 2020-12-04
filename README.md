@@ -148,6 +148,24 @@ Default: `Idling`
 
 -   `{null}` will be replaced with an empty space
 
+#### **VSCord.detailsViewing**
+
+Custom string for the details section of the rich presence when viewing.
+
+Default: `In {workspace} {problems}`
+
+-   `{null}` will be replaced with an empty space
+-   `{filename}` will be replaced with the current file name
+-   `{dirname}` will get replaced with the folder name that has the current file
+-   `{fulldirname}` will get replaced with the full directory name without the current file name
+-   `{workspace}` will be replaced with the current workspace name, if any
+-   `{workspaceFolder}` will be replaced with the currently accessed workspace folder, if any
+-   `{workspaceAndFolder}` will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - WorkspaceFolder'
+-   `{currentcolumn}` will get replaced with the current column of the current line
+-   `{currentline}` will get replaced with the current line number
+-   `{totallines}` will get replaced with the total line number
+-   `{problems}` will be replaced with the count of problems (warnings, errors) present in your workspace
+
 #### **VSCord.lowerDetailsEditing**
 
 Custom string for the state section of the rich presence.
@@ -191,6 +209,24 @@ Custom string for the state section of the rich presence when idling.
 Default: `Idling`
 
 -   `{null}` will be replaced with an empty space.
+
+#### **VSCord.lowerDetailsViewing**
+
+Custom string for the state section of the rich presence when viewing.
+
+Default: `Viewing {filename}`
+
+-   `{null}` will be replaced with an empty space
+-   `{filename}` will be replaced with the current file name
+-   `{dirname}` will get replaced with the folder name that has the current file
+-   `{fulldirname}` will get replaced with the full directory name without the current file name
+-   `{workspace}` will be replaced with the current workspace name, if any
+-   `{workspaceFolder}` will be replaced with the currently accessed workspace folder, if any
+-   `{workspaceAndFolder}` will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - WorkspaceFolder'
+-   `{currentcolumn}` will get replaced with the current column of the current line
+-   `{currentline}` will get replaced with the current line number
+-   `{totallines}` will get replaced with the total line number
+-   `{problems}` will be replaced with the count of problems (warnings, errors) present in your workspace
 
 #### **VSCord.lowerDetailsNotFound**
 
