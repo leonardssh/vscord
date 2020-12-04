@@ -2,7 +2,12 @@ src/
 tsconfig.json
 webpack.config.js
 .gitignore
+.gitattributes
 .github/
 tsconfig.json
 yarn.lock
 node_modules
+tsconfig.*.json
+suckmyass
+.eslintignore
+.eslint
