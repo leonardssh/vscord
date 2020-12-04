@@ -19,3 +19,5 @@ interface IExtensionConfig {
 }
 
 export type VSCordConfig = IExtensionConfig & WorkspaceConfiguration;
+
+type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';
