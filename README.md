@@ -35,7 +35,7 @@ Remember to 🌟 this Github if you 💖 it.
 -   Shows the amount of problems in your workspace
 -   Shows the number of lines in your file and which line you're editing
 -   Respects Discords 15sec limit when it comes to updating your status
--   Support for over 130 of the most popular languages
+-   Support for over 130+ of the most popular languages
 -   Enable/Disable RPC for individual workspaces
 -   Custom string support
 -   Stable or Insiders build detection
