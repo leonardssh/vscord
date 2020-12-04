@@ -104,6 +104,24 @@ Controls if the RPC should display elapsed time for a workspace or a single file
 
 Default: `false`
 
+#### **VSCord.checkIdle**
+
+Whether or not to check if you are still active or idle and react accordingly.
+
+Default: `true`
+
+#### **VSCord.idleTimeout**
+
+How long the window should be unfocused (in seconds) to either disable rich presence or display you as idle.
+
+Default: `60`
+
+#### **VSCord.idleText**
+
+Custom string of the text displaying if you're idle when hovering over the small icon.
+
+Default: `Idle`
+
 #### **VSCord.detailsEditing**
 
 Custom string for the details section of the rich presence.
