@@ -41,13 +41,14 @@ Remember to 🌟 this Github if you 💖 it.
 -   Stable or Insiders build detection
 -   Debug mode detection
 -   Easily manually reconnect to Discord Gateway
+-   Idle indication when you tab out for a while
 
 > All texts is fully customizable using variables and a multitude of config options
 
-![a1](https://i.imgur.com/9kjM9rr.png)
-![a2](https://i.imgur.com/v9tgyHN.png)
-![a3](https://i.imgur.com/mvecFVN.png)
-![a4](https://i.imgur.com/3GZtZeP.png)
+![a1](https://i.imgur.com/ia3lqws.png)
+![a2](https://i.imgur.com/rgAjHFm.png)
+![a3](https://i.imgur.com/UqNHUlO.png)
+![a4](https://i.imgur.com/0v9wQiy.png)
 
 ## 📥 Installation
 
