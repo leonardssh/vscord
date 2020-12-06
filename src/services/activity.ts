@@ -34,6 +34,9 @@ const enum defaultIcons {
 	idle = 'idle'
 }
 
+// eslint-disable-next-line @typescript-eslint/init-declarations
+let idleCheckTimeout: NodeJS.Timer | undefined;
+
 export default class Activity implements Disposable {
 	private presence: Presence = {};
 
@@ -162,14 +165,18 @@ export default class Activity implements Disposable {
 		const { idleTimeout } = getConfig();
 
 		if (focused) {
-			this.idle(false);
-		} else {
-			setTimeout(() => {
-				if (!window.state.focused) {
-					this.idle(true);
-				}
-			}, idleTimeout * 1000);
+			if (idleCheckTimeout) {
+				clearTimeout(idleCheckTimeout);
+			}
+
+			return this.idle(false);
 		}
+
+		idleCheckTimeout = setTimeout(() => {
+			this.idle(true);
+
+			idleCheckTimeout = undefined;
+		}, idleTimeout * 1000);
 	}
 
 	public toggleDebug() {
