@@ -1,7 +1,7 @@
 import Client from './client/Client';
 
 import { ExtensionContext, workspace, window, StatusBarAlignment, StatusBarItem, commands } from 'vscode';
-import { LoggingService } from './structures/LoggingService';
+import { LoggingService } from './services/logging';
 import { getConfig } from './util/util';
 
 const statusBarIcon: StatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);

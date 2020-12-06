@@ -1,8 +1,8 @@
 import { Client as RPClient, Presence } from 'discord-rpc';
 import type { Disposable, WorkspaceConfiguration, StatusBarItem } from 'vscode';
 
-import Activity from '../structures/Activity';
-import { Listener } from '../structures/Listener';
+import Activity from '../services/activity';
+import { Listener } from '../services/listener';
 import { getConfig } from '../util/util';
 
 export default class Client implements Disposable {

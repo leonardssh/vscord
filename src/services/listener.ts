@@ -11,7 +11,7 @@ import {
 } from 'vscode';
 import { getConfig } from '../util/util';
 
-import type Activity from './Activity';
+import type Activity from './activity';
 
 export class Listener {
 	private disposables: Disposable[] = [];
