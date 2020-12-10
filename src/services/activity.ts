@@ -30,7 +30,7 @@ interface FileDetail {
 const empty = '\u200b\u200b';
 
 const enum defaultIcons {
-	standard = 'vscord-logo',
+	standard = 'vscodeignore',
 	idle = 'idle'
 }
 
