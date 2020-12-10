@@ -27,7 +27,9 @@
 
 Remember to 🌟 this Github if you 💖 it.
 
-> **NOTE:** That is just an extension between **[iCrawl's extension](https://github.com/iCrawl/discord-vscode)** and **[Satoqz's extension](https://github.com/Satoqz/vscode-discord)** with a few small changes, bug fixs and new pretty icons.
+For something in between a [iCrawl/discord-vscode](https://github.com/iCrawl/discord-vscode) and a [Satoqz/vscode-discord](https://github.com/Satoqz/vscode-discord), with a few small changes, bug fixs and new pretty icons.
+
+This may not be the best VSCode extension, but it is a VSCode extension. 😁
 
 ## 📌 Features
 
