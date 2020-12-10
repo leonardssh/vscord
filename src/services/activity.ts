@@ -18,7 +18,7 @@ import {
 import { getConfig, resolveIcon } from '../util/util';
 import { RESTART_TO_ENABLE } from '../util/messages';
 
-import type Client from '../client/Client';
+import type { Client } from '../client/Client';
 
 interface FileDetail {
 	size?: string;
@@ -37,7 +37,7 @@ const enum defaultIcons {
 // eslint-disable-next-line @typescript-eslint/init-declarations
 let idleCheckTimeout: NodeJS.Timer | undefined;
 
-export default class Activity implements Disposable {
+export class ActivityService implements Disposable {
 	private presence: Presence = {};
 
 	private debugging = false;

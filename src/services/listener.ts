@@ -11,13 +11,13 @@ import {
 } from 'vscode';
 import { getConfig } from '../util/util';
 
-import type Activity from './activity';
+import type { ActivityService } from './activity';
 
-export class Listener {
+export class ListenerService implements Disposable {
 	private disposables: Disposable[] = [];
 
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	constructor(private activity: Activity) {}
+	constructor(private activityService: ActivityService) {}
 
 	public listen() {
 		this.dispose();
@@ -33,20 +33,24 @@ export class Listener {
 		const { enabled, showProblems, checkIdle } = getConfig();
 
 		if (enabled) {
-			const onFileSwitch = fileSwitch((e: TextEditor | undefined) => this.activity.onFileSwitch(e!));
-			const onFileEdit = fileEdit((e: TextDocumentChangeEvent) => this.activity.onFileEdit(e));
-			const onDebugStart = debugStart(() => this.activity.toggleDebug());
-			const onDebugEnd = debugEnd(() => this.activity.toggleDebug());
-			const onConfigChange = configChange((e: ConfigurationChangeEvent) => this.activity.onConfigChange(e));
+			const onFileSwitch = fileSwitch((e: TextEditor | undefined) => this.activityService.onFileSwitch(e!));
+			const onFileEdit = fileEdit((e: TextDocumentChangeEvent) => this.activityService.onFileEdit(e));
+			const onDebugStart = debugStart(() => this.activityService.toggleDebug());
+			const onDebugEnd = debugEnd(() => this.activityService.toggleDebug());
+			const onConfigChange = configChange((e: ConfigurationChangeEvent) =>
+				this.activityService.onConfigChange(e)
+			);
 
 			this.disposables.push(onFileSwitch, onFileEdit, onDebugStart, onDebugEnd, onConfigChange);
 
 			if (showProblems) {
-				this.disposables.push(diagnostictsChange(() => this.activity.onDiagnosticsChange()));
+				this.disposables.push(diagnostictsChange(() => this.activityService.onDiagnosticsChange()));
 			}
 
 			if (checkIdle) {
-				this.disposables.push(changeWindowState((e: WindowState) => this.activity.onChangeWindowState(e)));
+				this.disposables.push(
+					changeWindowState((e: WindowState) => this.activityService.onChangeWindowState(e))
+				);
 			}
 		}
 	}

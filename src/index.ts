@@ -1,5 +1,4 @@
-import Client from './client/Client';
-
+import { Client } from './client/Client';
 import { ExtensionContext, workspace, window, StatusBarAlignment, StatusBarItem, commands } from 'vscode';
 import { LoggingService } from './services/logging';
 import { getConfig } from './util/util';

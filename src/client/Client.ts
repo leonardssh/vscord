@@ -1,16 +1,16 @@
 import { Client as RPClient, Presence } from 'discord-rpc';
 import type { Disposable, WorkspaceConfiguration, StatusBarItem } from 'vscode';
 
-import Activity from '../services/activity';
-import { Listener } from '../services/listener';
+import { ActivityService } from '../services/activity';
+import { ListenerService } from '../services/listener';
 import { getConfig } from '../util/util';
 
-export default class Client implements Disposable {
+export class Client implements Disposable {
 	private rpc?: any;
 
-	private readonly activity = new Activity(this);
+	private readonly activityService = new ActivityService(this);
 
-	private readonly listener = new Listener(this.activity);
+	private readonly listenerService = new ListenerService(this.activityService);
 
 	public constructor(public config: WorkspaceConfiguration, public statusBarIcon: StatusBarItem) {}
 
@@ -52,8 +52,8 @@ export default class Client implements Disposable {
 
 		setTimeout(() => (this.statusBarIcon.text = '$(smiley)'), 5000);
 
-		this.activity.init();
-		this.listener.listen();
+		this.activityService.init();
+		this.listenerService.listen();
 	}
 
 	public setActivity(presence: Presence) {
@@ -65,8 +65,8 @@ export default class Client implements Disposable {
 	}
 
 	public dispose() {
-		this.activity.dispose();
-		this.listener.dispose();
+		this.activityService.dispose();
+		this.listenerService.dispose();
 
 		if (this.rpc) {
 			this.rpc.destroy();
