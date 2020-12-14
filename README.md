@@ -9,16 +9,19 @@
 <div align="center">
   <p>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://img.shields.io/visual-studio-marketplace/v/LeonardSSH.vscord?color=6477C1&style=flat-square" />
+        <img src="https://img.shields.io/visual-studio-marketplace/v/LeonardSSH.vscord?style=flat-square" />
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://img.shields.io/visual-studio-marketplace/d/LeonardSSH.vscord?color=6477C1&style=flat-square" />
+        <img src="https://img.shields.io/visual-studio-marketplace/d/LeonardSSH.vscord?style=flat-square" />
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord?color=6477C1&style=flat-square" />
+        <img src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord?style=flat-square" />
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg?color=6477C1&style=flat-square" />
+        <img src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg?style=flat-square" />
+    </a>
+      <a href="https://gitter.im/LeonardSSH/vscord-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
+        <img src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b&style=flat-square" />
     </a>
   </p>
 </div>
