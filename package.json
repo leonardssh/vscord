@@ -43,7 +43,6 @@
 		"bufferutil": "^4.0.2",
 		"discord-rpc": "^3.1.4",
 		"electron": "^11.1.0",
-		"register-scheme": "devsnek/node-register-scheme",
 		"utf-8-validate": "^5.0.3"
 	},
 	"optionalDependencies": {
