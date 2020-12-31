@@ -1,4 +1,3 @@
-/* eslint-disable prefer-destructuring */
 import type { Presence } from 'discord-rpc';
 import { basename, parse, sep } from 'path';
 import {
@@ -30,12 +29,12 @@ interface FileDetail {
 const empty = '\u200b\u200b';
 
 const enum defaultIcons {
-	standard = 'vscodeignore',
+	standard_vscode = 'idle-vscode',
+	standard_vscode_insiders = 'idle-vscode-insiders',
 	idle = 'idle'
 }
 
-// eslint-disable-next-line @typescript-eslint/init-declarations
-let idleCheckTimeout: NodeJS.Timer | undefined;
+let idleCheckTimeout: NodeJS.Timer | undefined = undefined;
 
 export class ActivityService implements Disposable {
 	private presence: Presence = {};
@@ -57,7 +56,9 @@ export class ActivityService implements Disposable {
 
 		this.presence.details = detailsIdle.replace('{null}', empty);
 		this.presence.state = lowerDetailsIdle.replace('{null}', empty);
-		this.presence.largeImageKey = defaultIcons.standard;
+		this.presence.largeImageKey = env.appName.includes('Insiders')
+			? defaultIcons.standard_vscode_insiders
+			: defaultIcons.standard_vscode;
 		this.presence.largeImageText = largeImageIdle;
 		this.presence.smallImageKey = this.debugging
 			? 'debug'
@@ -70,7 +71,9 @@ export class ActivityService implements Disposable {
 	}
 
 	public onFileSwitch(editor: TextEditor) {
-		let icon: string = defaultIcons.standard;
+		let icon: string = env.appName.includes('Insiders')
+			? defaultIcons.standard_vscode_insiders
+			: defaultIcons.standard_vscode;
 
 		if (editor) {
 			icon = resolveIcon(editor.document);

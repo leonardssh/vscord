@@ -9,8 +9,7 @@ statusBarIcon.text = '$(search-refresh) Connecting to Discord Gateway...';
 
 const client: Client = new Client(getConfig(), statusBarIcon);
 
-// eslint-disable-next-line @typescript-eslint/init-declarations
-let loginTimeout: NodeJS.Timer | undefined;
+let loginTimeout: NodeJS.Timer | undefined = undefined;
 
 const extensionName = process.env.EXTENSION_NAME || 'dev.vscord';
 const extensionVersion = process.env.EXTENSION_VERSION || '0.0.0';

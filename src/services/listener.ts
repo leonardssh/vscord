@@ -16,8 +16,7 @@ import type { ActivityService } from './activity';
 export class ListenerService implements Disposable {
 	private disposables: Disposable[] = [];
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	constructor(private activityService: ActivityService) {}
+	public constructor(private activityService: ActivityService) {}
 
 	public listen() {
 		this.dispose();

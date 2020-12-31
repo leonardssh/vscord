@@ -17,6 +17,7 @@
 		"update": "yarn upgrade-interactive --latest",
 		"prebuild": "yarn clean && yarn format && yarn lint",
 		"build": "webpack --mode production",
+		"vscode:prepublish": "yarn build",
 		"clean": "rimraf dist",
 		"watch": "tsc -b src -w",
 		"commit": "git-cz",
@@ -105,7 +106,7 @@
 		"Other"
 	],
 	"engines": {
-		"vscode": "^1.51.0"
+		"vscode": "^1.52.0"
 	},
 	"contributes": {
 		"commands": [

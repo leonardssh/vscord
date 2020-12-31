@@ -33,5 +33,5 @@ export function resolveIcon(document: TextDocument) {
 			})!
 		] ?? (knownLanguages.includes(document.languageId) ? document.languageId : null);
 
-	return icon ? icon.image ?? icon : 'txt';
+	return icon ? icon.image ?? icon : 'text';
 }
