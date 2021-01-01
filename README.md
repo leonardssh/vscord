@@ -53,7 +53,7 @@ This may not be the best VSCode extension, but it is a VSCode extension. 😁
 ![step](https://i.imgur.com/ia3lqws.png)
 ![bro](https://i.imgur.com/rgAjHFm.png)
 ![please](https://i.imgur.com/UqNHUlO.png)
-![fuck me](https://stepbro.please-fuck.me/wCdbz4.png)
+![fuck me](https://stepbro.please-fuck.me/1gAJRF.png)
 
 ## 📥 Installation
 
