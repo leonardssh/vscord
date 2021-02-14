@@ -7,6 +7,10 @@ const extensionPackage = require('./package.json');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
+const { execSync } = require('child_process');
+
+const commitHash = execSync('git rev-parse HEAD', { encoding: 'utf8' }).slice(0, 8);
+
 /**@type {import('webpack').Configuration}*/
 const config = {
 	target: 'node',
@@ -20,7 +24,7 @@ const config = {
 	plugins: [
 		new webpack.EnvironmentPlugin({
 			EXTENSION_NAME: `${extensionPackage.publisher}.${extensionPackage.name}`,
-			EXTENSION_VERSION: extensionPackage.version
+			EXTENSION_VERSION: `${extensionPackage.version}-${commitHash}`
 		}),
 		new CleanWebpackPlugin()
 	],

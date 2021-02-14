@@ -1,7 +1,7 @@
-import { Client } from './client/Client';
 import { ExtensionContext, workspace, window, StatusBarAlignment, StatusBarItem, commands } from 'vscode';
-import { LoggingService } from './services/logging';
-import { getConfig } from './util/util';
+import { Client } from './client';
+import { getConfig } from './config';
+import { logError, logInfo } from './logger';
 
 const statusBarIcon: StatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
 
@@ -14,53 +14,51 @@ let loginTimeout: NodeJS.Timer | undefined = undefined;
 const extensionName = process.env.EXTENSION_NAME || 'dev.vscord';
 const extensionVersion = process.env.EXTENSION_VERSION || '0.0.0';
 
-const loggingService = new LoggingService();
-
 export const activate = async (ctx: ExtensionContext) => {
-	loggingService.logInfo(`Extension Name: ${extensionName}.`);
-	loggingService.logInfo(`Extension Version: ${extensionVersion}.`);
+	logInfo(`Extension Name: ${extensionName}.`);
+	logInfo(`Extension Version: ${extensionVersion}.`);
 
-	const enableCommand = commands.registerCommand('rpc.enable', () => {
-		client.dispose();
+	const enableCommand = commands.registerCommand('rpc.enable', async () => {
+		await client.dispose();
 
-		void getConfig().update('enabled', true);
+		await getConfig().update('enabled', true);
 
 		client.config = workspace.getConfiguration('VSCord');
 
 		client.statusBarIcon.text = '$(search-refresh) Connecting to Discord Gateway...';
 		client.statusBarIcon.show();
 
-		void client.connect();
-		void window.showInformationMessage('Enabled Discord Rich Presence for this workspace.');
+		await client.connect();
+		await window.showInformationMessage('Enabled Discord Rich Presence for this workspace.');
 	});
 
-	const disableCommand = commands.registerCommand('rpc.disable', () => {
+	const disableCommand = commands.registerCommand('rpc.disable', async () => {
 		void getConfig().update('enabled', false);
 
 		client.config = workspace.getConfiguration('rpc');
 
-		client.dispose();
+		await client.dispose();
 		client.statusBarIcon.hide();
 
-		void window.showInformationMessage('Disabled Discord Rich Presence for this workspace.');
+		await window.showInformationMessage('Disabled Discord Rich Presence for this workspace.');
 	});
 
-	const reconnectCommand = commands.registerCommand('rpc.reconnect', () => {
+	const reconnectCommand = commands.registerCommand('rpc.reconnect', async () => {
 		if (loginTimeout) {
 			clearTimeout(loginTimeout);
 		}
 
-		client.dispose();
+		await client.dispose();
 
 		loginTimeout = setTimeout(async () => {
 			try {
 				await client.connect();
 			} catch (error) {
-				loggingService.logError(`Encountered following error after trying to login.`, error);
+				logError(`Encountered following error after trying to login.`, error);
 
-				client.dispose();
+				await client.dispose();
 
-				void window.showErrorMessage(
+				await window.showErrorMessage(
 					error?.message?.includes('ENOENT')
 						? 'No Discord Client detected!'
 						: `Couldn't connect to Discord via RPC: ${error as string}`
@@ -69,16 +67,11 @@ export const activate = async (ctx: ExtensionContext) => {
 				client.statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
 				client.statusBarIcon.command = 'rpc.reconnect';
 			}
-
-			void window.showInformationMessage('Reconnecting to Discord Gateway...');
-
-			client.statusBarIcon.text = '$(search-refresh) Reconnecting to Discord Gateway...';
-			client.statusBarIcon.command = 'rpc.reconnect';
 		}, 1000);
 	});
 
-	const disconnectCommand = commands.registerCommand('rpc.disconnect', () => {
-		client.dispose();
+	const disconnectCommand = commands.registerCommand('rpc.disconnect', async () => {
+		await client.dispose();
 
 		client.statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
 		client.statusBarIcon.command = 'rpc.reconnect';
@@ -112,11 +105,11 @@ export const activate = async (ctx: ExtensionContext) => {
 		try {
 			await client.connect();
 		} catch (error) {
-			loggingService.logError('Encountered following error after trying to login.', error);
+			logError('Encountered following error after trying to login.', error);
 
-			client.dispose();
+			await client.dispose();
 
-			void window.showErrorMessage(
+			await window.showErrorMessage(
 				error?.message?.includes('ENOENT')
 					? 'No Discord Client detected!'
 					: `Couldn't connect to Discord via RPC: ${error as string}`
@@ -128,8 +121,8 @@ export const activate = async (ctx: ExtensionContext) => {
 	}
 };
 
-export const deactivate = () => {
-	client.dispose();
+export const deactivate = async () => {
+	await client.dispose();
 };
 
-process.on('unhandledRejection', (err) => loggingService.logError('Unhandled Rejection:', err as string));
+process.on('unhandledRejection', (err) => logError('Unhandled Rejection:', err as string));

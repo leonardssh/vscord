@@ -22,8 +22,9 @@ interface IExtensionConfig {
 	checkIdle: boolean;
 	idleTimeout: number;
 	idleText: string;
+	appName: string;
 }
 
 export type VSCordConfig = IExtensionConfig & WorkspaceConfiguration;
 
-type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';
+type LogLevel = 'INFO' | 'WARN' | 'ERROR';
