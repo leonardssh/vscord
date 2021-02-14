@@ -6,5 +6,5 @@
 		"composite": true,
 		"preserveConstEnums": true
 	},
-	"include": [".", "./language/languages.json"]
+	"include": [".", "./icons.json"]
 }

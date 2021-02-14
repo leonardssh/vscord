@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import type { Presence } from 'discord-rpc';
 import { basename, parse, sep } from 'path';
 import {
@@ -10,14 +11,15 @@ import {
 	TextDocument,
 	window,
 	workspace,
+	WindowState,
 	ConfigurationChangeEvent,
-	WindowState
+	commands
 } from 'vscode';
 
-import { getConfig, resolveIcon } from '../util/util';
-import { RESTART_TO_ENABLE } from '../util/messages';
+import icon from './icons.json';
 
-import type { Client } from '../client/Client';
+import type { Client } from './client';
+import { getConfig } from './config';
 
 interface FileDetail {
 	size?: string;
@@ -25,6 +27,9 @@ interface FileDetail {
 	currentLine?: string;
 	currentColumn?: string;
 }
+
+const knownExtensions: { [key: string]: { image: string } } = icon.knownExtensions;
+const knownLanguages: string[] = icon.knownLanguages;
 
 const empty = '\u200b\u200b';
 
@@ -36,7 +41,30 @@ const enum defaultIcons {
 
 let idleCheckTimeout: NodeJS.Timer | undefined = undefined;
 
-export class ActivityService implements Disposable {
+export function resolveIcon(document: TextDocument) {
+	const filename = basename(document.fileName);
+
+	const icon =
+		knownExtensions[
+			Object.keys(knownExtensions).find((key) => {
+				if (filename.endsWith(key)) {
+					return true;
+				}
+
+				const match = /^\/(.*)\/([mgiy]+)$/.exec(key);
+				if (!match) {
+					return false;
+				}
+
+				const regex = new RegExp(match[1], match[2]);
+				return regex.test(filename);
+			})!
+		] ?? (knownLanguages.includes(document.languageId) ? document.languageId : null);
+
+	return icon ? icon.image ?? icon : 'text';
+}
+
+export class Activity implements Disposable {
 	private presence: Presence = {};
 
 	private debugging = false;
@@ -47,7 +75,7 @@ export class ActivityService implements Disposable {
 
 	public constructor(private readonly client: Client) {}
 
-	public init() {
+	public async init() {
 		const { workspaceElapsedTime, largeImageIdle, detailsIdle, lowerDetailsIdle, smallImage } = getConfig();
 
 		if (workspaceElapsedTime) {
@@ -67,10 +95,10 @@ export class ActivityService implements Disposable {
 			: 'vscode';
 		this.presence.smallImageText = smallImage.replace('{appname}', env.appName);
 
-		this.update();
+		await this.update();
 	}
 
-	public onFileSwitch(editor: TextEditor) {
+	public async onFileSwitch(editor: TextEditor) {
 		let icon: string = env.appName.includes('Insiders')
 			? defaultIcons.standard_vscode_insiders
 			: defaultIcons.standard_vscode;
@@ -111,10 +139,10 @@ export class ActivityService implements Disposable {
 					.replace('{LANG}', icon.toUpperCase()) || editor?.document.languageId.padEnd(2, '\u200b')
 			: largeImageIdle;
 
-		this.update();
+		await this.update();
 	}
 
-	public onFileEdit({ document }: TextDocumentChangeEvent) {
+	public async onFileEdit({ document }: TextDocumentChangeEvent) {
 		if (!window.activeTextEditor || document.fileName.endsWith('.git') || document.languageId === 'scminput') {
 			return;
 		}
@@ -151,20 +179,10 @@ export class ActivityService implements Disposable {
 				)
 				.replace('{LANG}', icon.toUpperCase()) || document.languageId.padEnd(2, '\u200b');
 
-		this.update();
+		await this.update();
 	}
 
-	public onConfigChange(e: ConfigurationChangeEvent) {
-		if (e.affectsConfiguration('VSCord.workspaceElapsedTime')) {
-			void window.showInformationMessage(RESTART_TO_ENABLE('workspaceElapsedTime'));
-		}
-
-		if (e.affectsConfiguration('VSCord.ignoreWorkspaces')) {
-			void window.showInformationMessage(RESTART_TO_ENABLE('ignoreWorkspaces'));
-		}
-	}
-
-	public onChangeWindowState({ focused }: WindowState) {
+	public async onChangeWindowState({ focused }: WindowState) {
 		const { idleTimeout } = getConfig();
 
 		if (focused) {
@@ -175,8 +193,8 @@ export class ActivityService implements Disposable {
 			return this.idle(false);
 		}
 
-		idleCheckTimeout = setTimeout(() => {
-			this.idle(true);
+		idleCheckTimeout = setTimeout(async () => {
+			await this.idle(true);
 
 			idleCheckTimeout = undefined;
 		}, idleTimeout * 1000);
@@ -204,13 +222,32 @@ export class ActivityService implements Disposable {
 		this.problems = counted;
 	}
 
+	public async onConfigChange(e: ConfigurationChangeEvent) {
+		if (
+			e.affectsConfiguration('VSCord.appName') ||
+			e.affectsConfiguration('VSCord.ignoreWorkspaces') ||
+			e.affectsConfiguration('VSCord.checkIdle') ||
+			e.affectsConfiguration('VSCord.id') ||
+			e.affectsConfiguration('VSCord.enabled')
+		) {
+			const reload = await window.showInformationMessage(
+				'VSCord extension configuration changes detected.\nPlease reload the Visual Studio code to apply it.',
+				'Reload Now'
+			);
+
+			if (reload === 'Reload Now') {
+				await commands.executeCommand('rpc.reconnect');
+			}
+		}
+	}
+
 	public dispose() {
 		this.presence = {};
 		this.problems = 0;
 		this.viewing = false;
 	}
 
-	public idle(status: boolean) {
+	public async idle(status: boolean) {
 		const { smallImage, idleText } = getConfig();
 
 		this.presence.smallImageKey = status
@@ -221,7 +258,7 @@ export class ActivityService implements Disposable {
 			? 'vscode-insiders'
 			: 'vscode';
 		this.presence.smallImageText = status ? idleText : smallImage.replace('{appname}', env.appName);
-		this.update();
+		await this.update();
 	}
 
 	private generateDetails(
@@ -348,7 +385,7 @@ export class ActivityService implements Disposable {
 		return fileDetail;
 	}
 
-	private update() {
-		this.client.setActivity(this.presence);
+	private async update() {
+		await this.client.setActivity(this.presence);
 	}
 }
