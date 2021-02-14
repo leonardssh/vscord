@@ -67,11 +67,6 @@ export const activate = async (ctx: ExtensionContext) => {
 				client.statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
 				client.statusBarIcon.command = 'rpc.reconnect';
 			}
-
-			// await window.showInformationMessage('Reconnecting to Discord Gateway...');
-
-			// client.statusBarIcon.text = '$(search-refresh) Reconnecting to Discord Gateway...';
-			// client.statusBarIcon.command = 'rpc.reconnect';
 		}, 1000);
 	});
 
