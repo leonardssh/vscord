@@ -141,6 +141,7 @@
 	],
 	"knownExtensions": {
 		"nodemon.json": { "image": "nodemon" },
+		"package.json": { "image": "npm" },
 		"vue.config.js": { "image": "vueconfig" },
 		".ahk": { "image": "ahk" },
 		".ahkl": { "image": "ahk" },
