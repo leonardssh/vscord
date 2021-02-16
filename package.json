@@ -1,7 +1,7 @@
 {
 	"name": "vscord",
 	"displayName": "Discord Rich Presence",
-	"version": "3.1.0",
+	"version": "3.1.1",
 	"description": "😎 Another awesome and fully customizable VS Code extension to get Discord Rich Presence integration.",
 	"main": "dist/extension.js",
 	"private": true,

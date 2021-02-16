@@ -1,12 +1,7 @@
-<p align="center">
-    <img src="https://i.imgur.com/IposHqf.png" alt="Icon" align="center" width="256">
-<p>
-
-<h3 align="center">
-    😎 Another awesome and fully customizable VS Code extension to get Discord Rich Presence integration.
-</h3>
-
 <div align="center">
+
+### 😎 Another awesome and fully customizable VS Code extension to get Discord Rich Presence integration.
+
   <p>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
         <img src="https://img.shields.io/visual-studio-marketplace/v/LeonardSSH.vscord?style=flat-square" />
