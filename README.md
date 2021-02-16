@@ -52,10 +52,10 @@ This may not be the best discord rpc, but it is a discord rpc. 😁
 
 > All texts is fully customizable using variables and a multitude of config options
 
-![step](https://i.imgur.com/ia3lqws.png)
-![bro](https://i.imgur.com/rgAjHFm.png)
-![please](https://i.imgur.com/UqNHUlO.png)
-![fuck me](https://stepbro.please-fuck.me/1gAJRF.png)
+![step](https://i.imgur.com/5wpuiix.png)
+![bro](https://i.imgur.com/gUmhay8.png)
+![please](https://i.imgur.com/OgdlUgB.png)
+![fuck me](https://i.imgur.com/kIvk0ss.png)
 
 ## 📥 Installation
 
