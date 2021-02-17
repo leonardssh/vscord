@@ -31,7 +31,7 @@ This may not be the best discord rpc, but it is a discord rpc. 😁
 
 ## 📌 Features
 
--   Support for 2 IDE names (`Code` and `Visual Studio Code`)
+-   Switch between 2 IDE names (`Code` and `Visual Studio Code`) [(preview)](https://streamable.com/apjd4g)
 -   Highly customizable in using the extension settings
 -   Shows what you're working on in Visual Studio Code
 -   Shows the amount of problems in your workspace
