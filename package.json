@@ -7,7 +7,7 @@
 	"private": true,
 	"icon": "assets/icon.png",
 	"galleryBanner": {
-		"color": "#6477C1",
+		"color": "#223037",
 		"theme": "dark"
 	},
 	"scripts": {
