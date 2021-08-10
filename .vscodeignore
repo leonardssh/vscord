@@ -11,3 +11,4 @@ tsconfig.*.json
 suckmyass
 .eslintignore
 .eslint
+.vscode
