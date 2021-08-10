@@ -106,7 +106,7 @@
 		"Other"
 	],
 	"engines": {
-		"vscode": "^1.52.0"
+		"vscode": "^1.59.0"
 	},
 	"contributes": {
 		"commands": [
