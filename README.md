@@ -90,5 +90,3 @@ To contribute to this repository, feel free to create a new fork of the reposito
 ## 📋 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
