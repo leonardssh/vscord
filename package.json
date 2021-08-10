@@ -244,7 +244,7 @@
 				},
 				"rpc.idleTimeout": {
 					"type": "number",
-					"default": 5,
+					"default": 300,
 					"description": "How long the window should be unfocused (in seconds) to either disable rich presence or display you as idle."
 				},
 				"rpc.idleText": {
