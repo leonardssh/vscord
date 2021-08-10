@@ -1,6 +1,6 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
-// const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 /**@type {import('webpack').Configuration}*/
 const config = {
@@ -13,19 +13,19 @@ const config = {
 		devtoolModuleFilenameTemplate: '../[resource-path]'
 	},
 	plugins: [new CleanWebpackPlugin()],
-	// optimization: {
-	// 	minimizer: [
-	// 		new TerserPlugin({
-	// 			extractComments: true,
-	// 			terserOptions: {
-	// 				ecma: 2020,
-	// 				mangle: false,
-	// 				keep_classnames: true,
-	// 				keep_fnames: true
-	// 			}
-	// 		})
-	// 	]
-	// },
+	optimization: {
+		minimizer: [
+			new TerserPlugin({
+				extractComments: true,
+				terserOptions: {
+					ecma: 2020,
+					mangle: false,
+					keep_classnames: true,
+					keep_fnames: true
+				}
+			})
+		]
+	},
 	devtool: 'source-map',
 	externals: {
 		vscode: 'commonjs vscode'
