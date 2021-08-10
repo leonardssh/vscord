@@ -2,9 +2,7 @@
 	"extends": "../tsconfig.base.json",
 	"compilerOptions": {
 		"rootDir": "./",
-		"outDir": "../dist",
-		"composite": true,
-		"preserveConstEnums": true
+		"outDir": "../dist"
 	},
-	"include": [".", "./icons.json"]
+	"include": ["."]
 }

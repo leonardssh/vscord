@@ -1,56 +1,39 @@
-import {
-	Disposable,
-	languages,
-	window,
-	workspace,
-	debug,
-	TextEditor,
-	TextDocumentChangeEvent,
-	WindowState,
-	ConfigurationChangeEvent
-} from 'vscode';
-
-import type { Activity } from './activity';
+import { debug, Disposable, languages, window, WindowState, workspace } from 'vscode';
 import { getConfig } from './config';
+import { CONFIG_KEYS } from './constants';
+import { sendActivity, toggleIdling } from './extension';
+import throttle from 'lodash-es/throttle';
+import { onDiagnosticsChange } from './activity';
 
-export class Listener implements Disposable {
-	private disposables: Disposable[] = [];
+let listeners: Disposable[] = [];
 
-	public constructor(private activity: Activity) {}
+const config = getConfig();
 
-	public listen() {
-		this.dispose();
+export function listen() {
+	const fileSwitch = window.onDidChangeActiveTextEditor;
+	const fileEdit = workspace.onDidChangeTextDocument;
+	const debugStart = debug.onDidStartDebugSession;
+	const debugEnd = debug.onDidTerminateDebugSession;
+	const ciagnosticsChange = languages.onDidChangeDiagnostics;
+	const changeWindowState = window.onDidChangeWindowState;
 
-		const fileSwitch = window.onDidChangeActiveTextEditor;
-		const fileEdit = workspace.onDidChangeTextDocument;
-		const debugStart = debug.onDidStartDebugSession;
-		const debugEnd = debug.onDidTerminateDebugSession;
-		const diagnostictsChange = languages.onDidChangeDiagnostics;
-		const changeWindowState = window.onDidChangeWindowState;
-		const configChange = workspace.onDidChangeConfiguration;
+	listeners.push(
+		fileSwitch(() => sendActivity({ isViewing: true })),
+		fileEdit(throttle(() => sendActivity({ isViewing: false }), 2000)),
+		debugStart(() => sendActivity()),
+		debugEnd(() => sendActivity())
+	);
 
-		const { enabled, showProblems, checkIdle } = getConfig();
-
-		if (enabled) {
-			const onFileSwitch = fileSwitch((e: TextEditor | undefined) => this.activity.onFileSwitch(e!));
-			const onFileEdit = fileEdit((e: TextDocumentChangeEvent) => this.activity.onFileEdit(e));
-			const onDebugStart = debugStart(() => this.activity.toggleDebug());
-			const onDebugEnd = debugEnd(() => this.activity.toggleDebug());
-			const onConfigChange = configChange((e: ConfigurationChangeEvent) => this.activity.onConfigChange(e));
-
-			this.disposables.push(onFileSwitch, onFileEdit, onDebugStart, onDebugEnd, onConfigChange);
-
-			if (showProblems) {
-				this.disposables.push(diagnostictsChange(() => this.activity.onDiagnosticsChange()));
-			}
-
-			if (checkIdle) {
-				this.disposables.push(changeWindowState((e: WindowState) => this.activity.onChangeWindowState(e)));
-			}
-		}
+	if (config[CONFIG_KEYS.ShowProblems]) {
+		listeners.push(ciagnosticsChange(() => onDiagnosticsChange()));
 	}
 
-	public dispose() {
-		this.disposables.forEach((disposable: Disposable) => disposable.dispose());
+	if (config[CONFIG_KEYS.CheckIdle]) {
+		listeners.push(changeWindowState((e: WindowState) => toggleIdling(e)));
 	}
+}
+
+export function cleanUp() {
+	listeners.forEach((listener: Disposable) => listener.dispose());
+	listeners = [];
 }

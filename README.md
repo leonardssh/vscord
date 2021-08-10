@@ -1,33 +1,36 @@
-<div align="center">
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord" target="_blank" rel="noopener noreferrer">
+    <img width="256" src="https://i.imgur.com/n7ieZfW.png" alt="VSCord Logo">
+  </a>
+</p>
 
-### 😎 Another awesome and fully customizable VS Code extension to get Discord Rich Presence integration.
+<br>
 
-  <p>
+<p align="center">
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://img.shields.io/visual-studio-marketplace/v/LeonardSSH.vscord?style=flat-square" />
+        <img src="https://img.shields.io/visual-studio-marketplace/v/LeonardSSH.vscord" />
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://img.shields.io/visual-studio-marketplace/d/LeonardSSH.vscord?style=flat-square" />
+        <img src="https://img.shields.io/visual-studio-marketplace/d/LeonardSSH.vscord" />
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord?style=flat-square" />
+        <img src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord" />
     </a>
     <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg?style=flat-square" />
+        <img src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg" />
     </a>
       <a href="https://gitter.im/LeonardSSH/vscord-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
-        <img src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b&style=flat-square" />
+        <img src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
     </a>
-  </p>
-</div>
+</p>
 
----
+<br>
+
+# Discord Rich Presence
+
+> Fully customizable VS Code extension to get Discord Rich Presence integration
 
 Remember to 🌟 this Github if you 💖 it.
-
-For something in between a [iCrawl/discord-vscode](https://github.com/iCrawl/discord-vscode) and a [Satoqz/vscode-discord](https://github.com/Satoqz/vscode-discord), with a few small changes, bug fixs and new pretty icons.
-
-This may not be the best discord rpc, but it is a discord rpc. 😁
 
 ## 📌 Features
 
@@ -72,6 +75,8 @@ Use the **[Extension Marketplace](https://code.visualstudio.com/docs/editor/exte
 
 ![a4](https://i.imgur.com/qMzox38.gif)
 
+**Much of the code in this repository is based on [iCrawl/discord-vscode](https://github.com/iCrawl/discord-vscode) & [Satoqz/vscode-discord](https://github.com/Satoqz/vscode-discord). This extension would not exist without them.**
+
 ## 👨‍💻 Contributing
 
 To contribute to this repository, feel free to create a new fork of the repository and submit a pull request.
@@ -85,3 +90,5 @@ To contribute to this repository, feel free to create a new fork of the reposito
 ## 📋 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---

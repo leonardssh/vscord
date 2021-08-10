@@ -1,6 +1,6 @@
 import { workspace } from 'vscode';
-import type { VSCordConfig } from './types';
+import { WorkspaceExtensionConfiguration } from './environment';
 
-export function getConfig(): VSCordConfig {
-	return workspace.getConfiguration('VSCord') as any;
+export function getConfig(): WorkspaceExtensionConfiguration {
+	return workspace.getConfiguration('VSCord') as WorkspaceExtensionConfiguration;
 }

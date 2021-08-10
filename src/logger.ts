@@ -1,34 +1,40 @@
 import { window } from 'vscode';
 
-type LogLevel = 'INFO' | 'WARN' | 'ERROR';
-
 const outputChannel = window.createOutputChannel('VSCord');
 
-export const logMessage = (message: string, logLevel: LogLevel) => {
-	const timestamp = new Date().toLocaleDateString();
-	outputChannel.appendLine(`["${logLevel}" - ${timestamp}] ${message}`);
+export const enum LogLevel {
+	Info = 'INFO',
+	Warn = 'WARN',
+	Error = 'ERROR'
+}
+
+const logMessage = (message: string | Error, logLevel: LogLevel) => {
+	const timestamp = new Date().toLocaleTimeString();
+
+	if (typeof message === 'string') {
+		outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${message}`);
+	} else if (message instanceof Error) {
+		outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${message.message}`);
+
+		if (message.stack) {
+			outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${message.stack}`);
+		}
+	} else if (typeof message === 'object') {
+		try {
+			const json = JSON.stringify(message, null, 2);
+			outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${json}`);
+		} catch {}
+	}
 };
 
 export const logInfo = (message: string) => {
-	logMessage(message, 'INFO');
+	logMessage(message, LogLevel.Info);
 };
 
-export const logWarning = (message: string) => {
-	logMessage(message, 'WARN');
+export const logWarn = (message: string) => {
+	logMessage(message, LogLevel.Warn);
 };
 
-export const logError = (message: string, error?: Error | string) => {
-	logMessage(message, 'ERROR');
-
-	if (typeof error === 'string') {
-		outputChannel.appendLine(error);
-	} else if (error?.message || error?.stack) {
-		if (error?.message) {
-			logMessage(error.message, 'ERROR');
-		}
-
-		if (error?.stack) {
-			outputChannel.appendLine(error.stack);
-		}
-	}
+export const logError = (message: string) => {
+	logMessage(message, LogLevel.Error);
 };

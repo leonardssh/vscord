@@ -1,391 +1,174 @@
-/* eslint-disable prefer-destructuring */
-import type { Presence } from 'discord-rpc';
-import { basename, parse, sep } from 'path';
-import {
-	Disposable,
-	TextDocumentChangeEvent,
-	TextEditor,
-	env,
-	languages,
-	DiagnosticSeverity,
-	TextDocument,
-	window,
-	workspace,
-	WindowState,
-	ConfigurationChangeEvent,
-	commands
-} from 'vscode';
-
-import icon from './icons.json';
-
-import type { Client } from './client';
+import { Presence } from 'discord-rpc';
 import { getConfig } from './config';
+import { debug, DiagnosticSeverity, env, languages, Selection, TextDocument, window, workspace } from 'vscode';
+import {
+	CONFIG_KEYS,
+	DEBUGGING_IMAGE_KEY,
+	FAKE_EMPTY,
+	IDLE_VSCODE_IMAGE_KEY,
+	IDLE_VSCODE_INSIDERS_IMAGE_KEY,
+	REPLACE_KEYS,
+	VSCODE_IMAGE_KEY,
+	VSCODE_INSIDERS_IMAGE_KEY
+} from './constants';
+import { resolveFileIcon, toLower, toTitle, toUpper } from './utils';
+import { basename, parse, sep } from 'path';
 
-interface FileDetail {
-	size?: string;
-	totalLines?: string;
-	currentLine?: string;
-	currentColumn?: string;
+let isViewing = false;
+let totalProblems = 0;
+
+export function toggleViewing(viewing: boolean) {
+	isViewing = viewing;
 }
 
-const knownExtensions: { [key: string]: { image: string } } = icon.knownExtensions;
-const knownLanguages: string[] = icon.knownLanguages;
+export function onDiagnosticsChange() {
+	const diag = languages.getDiagnostics();
 
-const empty = '\u200b\u200b';
+	let counted = 0;
 
-const enum defaultIcons {
-	standard_vscode = 'idle-vscode',
-	standard_vscode_insiders = 'idle-vscode-insiders',
-	idle = 'idle'
-}
-
-let idleCheckTimeout: NodeJS.Timer | undefined = undefined;
-
-export function resolveIcon(document: TextDocument) {
-	const filename = basename(document.fileName);
-
-	const icon =
-		knownExtensions[
-			Object.keys(knownExtensions).find((key) => {
-				if (filename.endsWith(key)) {
-					return true;
+	diag.forEach((i: any) => {
+		if (i[1]) {
+			i[1].forEach((i: any) => {
+				if (i.severity === DiagnosticSeverity.Warning || i.severity === DiagnosticSeverity.Error) {
+					counted++;
 				}
+			});
+		}
+	});
 
-				const match = /^\/(.*)\/([mgiy]+)$/.exec(key);
-				if (!match) {
-					return false;
-				}
-
-				const regex = new RegExp(match[1], match[2]);
-				return regex.test(filename);
-			})!
-		] ?? (knownLanguages.includes(document.languageId) ? document.languageId : null);
-
-	return icon ? icon.image ?? icon : 'text';
+	totalProblems = counted;
 }
 
-export class Activity implements Disposable {
-	private presence: Presence = {};
+export function activity(previous: Presence = {}): Presence {
+	const config = getConfig();
 
-	private debugging = false;
+	const { appName } = env;
+	const insiders = appName.includes('Insiders');
+	const defaultSmallImageKey = debug.activeDebugSession
+		? DEBUGGING_IMAGE_KEY
+		: insiders
+		? VSCODE_INSIDERS_IMAGE_KEY
+		: VSCODE_IMAGE_KEY;
 
-	private viewing = false;
+	const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(REPLACE_KEYS.AppName, appName);
 
-	private problems = 0;
+	const defaultLargeImageText = config[CONFIG_KEYS.LargeImageIdling];
 
-	public constructor(private readonly client: Client) {}
+	let presence: Presence = {
+		details: details(
+			CONFIG_KEYS.DetailsIdling,
+			CONFIG_KEYS.DetailsViewing,
+			CONFIG_KEYS.DetailsEditing,
+			CONFIG_KEYS.DetailsDebugging
+		),
+		startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime] ? undefined : previous.startTimestamp ?? Date.now(),
+		largeImageKey: insiders ? IDLE_VSCODE_IMAGE_KEY : IDLE_VSCODE_INSIDERS_IMAGE_KEY,
+		largeImageText: defaultLargeImageText,
+		smallImageKey: defaultSmallImageKey,
+		smallImageText: defaultSmallImageText
+	};
 
-	public async init() {
-		const { workspaceElapsedTime, largeImageIdle, detailsIdle, lowerDetailsIdle, smallImage } = getConfig();
+	if (window.activeTextEditor) {
+		const largeImageKey = resolveFileIcon(window.activeTextEditor.document);
+		const largeImageText = config[CONFIG_KEYS.LargeImage]
+			.replace(REPLACE_KEYS.LanguageLowerCase, toLower(largeImageKey))
+			.replace(REPLACE_KEYS.LanguageTitleCase, toTitle(largeImageKey))
+			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(largeImageKey))
+			.padEnd(2, FAKE_EMPTY);
 
-		if (workspaceElapsedTime) {
-			this.presence.startTimestamp = Date.now();
-		}
-
-		this.presence.details = detailsIdle.replace('{null}', empty);
-		this.presence.state = lowerDetailsIdle.replace('{null}', empty);
-		this.presence.largeImageKey = env.appName.includes('Insiders')
-			? defaultIcons.standard_vscode_insiders
-			: defaultIcons.standard_vscode;
-		this.presence.largeImageText = largeImageIdle;
-		this.presence.smallImageKey = this.debugging
-			? 'debug'
-			: env.appName.includes('Insiders')
-			? 'vscode-insiders'
-			: 'vscode';
-		this.presence.smallImageText = smallImage.replace('{appname}', env.appName);
-
-		await this.update();
+		presence = {
+			...presence,
+			details: details(
+				CONFIG_KEYS.DetailsIdling,
+				CONFIG_KEYS.DetailsViewing,
+				CONFIG_KEYS.DetailsEditing,
+				CONFIG_KEYS.DetailsDebugging
+			),
+			state: details(
+				CONFIG_KEYS.LowerDetailsIdling,
+				CONFIG_KEYS.LowerDetailsViewing,
+				CONFIG_KEYS.LowerDetailsEditing,
+				CONFIG_KEYS.LowerDetailsDebugging
+			),
+			largeImageKey,
+			largeImageText
+		};
 	}
 
-	public async onFileSwitch(editor: TextEditor) {
-		let icon: string = env.appName.includes('Insiders')
-			? defaultIcons.standard_vscode_insiders
-			: defaultIcons.standard_vscode;
+	return presence;
+}
 
-		if (editor) {
-			icon = resolveIcon(editor.document);
-		}
+function details(idling: CONFIG_KEYS, viewing: CONFIG_KEYS, editing: CONFIG_KEYS, debugging: CONFIG_KEYS) {
+	const config = getConfig();
 
-		const { largeImage, largeImageIdle } = getConfig();
+	let raw = (config[idling] as string).replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
-		this.viewing = true;
+	if (window.activeTextEditor) {
+		const fileName = basename(window.activeTextEditor.document.fileName);
+		const { dir } = parse(window.activeTextEditor.document.fileName);
+		const split = dir.split(sep);
+		const dirName = split[split.length - 1];
 
-		this.presence.details = this.generateDetails(
-			'detailsDebugging',
-			'detailsEditing',
-			'detailsIdle',
-			'detailsViewing',
-			icon,
-			editor?.document
+		const noWorkspaceFound = config[CONFIG_KEYS.LowerDetailsNoWorkspaceFound].replace(
+			REPLACE_KEYS.Empty,
+			FAKE_EMPTY
 		);
 
-		this.presence.state = this.generateDetails(
-			'lowerDetailsDebugging',
-			'lowerDetailsEditing',
-			'lowerDetailsIdle',
-			'lowerDetailsViewing',
-			icon,
-			editor?.document
-		);
-		this.presence.largeImageKey = icon;
-		this.presence.largeImageText = editor
-			? largeImage
-					.replace('{lang}', icon)
-					.replace(
-						'{Lang}',
-						icon.toLowerCase().replace(/^\w/, (c: string) => c.toUpperCase())
-					)
-					.replace('{LANG}', icon.toUpperCase()) || editor?.document.languageId.padEnd(2, '\u200b')
-			: largeImageIdle;
+		const workspaceFolder = workspace.getWorkspaceFolder(window.activeTextEditor.document.uri);
 
-		await this.update();
-	}
+		const workspaceFolderName = workspaceFolder?.name ?? noWorkspaceFound;
+		const workspaceName = workspace.name ?? workspaceFolderName;
+		const workspaceAndFolder = `${workspaceName}${
+			workspaceFolderName === FAKE_EMPTY ? '' : ` - ${workspaceFolderName}`
+		}`;
 
-	public async onFileEdit({ document }: TextDocumentChangeEvent) {
-		if (!window.activeTextEditor || document.fileName.endsWith('.git') || document.languageId === 'scminput') {
-			return;
+		const fileIcon = resolveFileIcon(window.activeTextEditor.document);
+
+		const problems = config[CONFIG_KEYS.ShowProblems]
+			? config[CONFIG_KEYS.ProblemsText].replace(REPLACE_KEYS.ProblemsCount, totalProblems.toString())
+			: '';
+
+		raw = config[debug.activeDebugSession ? debugging : isViewing ? viewing : editing] as string;
+
+		if (workspaceFolder) {
+			const { name } = workspaceFolder;
+			const relativePath = workspace.asRelativePath(window.activeTextEditor.document.fileName).split(sep);
+
+			relativePath.splice(-1, 1);
+			raw = raw.replace(REPLACE_KEYS.FullDirName, `${name}${sep}${relativePath.join(sep)}`);
 		}
 
-		const icon = resolveIcon(document);
-		const { largeImage } = getConfig();
+		raw = fileDetails(raw, window.activeTextEditor.document, window.activeTextEditor.selection);
 
-		this.viewing = false;
-
-		this.presence.details = this.generateDetails(
-			'detailsDebugging',
-			'detailsEditing',
-			'detailsIdle',
-			undefined,
-			icon,
-			document
-		);
-
-		this.presence.state = this.generateDetails(
-			'lowerDetailsDebugging',
-			'lowerDetailsEditing',
-			'lowerDetailsIdle',
-			undefined,
-			icon,
-			document
-		);
-		this.presence.largeImageKey = icon;
-		this.presence.largeImageText =
-			largeImage
-				.replace('{lang}', icon)
-				.replace(
-					'{Lang}',
-					icon.toLowerCase().replace(/^\w/, (c: string) => c.toUpperCase())
-				)
-				.replace('{LANG}', icon.toUpperCase()) || document.languageId.padEnd(2, '\u200b');
-
-		await this.update();
+		raw = raw
+			.replace(REPLACE_KEYS.FileName, fileName)
+			.replace(REPLACE_KEYS.DirName, dirName)
+			.replace(REPLACE_KEYS.Workspace, workspaceName)
+			.replace(REPLACE_KEYS.WorkspaceFolder, workspaceFolderName)
+			.replace(REPLACE_KEYS.WorkspaceAndFolder, workspaceAndFolder)
+			.replace(REPLACE_KEYS.LanguageLowerCase, toLower(fileIcon))
+			.replace(REPLACE_KEYS.LanguageTitleCase, toTitle(fileIcon))
+			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(fileIcon))
+			.replace(REPLACE_KEYS.Problems, problems);
 	}
 
-	public async onChangeWindowState({ focused }: WindowState) {
-		const { idleTimeout } = getConfig();
+	return raw;
+}
 
-		if (focused) {
-			if (idleCheckTimeout) {
-				clearTimeout(idleCheckTimeout);
-			}
+function fileDetails(_raw: string, document: TextDocument, selection: Selection) {
+	let raw = _raw.slice();
 
-			return this.idle(false);
-		}
-
-		idleCheckTimeout = setTimeout(async () => {
-			await this.idle(true);
-
-			idleCheckTimeout = undefined;
-		}, idleTimeout * 1000);
+	if (raw.includes(REPLACE_KEYS.TotalLines)) {
+		raw = raw.replace(REPLACE_KEYS.TotalLines, document.lineCount.toLocaleString());
 	}
 
-	public toggleDebug() {
-		this.debugging = !this.debugging;
+	if (raw.includes(REPLACE_KEYS.CurrentLine)) {
+		raw = raw.replace(REPLACE_KEYS.CurrentLine, (selection.active.line + 1).toLocaleString());
 	}
 
-	public onDiagnosticsChange() {
-		const diag = languages.getDiagnostics();
-
-		let counted = 0;
-
-		diag.forEach((i: any) => {
-			if (i[1]) {
-				i[1].forEach((i: any) => {
-					if (i.severity === DiagnosticSeverity.Warning || i.severity === DiagnosticSeverity.Error) {
-						counted++;
-					}
-				});
-			}
-		});
-
-		this.problems = counted;
+	if (raw.includes(REPLACE_KEYS.CurrentColumn)) {
+		raw = raw.replace(REPLACE_KEYS.CurrentColumn, (selection.active.character + 1).toLocaleString());
 	}
 
-	public async onConfigChange(e: ConfigurationChangeEvent) {
-		if (
-			e.affectsConfiguration('VSCord.appName') ||
-			e.affectsConfiguration('VSCord.ignoreWorkspaces') ||
-			e.affectsConfiguration('VSCord.checkIdle') ||
-			e.affectsConfiguration('VSCord.id') ||
-			e.affectsConfiguration('VSCord.enabled')
-		) {
-			const reload = await window.showInformationMessage(
-				'VSCord extension configuration changes detected.\nPlease reload the Visual Studio code to apply it.',
-				'Reload Now'
-			);
-
-			if (reload === 'Reload Now') {
-				await commands.executeCommand('rpc.reconnect');
-			}
-		}
-	}
-
-	public dispose() {
-		this.presence = {};
-		this.problems = 0;
-		this.viewing = false;
-	}
-
-	public async idle(status: boolean) {
-		const { smallImage, idleText } = getConfig();
-
-		this.presence.smallImageKey = status
-			? defaultIcons.idle
-			: this.debugging
-			? 'debug'
-			: env.appName.includes('Insiders')
-			? 'vscode-insiders'
-			: 'vscode';
-		this.presence.smallImageText = status ? idleText : smallImage.replace('{appname}', env.appName);
-		await this.update();
-	}
-
-	private generateDetails(
-		debugging: string,
-		editing: string,
-		idling: string,
-		viewing: string | undefined,
-		largeImageKey: any,
-		document?: TextDocument
-	) {
-		const config = getConfig();
-
-		let raw = config[idling].replace('{null}', empty);
-		let filename = null;
-		let dirname = null;
-		let checkState = false;
-		let workspaceName = null;
-		let workspaceFolder = null;
-		let fullDirname = null;
-
-		if (window.activeTextEditor && document) {
-			filename = basename(document.fileName);
-
-			const { dir } = parse(document.fileName);
-			const split = dir.split(sep);
-
-			dirname = split[split.length - 1];
-
-			checkState = Boolean(workspace.getWorkspaceFolder(document.uri));
-			workspaceName = workspace.name;
-			workspaceFolder = checkState ? workspace.getWorkspaceFolder(document.uri) : null;
-
-			if (workspaceFolder) {
-				const { name } = workspaceFolder;
-				const relativePath = workspace.asRelativePath(document.fileName).split(sep);
-
-				relativePath.splice(-1, 1);
-				fullDirname = `${name}${sep}${relativePath.join(sep)}`;
-			}
-
-			raw = this.debugging ? (raw = config[debugging]) : (raw = config[editing]);
-
-			if (this.viewing && viewing) {
-				raw = config[viewing];
-			}
-
-			const { totalLines, size, currentLine, currentColumn } = this.generateFileDetails(raw, document);
-			const { showProblems, problemsText, lowerDetailsNotFound } = getConfig();
-
-			const problems = showProblems ? problemsText.replace('{count}', this.problems.toString()) : '';
-
-			raw = raw
-				.replace('{null}', empty)
-				.replace('{filename}', filename)
-				.replace('{dirname}', dirname)
-				.replace('{fulldirname}', fullDirname!)
-				.replace(
-					'{workspace}',
-					workspaceName
-						? workspaceName
-						: checkState && workspaceFolder
-						? workspaceFolder.name
-						: lowerDetailsNotFound.replace('{null}', empty)
-				)
-				.replace(
-					'{workspaceFolder}',
-					checkState && workspaceFolder ? workspaceFolder.name : lowerDetailsNotFound.replace('{null}', empty)
-				)
-				.replace(
-					'{workspaceAndFolder}',
-					checkState && workspaceName && workspaceFolder
-						? `${workspaceName} - ${workspaceFolder.name}`
-						: lowerDetailsNotFound.replace('{null}', empty)
-				)
-				.replace('{problems}', problems)
-				.replace('{lang}', largeImageKey)
-				.replace(
-					'{Lang}',
-					largeImageKey.toLowerCase().replace(/^\w/, (c: string) => c.toUpperCase())
-				)
-				.replace('{LANG}', largeImageKey.toUpperCase());
-
-			if (totalLines) {
-				raw = raw.replace('{totallines}', totalLines);
-			}
-
-			if (size) {
-				raw = raw.replace('{filesize}', size);
-			}
-
-			if (currentLine) {
-				raw = raw.replace('{currentline}', currentLine);
-			}
-
-			if (currentColumn) {
-				raw = raw.replace('{currentcolumn}', currentColumn);
-			}
-		}
-
-		return raw;
-	}
-
-	private generateFileDetails(raw: string, document: TextDocument) {
-		const fileDetail: FileDetail = {};
-
-		if (!raw) {
-			return fileDetail;
-		}
-
-		if (window.activeTextEditor) {
-			if (raw.includes('{totallines}')) {
-				fileDetail.totalLines = document.lineCount.toLocaleString();
-			}
-
-			if (raw.includes('{currentline}')) {
-				fileDetail.currentLine = (window.activeTextEditor.selection.active.line + 1).toLocaleString();
-			}
-
-			if (raw.includes('{currentcolumn}')) {
-				fileDetail.currentColumn = (window.activeTextEditor.selection.active.character + 1).toLocaleString();
-			}
-		}
-
-		return fileDetail;
-	}
-
-	private async update() {
-		await this.client.setActivity(this.presence);
-	}
+	return raw;
 }
