@@ -8,7 +8,7 @@
 		"ecmaVersion": 2020,
 		"warnOnUnsupportedTypeScriptVersion": false
 	},
-	"extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+	"extends": ["plugin:@typescript-eslint/recommended"],
 	"env": {
 		"node": true,
 		"es6": true,

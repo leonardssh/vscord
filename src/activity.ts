@@ -1,6 +1,15 @@
 import { Presence } from 'discord-rpc';
 import { getConfig } from './config';
-import { debug, DiagnosticSeverity, env, languages, Selection, TextDocument, window, workspace } from 'vscode';
+import {
+	debug,
+	DiagnosticSeverity,
+	env,
+	languages,
+	Selection,
+	TextDocument,
+	window,
+	workspace
+} from 'vscode';
 import {
 	CONFIG_KEYS,
 	DEBUGGING_IMAGE_KEY,
@@ -29,7 +38,10 @@ export function onDiagnosticsChange() {
 	diag.forEach((i: any) => {
 		if (i[1]) {
 			i[1].forEach((i: any) => {
-				if (i.severity === DiagnosticSeverity.Warning || i.severity === DiagnosticSeverity.Error) {
+				if (
+					i.severity === DiagnosticSeverity.Warning ||
+					i.severity === DiagnosticSeverity.Error
+				) {
 					counted++;
 				}
 			});
@@ -50,7 +62,10 @@ export function activity(previous: Presence = {}): Presence {
 		? VSCODE_INSIDERS_IMAGE_KEY
 		: VSCODE_IMAGE_KEY;
 
-	const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(REPLACE_KEYS.AppName, appName);
+	const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(
+		REPLACE_KEYS.AppName,
+		appName
+	);
 
 	const defaultLargeImageText = config[CONFIG_KEYS.LargeImageIdling];
 
@@ -61,8 +76,12 @@ export function activity(previous: Presence = {}): Presence {
 			CONFIG_KEYS.DetailsEditing,
 			CONFIG_KEYS.DetailsDebugging
 		),
-		startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime] ? undefined : previous.startTimestamp ?? Date.now(),
-		largeImageKey: insiders ? IDLE_VSCODE_IMAGE_KEY : IDLE_VSCODE_INSIDERS_IMAGE_KEY,
+		startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime]
+			? undefined
+			: previous.startTimestamp ?? Date.now(),
+		largeImageKey: insiders
+			? IDLE_VSCODE_IMAGE_KEY
+			: IDLE_VSCODE_INSIDERS_IMAGE_KEY,
 		largeImageText: defaultLargeImageText,
 		smallImageKey: defaultSmallImageKey,
 		smallImageText: defaultSmallImageText
@@ -98,7 +117,12 @@ export function activity(previous: Presence = {}): Presence {
 	return presence;
 }
 
-function details(idling: CONFIG_KEYS, viewing: CONFIG_KEYS, editing: CONFIG_KEYS, debugging: CONFIG_KEYS) {
+function details(
+	idling: CONFIG_KEYS,
+	viewing: CONFIG_KEYS,
+	editing: CONFIG_KEYS,
+	debugging: CONFIG_KEYS
+) {
 	const config = getConfig();
 
 	let raw = (config[idling] as string).replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
@@ -109,12 +133,13 @@ function details(idling: CONFIG_KEYS, viewing: CONFIG_KEYS, editing: CONFIG_KEYS
 		const split = dir.split(sep);
 		const dirName = split[split.length - 1];
 
-		const noWorkspaceFound = config[CONFIG_KEYS.LowerDetailsNoWorkspaceFound].replace(
-			REPLACE_KEYS.Empty,
-			FAKE_EMPTY
-		);
+		const noWorkspaceFound = config[
+			CONFIG_KEYS.LowerDetailsNoWorkspaceFound
+		].replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
-		const workspaceFolder = workspace.getWorkspaceFolder(window.activeTextEditor.document.uri);
+		const workspaceFolder = workspace.getWorkspaceFolder(
+			window.activeTextEditor.document.uri
+		);
 
 		const workspaceFolderName = workspaceFolder?.name ?? noWorkspaceFound;
 		const workspaceName = workspace.name ?? workspaceFolderName;
@@ -125,20 +150,34 @@ function details(idling: CONFIG_KEYS, viewing: CONFIG_KEYS, editing: CONFIG_KEYS
 		const fileIcon = resolveFileIcon(window.activeTextEditor.document);
 
 		const problems = config[CONFIG_KEYS.ShowProblems]
-			? config[CONFIG_KEYS.ProblemsText].replace(REPLACE_KEYS.ProblemsCount, totalProblems.toString())
+			? config[CONFIG_KEYS.ProblemsText].replace(
+					REPLACE_KEYS.ProblemsCount,
+					totalProblems.toString()
+			  )
 			: '';
 
-		raw = config[debug.activeDebugSession ? debugging : isViewing ? viewing : editing] as string;
+		raw = config[
+			debug.activeDebugSession ? debugging : isViewing ? viewing : editing
+		] as string;
 
 		if (workspaceFolder) {
 			const { name } = workspaceFolder;
-			const relativePath = workspace.asRelativePath(window.activeTextEditor.document.fileName).split(sep);
+			const relativePath = workspace
+				.asRelativePath(window.activeTextEditor.document.fileName)
+				.split(sep);
 
 			relativePath.splice(-1, 1);
-			raw = raw.replace(REPLACE_KEYS.FullDirName, `${name}${sep}${relativePath.join(sep)}`);
+			raw = raw.replace(
+				REPLACE_KEYS.FullDirName,
+				`${name}${sep}${relativePath.join(sep)}`
+			);
 		}
 
-		raw = fileDetails(raw, window.activeTextEditor.document, window.activeTextEditor.selection);
+		raw = fileDetails(
+			raw,
+			window.activeTextEditor.document,
+			window.activeTextEditor.selection
+		);
 
 		raw = raw
 			.replace(REPLACE_KEYS.FileName, fileName)
@@ -155,19 +194,32 @@ function details(idling: CONFIG_KEYS, viewing: CONFIG_KEYS, editing: CONFIG_KEYS
 	return raw;
 }
 
-function fileDetails(_raw: string, document: TextDocument, selection: Selection) {
+function fileDetails(
+	_raw: string,
+	document: TextDocument,
+	selection: Selection
+) {
 	let raw = _raw.slice();
 
 	if (raw.includes(REPLACE_KEYS.TotalLines)) {
-		raw = raw.replace(REPLACE_KEYS.TotalLines, document.lineCount.toLocaleString());
+		raw = raw.replace(
+			REPLACE_KEYS.TotalLines,
+			document.lineCount.toLocaleString()
+		);
 	}
 
 	if (raw.includes(REPLACE_KEYS.CurrentLine)) {
-		raw = raw.replace(REPLACE_KEYS.CurrentLine, (selection.active.line + 1).toLocaleString());
+		raw = raw.replace(
+			REPLACE_KEYS.CurrentLine,
+			(selection.active.line + 1).toLocaleString()
+		);
 	}
 
 	if (raw.includes(REPLACE_KEYS.CurrentColumn)) {
-		raw = raw.replace(REPLACE_KEYS.CurrentColumn, (selection.active.character + 1).toLocaleString());
+		raw = raw.replace(
+			REPLACE_KEYS.CurrentColumn,
+			(selection.active.character + 1).toLocaleString()
+		);
 	}
 
 	return raw;

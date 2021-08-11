@@ -4,7 +4,8 @@ import { KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from './constants';
 
 export const toLower = (str: string) => str.toLocaleLowerCase();
 export const toUpper = (str: string) => str.toLocaleUpperCase();
-export const toTitle = (str: string) => toLower(str).replace(/^\w/, (c) => toUpper(c));
+export const toTitle = (str: string) =>
+	toLower(str).replace(/^\w/, (c) => toUpper(c));
 
 export function resolveFileIcon(document: TextDocument) {
 	const filename = basename(document.fileName);
@@ -22,7 +23,9 @@ export function resolveFileIcon(document: TextDocument) {
 		return regex.test(filename);
 	});
 
-	const findKnownLanguage = KNOWN_LANGUAGES.find((key) => key.language === document.languageId);
+	const findKnownLanguage = KNOWN_LANGUAGES.find(
+		(key) => key.language === document.languageId
+	);
 
 	const fileIcon = findKnownExtension
 		? KNOWN_EXTENSIONS[findKnownExtension]

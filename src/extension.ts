@@ -1,5 +1,13 @@
 import { Presence } from 'discord-rpc';
-import { commands, ExtensionContext, StatusBarAlignment, StatusBarItem, window, WindowState, workspace } from 'vscode';
+import {
+	commands,
+	ExtensionContext,
+	StatusBarAlignment,
+	StatusBarItem,
+	window,
+	WindowState,
+	workspace
+} from 'vscode';
 import { activity, toggleViewing } from './activity';
 import { getConfig } from './config';
 import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY } from './constants';
@@ -16,7 +24,9 @@ let timeout: NodeJS.Timeout | undefined = undefined;
 
 const config = getConfig();
 
-const statusBarIcon: StatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
+const statusBarIcon: StatusBarItem = window.createStatusBarItem(
+	StatusBarAlignment.Left
+);
 
 statusBarIcon.text = '$(pulse) Connecting to Discord Gateway...';
 
@@ -153,28 +163,43 @@ const handleCommands = (ctx: ExtensionContext) => {
 	const enableCommand = commands.registerCommand('rpc.enable', async () => {
 		await disable();
 		await enable();
-		await window.showInformationMessage('Enabled Discord Rich Presence for this workspace.');
+		await window.showInformationMessage(
+			'Enabled Discord Rich Presence for this workspace.'
+		);
 	});
 
 	const disableCommand = commands.registerCommand('rpc.disable', async () => {
 		await disable();
-		await window.showInformationMessage('Disabled Discord Rich Presence for this workspace.');
+		await window.showInformationMessage(
+			'Disabled Discord Rich Presence for this workspace.'
+		);
 	});
 
-	const reconnectCommand = commands.registerCommand('rpc.reconnect', async () => {
-		await disable(false);
-		await enable(false);
-	});
+	const reconnectCommand = commands.registerCommand(
+		'rpc.reconnect',
+		async () => {
+			await disable(false);
+			await enable(false);
+		}
+	);
 
-	const disconnectCommand = commands.registerCommand('rpc.disconnect', async () => {
-		await disable(false);
+	const disconnectCommand = commands.registerCommand(
+		'rpc.disconnect',
+		async () => {
+			await disable(false);
 
-		statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
-		statusBarIcon.command = 'rpc.reconnect';
-		statusBarIcon.show();
-	});
+			statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
+			statusBarIcon.command = 'rpc.reconnect';
+			statusBarIcon.show();
+		}
+	);
 
-	ctx.subscriptions.push(enableCommand, disableCommand, reconnectCommand, disconnectCommand);
+	ctx.subscriptions.push(
+		enableCommand,
+		disableCommand,
+		reconnectCommand,
+		disconnectCommand
+	);
 };
 
 export async function activate(ctx: ExtensionContext) {

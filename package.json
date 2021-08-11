@@ -64,9 +64,6 @@
 		"clean-webpack-plugin": "^4.0.0-alpha.0",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^7.32.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-import": "^2.24.0",
-		"eslint-plugin-prettier": "^3.4.0",
 		"husky": "^7.0.1",
 		"lint-staged": "^11.1.2",
 		"prettier": "^2.3.2",
@@ -254,29 +251,5 @@
 				}
 			}
 		}
-	},
-	"prettier": {
-		"$schema": "http://json.schemastore.org/prettierrc",
-		"endOfLine": "lf",
-		"quoteProps": "as-needed",
-		"semi": true,
-		"singleQuote": true,
-		"tabWidth": 4,
-		"trailingComma": "none",
-		"useTabs": true,
-		"arrowParens": "always",
-		"bracketSpacing": true,
-		"printWidth": 120,
-		"overrides": [
-			{
-				"files": [
-					"*.yml"
-				],
-				"options": {
-					"tabWidth": 2,
-					"useTabs": false
-				}
-			}
-		]
 	}
 }

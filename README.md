@@ -34,19 +34,19 @@ Remember to 🌟 this Github if you 💖 it.
 
 ## 📌 Features
 
--   Switch between 2 IDE names (`Code` and `Visual Studio Code`) [(preview)](https://streamable.com/apjd4g)
--   Highly customizable in using the extension settings
--   Shows what you're working on in Visual Studio Code
--   Shows the amount of problems in your workspace
--   Shows the number of lines in your file and which line you're editing
--   Respects Discords 15sec limit when it comes to updating your status
--   Support for over 130+ of the most popular languages
--   Enable/Disable RPC for individual workspaces
--   Custom string support
--   Stable or Insiders build detection
--   Debug mode detection
--   Easily manually reconnect to Discord Gateway
--   Idle indication when you tab out for a while
+- Switch between 2 IDE names (`Code` and `Visual Studio Code`) [(preview)](https://streamable.com/apjd4g)
+- Highly customizable in using the extension settings
+- Shows what you're working on in Visual Studio Code
+- Shows the amount of problems in your workspace
+- Shows the number of lines in your file and which line you're editing
+- Respects Discords 15sec limit when it comes to updating your status
+- Support for over 130+ of the most popular languages
+- Enable/Disable RPC for individual workspaces
+- Custom string support
+- Stable or Insiders build detection
+- Debug mode detection
+- Easily manually reconnect to Discord Gateway
+- Idle indication when you tab out for a while
 
 > All texts is fully customizable using variables and a multitude of config options
 
