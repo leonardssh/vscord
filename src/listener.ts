@@ -14,7 +14,7 @@ export function listen() {
 	const fileEdit = workspace.onDidChangeTextDocument;
 	const debugStart = debug.onDidStartDebugSession;
 	const debugEnd = debug.onDidTerminateDebugSession;
-	const ciagnosticsChange = languages.onDidChangeDiagnostics;
+	const diagnosticsChange = languages.onDidChangeDiagnostics;
 	const changeWindowState = window.onDidChangeWindowState;
 
 	listeners.push(
@@ -25,7 +25,7 @@ export function listen() {
 	);
 
 	if (config[CONFIG_KEYS.ShowProblems]) {
-		listeners.push(ciagnosticsChange(() => onDiagnosticsChange()));
+		listeners.push(diagnosticsChange(() => onDiagnosticsChange()));
 	}
 
 	if (config[CONFIG_KEYS.CheckIdle]) {
