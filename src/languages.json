@@ -41,6 +41,7 @@
 		{ "language": "powershell", "image": "powershell" },
 		{ "language": "jade", "image": "pug" },
 		{ "language": "pug", "image": "pug" },
+		{ "language": "prisma", "image": "prisma" },
 		{ "language": "python", "image": "python" },
 		{ "language": "r", "image": "r" },
 		{ "language": "razor", "image": "cshtml" },
