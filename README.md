@@ -51,8 +51,8 @@ Remember to 🌟 this Github if you 💖 it.
 
 > All texts is fully customizable using variables and a multitude of config options
 
-![step](https://i.imgur.com/ngZ6vl3.png)
-![bro](https://i.imgur.com/cbrN4L7.png)
+![step](https://i.imgur.com/U5MQShU.png)
+![bro](https://i.imgur.com/GCi2Pva.png)
 ![please](https://i.imgur.com/OI5zCTw.png)
 ![fuck me](https://i.imgur.com/SfvYb6y.png)
 
