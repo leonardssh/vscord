@@ -22,8 +22,6 @@ let presence: Presence = {};
 let idleCheckTimeout: NodeJS.Timer | undefined = undefined;
 let timeout: NodeJS.Timeout | undefined = undefined;
 
-const config = getConfig();
-
 const statusBarIcon: StatusBarItem = window.createStatusBarItem(
 	StatusBarAlignment.Left
 );
@@ -51,6 +49,8 @@ export function sendActivity(options?: ActivityOptions) {
 }
 
 export async function toggleIdling(windowState: WindowState) {
+	const config = getConfig();
+
 	if (config[CONFIG_KEYS.IdleTimeout] !== 0) {
 		if (windowState.focused) {
 			if (idleCheckTimeout) {
@@ -73,6 +73,8 @@ export async function toggleIdling(windowState: WindowState) {
 }
 
 async function login() {
+	const config = getConfig();
+
 	statusBarIcon.text = '$(search-refresh) Connecting to Discord Gateway...';
 
 	rpc = new Client({ transport: 'ipc' });
@@ -133,10 +135,12 @@ const handleDisconnected = async () => {
 };
 
 const handleCommands = (ctx: ExtensionContext) => {
+	const config = getConfig();
+
 	const enable = async (update = true) => {
 		if (update) {
 			try {
-				await config.update('update', true);
+				await config.update('enabled', true);
 			} catch {}
 		}
 
@@ -150,7 +154,7 @@ const handleCommands = (ctx: ExtensionContext) => {
 	const disable = async (update = true) => {
 		if (update) {
 			try {
-				await config.update('update', false);
+				await config.update('enabled', false);
 			} catch {}
 		}
 
@@ -203,6 +207,8 @@ const handleCommands = (ctx: ExtensionContext) => {
 };
 
 export async function activate(ctx: ExtensionContext) {
+	const config = getConfig();
+
 	logInfo('Initialize the extension...');
 
 	let isWorkspaceExcluded = false;
