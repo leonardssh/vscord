@@ -32,7 +32,7 @@ interface ActivityOptions {
 	isViewing: boolean;
 }
 
-export function sendActivity(options?: ActivityOptions) {
+export async function sendActivity(options?: ActivityOptions) {
 	if (options && 'isViewing' in options) {
 		const { isViewing } = options;
 
@@ -42,13 +42,13 @@ export function sendActivity(options?: ActivityOptions) {
 	}
 
 	presence = {
-		...activity(presence)
+		...(await activity(presence))
 	};
 
 	rpc.setActivity(presence);
 }
 
-export async function toggleIdling(windowState: WindowState) {
+export function toggleIdling(windowState: WindowState) {
 	const config = getConfig();
 
 	if (config[CONFIG_KEYS.IdleTimeout] !== 0) {
@@ -57,7 +57,7 @@ export async function toggleIdling(windowState: WindowState) {
 				clearTimeout(idleCheckTimeout);
 			}
 
-			await sendActivity();
+			void sendActivity();
 		} else {
 			idleCheckTimeout = setTimeout(() => {
 				presence = {
@@ -114,7 +114,7 @@ const handleReady = () => {
 	statusBarIcon.text = '$(smiley) Connected to Discord Gateway';
 	statusBarIcon.tooltip = 'Connected to Discord Gateway.';
 
-	sendActivity();
+	void sendActivity();
 	listen();
 
 	if (timeout) {

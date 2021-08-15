@@ -39,7 +39,11 @@ export const enum CONFIG_KEYS {
 	IdleText = 'idleText',
 	AppName = 'appName',
 	ShowProblems = 'showProblems',
-	ProblemsText = 'problemsText'
+	ProblemsText = 'problemsText',
+	ButtonEnabled = 'buttonEnabled',
+	ButtonActiveLabel = 'buttonActiveLabel',
+	ButtonInactiveLabel = 'buttonInactiveLabel',
+	ButtonInactiveUrl = 'buttonInactiveUrl'
 }
 
 export const enum REPLACE_KEYS {

@@ -28,9 +28,9 @@
 
 # Discord Rich Presence
 
-> Fully customizable VS Code extension to get Discord Rich Presence integration
-
 Remember to 🌟 this Github if you 💖 it.
+
+> Fully customizable VS Code extension to get Discord Rich Presence integration
 
 ## 📌 Features
 
@@ -47,13 +47,14 @@ Remember to 🌟 this Github if you 💖 it.
 - Debug mode detection
 - Easily manually reconnect to Discord Gateway
 - Idle indication when you tab out for a while
+- Button that sends you to the github repository
 
 > All texts is fully customizable using variables and a multitude of config options
 
-![step](https://i.imgur.com/5wpuiix.png)
-![bro](https://i.imgur.com/gUmhay8.png)
-![please](https://i.imgur.com/OgdlUgB.png)
-![fuck me](https://i.imgur.com/kIvk0ss.png)
+![step](https://i.imgur.com/ngZ6vl3.png)
+![bro](https://i.imgur.com/cbrN4L7.png)
+![please](https://i.imgur.com/OI5zCTw.png)
+![fuck me](https://i.imgur.com/SfvYb6y.png)
 
 ## 📥 Installation
 
@@ -75,8 +76,6 @@ Use the **[Extension Marketplace](https://code.visualstudio.com/docs/editor/exte
 
 ![a4](https://i.imgur.com/qMzox38.gif)
 
-**Much of the code in this repository is based on [iCrawl/discord-vscode](https://github.com/iCrawl/discord-vscode) & [Satoqz/vscode-discord](https://github.com/Satoqz/vscode-discord). This extension would not exist without them.**
-
 ## 👨‍💻 Contributing
 
 To contribute to this repository, feel free to create a new fork of the repository and submit a pull request.
@@ -86,6 +85,14 @@ To contribute to this repository, feel free to create a new fork of the reposito
 3. Make your changes.
 4. Commit your changes, and push them.
 5. Submit a Pull Request [here](https://github.com/LeonardSSH/vscord/pulls)!
+
+## 🎉 Thanks
+
+- [discordjs](https://github.com/discordjs/) - Creator of Discord RPC Client
+- [iCrawl](https://github.com/iCrawl) - Creator of [discord-vscode](https://github.com/iCrawl/discord-vscode)
+- [Satoqz](https://github.com/Satoqz) - Creator of [vscode-discord](https://github.com/Satoqz/vscode-discord/)
+
+_Much of the code in this repository is based on [iCrawl/discord-vscode](https://github.com/iCrawl/discord-vscode) & [Satoqz/vscode-discord](https://github.com/Satoqz/vscode-discord). This extension would not exist without them._
 
 ## 📋 License
 

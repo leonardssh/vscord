@@ -23,4 +23,8 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
 	appName: string;
 	showProblems: boolean;
 	problemsText: string;
+	buttonEnabled: boolean;
+	buttonActiveLabel: string;
+	buttonInactiveLabel: string;
+	buttonInactiveUrl: string;
 };

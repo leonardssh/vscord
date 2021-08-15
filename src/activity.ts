@@ -20,7 +20,13 @@ import {
 	VSCODE_IMAGE_KEY,
 	VSCODE_INSIDERS_IMAGE_KEY
 } from './constants';
-import { resolveFileIcon, toLower, toTitle, toUpper } from './utils';
+import {
+	getGitRepo,
+	resolveFileIcon,
+	toLower,
+	toTitle,
+	toUpper
+} from './utils';
 import { basename, parse, sep } from 'path';
 
 let isViewing = false;
@@ -51,9 +57,8 @@ export function onDiagnosticsChange() {
 	totalProblems = counted;
 }
 
-export function activity(previous: Presence = {}): Presence {
+export async function activity(previous: Presence = {}): Promise<Presence> {
 	const config = getConfig();
-
 	const { appName } = env;
 	const insiders = appName.includes('Insiders');
 	const defaultSmallImageKey = debug.activeDebugSession
@@ -112,6 +117,38 @@ export function activity(previous: Presence = {}): Presence {
 			largeImageKey,
 			largeImageText
 		};
+
+		if (config[CONFIG_KEYS.ButtonEnabled]) {
+			const gitRepo = await getGitRepo(
+				window.activeTextEditor.document.fileName
+			);
+
+			if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel]) {
+				presence = {
+					...presence,
+					buttons: [
+						{
+							label: config[CONFIG_KEYS.ButtonActiveLabel],
+							url: gitRepo
+						}
+					]
+				};
+			} else if (
+				!gitRepo &&
+				config[CONFIG_KEYS.ButtonInactiveLabel] &&
+				config[CONFIG_KEYS.ButtonInactiveUrl]
+			) {
+				presence = {
+					...presence,
+					buttons: [
+						{
+							label: config[CONFIG_KEYS.ButtonInactiveLabel],
+							url: config[CONFIG_KEYS.ButtonInactiveUrl]
+						}
+					]
+				};
+			}
+		}
 	}
 
 	return presence;
