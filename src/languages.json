@@ -50,6 +50,7 @@
 		{ "language": "scss", "image": "scss" },
 		{ "language": "sass", "image": "scss" },
 		{ "language": "shaderlab", "image": "manifest" },
+		{ "language": "shellscript", "image": "shell" },
 		{ "language": "slim", "image": "text" },
 		{ "language": "sql", "image": "sql" },
 		{ "language": "stylus", "image": "stylus" },
