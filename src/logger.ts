@@ -1,6 +1,6 @@
 import { window } from 'vscode';
 
-const outputChannel = window.createOutputChannel('VSCord');
+const outputChannel = window.createOutputChannel('RPC');
 
 export const enum LogLevel {
 	Info = 'INFO',
