@@ -103,6 +103,14 @@ async function login() {
 
 		await rpc.destroy();
 
+		if (!config[CONFIG_KEYS.SuppressNotifications]) {
+			error?.message?.includes('ENOENT')
+				? void window.showErrorMessage('No Discord client detected')
+				: void window.showErrorMessage(
+						`Couldn't connect to Discord via RPC: ${error as string}`
+				  );
+		}
+
 		statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
 		statusBarIcon.command = 'rpc.reconnect';
 	}
