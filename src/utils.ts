@@ -54,7 +54,13 @@ export async function getGitRepo(uri: string): Promise<string | null> {
 					return;
 				}
 
-				resolve(gitUrlParse(stdout).toString('https').replace('.git', ''));
+				let repo = null;
+
+				if (stdout.length) {
+					repo = gitUrlParse(stdout).toString('https').replace('.git', '');
+				}
+
+				resolve(repo);
 			}
 		);
 	});
