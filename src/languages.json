@@ -322,6 +322,7 @@
 		".ml4": { "image": "ocaml" },
 		".mll": { "image": "ocaml" },
 		".mly": { "image": "ocaml" },
+		".mt": { "image": "metal" },
 		".odin": { "image": "odin" },
 		"/\\.pas(cal)?$/i": { "image": "pascal" },
 		".lpr": { "image": "pascal" },
