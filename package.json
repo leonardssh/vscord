@@ -46,6 +46,7 @@
 		"bufferutil": "^4.0.3",
 		"discord-rpc": "^4.0.1",
 		"electron": "^13.1.8",
+		"git-url-parse": "^11.5.0",
 		"lodash-es": "^4.17.21",
 		"utf-8-validate": "^5.0.5"
 	},
@@ -56,6 +57,7 @@
 		"@commitlint/cli": "^13.1.0",
 		"@commitlint/config-conventional": "^13.1.0",
 		"@types/discord-rpc": "^4.0.0",
+		"@types/git-url-parse": "^9.0.1",
 		"@types/lodash-es": "^4.17.4",
 		"@types/node": "^16.4.13",
 		"@types/vscode": "^1.59.0",

@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import { basename, parse } from 'path';
 import { TextDocument } from 'vscode';
 import { KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from './constants';
+import gitUrlParse from 'git-url-parse';
 
 export const toLower = (str: string) => str.toLocaleLowerCase();
 export const toUpper = (str: string) => str.toLocaleUpperCase();
@@ -53,25 +54,7 @@ export async function getGitRepo(uri: string): Promise<string | null> {
 					return;
 				}
 
-				let repo = null;
-
-				if (stdout.length) {
-					if (stdout.startsWith('git@') || stdout.startsWith('ssh://')) {
-						repo = stdout
-							.replace('ssh://', '')
-							.replace(':', '/')
-							.replace('git@', 'https://')
-							.replace('.git', '')
-							.replace('\n', '');
-					} else {
-						repo = stdout
-							.replace(/(https:\/\/)([^@]*)@(.*?$)/, '$1$3')
-							.replace('.git', '')
-							.replace('\n', '');
-					}
-				}
-
-				resolve(repo);
+				resolve(gitUrlParse(stdout).toString('https').replace('.git', ''));
 			}
 		);
 	});
