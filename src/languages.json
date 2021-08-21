@@ -71,7 +71,7 @@
 		"/\\.prettier((rc)|(\\.(toml|yml|yaml|json|js))?$){2}/i": {
 			"image": "prettier"
 		},
-		"/\\.eslint((rc)|(\\.(json|js))?$){2}/i": { "image": "eslint" },
+		"/\\.eslint((rc|ignore)|(\\.(json|js))?$){2}/i": { "image": "eslint" },
 		"/\\prettier.config.js/i": { "image": "prettier" },
 		"/vue.config\\.(js|ts)/i": { "image": "vueconfig" },
 		"/vite.config\\.(js|ts)/i": { "image": "viteconfig" },
