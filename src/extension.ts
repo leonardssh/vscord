@@ -11,6 +11,7 @@ import {
 import { activity, toggleViewing } from './activity';
 import { getConfig } from './config';
 import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY } from './constants';
+import { git } from './gitManager';
 import { cleanUp, listen } from './listener';
 import { logError, logInfo } from './logger';
 
@@ -218,7 +219,6 @@ export async function activate(ctx: ExtensionContext) {
 	const config = getConfig();
 
 	logInfo('Initialize the extension...');
-
 	let isWorkspaceExcluded = false;
 	for (const pattern of config[CONFIG_KEYS.IgnoreWorkspaces]) {
 		const regex = new RegExp(pattern);
@@ -243,6 +243,7 @@ export async function activate(ctx: ExtensionContext) {
 }
 
 export function deactivate() {
+	git.dispose();
 	cleanUp();
 	void rpc.destroy();
 }

@@ -20,14 +20,9 @@ import {
 	VSCODE_IMAGE_KEY,
 	VSCODE_INSIDERS_IMAGE_KEY
 } from './constants';
-import {
-	getGitRepo,
-	resolveFileIcon,
-	toLower,
-	toTitle,
-	toUpper
-} from './utils';
+import { resolveFileIcon, toLower, toTitle, toUpper } from './utils';
 import { basename, parse, sep } from 'path';
+import { git } from './gitManager';
 
 let isViewing = false;
 let totalProblems = 0;
@@ -57,7 +52,7 @@ export function onDiagnosticsChange() {
 	totalProblems = counted;
 }
 
-export async function activity(previous: Presence = {}): Promise<Presence> {
+export function activity(previous: Presence = {}): Presence {
 	const config = getConfig();
 	const { appName } = env;
 	const insiders = appName.includes('Insiders');
@@ -119,9 +114,10 @@ export async function activity(previous: Presence = {}): Promise<Presence> {
 		};
 
 		if (config[CONFIG_KEYS.ButtonEnabled]) {
-			const gitRepo = await getGitRepo(
-				window.activeTextEditor.document.fileName
-			);
+			const gitRepo = git
+				.getRemoteURL(parse(window.activeTextEditor.document.fileName))
+				?.toString('https')
+				.replace(/\.git$/, '');
 
 			if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel]) {
 				presence = {
@@ -209,6 +205,10 @@ function details(
 				`${name}${sep}${relativePath.join(sep)}`
 			);
 		}
+		// git stuff
+		const file_path = parse(window.activeTextEditor.document.fileName);
+		const repo = git.getRemoteURL(file_path)?.name ?? FAKE_EMPTY;
+		const branch = git.getBranchName(file_path) ?? FAKE_EMPTY;
 
 		raw = fileDetails(
 			raw,
@@ -225,7 +225,9 @@ function details(
 			.replace(REPLACE_KEYS.LanguageLowerCase, toLower(fileIcon))
 			.replace(REPLACE_KEYS.LanguageTitleCase, toTitle(fileIcon))
 			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(fileIcon))
-			.replace(REPLACE_KEYS.Problems, problems);
+			.replace(REPLACE_KEYS.Problems, problems)
+			.replace(REPLACE_KEYS.GitRepo, repo)
+			.replace(REPLACE_KEYS.GitBranch, branch);
 	}
 
 	return raw;

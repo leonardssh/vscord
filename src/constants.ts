@@ -63,5 +63,7 @@ export const enum REPLACE_KEYS {
 	CurrentColumn = '{current_column}',
 	AppName = '{app_name}',
 	Problems = '{problems}',
-	ProblemsCount = '{problemsCount}'
+	ProblemsCount = '{problemsCount}',
+	GitRepo = '{git_repo}',
+	GitBranch = '{git_branch}'
 }
