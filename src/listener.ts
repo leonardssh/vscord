@@ -11,6 +11,7 @@ import { CONFIG_KEYS } from './constants';
 import { sendActivity, toggleIdling } from './extension';
 import throttle from 'lodash-es/throttle';
 import { onDiagnosticsChange } from './activity';
+import { dataClass } from './data';
 
 let listeners: Disposable[] = [];
 
@@ -28,7 +29,8 @@ export function listen() {
 		fileSwitch(() => sendActivity({ isViewing: true })),
 		fileEdit(throttle(() => sendActivity({ isViewing: false }), 2000)),
 		debugStart(() => sendActivity()),
-		debugEnd(() => sendActivity())
+		debugEnd(() => sendActivity()),
+		dataClass.onUpdate(() => sendActivity())
 	);
 
 	if (config[CONFIG_KEYS.ShowProblems]) {
