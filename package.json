@@ -37,7 +37,7 @@
 	},
 	"author": "LeonardSSH <leonardssh22@gmail.com> (https://leonard.sh)",
 	"license": "MIT",
-	"publisher": "LeonardSSH",
+	"publisher": "vscord-extension",
 	"bugs": {
 		"url": "https://github.com/LeonardSSH/vscord/issues"
 	},
