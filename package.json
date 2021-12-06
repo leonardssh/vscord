@@ -259,7 +259,7 @@
 				"rpc.buttonActiveLabel": {
 					"type": "string",
 					"default": "View Repository",
-					"description": "The label to show on the button when the file you are currently editing is located in a Git repository.."
+					"description": "The label to show on the button when the file you are currently editing is located in a Git repository."
 				},
 				"rpc.buttonInactiveLabel": {
 					"type": "string",
