@@ -32,14 +32,10 @@ interface ActivityOptions {
 	isViewing: boolean;
 }
 
-export async function sendActivity(options?: ActivityOptions) {
-	if (options && 'isViewing' in options) {
-		const { isViewing } = options;
-
-		if (isViewing !== undefined) {
-			toggleViewing(isViewing);
-		}
-	}
+export async function sendActivity(
+	options: ActivityOptions = { isViewing: false }
+) {
+	toggleViewing(options.isViewing);
 
 	presence = {
 		...(await activity(presence))
