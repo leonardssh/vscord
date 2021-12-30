@@ -1,11 +1,4 @@
-import {
-	debug,
-	Disposable,
-	languages,
-	window,
-	WindowState,
-	workspace
-} from 'vscode';
+import { debug, Disposable, languages, window, WindowState, workspace } from 'vscode';
 import { getConfig } from './config';
 import { CONFIG_KEYS } from './constants';
 import { sendActivity, toggleIdling } from './extension';

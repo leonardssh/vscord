@@ -1,13 +1,5 @@
 import { Presence } from 'discord-rpc';
-import {
-	commands,
-	ExtensionContext,
-	StatusBarAlignment,
-	StatusBarItem,
-	window,
-	WindowState,
-	workspace
-} from 'vscode';
+import { commands, ExtensionContext, StatusBarAlignment, StatusBarItem, window, WindowState } from 'vscode';
 import { activity, toggleViewing } from './activity';
 import { getConfig } from './config';
 import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY } from './constants';
@@ -22,9 +14,7 @@ let presence: Presence = {};
 let idleCheckTimeout: NodeJS.Timer | undefined = undefined;
 let timeout: NodeJS.Timeout | undefined = undefined;
 
-const statusBarIcon: StatusBarItem = window.createStatusBarItem(
-	StatusBarAlignment.Left
-);
+const statusBarIcon: StatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
 
 statusBarIcon.text = '$(pulse) Connecting to Discord Gateway...';
 
@@ -32,9 +22,7 @@ interface ActivityOptions {
 	isViewing: boolean;
 }
 
-export async function sendActivity(
-	options: ActivityOptions = { isViewing: false }
-) {
+export async function sendActivity(options: ActivityOptions = { isViewing: false }) {
 	toggleViewing(options.isViewing);
 
 	presence = {
@@ -102,9 +90,7 @@ async function login() {
 		if (!config[CONFIG_KEYS.SuppressNotifications]) {
 			error?.message?.includes('ENOENT')
 				? void window.showErrorMessage('No Discord client detected')
-				: void window.showErrorMessage(
-						`Couldn't connect to Discord via RPC: ${error as string}`
-				  );
+				: void window.showErrorMessage(`Couldn't connect to Discord via RPC: ${error as string}`);
 		}
 
 		statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
@@ -171,67 +157,38 @@ const handleCommands = (ctx: ExtensionContext) => {
 	const enableCommand = commands.registerCommand('rpc.enable', async () => {
 		await disable();
 		await enable();
-		await window.showInformationMessage(
-			'Enabled Discord Rich Presence for this workspace.'
-		);
+		await window.showInformationMessage('Enabled Discord Rich Presence for this workspace.');
 	});
 
 	const disableCommand = commands.registerCommand('rpc.disable', async () => {
 		await disable();
-		await window.showInformationMessage(
-			'Disabled Discord Rich Presence for this workspace.'
-		);
+		await window.showInformationMessage('Disabled Discord Rich Presence for this workspace.');
 	});
 
-	const reconnectCommand = commands.registerCommand(
-		'rpc.reconnect',
-		async () => {
-			await disable(false);
-			await enable(false);
-		}
-	);
+	const reconnectCommand = commands.registerCommand('rpc.reconnect', async () => {
+		await disable(false);
+		await enable(false);
+	});
 
-	const disconnectCommand = commands.registerCommand(
-		'rpc.disconnect',
-		async () => {
-			await disable(false);
+	const disconnectCommand = commands.registerCommand('rpc.disconnect', async () => {
+		await disable(false);
 
-			statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
-			statusBarIcon.command = 'rpc.reconnect';
-			statusBarIcon.show();
-		}
-	);
+		statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
+		statusBarIcon.command = 'rpc.reconnect';
+		statusBarIcon.show();
+	});
 
-	ctx.subscriptions.push(
-		enableCommand,
-		disableCommand,
-		reconnectCommand,
-		disconnectCommand
-	);
+	ctx.subscriptions.push(enableCommand, disableCommand, reconnectCommand, disconnectCommand);
 };
 
 export async function activate(ctx: ExtensionContext) {
 	const config = getConfig();
 
 	logInfo('Initialize the extension...');
-	let isWorkspaceExcluded = false;
-	for (const pattern of config[CONFIG_KEYS.IgnoreWorkspaces]) {
-		const regex = new RegExp(pattern);
-		const folders = workspace.workspaceFolders;
-
-		if (!folders) {
-			break;
-		}
-
-		if (folders.some((folder) => regex.test(folder.uri.fsPath))) {
-			isWorkspaceExcluded = true;
-			break;
-		}
-	}
 
 	handleCommands(ctx);
 
-	if (!isWorkspaceExcluded && config[CONFIG_KEYS.Enabled]) {
+	if (config[CONFIG_KEYS.Enabled]) {
 		statusBarIcon.show();
 		await login();
 	}

@@ -1,13 +1,6 @@
 import gitUrlParse from 'git-url-parse';
 import { parse, ParsedPath, sep } from 'path';
-import {
-	Disposable,
-	EventEmitter,
-	Extension,
-	extensions,
-	window,
-	workspace
-} from 'vscode';
+import { Disposable, EventEmitter, Extension, extensions, window, workspace, WorkspaceFolder } from 'vscode';
 import { API as GitApi, GitExtension, Remote, Repository } from './git';
 import { logInfo } from './logger';
 
@@ -35,9 +28,7 @@ export class Data implements DisposableLike {
 
 	public constructor(debugLevel = 0) {
 		this._debug = debugLevel;
-		this._file = window.activeTextEditor
-			? parse(window.activeTextEditor.document.fileName)
-			: undefined;
+		this._file = window.activeTextEditor ? parse(window.activeTextEditor.document.fileName) : undefined;
 		this.ext();
 		this.api(this.gitExt?.exports.enabled || false);
 		this.rootListeners.push(
@@ -83,11 +74,11 @@ export class Data implements DisposableLike {
 		return v;
 	}
 
-	public get workspaceFolder(): string | undefined {
+	public get workspaceFolder(): WorkspaceFolder | undefined {
 		const uri = window?.activeTextEditor?.document.uri;
-		let v: string | undefined = undefined;
+		let v: WorkspaceFolder | undefined = undefined;
 		if (uri) {
-			v = workspace.getWorkspaceFolder(uri)?.name;
+			v = workspace.getWorkspaceFolder(uri);
 		}
 		this.debug(4, `workspaceFolder(): ${uri ? 'Found URI' : 'No URI'} ${v}`);
 		return v;
@@ -166,9 +157,7 @@ export class Data implements DisposableLike {
 			if (this.gitExt.isActive) {
 				logInfo(`[data.ts] ext(): Git extension is active`);
 				this.api(this.gitExt.exports.enabled);
-				this.gitExtListeners.push(
-					this.gitExt.exports.onDidChangeEnablement((e) => this.api(e))
-				);
+				this.gitExtListeners.push(this.gitExt.exports.onDidChangeEnablement((e) => this.api(e)));
 			} else {
 				logInfo(`[data.ts] ext(): activate`);
 				void ext.activate();
@@ -205,17 +194,11 @@ export class Data implements DisposableLike {
 		}
 		this.gitApiListeners.push(
 			this.gitApi.onDidOpenRepository((e) => {
-				this.debug(
-					1,
-					`listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop()}`
-				);
+				this.debug(1, `listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop()}`);
 				this.updateGit();
 			}),
 			this.gitApi.onDidCloseRepository((e) => {
-				this.debug(
-					1,
-					`listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop()}`
-				);
+				this.debug(1, `listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop()}`);
 				this.updateGit();
 			}),
 			this.gitApi.onDidChangeState((e) => {
@@ -263,11 +246,7 @@ export class Data implements DisposableLike {
 					// filter out paths witch are longer than the file path; they can't by definition include them
 					.filter((v) => v.rootUri.fsPath.length <= testString.length)
 					// filter out paths wich don't match
-					.filter(
-						(v) =>
-							v.rootUri.fsPath ===
-							testString.substring(0, v.rootUri.fsPath.length)
-					)
+					.filter((v) => v.rootUri.fsPath === testString.substring(0, v.rootUri.fsPath.length))
 					// sort the results length (longest in front)
 					.sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
 					// get first element
@@ -290,15 +269,9 @@ export class Data implements DisposableLike {
 				?.map((workspace) =>
 					repos
 						// filter out paths witch are longer than the file path; they can't by definition include them
-						.filter(
-							(v) => v.rootUri.fsPath.length <= workspace.uri.fsPath.length
-						)
+						.filter((v) => v.rootUri.fsPath.length <= workspace.uri.fsPath.length)
 						// filter out paths wich don't match
-						.filter(
-							(v) =>
-								v.rootUri.fsPath ===
-								workspace.uri.fsPath.substring(0, v.rootUri.fsPath.length)
-						)
+						.filter((v) => v.rootUri.fsPath === workspace.uri.fsPath.substring(0, v.rootUri.fsPath.length))
 						// sort the results length (shortest in front)
 						.sort((a, b) => a.rootUri.fsPath.length - b.rootUri.fsPath.length)
 						// get first element

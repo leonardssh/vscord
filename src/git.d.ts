@@ -173,13 +173,8 @@ export interface Repository {
 	setConfig(key: string, value: string): Promise<string>;
 	getGlobalConfig(key: string): Promise<string>;
 
-	getObjectDetails(
-		treeish: string,
-		path: string
-	): Promise<{ mode: string; object: string; size: number }>;
-	detectObjectType(
-		object: string
-	): Promise<{ mimetype: string; encoding?: string }>;
+	getObjectDetails(treeish: string, path: string): Promise<{ mode: string; object: string; size: number }>;
+	detectObjectType(object: string): Promise<{ mimetype: string; encoding?: string }>;
 	buffer(ref: string, path: string): Promise<Buffer>;
 	show(ref: string, path: string): Promise<string>;
 	getCommit(ref: string): Promise<Commit>;
@@ -220,12 +215,7 @@ export interface Repository {
 	fetch(options?: FetchOptions): Promise<void>;
 	fetch(remote?: string, ref?: string, depth?: number): Promise<void>;
 	pull(unshallow?: boolean): Promise<void>;
-	push(
-		remoteName?: string,
-		branchName?: string,
-		setUpstream?: boolean,
-		force?: ForcePushMode
-	): Promise<void>;
+	push(remoteName?: string, branchName?: string, setUpstream?: boolean, force?: ForcePushMode): Promise<void>;
 
 	blame(path: string): Promise<string>;
 	log(options?: LogOptions): Promise<Commit[]>;
@@ -258,12 +248,7 @@ export interface CredentialsProvider {
 }
 
 export interface PushErrorHandler {
-	handlePushError(
-		repository: Repository,
-		remote: Remote,
-		refspec: string,
-		error: Error & { gitErrorCode: GitErrorCodes }
-	): Promise<boolean>;
+	handlePushError(repository: Repository, remote: Remote, refspec: string, error: Error & { gitErrorCode: GitErrorCodes }): Promise<boolean>;
 }
 
 export type APIState = 'uninitialized' | 'initialized';

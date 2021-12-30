@@ -1,11 +1,9 @@
 /* eslint-disable prefer-destructuring */
 import LANG from './languages.json';
 
-export const KNOWN_EXTENSIONS: { [key: string]: { image: string } } =
-	LANG.KNOWN_EXTENSIONS;
+export const KNOWN_EXTENSIONS: { [key: string]: { image: string } } = LANG.KNOWN_EXTENSIONS;
 
-export const KNOWN_LANGUAGES: { language: string; image: string }[] =
-	LANG.KNOWN_LANGUAGES;
+export const KNOWN_LANGUAGES: { language: string; image: string }[] = LANG.KNOWN_LANGUAGES;
 
 export const EMPTY = '' as const;
 export const FAKE_EMPTY = '\u200b\u200b' as const;
@@ -34,6 +32,7 @@ export const enum CONFIG_KEYS {
 	SmallImage = 'smallImage',
 	RemoveElapsedTime = 'removeElapsedTime',
 	IgnoreWorkspaces = 'ignoreWorkspaces',
+	IgnoreWorkspacesText = 'ignoreWorkspacesText',
 	IdleTimeout = 'idleTimeout',
 	CheckIdle = 'checkIdle',
 	IdleText = 'idleText',
