@@ -218,7 +218,6 @@ export async function activate(ctx: ExtensionContext) {
 	const config = getConfig();
 
 	logInfo('Initialize the extension...');
-
 	let isWorkspaceExcluded = false;
 	for (const pattern of config[CONFIG_KEYS.IgnoreWorkspaces]) {
 		const regex = new RegExp(pattern);

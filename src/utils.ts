@@ -1,8 +1,6 @@
-import { exec } from 'child_process';
-import { basename, parse } from 'path';
+import { basename } from 'path';
 import { TextDocument } from 'vscode';
 import { KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from './constants';
-import gitUrlParse from 'git-url-parse';
 
 export const toLower = (str: string) => str.toLocaleLowerCase();
 export const toUpper = (str: string) => str.toLocaleUpperCase();
@@ -36,32 +34,4 @@ export function resolveFileIcon(document: TextDocument) {
 		: null;
 
 	return typeof fileIcon === 'string' ? fileIcon : fileIcon?.image ?? 'text';
-}
-
-export async function getGitRepo(uri: string): Promise<string | null> {
-	const { dir } = parse(uri);
-
-	return new Promise((resolve, reject) => {
-		exec(
-			`git config --get remote.origin.url`,
-			{ cwd: dir },
-			// https://git-scm.com/docs/git-check-ignore#_exit_status
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			(error: Error & { code?: 0 | 1 | 128 }, stdout) => {
-				if (error && error.code !== 0 && error.code !== 1) {
-					reject(error);
-					return;
-				}
-
-				let repo = null;
-
-				if (stdout.length) {
-					repo = gitUrlParse(stdout).toString('https').replace('.git', '');
-				}
-
-				resolve(repo);
-			}
-		);
-	});
 }

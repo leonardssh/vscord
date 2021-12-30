@@ -20,14 +20,10 @@ import {
 	VSCODE_IMAGE_KEY,
 	VSCODE_INSIDERS_IMAGE_KEY
 } from './constants';
-import {
-	getGitRepo,
-	resolveFileIcon,
-	toLower,
-	toTitle,
-	toUpper
-} from './utils';
-import { basename, parse, sep } from 'path';
+import { resolveFileIcon, toLower, toTitle, toUpper } from './utils';
+import { sep } from 'path';
+import { dataClass } from './data';
+import { logInfo } from './logger';
 
 let isViewing = false;
 let totalProblems = 0;
@@ -57,7 +53,7 @@ export function onDiagnosticsChange() {
 	totalProblems = counted;
 }
 
-export async function activity(previous: Presence = {}): Promise<Presence> {
+export function activity(previous: Presence = {}): Presence {
 	const config = getConfig();
 	const { appName } = env;
 	const insiders = appName.includes('Insiders');
@@ -119,9 +115,9 @@ export async function activity(previous: Presence = {}): Promise<Presence> {
 		};
 
 		if (config[CONFIG_KEYS.ButtonEnabled]) {
-			const gitRepo = await getGitRepo(
-				window.activeTextEditor.document.fileName
-			);
+			const gitRepo = dataClass.gitRemoteUrl
+				?.toString('https')
+				.replace(/\.git$/, '');
 
 			if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel]) {
 				presence = {
@@ -165,21 +161,12 @@ function details(
 	let raw = (config[idling] as string).replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
 	if (window.activeTextEditor) {
-		const fileName = basename(window.activeTextEditor.document.fileName);
-		const { dir } = parse(window.activeTextEditor.document.fileName);
-		const split = dir.split(sep);
-		const dirName = split[split.length - 1];
-
 		const noWorkspaceFound = config[
 			CONFIG_KEYS.LowerDetailsNoWorkspaceFound
 		].replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
-		const workspaceFolder = workspace.getWorkspaceFolder(
-			window.activeTextEditor.document.uri
-		);
-
-		const workspaceFolderName = workspaceFolder?.name ?? noWorkspaceFound;
-		const workspaceName = workspace.name ?? workspaceFolderName;
+		const workspaceFolderName = dataClass.workspaceFolder ?? noWorkspaceFound;
+		const workspaceName = dataClass.workspace ?? workspaceFolderName;
 		const workspaceAndFolder = `${workspaceName}${
 			workspaceFolderName === FAKE_EMPTY ? '' : ` - ${workspaceFolderName}`
 		}`;
@@ -197,8 +184,8 @@ function details(
 			debug.activeDebugSession ? debugging : isViewing ? viewing : editing
 		] as string;
 
-		if (workspaceFolder) {
-			const { name } = workspaceFolder;
+		if (dataClass.workspace) {
+			const name = dataClass.workspace;
 			const relativePath = workspace
 				.asRelativePath(window.activeTextEditor.document.fileName)
 				.split(sep);
@@ -215,17 +202,21 @@ function details(
 			window.activeTextEditor.document,
 			window.activeTextEditor.selection
 		);
-
 		raw = raw
-			.replace(REPLACE_KEYS.FileName, fileName)
-			.replace(REPLACE_KEYS.DirName, dirName)
+			.replace(REPLACE_KEYS.FileName, dataClass.fileName ?? FAKE_EMPTY)
+			.replace(REPLACE_KEYS.DirName, dataClass.dirName ?? FAKE_EMPTY)
 			.replace(REPLACE_KEYS.Workspace, workspaceName)
 			.replace(REPLACE_KEYS.WorkspaceFolder, workspaceFolderName)
 			.replace(REPLACE_KEYS.WorkspaceAndFolder, workspaceAndFolder)
 			.replace(REPLACE_KEYS.LanguageLowerCase, toLower(fileIcon))
 			.replace(REPLACE_KEYS.LanguageTitleCase, toTitle(fileIcon))
 			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(fileIcon))
-			.replace(REPLACE_KEYS.Problems, problems);
+			.replace(REPLACE_KEYS.Problems, problems)
+			.replace(
+				REPLACE_KEYS.GitRepo,
+				dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName ?? FAKE_EMPTY
+			)
+			.replace(REPLACE_KEYS.GitBranch, dataClass.gitBranchName ?? FAKE_EMPTY);
 	}
 
 	return raw;

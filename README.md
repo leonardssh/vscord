@@ -28,7 +28,7 @@
 
 # Discord Rich Presence
 
-Remember to 🌟 this Github if you 💖 it.
+Remember to 🌟 this GitHub if you 💖 it.
 
 > Fully customizable VS Code extension to get Discord Rich Presence integration
 
@@ -39,6 +39,7 @@ Remember to 🌟 this Github if you 💖 it.
 - Shows what you're working on in Visual Studio Code
 - Shows the amount of problems in your workspace
 - Shows the number of lines in your file and which line you're editing
+- Shows the git repository and branch you are working on
 - Respects Discords 15sec limit when it comes to updating your status
 - Support for over 130+ of the most popular languages
 - Enable/Disable RPC for individual workspaces
@@ -47,9 +48,11 @@ Remember to 🌟 this Github if you 💖 it.
 - Debug mode detection
 - Easily manually reconnect to Discord Gateway
 - Idle indication when you tab out for a while
-- Button that sends you to the github repository
+- Button that sends you to the GitHub repository
 
-> All texts is fully customizable using variables and a multitude of config options
+> All texts are fully customizable using variables and a multitude of config options
+
+<!--You know other people can read this too?-->
 
 ![step](https://i.imgur.com/U5MQShU.png)
 ![bro](https://i.imgur.com/GCi2Pva.png)
