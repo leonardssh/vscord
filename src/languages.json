@@ -230,6 +230,7 @@
 		".rest": { "image": "http" },
 		".jar": { "image": "jar" },
 		".java": { "image": "java" },
+		".j2": { "image": "jinja" },
 		".jinja": { "image": "jinja" },
 		".js": { "image": "js" },
 		".es6": { "image": "js" },
