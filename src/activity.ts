@@ -40,14 +40,14 @@ export function toggleViewing(viewing: boolean) {
 }
 
 export function onDiagnosticsChange() {
-	const diag = languages.getDiagnostics();
+	const diagnostics = languages.getDiagnostics();
 
 	let counted = 0;
 
-	diag.forEach((i: any) => {
-		if (i[1]) {
-			i[1].forEach((i: any) => {
-				if (i.severity === DiagnosticSeverity.Warning || i.severity === DiagnosticSeverity.Error) {
+	diagnostics.forEach((diagnostic) => {
+		if (diagnostic[1]) {
+			diagnostic[1].forEach((diagnostic) => {
+				if (diagnostic.severity === DiagnosticSeverity.Warning || diagnostic.severity === DiagnosticSeverity.Error) {
 					counted++;
 				}
 			});
