@@ -218,6 +218,16 @@
 					"default": false,
 					"description": "Controls if the RPC should display elapsed time for a workspace or a single file."
 				},
+				"rpc.removeDetails": {
+					"type": "boolean",
+					"default": false,
+					"description": "Controls if the RPC should remove the details"
+				},
+				"rpc.removeLowerDetails": {
+					"type": "boolean",
+					"default": false,
+					"description": "Controls if the RPC should remove the lower details"
+				},
 				"rpc.showProblems": {
 					"type": "boolean",
 					"default": true,

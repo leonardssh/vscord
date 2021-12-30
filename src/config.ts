@@ -16,6 +16,8 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
 	largeImage: string;
 	smallImage: string;
 	removeElapsedTime: boolean;
+	removeDetails: boolean;
+	removeLowerDetails: boolean;
 	ignoreWorkspaces: string[];
 	ignoreWorkspacesText: string | string[];
 	idleTimeout: number;

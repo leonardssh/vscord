@@ -60,13 +60,20 @@ export function onDiagnosticsChange() {
 export function activity(previous: Presence = {}): Presence {
 	const config = getConfig();
 	const { appName } = env;
+
 	const insiders = appName.includes('Insiders');
+
 	const defaultSmallImageKey = debug.activeDebugSession ? DEBUGGING_IMAGE_KEY : insiders ? VSCODE_INSIDERS_IMAGE_KEY : VSCODE_IMAGE_KEY;
 	const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(REPLACE_KEYS.AppName, appName);
 	const defaultLargeImageText = config[CONFIG_KEYS.LargeImageIdling];
 
+	const removeDetails = config[CONFIG_KEYS.RemoveDetails];
+	const removeLowerDetails = config[CONFIG_KEYS.RemoveLowerDetails];
+
 	let presence: Presence = {
-		details: details(CONFIG_KEYS.DetailsIdling, CONFIG_KEYS.DetailsViewing, CONFIG_KEYS.DetailsEditing, CONFIG_KEYS.DetailsDebugging),
+		details: removeDetails
+			? undefined
+			: details(CONFIG_KEYS.DetailsIdling, CONFIG_KEYS.DetailsViewing, CONFIG_KEYS.DetailsEditing, CONFIG_KEYS.DetailsDebugging),
 		startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime] ? undefined : previous.startTimestamp ?? Date.now(),
 		largeImageKey: insiders ? IDLE_VSCODE_IMAGE_KEY : IDLE_VSCODE_INSIDERS_IMAGE_KEY,
 		largeImageText: defaultLargeImageText,
@@ -95,10 +102,14 @@ export function activity(previous: Presence = {}): Presence {
 
 		presence = {
 			...presence,
-			details: isWorkspaceExcluded
+			details: removeDetails
+				? undefined
+				: isWorkspaceExcluded
 				? workspaceExcludedText
 				: details(CONFIG_KEYS.DetailsIdling, CONFIG_KEYS.DetailsViewing, CONFIG_KEYS.DetailsEditing, CONFIG_KEYS.DetailsDebugging),
-			state: isWorkspaceExcluded
+			state: removeLowerDetails
+				? undefined
+				: isWorkspaceExcluded
 				? undefined
 				: details(
 						CONFIG_KEYS.LowerDetailsIdling,

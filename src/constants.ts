@@ -31,6 +31,8 @@ export const enum CONFIG_KEYS {
 	LargeImage = 'largeImage',
 	SmallImage = 'smallImage',
 	RemoveElapsedTime = 'removeElapsedTime',
+	RemoveDetails = 'removeDetails',
+	RemoveLowerDetails = 'removeLowerDetails',
 	IgnoreWorkspaces = 'ignoreWorkspaces',
 	IgnoreWorkspacesText = 'ignoreWorkspacesText',
 	IdleTimeout = 'idleTimeout',
