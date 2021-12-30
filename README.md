@@ -6,22 +6,37 @@
 
 <br>
 
-<p align="center">
-    <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://img.shields.io/visual-studio-marketplace/v/LeonardSSH.vscord" />
-    </a>
-    <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://img.shields.io/visual-studio-marketplace/d/LeonardSSH.vscord" />
-    </a>
-    <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord" />
-    </a>
-    <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-        <img src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg" />
-    </a>
-      <a href="https://gitter.im/LeonardSSH/vscord-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
-        <img src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
-    </a>
+<p>
+    <p align="center">
+        <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
+            <img alt="Visual Studio Marketplace Version" src="https://img.shields.io/visual-studio-marketplace/v/LeonardSSH.vscord?label=Visual%20Studio%20Marketplace" />
+        </a>
+        <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
+            <img alt="Visual Studio Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/LeonardSSH.vscord" />
+        </a>
+        <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
+            <img alt="Visual Studio Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord" />
+        </a>
+        <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
+            <img alt="Visual Studio Marketplace Rating" src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg" />
+        </a>
+    </p>
+    <p align="center">
+		<a href="https://open-vsx.org/extension/vscord-extension/vscord">
+			<img alt="Open VSX Version" src="https://img.shields.io/open-vsx/v/vscord-extension/vscord?label=OpenVSX%20Marketplace">
+		</a>
+		<a href="https://open-vsx.org/extension/vscord-extension/vscord">
+			<img alt="Open VSX Downloads" src="https://img.shields.io/open-vsx/dt/vscord-extension/vscord">
+		</a>
+		<a href="https://open-vsx.org/extension/vscord-extension/vscord">
+			<img alt="Open VSX Rating" src="https://img.shields.io/open-vsx/rating/vscord-extension/vscord">
+		</a>
+	</p>
+    <p align="center">
+        <a href="https://gitter.im/LeonardSSH/vscord-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
+            <img src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
+        </a>
+    </p>
 </p>
 
 <br>
