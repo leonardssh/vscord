@@ -38,6 +38,24 @@ function isWorkspaceExcluded(workspace: WorkspaceFolder | undefined) {
 	return { status: isExcluded, workspace };
 }
 
+function isRepositoryExcluded(repository: string | undefined) {
+	if (!repository) {
+		return false;
+	}
+
+	const config = getConfig();
+
+	if (!config[CONFIG_KEYS.IgnoreRepositories].length) {
+		return false;
+	}
+
+	const ignoreRepositoriesPattern = config[CONFIG_KEYS.IgnoreRepositories].join('|');
+	const regex = new RegExp(ignoreRepositoriesPattern, 'gm');
+
+	const isExcluded = regex.test(repository);
+	return isExcluded;
+}
+
 export function toggleViewing(viewing: boolean) {
 	isViewing = viewing;
 }
@@ -115,8 +133,9 @@ export function activity(previous: Presence = {}): Presence {
 
 		if (config[CONFIG_KEYS.ButtonEnabled]) {
 			const gitRepo = dataClass.gitRemoteUrl?.toString('https').replace(/\.git$/, '');
+			const repositoryExcluded = isRepositoryExcluded(gitRepo);
 
-			if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel]) {
+			if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && !repositoryExcluded && !isExcluded) {
 				presence = {
 					...presence,
 					buttons: [

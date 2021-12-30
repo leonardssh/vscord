@@ -278,6 +278,14 @@
 					"default": null,
 					"description": "The URL of the button when you are not editing a file in a Git repository. Set to null to disable."
 				},
+				"rpc.ignoreRepositories": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"description": "List of patterns to match repository names that should prevent its display in the button."
+				},
 				"rpc.suppressNotifications": {
 					"type": "boolean",
 					"default": false,

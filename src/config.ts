@@ -28,6 +28,7 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
 	buttonActiveLabel: string;
 	buttonInactiveLabel: string;
 	buttonInactiveUrl: string;
+	ignoreRepositories: string[];
 	suppressNotifications: boolean;
 };
 

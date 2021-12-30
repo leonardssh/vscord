@@ -43,6 +43,7 @@ export const enum CONFIG_KEYS {
 	ButtonActiveLabel = 'buttonActiveLabel',
 	ButtonInactiveLabel = 'buttonInactiveLabel',
 	ButtonInactiveUrl = 'buttonInactiveUrl',
+	IgnoreRepositories = 'ignoreRepositories',
 	SuppressNotifications = 'suppressNotifications'
 }
 
