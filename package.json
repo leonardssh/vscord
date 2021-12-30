@@ -234,10 +234,13 @@
 						"type": "string"
 					},
 					"default": [],
-					"description": "List of patterns to match workspace names that should prevent the extension from starting."
+					"description": "List of patterns to match workspace names that should prevent their display."
 				},
 				"rpc.ignoreWorkspacesText": {
-					"type": "string",
+					"type": [
+						"string",
+						"object"
+					],
 					"description": "Custom text string that is displayed if a workspace folder has been detected in the ignore list."
 				},
 				"rpc.checkIdle": {

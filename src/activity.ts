@@ -15,21 +15,27 @@ import {
 import { resolveFileIcon, toLower, toTitle, toUpper } from './utils';
 import { sep } from 'path';
 import { dataClass } from './data';
+import isObject from 'lodash/isObject';
 
 let isViewing = false;
 let totalProblems = 0;
 
 function isWorkspaceExcluded(workspace: WorkspaceFolder | undefined) {
 	if (!workspace) {
-		return false;
+		return { status: false, workspace: undefined };
 	}
 
 	const config = getConfig();
-	const pattern = config[CONFIG_KEYS.IgnoreWorkspaces].join('|');
-	const regex = new RegExp(pattern, 'gm');
+
+	if (!config[CONFIG_KEYS.IgnoreWorkspaces].length) {
+		return { status: false, workspace };
+	}
+
+	const ignoreWorkspacesPattern = config[CONFIG_KEYS.IgnoreWorkspaces].join('|');
+	const regex = new RegExp(ignoreWorkspacesPattern, 'gm');
 
 	const isExcluded = regex.test(workspace.uri.fsPath);
-	return isExcluded ? true : false;
+	return { status: isExcluded, workspace };
 }
 
 export function toggleViewing(viewing: boolean) {
@@ -59,9 +65,7 @@ export function activity(previous: Presence = {}): Presence {
 	const { appName } = env;
 	const insiders = appName.includes('Insiders');
 	const defaultSmallImageKey = debug.activeDebugSession ? DEBUGGING_IMAGE_KEY : insiders ? VSCODE_INSIDERS_IMAGE_KEY : VSCODE_IMAGE_KEY;
-
 	const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(REPLACE_KEYS.AppName, appName);
-
 	const defaultLargeImageText = config[CONFIG_KEYS.LargeImageIdling];
 
 	let presence: Presence = {
@@ -81,15 +85,23 @@ export function activity(previous: Presence = {}): Presence {
 			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(largeImageKey))
 			.padEnd(2, FAKE_EMPTY);
 
-		const workspaceExcluded = isWorkspaceExcluded(dataClass.workspaceFolder);
-		const workspaceExcludedText = config[CONFIG_KEYS.IgnoreWorkspacesText];
+		const { status: isExcluded, workspace: workspaceExcluded } = isWorkspaceExcluded(dataClass.workspaceFolder);
+
+		let workspaceExcludedText = '';
+
+		if (isExcluded && workspaceExcluded) {
+			workspaceExcludedText = isObject(config[CONFIG_KEYS.IgnoreWorkspacesText])
+				? // @ts-ignore Element implicitly has an 'any' type because index expression is not of type 'number'.
+				  config[CONFIG_KEYS.IgnoreWorkspacesText][workspaceExcluded.name] ?? 'No workspace ignore text provided.'
+				: (config[CONFIG_KEYS.IgnoreWorkspacesText] as string);
+		}
 
 		presence = {
 			...presence,
-			details: workspaceExcluded
+			details: isExcluded
 				? workspaceExcludedText
 				: details(CONFIG_KEYS.DetailsIdling, CONFIG_KEYS.DetailsViewing, CONFIG_KEYS.DetailsEditing, CONFIG_KEYS.DetailsDebugging),
-			state: workspaceExcluded
+			state: isExcluded
 				? undefined
 				: details(
 						CONFIG_KEYS.LowerDetailsIdling,
