@@ -1,6 +1,6 @@
 import { Presence } from 'discord-rpc';
 import { getConfig } from './config';
-import { debug, DiagnosticSeverity, env, languages, Selection, TextDocument, window, workspace, WorkspaceFolder } from 'vscode';
+import { debug, DiagnosticSeverity, env, languages, Selection, TextDocument, window, workspace } from 'vscode';
 import {
 	CONFIG_KEYS,
 	DEBUGGING_IMAGE_KEY,
@@ -20,40 +20,19 @@ import isObject from 'lodash/isObject';
 let isViewing = false;
 let totalProblems = 0;
 
-function isWorkspaceExcluded(workspace: WorkspaceFolder | undefined) {
-	if (!workspace) {
-		return { status: false, workspace: undefined };
-	}
-
-	const config = getConfig();
-
-	if (!config[CONFIG_KEYS.IgnoreWorkspaces].length) {
-		return { status: false, workspace };
-	}
-
-	const ignoreWorkspacesPattern = config[CONFIG_KEYS.IgnoreWorkspaces].join('|');
-	const regex = new RegExp(ignoreWorkspacesPattern, 'gm');
-
-	const isExcluded = regex.test(workspace.uri.fsPath);
-	return { status: isExcluded, workspace };
-}
-
-function isRepositoryExcluded(repository: string | undefined) {
-	if (!repository) {
+function isExcluded(config: string[], toMatch?: string) {
+	if (!config || !toMatch) {
 		return false;
 	}
 
-	const config = getConfig();
-
-	if (!config[CONFIG_KEYS.IgnoreRepositories].length) {
+	if (!config.length) {
 		return false;
 	}
 
-	const ignoreRepositoriesPattern = config[CONFIG_KEYS.IgnoreRepositories].join('|');
-	const regex = new RegExp(ignoreRepositoriesPattern, 'gm');
-
-	const isExcluded = regex.test(repository);
-	return isExcluded;
+	const ignorePattern = config.join('|');
+	const regex = new RegExp(ignorePattern, 'gm');
+	const excluded = regex.test(toMatch);
+	return excluded;
 }
 
 export function toggleViewing(viewing: boolean) {
@@ -103,23 +82,23 @@ export function activity(previous: Presence = {}): Presence {
 			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(largeImageKey))
 			.padEnd(2, FAKE_EMPTY);
 
-		const { status: isExcluded, workspace: workspaceExcluded } = isWorkspaceExcluded(dataClass.workspaceFolder);
+		const isWorkspaceExcluded = isExcluded(config[CONFIG_KEYS.IgnoreWorkspaces], dataClass.workspaceFolder?.uri.fsPath);
 
-		let workspaceExcludedText = '';
+		let workspaceExcludedText = null;
 
-		if (isExcluded && workspaceExcluded) {
+		if (isWorkspaceExcluded && dataClass.workspaceFolder && dataClass.workspaceFolder.name) {
 			workspaceExcludedText = isObject(config[CONFIG_KEYS.IgnoreWorkspacesText])
 				? // @ts-ignore Element implicitly has an 'any' type because index expression is not of type 'number'.
-				  config[CONFIG_KEYS.IgnoreWorkspacesText][workspaceExcluded.name] ?? 'No workspace ignore text provided.'
+				  config[CONFIG_KEYS.IgnoreWorkspacesText][dataClass.workspaceFolder.name] ?? 'No workspace ignore text provided.'
 				: (config[CONFIG_KEYS.IgnoreWorkspacesText] as string);
 		}
 
 		presence = {
 			...presence,
-			details: isExcluded
+			details: isWorkspaceExcluded
 				? workspaceExcludedText
 				: details(CONFIG_KEYS.DetailsIdling, CONFIG_KEYS.DetailsViewing, CONFIG_KEYS.DetailsEditing, CONFIG_KEYS.DetailsDebugging),
-			state: isExcluded
+			state: isWorkspaceExcluded
 				? undefined
 				: details(
 						CONFIG_KEYS.LowerDetailsIdling,
@@ -133,9 +112,14 @@ export function activity(previous: Presence = {}): Presence {
 
 		if (config[CONFIG_KEYS.ButtonEnabled]) {
 			const gitRepo = dataClass.gitRemoteUrl?.toString('https').replace(/\.git$/, '');
-			const repositoryExcluded = isRepositoryExcluded(gitRepo);
+			const gitOrg = dataClass.gitRemoteUrl?.organization ?? dataClass.gitRemoteUrl?.owner;
 
-			if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && !repositoryExcluded && !isExcluded) {
+			const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
+			const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
+
+			const isNotExcluded = !isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded;
+
+			if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && isNotExcluded) {
 				presence = {
 					...presence,
 					buttons: [
