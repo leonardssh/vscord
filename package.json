@@ -253,7 +253,7 @@
 				},
 				"rpc.buttonEnabled": {
 					"type": "boolean",
-					"default": true,
+					"default": false,
 					"description": "Enable a button on your presence with a link to the Git repository you're working in."
 				},
 				"rpc.buttonActiveLabel": {
