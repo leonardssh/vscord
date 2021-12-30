@@ -1,6 +1,7 @@
 {
 	"KNOWN_LANGUAGES": [
 		{ "language": "abap", "image": "text" },
+		{ "language": "ansible", "image": "ansible" },
 		{ "language": "bat", "image": "bat" },
 		{ "language": "bibtex", "image": "text" },
 		{ "language": "clojure", "image": "clojure" },
@@ -229,6 +230,7 @@
 		".rest": { "image": "http" },
 		".jar": { "image": "jar" },
 		".java": { "image": "java" },
+		".j2": { "image": "jinja" },
 		".jinja": { "image": "jinja" },
 		".js": { "image": "js" },
 		".es6": { "image": "js" },
