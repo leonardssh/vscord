@@ -97,7 +97,7 @@ async function login() {
 
 	try {
 		await rpc.login({ clientId });
-	} catch (error) {
+	} catch (error: any) {
 		logError(error);
 		cleanUp();
 
