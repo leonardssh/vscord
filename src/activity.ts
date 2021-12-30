@@ -23,7 +23,6 @@ import {
 import { resolveFileIcon, toLower, toTitle, toUpper } from './utils';
 import { sep } from 'path';
 import { dataClass } from './data';
-import { logInfo } from './logger';
 
 let isViewing = false;
 let totalProblems = 0;
