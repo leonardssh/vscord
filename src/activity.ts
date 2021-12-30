@@ -13,6 +13,7 @@ import {
 import {
 	CONFIG_KEYS,
 	DEBUGGING_IMAGE_KEY,
+	EMPTY,
 	FAKE_EMPTY,
 	IDLE_VSCODE_IMAGE_KEY,
 	IDLE_VSCODE_INSIDERS_IMAGE_KEY,
@@ -165,7 +166,9 @@ function details(
 		].replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
 		const workspaceFolderName = dataClass.workspaceFolder ?? noWorkspaceFound;
-		const workspaceName = dataClass.workspace ?? workspaceFolderName;
+		const workspaceName =
+			dataClass.workspace?.replace(REPLACE_KEYS.VSCodeWorkspace, EMPTY) ??
+			workspaceFolderName;
 		const workspaceAndFolder = `${workspaceName}${
 			workspaceFolderName === FAKE_EMPTY ? '' : ` - ${workspaceFolderName}`
 		}`;
