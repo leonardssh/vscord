@@ -19,7 +19,7 @@
 		"build": "webpack --mode development",
 		"vscode:prepublish": "yarn build",
 		"clean": "rimraf dist",
-		"watch": "tsc -b src -w",
+		"watch": "webpack watch --mode development",
 		"commit": "git-cz",
 		"cz": "git-cz",
 		"prepare": "husky install .github/husky"
