@@ -89,15 +89,22 @@ export function activity(previous: Presence = {}): Presence {
 			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(largeImageKey))
 			.padEnd(2, FAKE_EMPTY);
 
-		const isWorkspaceExcluded = isExcluded(config[CONFIG_KEYS.IgnoreWorkspaces], dataClass.workspaceFolder?.uri.fsPath);
+		let isWorkspaceExcluded = false;
+		let workspaceExcludedText = 'No workspace ignore text provided.';
 
-		let workspaceExcludedText = null;
+		if (dataClass.workspaceFolder && 'uri' in dataClass.workspaceFolder) {
+			isWorkspaceExcluded = isExcluded(config[CONFIG_KEYS.IgnoreWorkspaces], dataClass.workspaceFolder.uri.fsPath);
+		}
 
 		if (isWorkspaceExcluded && dataClass.workspaceFolder && dataClass.workspaceFolder.name) {
-			workspaceExcludedText = isObject(config[CONFIG_KEYS.IgnoreWorkspacesText])
+			const ignoreWorkspacesText = config[CONFIG_KEYS.IgnoreWorkspacesText];
+
+			workspaceExcludedText = isObject(ignoreWorkspacesText)
 				? // @ts-ignore Element implicitly has an 'any' type because index expression is not of type 'number'.
-				  config[CONFIG_KEYS.IgnoreWorkspacesText][dataClass.workspaceFolder.name] ?? 'No workspace ignore text provided.'
-				: (config[CONFIG_KEYS.IgnoreWorkspacesText] as string);
+				  ignoreWorkspacesText[dataClass.workspaceFolder.name]
+				: ignoreWorkspacesText
+				? ignoreWorkspacesText
+				: 'No workspace ignore text provided.';
 		}
 
 		presence = {
@@ -121,9 +128,9 @@ export function activity(previous: Presence = {}): Presence {
 			largeImageText
 		};
 
-		if (config[CONFIG_KEYS.ButtonEnabled]) {
-			const gitRepo = dataClass.gitRemoteUrl?.toString('https').replace(/\.git$/, '');
-			const gitOrg = dataClass.gitRemoteUrl?.organization ?? dataClass.gitRemoteUrl?.owner;
+		if (config[CONFIG_KEYS.ButtonEnabled] && dataClass.gitRemoteUrl) {
+			const gitRepo = dataClass.gitRemoteUrl.toString('https').replace(/\.git$/, '');
+			const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
 
 			const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
 			const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
@@ -165,8 +172,8 @@ function details(idling: CONFIG_KEYS, viewing: CONFIG_KEYS, editing: CONFIG_KEYS
 	if (window.activeTextEditor) {
 		const noWorkspaceFound = config[CONFIG_KEYS.LowerDetailsNoWorkspaceFound].replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
-		const workspaceFolderName = dataClass.workspaceFolder?.name ?? noWorkspaceFound;
-		const workspaceName = dataClass.workspace?.replace(REPLACE_KEYS.VSCodeWorkspace, EMPTY) ?? workspaceFolderName;
+		const workspaceFolderName = dataClass.workspaceFolder ? dataClass.workspaceFolder.name : noWorkspaceFound;
+		const workspaceName = dataClass.workspace ? dataClass.workspace.replace(REPLACE_KEYS.VSCodeWorkspace, EMPTY) : workspaceFolderName;
 		const workspaceAndFolder = `${workspaceName}${workspaceFolderName === FAKE_EMPTY ? '' : ` - ${workspaceFolderName}`}`;
 
 		const fileIcon = resolveFileIcon(window.activeTextEditor.document);
@@ -197,7 +204,7 @@ function details(idling: CONFIG_KEYS, viewing: CONFIG_KEYS, editing: CONFIG_KEYS
 			.replace(REPLACE_KEYS.LanguageTitleCase, toTitle(fileIcon))
 			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(fileIcon))
 			.replace(REPLACE_KEYS.Problems, problems)
-			.replace(REPLACE_KEYS.GitRepo, dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName ?? FAKE_EMPTY)
+			.replace(REPLACE_KEYS.GitRepo, dataClass.gitRemoteUrl ? dataClass.gitRemoteUrl.name : dataClass.gitRepoName ?? FAKE_EMPTY)
 			.replace(REPLACE_KEYS.GitBranch, dataClass.gitBranchName ?? FAKE_EMPTY);
 	}
 
