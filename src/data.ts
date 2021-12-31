@@ -231,13 +231,6 @@ export class Data implements DisposableLike {
 
 		const repos = this.gitApi.repositories;
 
-		// We don't have to sort and filter anything, if there is only one or non repos loaded in the current workspace.
-		if (repos.length < 2) {
-			return repos[0] ? repos[0] : undefined;
-		}
-
-		this.debug(3, `repo(): repos length grater 1`);
-
 		// If a file is open, return repo most likely containing the open file.
 		if (this._file) {
 			const testString = this._file.dir;
