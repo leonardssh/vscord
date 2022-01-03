@@ -203,7 +203,7 @@
 					"default": "Editing a {LANG} file",
 					"description": "Custom string for the largeImageText section of the rich presence\n\t- {lang} will be replaced with the lowercased language ID\n\t- {Lang} will be replaced with the language ID, first letter being uppercase\n\t- {LANG} will be replaced with the uppercased language ID."
 				},
-				"rpc.largeImageIdle": {
+				"rpc.largeImageIdling": {
 					"type": "string",
 					"default": "Idling",
 					"description": "Custom string for the largeImageText section of the rich presence when idling."
