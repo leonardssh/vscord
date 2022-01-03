@@ -74,6 +74,14 @@ export function activity(previous: Presence = {}): Presence {
 		details: removeDetails
 			? undefined
 			: details(CONFIG_KEYS.DetailsIdling, CONFIG_KEYS.DetailsViewing, CONFIG_KEYS.DetailsEditing, CONFIG_KEYS.DetailsDebugging),
+		state: removeLowerDetails
+			? undefined
+			: details(
+					CONFIG_KEYS.LowerDetailsIdling,
+					CONFIG_KEYS.LowerDetailsViewing,
+					CONFIG_KEYS.LowerDetailsEditing,
+					CONFIG_KEYS.LowerDetailsDebugging
+			  ),
 		startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime] ? undefined : previous.startTimestamp ?? Date.now(),
 		largeImageKey: insiders ? IDLE_VSCODE_IMAGE_KEY : IDLE_VSCODE_INSIDERS_IMAGE_KEY,
 		largeImageText: defaultLargeImageText,
