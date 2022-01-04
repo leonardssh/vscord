@@ -33,6 +33,7 @@ export const enum CONFIG_KEYS {
 	RemoveElapsedTime = 'removeElapsedTime',
 	RemoveDetails = 'removeDetails',
 	RemoveLowerDetails = 'removeLowerDetails',
+	RemoveLowerDetailsIdling = 'removeLowerDetailsIdling',
 	IgnoreWorkspaces = 'ignoreWorkspaces',
 	IgnoreWorkspacesText = 'ignoreWorkspacesText',
 	IdleTimeout = 'idleTimeout',

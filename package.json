@@ -228,6 +228,11 @@
 					"default": false,
 					"description": "Controls if the RPC should remove the lower details"
 				},
+				"rpc.removeLowerDetailsIdling": {
+					"type": "boolean",
+					"default": true,
+					"description": "Controls if the RPC should remove the lower details when idling"
+				},
 				"rpc.showProblems": {
 					"type": "boolean",
 					"default": true,
