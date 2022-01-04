@@ -22,14 +22,14 @@
         </a>
     </p>
     <p align="center">
-		<a href="https://open-vsx.org/extension/vscord-extension/vscord">
-			<img alt="Open VSX Version" src="https://img.shields.io/open-vsx/v/vscord-extension/vscord?label=OpenVSX%20Marketplace">
+		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
+			<img alt="Open VSX Version" src="https://img.shields.io/open-vsx/v/LeonardSSH/vscord?label=OpenVSX%20Marketplace">
 		</a>
-		<a href="https://open-vsx.org/extension/vscord-extension/vscord">
-			<img alt="Open VSX Downloads" src="https://img.shields.io/open-vsx/dt/vscord-extension/vscord">
+		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
+			<img alt="Open VSX Downloads" src="https://img.shields.io/open-vsx/dt/LeonardSSH/vscord">
 		</a>
-		<a href="https://open-vsx.org/extension/vscord-extension/vscord">
-			<img alt="Open VSX Rating" src="https://img.shields.io/open-vsx/rating/vscord-extension/vscord">
+		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
+			<img alt="Open VSX Rating" src="https://img.shields.io/open-vsx/rating/LeonardSSH/vscord">
 		</a>
 	</p>
     <p align="center">
