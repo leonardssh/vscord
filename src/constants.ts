@@ -48,7 +48,8 @@ export const enum CONFIG_KEYS {
 	ButtonInactiveUrl = 'buttonInactiveUrl',
 	IgnoreRepositories = 'ignoreRepositories',
 	IgnoreOrganizations = 'ignoreOrganizations',
-	SuppressNotifications = 'suppressNotifications'
+	SuppressNotifications = 'suppressNotifications',
+	PrioritizeLanguagesOverExtensions = 'prioritizeLanguagesOverExtensions'
 }
 
 export const enum REPLACE_KEYS {

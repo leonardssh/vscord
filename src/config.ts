@@ -33,6 +33,7 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
 	ignoreRepositories: string[];
 	ignoreOrganizations: string[];
 	suppressNotifications: boolean;
+	prioritizeLanguagesOverExtensions: boolean;
 };
 
 export function getConfig(): WorkspaceExtensionConfiguration {

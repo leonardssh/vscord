@@ -313,6 +313,11 @@
 					"type": "boolean",
 					"default": false,
 					"description": "Controls whether error messages should be shown to the user."
+				},
+				"rpc.prioritizeLanguagesOverExtensions": {
+					"type": "boolean",
+					"default": false,
+					"description": "Controls whether languages should be prioritized over extensions when matching a file name."
 				}
 			}
 		}

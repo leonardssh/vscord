@@ -1,12 +1,14 @@
 import { basename } from 'path';
 import { TextDocument } from 'vscode';
-import { KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from './constants';
+import { getConfig } from './config';
+import { CONFIG_KEYS, KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from './constants';
 
 export const toLower = (str: string) => str.toLocaleLowerCase();
 export const toUpper = (str: string) => str.toLocaleUpperCase();
 export const toTitle = (str: string) => toLower(str).replace(/^\w/, (c) => toUpper(c));
 
 export function resolveFileIcon(document: TextDocument) {
+	const config = getConfig();
 	const filename = basename(document.fileName);
 	const findKnownExtension = Object.keys(KNOWN_EXTENSIONS).find((key) => {
 		if (filename.endsWith(key)) {
@@ -22,9 +24,13 @@ export function resolveFileIcon(document: TextDocument) {
 		return regex.test(filename);
 	});
 
+	const areLanguagesPrioritized = config[CONFIG_KEYS.PrioritizeLanguagesOverExtensions];
 	const findKnownLanguage = KNOWN_LANGUAGES.find((key) => key.language === document.languageId);
 
-	const fileIcon = findKnownExtension ? KNOWN_EXTENSIONS[findKnownExtension] : findKnownLanguage ? findKnownLanguage.image : null;
+	const knownExtension = findKnownExtension ? KNOWN_EXTENSIONS[findKnownExtension] : findKnownLanguage ? findKnownLanguage.image : null;
+	const knownLanguage = findKnownLanguage ? findKnownLanguage.image : knownExtension;
+
+	const fileIcon = areLanguagesPrioritized ? knownLanguage : knownExtension;
 
 	return typeof fileIcon === 'string' ? fileIcon : fileIcon?.image ?? 'text';
 }
