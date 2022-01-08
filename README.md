@@ -20,6 +20,9 @@
         <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
             <img alt="Visual Studio Marketplace Rating" src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg" />
         </a>
+		<a href="https://github.com/LeonardSSH/vscord/actions/workflows/cd-vs-marketplace.yml">
+			<img alt="CD - Visual Studio Marketplace" src="https://github.com/LeonardSSH/vscord/actions/workflows/cd-vs-marketplace.yml/badge.svg">
+		</a>			
     </p>
     <p align="center">
 		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
@@ -31,6 +34,9 @@
 		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
 			<img alt="Open VSX Rating" src="https://img.shields.io/open-vsx/rating/LeonardSSH/vscord">
 		</a>
+		<a href="https://github.com/LeonardSSH/vscord/actions/workflows/cd-open-vsx.yml">
+			<img alt="CD - Open VSX Registry" src="https://github.com/LeonardSSH/vscord/actions/workflows/cd-open-vsx.yml/badge.svg">
+		</a>	
 	</p>
     <p align="center">
         <a href="https://gitter.im/LeonardSSH/vscord-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
