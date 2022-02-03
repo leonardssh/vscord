@@ -1,6 +1,15 @@
 import { Presence } from 'discord-rpc';
 import { getConfig } from './config';
-import { debug, DiagnosticSeverity, env, languages, Selection, TextDocument, window, workspace } from 'vscode';
+import {
+	debug,
+	DiagnosticSeverity,
+	env,
+	languages,
+	Selection,
+	TextDocument,
+	window,
+	workspace
+} from 'vscode';
 import {
 	CONFIG_KEYS,
 	DEBUGGING_IMAGE_KEY,
@@ -12,32 +21,13 @@ import {
 	VSCODE_IMAGE_KEY,
 	VSCODE_INSIDERS_IMAGE_KEY
 } from './constants';
-import { resolveFileIcon, toLower, toTitle, toUpper } from './utils';
 import { sep } from 'path';
 import { dataClass } from './data';
-import isObject from 'lodash/isObject';
+import { isObject } from './helpers/isObject';
+import { isExcluded } from './helpers/isExcluded';
+import { resolveFileIcon, toLower, toTitle, toUpper } from './helpers/resolveFileIcon';
 
-let isViewing = false;
 let totalProblems = 0;
-
-function isExcluded(config: string[], toMatch?: string) {
-	if (!config || !toMatch) {
-		return false;
-	}
-
-	if (!config.length) {
-		return false;
-	}
-
-	const ignorePattern = config.join('|');
-	const regex = new RegExp(ignorePattern, 'gm');
-	const excluded = regex.test(toMatch);
-	return excluded;
-}
-
-export function toggleViewing(viewing: boolean) {
-	isViewing = viewing;
-}
 
 export function onDiagnosticsChange() {
 	const diagnostics = languages.getDiagnostics();
@@ -47,7 +37,10 @@ export function onDiagnosticsChange() {
 	diagnostics.forEach((diagnostic) => {
 		if (diagnostic[1]) {
 			diagnostic[1].forEach((diagnostic) => {
-				if (diagnostic.severity === DiagnosticSeverity.Warning || diagnostic.severity === DiagnosticSeverity.Error) {
+				if (
+					diagnostic.severity === DiagnosticSeverity.Warning ||
+					diagnostic.severity === DiagnosticSeverity.Error
+				) {
 					counted++;
 				}
 			});
@@ -57,14 +50,23 @@ export function onDiagnosticsChange() {
 	totalProblems = counted;
 }
 
-export function activity(previous: Presence = {}): Presence {
+export function activity(previous: Presence = {}, isViewing = false): Presence {
 	const config = getConfig();
 	const { appName } = env;
 
 	const insiders = appName.includes('Insiders');
 
-	const defaultSmallImageKey = debug.activeDebugSession ? DEBUGGING_IMAGE_KEY : insiders ? VSCODE_INSIDERS_IMAGE_KEY : VSCODE_IMAGE_KEY;
-	const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(REPLACE_KEYS.AppName, appName);
+	const defaultSmallImageKey = debug.activeDebugSession
+		? DEBUGGING_IMAGE_KEY
+		: insiders
+		? VSCODE_INSIDERS_IMAGE_KEY
+		: VSCODE_IMAGE_KEY;
+
+	const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(
+		REPLACE_KEYS.AppName,
+		appName
+	);
+
 	const defaultLargeImageText = config[CONFIG_KEYS.LargeImageIdling];
 
 	const removeDetails = config[CONFIG_KEYS.RemoveDetails];
@@ -74,7 +76,13 @@ export function activity(previous: Presence = {}): Presence {
 	let presence: Presence = {
 		details: removeDetails
 			? undefined
-			: details(CONFIG_KEYS.DetailsIdling, CONFIG_KEYS.DetailsViewing, CONFIG_KEYS.DetailsEditing, CONFIG_KEYS.DetailsDebugging),
+			: details(
+					CONFIG_KEYS.DetailsIdling,
+					CONFIG_KEYS.DetailsViewing,
+					CONFIG_KEYS.DetailsEditing,
+					CONFIG_KEYS.DetailsDebugging,
+					isViewing
+			  ),
 		state:
 			removeLowerDetails || removeLowerDetailsIdling
 				? undefined
@@ -82,9 +90,12 @@ export function activity(previous: Presence = {}): Presence {
 						CONFIG_KEYS.LowerDetailsIdling,
 						CONFIG_KEYS.LowerDetailsViewing,
 						CONFIG_KEYS.LowerDetailsEditing,
-						CONFIG_KEYS.LowerDetailsDebugging
+						CONFIG_KEYS.LowerDetailsDebugging,
+						isViewing
 				  ),
-		startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime] ? undefined : previous.startTimestamp ?? Date.now(),
+		startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime]
+			? undefined
+			: previous.startTimestamp ?? Date.now(),
 		largeImageKey: insiders ? IDLE_VSCODE_IMAGE_KEY : IDLE_VSCODE_INSIDERS_IMAGE_KEY,
 		largeImageText: defaultLargeImageText,
 		smallImageKey: defaultSmallImageKey,
@@ -103,7 +114,10 @@ export function activity(previous: Presence = {}): Presence {
 		let workspaceExcludedText = 'No workspace ignore text provided.';
 
 		if (dataClass.workspaceFolder && 'uri' in dataClass.workspaceFolder) {
-			isWorkspaceExcluded = isExcluded(config[CONFIG_KEYS.IgnoreWorkspaces], dataClass.workspaceFolder.uri.fsPath);
+			isWorkspaceExcluded = isExcluded(
+				config[CONFIG_KEYS.IgnoreWorkspaces],
+				dataClass.workspaceFolder.uri.fsPath
+			);
 		}
 
 		if (isWorkspaceExcluded && dataClass.workspaceFolder && dataClass.workspaceFolder.name) {
@@ -123,7 +137,13 @@ export function activity(previous: Presence = {}): Presence {
 				? undefined
 				: isWorkspaceExcluded
 				? workspaceExcludedText
-				: details(CONFIG_KEYS.DetailsIdling, CONFIG_KEYS.DetailsViewing, CONFIG_KEYS.DetailsEditing, CONFIG_KEYS.DetailsDebugging),
+				: details(
+						CONFIG_KEYS.DetailsIdling,
+						CONFIG_KEYS.DetailsViewing,
+						CONFIG_KEYS.DetailsEditing,
+						CONFIG_KEYS.DetailsDebugging,
+						isViewing
+				  ),
 			state: removeLowerDetails
 				? undefined
 				: isWorkspaceExcluded
@@ -132,7 +152,8 @@ export function activity(previous: Presence = {}): Presence {
 						CONFIG_KEYS.LowerDetailsIdling,
 						CONFIG_KEYS.LowerDetailsViewing,
 						CONFIG_KEYS.LowerDetailsEditing,
-						CONFIG_KEYS.LowerDetailsDebugging
+						CONFIG_KEYS.LowerDetailsDebugging,
+						isViewing
 				  ),
 			largeImageKey,
 			largeImageText
@@ -142,10 +163,18 @@ export function activity(previous: Presence = {}): Presence {
 			const gitRepo = dataClass.gitRemoteUrl.toString('https').replace(/\.git$/, '');
 			const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
 
-			const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
-			const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
+			const isRepositoryExcluded = isExcluded(
+				config[CONFIG_KEYS.IgnoreRepositories],
+				gitRepo
+			);
 
-			const isNotExcluded = !isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded;
+			const isOrganizationExcluded = isExcluded(
+				config[CONFIG_KEYS.IgnoreOrganizations],
+				gitOrg
+			);
+
+			const isNotExcluded =
+				!isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded;
 
 			if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && isNotExcluded) {
 				presence = {
@@ -157,7 +186,11 @@ export function activity(previous: Presence = {}): Presence {
 						}
 					]
 				};
-			} else if (!gitRepo && config[CONFIG_KEYS.ButtonInactiveLabel] && config[CONFIG_KEYS.ButtonInactiveUrl]) {
+			} else if (
+				!gitRepo &&
+				config[CONFIG_KEYS.ButtonInactiveLabel] &&
+				config[CONFIG_KEYS.ButtonInactiveUrl]
+			) {
 				presence = {
 					...presence,
 					buttons: [
@@ -174,29 +207,50 @@ export function activity(previous: Presence = {}): Presence {
 	return presence;
 }
 
-function details(idling: CONFIG_KEYS, viewing: CONFIG_KEYS, editing: CONFIG_KEYS, debugging: CONFIG_KEYS) {
+function details(
+	idling: CONFIG_KEYS,
+	viewing: CONFIG_KEYS,
+	editing: CONFIG_KEYS,
+	debugging: CONFIG_KEYS,
+	isViewing: boolean
+) {
 	const config = getConfig();
 
 	let raw = (config[idling] as string).replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
 	if (window.activeTextEditor) {
-		const noWorkspaceFound = config[CONFIG_KEYS.LowerDetailsNoWorkspaceFound].replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
+		const noWorkspaceFound = config[CONFIG_KEYS.LowerDetailsNoWorkspaceFound].replace(
+			REPLACE_KEYS.Empty,
+			FAKE_EMPTY
+		);
 
-		const workspaceFolderName = dataClass.workspaceFolder ? dataClass.workspaceFolder.name : noWorkspaceFound;
-		const workspaceName = dataClass.workspace ? dataClass.workspace.replace(REPLACE_KEYS.VSCodeWorkspace, EMPTY) : workspaceFolderName;
-		const workspaceAndFolder = `${workspaceName}${workspaceFolderName === FAKE_EMPTY ? '' : ` - ${workspaceFolderName}`}`;
+		const workspaceFolderName = dataClass.workspaceFolder
+			? dataClass.workspaceFolder.name
+			: noWorkspaceFound;
+		const workspaceName = dataClass.workspace
+			? dataClass.workspace.replace(REPLACE_KEYS.VSCodeWorkspace, EMPTY)
+			: workspaceFolderName;
+		const workspaceAndFolder = `${workspaceName}${
+			workspaceFolderName === FAKE_EMPTY ? '' : ` - ${workspaceFolderName}`
+		}`;
 
 		const fileIcon = resolveFileIcon(window.activeTextEditor.document);
-
 		const problems = config[CONFIG_KEYS.ShowProblems]
-			? config[CONFIG_KEYS.ProblemsText].replace(REPLACE_KEYS.ProblemsCount, totalProblems.toString())
+			? config[CONFIG_KEYS.ProblemsText].replace(
+					REPLACE_KEYS.ProblemsCount,
+					totalProblems.toString()
+			  )
 			: '';
 
-		raw = config[debug.activeDebugSession ? debugging : isViewing ? viewing : editing] as string;
+		raw = config[
+			debug.activeDebugSession ? debugging : isViewing ? viewing : editing
+		] as string;
 
 		if (dataClass.workspace) {
 			const name = dataClass.workspace;
-			const relativePath = workspace.asRelativePath(window.activeTextEditor.document.fileName).split(sep);
+			const relativePath = workspace
+				.asRelativePath(window.activeTextEditor.document.fileName)
+				.split(sep);
 
 			relativePath.splice(-1, 1);
 			raw = raw.replace(REPLACE_KEYS.FullDirName, `${name}${sep}${relativePath.join(sep)}`);
@@ -214,7 +268,12 @@ function details(idling: CONFIG_KEYS, viewing: CONFIG_KEYS, editing: CONFIG_KEYS
 			.replace(REPLACE_KEYS.LanguageTitleCase, toTitle(fileIcon))
 			.replace(REPLACE_KEYS.LanguageUpperCase, toUpper(fileIcon))
 			.replace(REPLACE_KEYS.Problems, problems)
-			.replace(REPLACE_KEYS.GitRepo, dataClass.gitRemoteUrl ? dataClass.gitRemoteUrl.name : dataClass.gitRepoName ?? FAKE_EMPTY)
+			.replace(
+				REPLACE_KEYS.GitRepo,
+				dataClass.gitRemoteUrl
+					? dataClass.gitRemoteUrl.name
+					: dataClass.gitRepoName ?? FAKE_EMPTY
+			)
 			.replace(REPLACE_KEYS.GitBranch, dataClass.gitBranchName ?? FAKE_EMPTY);
 	}
 
@@ -233,7 +292,10 @@ function fileDetails(_raw: string, document: TextDocument, selection: Selection)
 	}
 
 	if (raw.includes(REPLACE_KEYS.CurrentColumn)) {
-		raw = raw.replace(REPLACE_KEYS.CurrentColumn, (selection.active.character + 1).toLocaleString());
+		raw = raw.replace(
+			REPLACE_KEYS.CurrentColumn,
+			(selection.active.character + 1).toLocaleString()
+		);
 	}
 
 	return raw;

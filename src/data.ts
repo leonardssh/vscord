@@ -1,7 +1,15 @@
+import { API as GitApi, GitExtension, Remote, Repository } from './@types/git';
 import gitUrlParse from 'git-url-parse';
 import { parse, ParsedPath, sep } from 'path';
-import { Disposable, EventEmitter, Extension, extensions, window, workspace, WorkspaceFolder } from 'vscode';
-import { API as GitApi, GitExtension, Remote, Repository } from './git';
+import {
+	Disposable,
+	EventEmitter,
+	Extension,
+	extensions,
+	window,
+	workspace,
+	WorkspaceFolder
+} from 'vscode';
 import { logInfo } from './logger';
 
 interface DisposableLike {
@@ -28,7 +36,9 @@ export class Data implements DisposableLike {
 
 	public constructor(debugLevel = 0) {
 		this._debug = debugLevel;
-		this._file = window.activeTextEditor ? parse(window.activeTextEditor.document.fileName) : undefined;
+		this._file = window.activeTextEditor
+			? parse(window.activeTextEditor.document.fileName)
+			: undefined;
 		this.ext();
 		this.api(this.gitExt?.exports.enabled || false);
 		this.rootListeners.push(
@@ -157,7 +167,9 @@ export class Data implements DisposableLike {
 			if (this.gitExt.isActive) {
 				logInfo(`[data.ts] ext(): Git extension is active`);
 				this.api(this.gitExt.exports.enabled);
-				this.gitExtListeners.push(this.gitExt.exports.onDidChangeEnablement((e) => this.api(e)));
+				this.gitExtListeners.push(
+					this.gitExt.exports.onDidChangeEnablement((e) => this.api(e))
+				);
 			} else {
 				logInfo(`[data.ts] ext(): activate`);
 				void ext.activate();
@@ -239,7 +251,9 @@ export class Data implements DisposableLike {
 					// filter out paths witch are longer than the file path; they can't by definition include them
 					.filter((v) => v.rootUri.fsPath.length <= testString.length)
 					// filter out paths wich don't match
-					.filter((v) => v.rootUri.fsPath === testString.substring(0, v.rootUri.fsPath.length))
+					.filter(
+						(v) => v.rootUri.fsPath === testString.substring(0, v.rootUri.fsPath.length)
+					)
 					// sort the results length (longest in front)
 					.sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
 					// get first element
@@ -264,7 +278,11 @@ export class Data implements DisposableLike {
 						// filter out paths witch are longer than the file path; they can't by definition include them
 						.filter((v) => v.rootUri.fsPath.length <= workspace.uri.fsPath.length)
 						// filter out paths wich don't match
-						.filter((v) => v.rootUri.fsPath === workspace.uri.fsPath.substring(0, v.rootUri.fsPath.length))
+						.filter(
+							(v) =>
+								v.rootUri.fsPath ===
+								workspace.uri.fsPath.substring(0, v.rootUri.fsPath.length)
+						)
 						// sort the results length (shortest in front)
 						.sort((a, b) => a.rootUri.fsPath.length - b.rootUri.fsPath.length)
 						// get first element

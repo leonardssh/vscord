@@ -1,9 +1,6 @@
-/* eslint-disable prefer-destructuring */
-import LANG from './languages.json';
+import lang from './data/languages.json';
 
-export const KNOWN_EXTENSIONS: { [key: string]: { image: string } } = LANG.KNOWN_EXTENSIONS;
-
-export const KNOWN_LANGUAGES: { language: string; image: string }[] = LANG.KNOWN_LANGUAGES;
+export const { KNOWN_EXTENSIONS, KNOWN_LANGUAGES } = lang;
 
 export const EMPTY = '' as const;
 export const FAKE_EMPTY = '\u200b\u200b' as const;
