@@ -84,6 +84,7 @@
 		"babel.config.js": { "image": "babel" },
 		".ahk": { "image": "ahk" },
 		".ahkl": { "image": "ahk" },
+		".astro": { "image": "astro" },
 		"androidmanifest.xml": { "image": "android" },
 		"/^angular[^.]*\\.js$/i": { "image": "angular" },
 		".applescript": { "image": "applescript" },
