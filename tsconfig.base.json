@@ -29,7 +29,7 @@
 		"sourceMap": false,
 		"alwaysStrict": true,
 		"importsNotUsedAsValues": "remove",
-		"incremental": true,
+		"incremental": false,
 		"newLine": "lf",
 		"noEmitHelpers": true,
 		"preserveConstEnums": true,

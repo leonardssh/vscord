@@ -1,7 +1,7 @@
-import { basename } from 'path';
 import { TextDocument } from 'vscode';
-import { getConfig } from './config';
-import { CONFIG_KEYS, KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from './constants';
+import { basename } from 'path';
+import { getConfig } from '../config';
+import { CONFIG_KEYS, KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from '../constants';
 
 export const toLower = (str: string) => str.toLocaleLowerCase();
 export const toUpper = (str: string) => str.toLocaleUpperCase();
@@ -27,9 +27,13 @@ export function resolveFileIcon(document: TextDocument) {
 	const areLanguagesPrioritized = config[CONFIG_KEYS.PrioritizeLanguagesOverExtensions];
 	const findKnownLanguage = KNOWN_LANGUAGES.find((key) => key.language === document.languageId);
 
-	const knownExtension = findKnownExtension ? KNOWN_EXTENSIONS[findKnownExtension] : findKnownLanguage ? findKnownLanguage.image : null;
-	const knownLanguage = findKnownLanguage ? findKnownLanguage.image : knownExtension;
+	const knownExtension = findKnownExtension
+		? (KNOWN_EXTENSIONS as { [key: string]: { image: string } })[findKnownExtension]
+		: findKnownLanguage
+		? findKnownLanguage.image
+		: null;
 
+	const knownLanguage = findKnownLanguage ? findKnownLanguage.image : knownExtension;
 	const fileIcon = areLanguagesPrioritized ? knownLanguage : knownExtension;
 
 	return typeof fileIcon === 'string' ? fileIcon : fileIcon?.image ?? 'text';

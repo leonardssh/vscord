@@ -2,13 +2,13 @@
 	"root": true,
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"extraFileExtensions": [".mjs", ".cjs"],
+		"extraFileExtensions": [".mjs"],
 		"project": "./tsconfig.eslint.json",
 		"sourceType": "module",
 		"ecmaVersion": 2020,
 		"warnOnUnsupportedTypeScriptVersion": false
 	},
-	"extends": ["plugin:@typescript-eslint/recommended"],
+	"extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
 	"env": {
 		"node": true,
 		"es6": true,
@@ -33,7 +33,7 @@
 			}
 		],
 		"@typescript-eslint/class-literal-property-style": "error",
-		"@typescript-eslint/consistent-type-definitions": "error",
+		"@typescript-eslint/consistent-type-definitions": "off",
 		"@typescript-eslint/default-param-last": "error",
 		"@typescript-eslint/dot-notation": [
 			"error",
@@ -77,16 +77,23 @@
 		],
 		"@typescript-eslint/no-base-to-string": "error",
 		"@typescript-eslint/no-dupe-class-members": "error",
+		"@typescript-eslint/no-duplicate-imports": [
+			"error",
+			{
+				"includeExports": false
+			}
+		],
 		"@typescript-eslint/no-empty-interface": "off",
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-extra-non-null-assertion": "error",
-		"@typescript-eslint/no-extraneous-class": "error",
+		"@typescript-eslint/no-extraneous-class": ["error", { "allowWithDecorator": true }],
 		"@typescript-eslint/no-floating-promises": "error",
 		"@typescript-eslint/no-for-in-array": "error",
 		"@typescript-eslint/no-implied-eval": "error",
-		"@typescript-eslint/no-invalid-this": "error",
-		"@typescript-eslint/no-invalid-void-type": "off",
+		"@typescript-eslint/no-invalid-this": "off",
+		"@typescript-eslint/no-invalid-void-type": "error",
 		"@typescript-eslint/no-misused-new": "error",
+		"@typescript-eslint/no-namespace": "off",
 		"@typescript-eslint/no-non-null-asserted-optional-chain": "error",
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-throw-literal": "error",
@@ -111,7 +118,6 @@
 		"@typescript-eslint/switch-exhaustiveness-check": "warn",
 		"@typescript-eslint/unbound-method": "error",
 		"@typescript-eslint/unified-signatures": "error",
-		"@typescript-eslint/no-namespace": "off",
 		"accessor-pairs": "off",
 		"array-callback-return": "error",
 		"block-scoped-var": "error",
@@ -179,12 +185,7 @@
 		"no-dupe-class-members": "off",
 		"no-dupe-keys": "error",
 		"no-duplicate-case": "error",
-		"no-duplicate-imports": [
-			"error",
-			{
-				"includeExports": false
-			}
-		],
+		"no-duplicate-imports": "off",
 		"no-else-return": "warn",
 		"no-empty": "off",
 		"no-empty-character-class": "error",

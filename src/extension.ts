@@ -1,38 +1,68 @@
-import { Presence } from 'discord-rpc';
-import { commands, ExtensionContext, StatusBarAlignment, StatusBarItem, window, WindowState } from 'vscode';
-import { activity, toggleViewing } from './activity';
+import { Client, Presence } from 'discord-rpc';
+import { logError, logInfo } from './logger';
+import {
+	commands,
+	debug,
+	Disposable,
+	ExtensionContext,
+	languages,
+	StatusBarAlignment,
+	window,
+	WindowState,
+	workspace
+} from 'vscode';
+import { throttle } from './helpers/throttle';
+import { activity, onDiagnosticsChange } from './activity';
 import { getConfig } from './config';
 import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY } from './constants';
-import { cleanUp, listen } from './listener';
-import { logError, logInfo } from './logger';
+import { getApplicationId } from './helpers/getApplicationId';
+import { dataClass } from './data';
 
-const { Client } = require('discord-rpc'); // eslint-disable-line
-
-let rpc = new Client({ transport: 'ipc' });
-let presence: Presence = {};
-
+let state: Presence = {};
+let rpc: Client | undefined = undefined;
+let listeners: Disposable[] = [];
 let idleCheckTimeout: NodeJS.Timer | undefined = undefined;
 let timeout: NodeJS.Timeout | undefined = undefined;
 
-const statusBarIcon: StatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left);
-
+const statusBarIcon = window.createStatusBarItem(StatusBarAlignment.Left);
 statusBarIcon.text = '$(pulse) Connecting to Discord Gateway...';
 
-interface ActivityOptions {
-	isViewing: boolean;
-}
-
-export async function sendActivity(options: ActivityOptions = { isViewing: false }) {
-	toggleViewing(options.isViewing);
-
-	presence = {
-		...(await activity(presence))
+export const sendActivity = async (isViewing = false) => {
+	state = {
+		...(await activity(state, isViewing))
 	};
 
-	rpc.setActivity(presence);
-}
+	await rpc?.setActivity(state);
+};
 
-export function toggleIdling(windowState: WindowState) {
+export const listen = () => {
+	const config = getConfig();
+
+	const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
+	const fileEdit = workspace.onDidChangeTextDocument(throttle(() => sendActivity(), 2000));
+	const debugStart = debug.onDidStartDebugSession(() => sendActivity());
+	const debugEnd = debug.onDidTerminateDebugSession(() => sendActivity());
+	const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
+	const changeWindowState = window.onDidChangeWindowState((e: WindowState) => toggleIdling(e));
+	const gitListener = dataClass.onUpdate(throttle(() => sendActivity(), 2000));
+
+	if (config[CONFIG_KEYS.ShowProblems]) {
+		listeners.push(diagnosticsChange);
+	}
+
+	if (config[CONFIG_KEYS.CheckIdle]) {
+		listeners.push(changeWindowState);
+	}
+
+	listeners.push(fileSwitch, fileEdit, debugStart, debugEnd, gitListener);
+};
+
+export const cleanUp = () => {
+	listeners.forEach((listener) => listener.dispose());
+	listeners = [];
+};
+
+export const toggleIdling = async (windowState: WindowState) => {
 	const config = getConfig();
 
 	if (config[CONFIG_KEYS.IdleTimeout] !== 0) {
@@ -41,90 +71,83 @@ export function toggleIdling(windowState: WindowState) {
 				clearTimeout(idleCheckTimeout);
 			}
 
-			void sendActivity();
+			await sendActivity();
 		} else {
-			idleCheckTimeout = setTimeout(() => {
-				presence = {
-					...presence,
+			idleCheckTimeout = setTimeout(async () => {
+				state = {
+					...state,
 					smallImageKey: IDLE_SMALL_IMAGE_KEY,
 					smallImageText: config[CONFIG_KEYS.IdleText]
 				};
 
-				rpc.setActivity(presence);
+				await rpc?.setActivity(state);
 			}, config[CONFIG_KEYS.IdleTimeout] * 1000);
 		}
 	}
-}
+};
 
-async function login() {
+export const login = async () => {
 	const config = getConfig();
 
 	statusBarIcon.text = '$(search-refresh) Connecting to Discord Gateway...';
+	statusBarIcon.tooltip = 'Connecting to Discord Gateway...';
 
 	rpc = new Client({ transport: 'ipc' });
 
-	rpc.on('ready', handleReady);
-	rpc.on('disconnected', handleDisconnected);
+	rpc.on('ready', async () => {
+		logInfo('Successfully connected to Discord');
+		cleanUp();
 
-	const applicationIds = new Map();
+		await sendActivity();
 
-	applicationIds.set('Code', '782685898163617802');
-	applicationIds.set('Visual Studio Code', '810516608442695700');
+		statusBarIcon.text = '$(globe) Connected to Discord';
+		statusBarIcon.tooltip = 'Connected to Discord';
+		statusBarIcon.show();
 
-	const match = /(Code|Visual Studio Code)/i.exec(config[CONFIG_KEYS.AppName]);
+		listen();
 
-	let clientId = config[CONFIG_KEYS.Id];
+		if (timeout) {
+			clearTimeout(timeout);
+		}
 
-	if (match !== null && applicationIds.has(match[0])) {
-		clientId = applicationIds.get(match[0]);
-	}
+		timeout = setTimeout(() => (statusBarIcon.text = '$(smiley)'), 5000);
+	});
+
+	rpc.on('disconnected', () => {
+		cleanUp();
+
+		statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
+		statusBarIcon.command = 'rpc.reconnect';
+		statusBarIcon.tooltip = 'Reconnect to Discord Gateway';
+		statusBarIcon.show();
+	});
+
+	const { clientId } = getApplicationId(config);
 
 	try {
 		await rpc.login({ clientId });
+		logInfo(`Successfully logged in to Discord with client ID ${clientId}`);
 	} catch (error: any) {
-		logError(error);
-		cleanUp();
+		logError(`Encountered following error while trying to login:\n${error as string}`);
 
-		await rpc.destroy();
+		rpc?.destroy();
+		logInfo(`[002] Destroyed Discord RPC client`);
 
 		if (!config[CONFIG_KEYS.SuppressNotifications]) {
 			error?.message?.includes('ENOENT')
 				? void window.showErrorMessage('No Discord client detected')
-				: void window.showErrorMessage(`Couldn't connect to Discord via RPC: ${error as string}`);
+				: void window.showErrorMessage(
+						`Couldn't connect to Discord via RPC: ${error as string}`
+				  );
 		}
 
 		statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
 		statusBarIcon.command = 'rpc.reconnect';
+		statusBarIcon.tooltip = 'Reconnect to Discord Gateway';
 	}
-}
-
-const handleReady = () => {
-	logInfo('Successfully connected to Discord Gateway');
-
-	statusBarIcon.text = '$(smiley) Connected to Discord Gateway';
-	statusBarIcon.tooltip = 'Connected to Discord Gateway.';
-
-	void sendActivity();
-	listen();
-
-	if (timeout) {
-		clearTimeout(timeout);
-	}
-
-	timeout = setTimeout(() => (statusBarIcon.text = '$(smiley)'), 5000);
 };
 
-const handleDisconnected = async () => {
-	cleanUp();
-
-	await rpc.destroy();
-
-	statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
-	statusBarIcon.command = 'rpc.reconnect';
-	statusBarIcon.show();
-};
-
-const handleCommands = (ctx: ExtensionContext) => {
+export const registerComamnds = (ctx: ExtensionContext) => {
 	const config = getConfig();
 
 	const enable = async (update = true) => {
@@ -134,10 +157,11 @@ const handleCommands = (ctx: ExtensionContext) => {
 			} catch {}
 		}
 
-		statusBarIcon.text = '$(search-refresh) Connecting to Discord Gateway...';
-		statusBarIcon.show();
-
 		cleanUp();
+
+		statusBarIcon.text = '$(search-refresh) Connecting to Discord Gateway...';
+		statusBarIcon.tooltip = 'Connecting to Discord Gateway...';
+
 		await login();
 	};
 
@@ -148,53 +172,85 @@ const handleCommands = (ctx: ExtensionContext) => {
 			} catch {}
 		}
 
-		statusBarIcon.hide();
-
 		cleanUp();
-		await rpc?.destroy();
+
+		rpc?.destroy();
+		logInfo(`[003] Destroyed Discord RPC client`);
+
+		statusBarIcon.hide();
 	};
 
 	const enableCommand = commands.registerCommand('rpc.enable', async () => {
 		await disable();
 		await enable();
+
+		logInfo('Enabled Discord Rich Presence for this workspace.');
 		await window.showInformationMessage('Enabled Discord Rich Presence for this workspace.');
 	});
 
 	const disableCommand = commands.registerCommand('rpc.disable', async () => {
 		await disable();
+
+		logInfo('Disabled Discord Rich Presence for this workspace.');
 		await window.showInformationMessage('Disabled Discord Rich Presence for this workspace.');
 	});
 
 	const reconnectCommand = commands.registerCommand('rpc.reconnect', async () => {
+		logInfo('Reconnecting to Discord Gateway...');
+
 		await disable(false);
 		await enable(false);
 	});
 
 	const disconnectCommand = commands.registerCommand('rpc.disconnect', async () => {
+		logInfo('Disconnecting from Discord Gateway...');
+
 		await disable(false);
 
 		statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
 		statusBarIcon.command = 'rpc.reconnect';
+		statusBarIcon.tooltip = 'Reconnect to Discord Gateway';
 		statusBarIcon.show();
 	});
 
 	ctx.subscriptions.push(enableCommand, disableCommand, reconnectCommand, disconnectCommand);
+
+	logInfo('Registered Discord Rich Presence commands');
 };
 
 export async function activate(ctx: ExtensionContext) {
-	const config = getConfig();
+	logInfo('Discord Rich Presence for VS Code activated.');
 
-	logInfo('Initialize the extension...');
+	registerComamnds(ctx);
 
-	handleCommands(ctx);
-
-	if (config[CONFIG_KEYS.Enabled]) {
-		statusBarIcon.show();
+	try {
 		await login();
+	} catch (error: any) {
+		logError(`Failed to login to Discord: ${error}`);
 	}
 }
 
 export function deactivate() {
+	logInfo('Discord Rich Presence for VS Code deactivated.');
+
 	cleanUp();
-	void rpc.destroy();
+
+	if (timeout) {
+		clearTimeout(timeout);
+		timeout = undefined;
+	}
+
+	if (idleCheckTimeout) {
+		clearTimeout(idleCheckTimeout);
+		idleCheckTimeout = undefined;
+	}
+
+	void rpc?.destroy();
+	logInfo(`[004] Destroyed Discord RPC client`);
+}
+
+declare module 'discord-rpc' {
+	interface Client {
+		on(event: 'ready' | 'connected' | 'disconnected', listener: () => void): this;
+	}
 }
