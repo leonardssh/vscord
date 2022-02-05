@@ -69,6 +69,7 @@
 	],
 	"KNOWN_EXTENSIONS": {
 		"nodemon.json": { "image": "nodemon" },
+		"package.json": { "image": "npm" },
 		"/\\.prettier((rc)|(\\.(toml|yml|yaml|json|js))?$){2}/i": {
 			"image": "prettier"
 		},
@@ -315,6 +316,7 @@
 		".nimble": { "image": "nim" },
 		".nix": { "image": "nix" },
 		".npmrc": { "image": "npm" },
+		".npmignore": { "image": "npm" },
 		"/\\.mm?$/i": { "image": "objective-c" },
 		".pch": { "image": "objective-c" },
 		".x": { "image": "objective-c" },
