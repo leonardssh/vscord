@@ -21,7 +21,7 @@
             <img alt="Visual Studio Marketplace Rating" src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg" />
         </a>
 		<a href="https://github.com/LeonardSSH/vscord/actions/workflows/cd-vs-marketplace.yml">
-			<img alt="CD - Visual Studio Marketplace" src="https://img.shields.io/github/workflow/status/leonardssh/vscord/CD%20-%20Visual%20Studio%20Marketplace?label=CD - Visual Studio Marketplace">
+			<img alt="CD - Visual Studio Marketplace" src="https://img.shields.io/github/workflow/status/leonardssh/vscord/CD%20-%20Visual%20Studio%20Marketplace?label=CD%20-%20Visual%20Studio%20Marketplace">
 		</a>
     </p>
     <p align="center">
@@ -35,7 +35,7 @@
 			<img alt="Open VSX Rating" src="https://img.shields.io/open-vsx/rating/LeonardSSH/vscord">
 		</a>
 		<a href="https://github.com/LeonardSSH/vscord/actions/workflows/cd-open-vsx.yml">
-			<img alt="CD - Open VSX Registry" src="https://img.shields.io/github/workflow/status/leonardssh/vscord/CD%20-%20Open%20VSX%20Registry?label=CD - Open VSX Registry">
+			<img alt="CD - Open VSX Registry" src="https://img.shields.io/github/workflow/status/leonardssh/vscord/CD%20-%20Open%20VSX%20Registry?label=CD%20-%20Open%20VSX%20Registry">
 		</a>
 	</p>
     <p align="center">
