@@ -130,7 +130,7 @@ export const login = async () => {
 	} catch (error: any) {
 		logError(`Encountered following error while trying to login:\n${error as string}`);
 
-		rpc?.destroy();
+		void rpc?.destroy();
 		logInfo(`[002] Destroyed Discord RPC client`);
 
 		if (!config[CONFIG_KEYS.SuppressNotifications]) {
@@ -174,7 +174,7 @@ export const registerComamnds = (ctx: ExtensionContext) => {
 
 		cleanUp();
 
-		rpc?.destroy();
+		void rpc?.destroy();
 		logInfo(`[003] Destroyed Discord RPC client`);
 
 		statusBarIcon.hide();
