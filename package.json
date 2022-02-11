@@ -310,7 +310,7 @@
 				},
 				"rpc.suppressNotifications": {
 					"type": "boolean",
-					"default": false,
+					"default": true,
 					"description": "Controls whether error messages should be shown to the user."
 				},
 				"rpc.prioritizeLanguagesOverExtensions": {

@@ -185,14 +185,24 @@ export const registerComamnds = (ctx: ExtensionContext) => {
 		await enable();
 
 		logInfo('Enabled Discord Rich Presence for this workspace.');
-		await window.showInformationMessage('Enabled Discord Rich Presence for this workspace.');
+
+		if (!config[CONFIG_KEYS.SuppressNotifications]) {
+			await window.showInformationMessage(
+				'Enabled Discord Rich Presence for this workspace.'
+			);
+		}
 	});
 
 	const disableCommand = commands.registerCommand('rpc.disable', async () => {
 		await disable();
 
 		logInfo('Disabled Discord Rich Presence for this workspace.');
-		await window.showInformationMessage('Disabled Discord Rich Presence for this workspace.');
+
+		if (!config[CONFIG_KEYS.SuppressNotifications]) {
+			await window.showInformationMessage(
+				'Disabled Discord Rich Presence for this workspace.'
+			);
+		}
 	});
 
 	const reconnectCommand = commands.registerCommand('rpc.reconnect', async () => {

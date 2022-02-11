@@ -58,8 +58,6 @@ export class Data implements DisposableLike {
 		);
 	}
 
-	// Getters
-
 	public get fileName(): string | undefined {
 		const v = this._file ? this._file.name + this._file.ext : undefined;
 		this.debug(4, `fileName(): ${v}`);
@@ -154,9 +152,6 @@ export class Data implements DisposableLike {
 		return this.eventEmitter.event(listener);
 	}
 
-	/**
-	 * Gets called on extensions.onDidChange and initialisaion
-	 */
 	private ext(): void {
 		const ext = extensions.getExtension<GitExtension>('vscode.git');
 		this.debug(3, `ext(): ${ext ? 'Extension' : 'undefined'}`);
@@ -174,9 +169,7 @@ export class Data implements DisposableLike {
 				logInfo(`[data.ts] ext(): activate`);
 				void ext.activate();
 			}
-		}
-		// Changed to undefined
-		else if (!ext && this.gitExt) {
+		} else if (!ext && this.gitExt) {
 			this.debug(2, `[data.ts] ext(): Changed to undefined`);
 			this.gitExt = undefined;
 			this.api(false);
@@ -184,9 +177,6 @@ export class Data implements DisposableLike {
 		}
 	}
 
-	/**
-	 * Gets called on Extension<GitExtension>.exports.onDidChangeEnablement and this.ext()
-	 */
 	private api(e: boolean): void {
 		this.debug(2, `api(): ${e}`);
 		if (e) {
@@ -234,8 +224,6 @@ export class Data implements DisposableLike {
 		this.eventEmitter.fire();
 	}
 
-	// Helpers
-
 	private repo(): Repository | undefined {
 		if (!this.gitApi) {
 			return;
@@ -243,18 +231,14 @@ export class Data implements DisposableLike {
 
 		const repos = this.gitApi.repositories;
 
-		// If a file is open, return repo most likely containing the open file.
 		if (this._file) {
 			const testString = this._file.dir;
 			return (
 				repos
-					// filter out paths witch are longer than the file path; they can't by definition include them
 					.filter((v) => v.rootUri.fsPath.length <= testString.length)
-					// filter out paths wich don't match
 					.filter(
 						(v) => v.rootUri.fsPath === testString.substring(0, v.rootUri.fsPath.length)
 					)
-					// sort the results length (longest in front)
 					.sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
 					// get first element
 					.shift()
@@ -263,40 +247,35 @@ export class Data implements DisposableLike {
 
 		this.debug(3, `repo(): no file open`);
 
-		// else return the repo closesed to the root of the workspace of lowest index
-		return (
-			workspace.workspaceFolders
-				// array wrap to enable sorting by index
-				?.map((v) => [v])
-				// sorting by workspace index
-				.sort((a, b) => a[0].index - b[0].index)
-				// get first element (array wraped)
-				.shift()
+		if (!workspace.workspaceFolders) {
+			return undefined;
+		}
 
-				?.map((workspace) =>
-					repos
-						// filter out paths witch are longer than the file path; they can't by definition include them
-						.filter((v) => v.rootUri.fsPath.length <= workspace.uri.fsPath.length)
-						// filter out paths wich don't match
-						.filter(
-							(v) =>
-								v.rootUri.fsPath ===
-								workspace.uri.fsPath.substring(0, v.rootUri.fsPath.length)
-						)
-						// sort the results length (shortest in front)
-						.sort((a, b) => a.rootUri.fsPath.length - b.rootUri.fsPath.length)
-						// get first element
-						.shift()
-				)
-				.shift()
-		);
+		return workspace.workspaceFolders
+			.map((v) => [v])
+			.sort((a, b) => a[0].index - b[0].index)
+			.shift()
+			?.map((workspace) =>
+				repos
+					.filter((v) => v.rootUri.fsPath.length <= workspace.uri.fsPath.length)
+					.filter(
+						(v) =>
+							v.rootUri.fsPath ===
+							workspace.uri.fsPath.substring(0, v.rootUri.fsPath.length)
+					)
+					.sort((a, b) => a.rootUri.fsPath.length - b.rootUri.fsPath.length)
+					.shift()
+			)
+			.shift();
 	}
 
 	private remote() {
 		const remotes = this._repo?.state.remotes;
+
 		if (!remotes) {
 			return;
 		}
+
 		return remotes.find((v) => v.name === 'origin') ?? remotes[0];
 	}
 
