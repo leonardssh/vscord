@@ -7,6 +7,9 @@ export const toLower = (str: string) => str.toLocaleLowerCase();
 export const toUpper = (str: string) => str.toLocaleUpperCase();
 export const toTitle = (str: string) => toLower(str).replace(/^\w/, (c) => toUpper(c));
 
+export const getFileIcon = (name: string) =>
+	`https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/${name}.png`;
+
 export function resolveFileIcon(document: TextDocument) {
 	const config = getConfig();
 	const filename = basename(document.fileName);

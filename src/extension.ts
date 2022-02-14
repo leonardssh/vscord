@@ -17,6 +17,7 @@ import { getConfig } from './config';
 import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY } from './constants';
 import { getApplicationId } from './helpers/getApplicationId';
 import { dataClass } from './data';
+import { getFileIcon } from './helpers/resolveFileIcon';
 
 let state: Presence = {};
 let rpc: Client | undefined = undefined;
@@ -76,7 +77,7 @@ export const toggleIdling = async (windowState: WindowState) => {
 			idleCheckTimeout = setTimeout(async () => {
 				state = {
 					...state,
-					smallImageKey: IDLE_SMALL_IMAGE_KEY,
+					smallImageKey: getFileIcon(IDLE_SMALL_IMAGE_KEY),
 					smallImageText: config[CONFIG_KEYS.IdleText]
 				};
 
@@ -116,6 +117,8 @@ export const login = async () => {
 	rpc.on('disconnected', () => {
 		cleanUp();
 
+		rpc && rpc.destroy();
+
 		statusBarIcon.text = '$(search-refresh) Reconnect to Discord Gateway';
 		statusBarIcon.command = 'rpc.reconnect';
 		statusBarIcon.tooltip = 'Reconnect to Discord Gateway';
@@ -130,7 +133,8 @@ export const login = async () => {
 	} catch (error: any) {
 		logError(`Encountered following error while trying to login:\n${error as string}`);
 
-		void rpc?.destroy();
+		rpc && rpc.destroy();
+
 		logInfo(`[002] Destroyed Discord RPC client`);
 
 		if (!config[CONFIG_KEYS.SuppressNotifications]) {
@@ -174,7 +178,8 @@ export const registerComamnds = (ctx: ExtensionContext) => {
 
 		cleanUp();
 
-		void rpc?.destroy();
+		rpc && rpc.destroy();
+
 		logInfo(`[003] Destroyed Discord RPC client`);
 
 		statusBarIcon.hide();
@@ -255,7 +260,8 @@ export function deactivate() {
 		idleCheckTimeout = undefined;
 	}
 
-	void rpc?.destroy();
+	rpc && rpc.destroy();
+
 	logInfo(`[004] Destroyed Discord RPC client`);
 }
 

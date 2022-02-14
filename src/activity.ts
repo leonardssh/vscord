@@ -25,7 +25,7 @@ import { sep } from 'path';
 import { dataClass } from './data';
 import { isObject } from './helpers/isObject';
 import { isExcluded } from './helpers/isExcluded';
-import { resolveFileIcon, toLower, toTitle, toUpper } from './helpers/resolveFileIcon';
+import { getFileIcon, resolveFileIcon, toLower, toTitle, toUpper } from './helpers/resolveFileIcon';
 
 let totalProblems = 0;
 
@@ -57,10 +57,10 @@ export function activity(previous: Presence = {}, isViewing = false): Presence {
 	const insiders = appName.includes('Insiders');
 
 	const defaultSmallImageKey = debug.activeDebugSession
-		? DEBUGGING_IMAGE_KEY
+		? getFileIcon(DEBUGGING_IMAGE_KEY)
 		: insiders
-		? VSCODE_INSIDERS_IMAGE_KEY
-		: VSCODE_IMAGE_KEY;
+		? getFileIcon(VSCODE_INSIDERS_IMAGE_KEY)
+		: getFileIcon(VSCODE_IMAGE_KEY);
 
 	const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(
 		REPLACE_KEYS.AppName,
@@ -96,7 +96,9 @@ export function activity(previous: Presence = {}, isViewing = false): Presence {
 		startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime]
 			? undefined
 			: previous.startTimestamp ?? Date.now(),
-		largeImageKey: insiders ? IDLE_VSCODE_IMAGE_KEY : IDLE_VSCODE_INSIDERS_IMAGE_KEY,
+		largeImageKey: insiders
+			? getFileIcon(IDLE_VSCODE_IMAGE_KEY)
+			: getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY),
 		largeImageText: defaultLargeImageText,
 		smallImageKey: defaultSmallImageKey,
 		smallImageText: defaultSmallImageText
@@ -155,7 +157,7 @@ export function activity(previous: Presence = {}, isViewing = false): Presence {
 						CONFIG_KEYS.LowerDetailsDebugging,
 						isViewing
 				  ),
-			largeImageKey,
+			largeImageKey: getFileIcon(largeImageKey),
 			largeImageText
 		};
 
