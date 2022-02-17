@@ -70,6 +70,7 @@
 	"KNOWN_EXTENSIONS": {
 		"nodemon.json": { "image": "nodemon" },
 		"package.json": { "image": "npm" },
+		"turbo.json": { "image": "turbo" },
 		"/\\.prettier((rc)|(\\.(toml|yml|yaml|json|js))?$){2}/i": {
 			"image": "prettier"
 		},
@@ -77,6 +78,7 @@
 		"/\\prettier.config.js/i": { "image": "prettier" },
 		"/vue.config\\.(js|ts)/i": { "image": "vueconfig" },
 		"/vite.config\\.(js|ts)/i": { "image": "viteconfig" },
+		"/vitest.config\\.(js|ts|mjs)/i": { "image": "vitestconfig" },
 		"/jest.config\\.(js|ts)/i": { "image": "jest" },
 		"/gatsby-(browser|node|ssr|config)\\.js/i": { "image": "gatsbyjs" },
 		"/webpack(\\.dev|\\.development|\\.prod|\\.production)?\\.config(\\.babel)?\\.(js|jsx|coffee|ts|json|json5|yaml|yml)/i": {
