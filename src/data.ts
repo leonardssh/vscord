@@ -92,9 +92,13 @@ export class Data implements DisposableLike {
 	}
 
 	public get workspaceFolder(): WorkspaceFolder | undefined {
+		const workspaceFolder = workspace.workspaceFolders
+			? workspace.workspaceFolders[0]
+			: undefined;
+
 		const v = window.activeTextEditor
 			? workspace.getWorkspaceFolder(window.activeTextEditor.document.uri)
-			: workspace.workspaceFolders?.[0];
+			: workspaceFolder;
 		this.debug(4, `workspaceFolder(): ${this._fileURI ? 'Found URI' : 'No URI'} ${v}`);
 		return v;
 	}

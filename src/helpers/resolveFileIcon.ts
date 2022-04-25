@@ -37,7 +37,7 @@ export function resolveFileIconByUri(uri: Uri) {
 		? (KNOWN_EXTENSIONS as { [key: string]: { image: string } })[findKnownExtension]
 		: null;
 
-	return typeof knownExtension === 'string' ? knownExtension : knownExtension?.image ?? 'text';
+	return typeof knownExtension === 'string' ? knownExtension : knownExtension?.image ?? null;
 }
 
 export function resolveFileIcon(document: TextDocument) {

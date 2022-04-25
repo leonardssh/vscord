@@ -78,7 +78,7 @@ export async function activity(previous: Presence = {}, isViewing = false): Prom
 	const removeLowerDetails = config[CONFIG_KEYS.RemoveLowerDetails];
 	const removeLowerDetailsIdling = config[CONFIG_KEYS.RemoveLowerDetailsIdling];
 
-	let presence: Presence = {
+	const defaultPresence = {
 		details: removeDetails
 			? undefined
 			: details(
@@ -109,12 +109,24 @@ export async function activity(previous: Presence = {}, isViewing = false): Prom
 		smallImageText: defaultSmallImageText
 	};
 
+	let presence: Presence = {
+		...defaultPresence
+	};
+
 	const fileURI = await getFileURI(); // obtain fileURI if CustomTextEditor is used
 	dataClass.setFileURI(fileURI);
 
 	const fileIcon = window.activeTextEditor
 		? resolveFileIcon(window.activeTextEditor.document)
 		: resolveFileIconByUri(fileURI);
+
+	if (!fileIcon) {
+		// Return the default presence when file icon is null
+		return {
+			...defaultPresence
+		};
+	}
+
 	const largeImageText = config[CONFIG_KEYS.LargeImage]
 		.replace(REPLACE_KEYS.LanguageLowerCase, toLower(fileIcon))
 		.replace(REPLACE_KEYS.LanguageTitleCase, toTitle(fileIcon))
@@ -177,7 +189,6 @@ export async function activity(previous: Presence = {}, isViewing = false): Prom
 		const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
 
 		const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
-
 		const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
 
 		const isNotExcluded =
@@ -240,6 +251,7 @@ function details(
 				totalProblems.toString()
 		  )
 		: '';
+
 	if (window.activeTextEditor) {
 		const { document, selection } = window.activeTextEditor;
 		const fileIcon = resolveFileIcon(document);
