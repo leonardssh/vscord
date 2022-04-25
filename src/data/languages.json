@@ -171,7 +171,6 @@
 		".dart": { "image": "dart" },
 		".dfm": { "image": "delphi" },
 		".dpr": { "image": "delphi" },
-		"/\\.(drawio|dio)(\\.png|\\.svg)?/i": { "image": "drawio" },
 		".dsc": { "image": "denizen" },
 		".dm": { "image": "dm" },
 		".dme": { "image": "dm" },

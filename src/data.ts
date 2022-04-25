@@ -1,12 +1,11 @@
 import { API as GitApi, GitExtension, Remote, Repository } from './@types/git';
 import gitUrlParse from 'git-url-parse';
-import { basename, parse, ParsedPath, sep, dirname } from 'path';
+import { parse, ParsedPath, sep } from 'path';
 import {
 	Disposable,
 	EventEmitter,
 	Extension,
 	extensions,
-	Uri,
 	window,
 	workspace,
 	WorkspaceFolder
@@ -20,8 +19,6 @@ interface DisposableLike {
 const API_VERSION: Parameters<GitExtension['getAPI']>['0'] = 1;
 
 export class Data implements DisposableLike {
-	public _fileURI: Uri | undefined;
-
 	protected _file: ParsedPath | undefined;
 	protected _repo: Repository | undefined;
 	protected _remote: Remote | undefined;
@@ -42,7 +39,6 @@ export class Data implements DisposableLike {
 		this._file = window.activeTextEditor
 			? parse(window.activeTextEditor.document.fileName)
 			: undefined;
-		this._fileURI = undefined;
 		this.ext();
 		this.api(this.gitExt?.exports.enabled || false);
 		this.rootListeners.push(
@@ -63,24 +59,19 @@ export class Data implements DisposableLike {
 	}
 
 	public get fileName(): string | undefined {
-		const v = this._file
-			? this._file.name + this._file.ext
-			: this._fileURI?.path
-			? basename(this._fileURI.path)
-			: undefined;
+		const v = this._file ? this._file.name + this._file.ext : undefined;
 		this.debug(4, `fileName(): ${v}`);
 		return v;
 	}
 
 	public get dirName(): string | undefined {
-		let v = this._file?.dir ?? this?._fileURI?.path;
-		v = v === undefined ? undefined : dirname(v);
+		const v = this._file?.dir.split(sep).pop();
 		this.debug(4, `dirName(): ${v}`);
 		return v;
 	}
 
 	public get fullDirName(): string | undefined {
-		const v = this._file?.dir ?? this?._fileURI?.path;
+		const v = this._file?.dir;
 		this.debug(4, `fullDirName(): ${v}`);
 		return v;
 	}
@@ -92,14 +83,12 @@ export class Data implements DisposableLike {
 	}
 
 	public get workspaceFolder(): WorkspaceFolder | undefined {
-		const workspaceFolder = workspace.workspaceFolders
-			? workspace.workspaceFolders[0]
-			: undefined;
-
-		const v = window.activeTextEditor
-			? workspace.getWorkspaceFolder(window.activeTextEditor.document.uri)
-			: workspaceFolder;
-		this.debug(4, `workspaceFolder(): ${this._fileURI ? 'Found URI' : 'No URI'} ${v}`);
+		const uri = window?.activeTextEditor?.document.uri;
+		let v: WorkspaceFolder | undefined = undefined;
+		if (uri) {
+			v = workspace.getWorkspaceFolder(uri);
+		}
+		this.debug(4, `workspaceFolder(): ${uri ? 'Found URI' : 'No URI'} ${v}`);
 		return v;
 	}
 
@@ -161,10 +150,6 @@ export class Data implements DisposableLike {
 
 	public onUpdate(listener: () => any): Disposable {
 		return this.eventEmitter.event(listener);
-	}
-
-	public setFileURI(fileURI: Uri) {
-		this._fileURI = fileURI;
 	}
 
 	private ext(): void {
