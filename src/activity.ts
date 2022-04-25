@@ -221,10 +221,9 @@ function details(
 	let raw = (config[idling] as string).replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
 	if (window.activeTextEditor) {
-		const noWorkspaceFound = config[CONFIG_KEYS.LowerDetailsNoWorkspaceFound].replace(
-			REPLACE_KEYS.Empty,
-			FAKE_EMPTY
-		);
+		const noWorkspaceFound = config[CONFIG_KEYS.LowerDetailsNoWorkspaceFound]
+			.replace(REPLACE_KEYS.Empty, FAKE_EMPTY)
+			.replace(REPLACE_KEYS.DirName, dataClass.dirName ?? FAKE_EMPTY);
 
 		const workspaceFolderName = dataClass.workspaceFolder
 			? dataClass.workspaceFolder.name
