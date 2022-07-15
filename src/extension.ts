@@ -75,6 +75,16 @@ export const toggleIdling = async (windowState: WindowState) => {
 			await sendActivity();
 		} else {
 			idleCheckTimeout = setTimeout(async () => {
+				if (config[CONFIG_KEYS.DisconnectOnIdle]) {
+					await rpc?.clearActivity();
+
+					if (config[CONFIG_KEYS.ResetElapsedTimeAfterIdle]) {
+						state.startTimestamp = undefined;
+					}
+
+					return;
+				}
+
 				state = {
 					...state,
 					smallImageKey: getFileIcon(IDLE_SMALL_IMAGE_KEY),

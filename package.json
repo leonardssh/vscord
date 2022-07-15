@@ -261,6 +261,16 @@
 					"default": true,
 					"description": "Whether or not to check if you are still active or idle and react accordingly."
 				},
+				"rpc.disconnectOnIdle": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to stop RPC completely while idling."
+				},
+				"rpc.resetElapsedTimeAfterIdle": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to reset activity's elapsed time after idling."
+				},
 				"rpc.idleTimeout": {
 					"type": "number",
 					"default": 300,

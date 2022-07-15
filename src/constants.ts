@@ -35,6 +35,8 @@ export const enum CONFIG_KEYS {
 	IgnoreWorkspacesText = 'ignoreWorkspacesText',
 	IdleTimeout = 'idleTimeout',
 	CheckIdle = 'checkIdle',
+	DisconnectOnIdle = 'disconnectOnIdle',
+	ResetElapsedTimeAfterIdle = 'resetElapsedTimeAfterIdle',
 	IdleText = 'idleText',
 	AppName = 'appName',
 	ShowProblems = 'showProblems',
