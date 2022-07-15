@@ -22,6 +22,8 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
 	ignoreWorkspacesText: string | string[];
 	idleTimeout: number;
 	checkIdle: boolean;
+	disconnectOnIdle: boolean;
+	resetElapsedTimeAfterIdle: boolean;
 	idleText: string;
 	appName: string;
 	showProblems: boolean;

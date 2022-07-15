@@ -75,6 +75,16 @@ export const toggleIdling = async (windowState: WindowState) => {
 			await sendActivity();
 		} else {
 			idleCheckTimeout = setTimeout(async () => {
+				if (config[CONFIG_KEYS.DisconnectOnIdle]) {
+					await rpc?.clearActivity();
+
+					if (config[CONFIG_KEYS.ResetElapsedTimeAfterIdle]) {
+						state.startTimestamp = undefined;
+					}
+
+					return;
+				}
+
 				state = {
 					...state,
 					smallImageKey: getFileIcon(IDLE_SMALL_IMAGE_KEY),
@@ -151,7 +161,7 @@ export const login = async () => {
 	}
 };
 
-export const registerComamnds = (ctx: ExtensionContext) => {
+export const registerCommands = (ctx: ExtensionContext) => {
 	const config = getConfig();
 
 	const enable = async (update = true) => {
@@ -236,7 +246,7 @@ export const registerComamnds = (ctx: ExtensionContext) => {
 export async function activate(ctx: ExtensionContext) {
 	logInfo('Discord Rich Presence for VS Code activated.');
 
-	registerComamnds(ctx);
+	registerCommands(ctx);
 
 	try {
 		await login();
