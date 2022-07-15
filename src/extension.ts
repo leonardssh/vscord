@@ -151,7 +151,7 @@ export const login = async () => {
 	}
 };
 
-export const registerComamnds = (ctx: ExtensionContext) => {
+export const registerCommands = (ctx: ExtensionContext) => {
 	const config = getConfig();
 
 	const enable = async (update = true) => {
@@ -236,7 +236,7 @@ export const registerComamnds = (ctx: ExtensionContext) => {
 export async function activate(ctx: ExtensionContext) {
 	logInfo('Discord Rich Presence for VS Code activated.');
 
-	registerComamnds(ctx);
+	registerCommands(ctx);
 
 	try {
 		await login();
