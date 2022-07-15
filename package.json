@@ -307,6 +307,14 @@
 					"default": [],
 					"description": "List of patterns to match organizations names that should prevent its display in the button."
 				},
+				"rpc.ignoreGitHosts": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"description": "List of patterns to match git hostnames that should prevent its display in the button"
+				},
 				"rpc.suppressNotifications": {
 					"type": "boolean",
 					"default": true,

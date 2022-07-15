@@ -45,6 +45,7 @@ export const enum CONFIG_KEYS {
 	ButtonInactiveUrl = 'buttonInactiveUrl',
 	IgnoreRepositories = 'ignoreRepositories',
 	IgnoreOrganizations = 'ignoreOrganizations',
+	IgnoreGitHosts = 'ignoreGitHosts',
 	SuppressNotifications = 'suppressNotifications',
 	PrioritizeLanguagesOverExtensions = 'prioritizeLanguagesOverExtensions'
 }

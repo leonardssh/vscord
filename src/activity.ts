@@ -164,6 +164,7 @@ export function activity(previous: Presence = {}, isViewing = false): Presence {
 		if (config[CONFIG_KEYS.ButtonEnabled] && dataClass.gitRemoteUrl) {
 			const gitRepo = dataClass.gitRemoteUrl.toString('https').replace(/\.git$/, '');
 			const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
+			const gitHost = dataClass.gitRemoteUrl.source;
 
 			const isRepositoryExcluded = isExcluded(
 				config[CONFIG_KEYS.IgnoreRepositories],
@@ -175,8 +176,13 @@ export function activity(previous: Presence = {}, isViewing = false): Presence {
 				gitOrg
 			);
 
+			const isGitHostExcluded = isExcluded(config[CONFIG_KEYS.IgnoreGitHosts], gitHost);
+
 			const isNotExcluded =
-				!isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded;
+				!isRepositoryExcluded &&
+				!isWorkspaceExcluded &&
+				!isOrganizationExcluded &&
+				!isGitHostExcluded;
 
 			if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && isNotExcluded) {
 				presence = {
