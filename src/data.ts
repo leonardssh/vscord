@@ -64,6 +64,12 @@ export class Data implements DisposableLike {
 		return v;
 	}
 
+	public get fileExtension(): string | undefined {
+		const v = this._file ? this._file.ext : undefined;
+		this.debug(4, `fileExtension(): ${v}`);
+		return v;
+	}
+
 	public get dirName(): string | undefined {
 		const v = this._file?.dir.split(sep).pop();
 		this.debug(4, `dirName(): ${v}`);
