@@ -55,6 +55,7 @@ export const enum CONFIG_KEYS {
 export const enum REPLACE_KEYS {
 	Empty = '{empty}',
 	FileName = '{file_name}',
+	FileExtension = '{file_extension}',
 	DirName = '{dir_name}',
 	FullDirName = '{full_dir_name}',
 	Workspace = '{workspace}',

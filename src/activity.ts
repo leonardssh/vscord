@@ -268,6 +268,7 @@ function details(
 
 		raw = raw
 			.replace(REPLACE_KEYS.FileName, dataClass.fileName ?? FAKE_EMPTY)
+			.replace(REPLACE_KEYS.FileExtension, dataClass.fileExtension ?? FAKE_EMPTY)
 			.replace(REPLACE_KEYS.DirName, dataClass.dirName ?? FAKE_EMPTY)
 			.replace(REPLACE_KEYS.Workspace, workspaceName)
 			.replace(REPLACE_KEYS.WorkspaceFolder, workspaceFolderName)
