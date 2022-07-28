@@ -1,6 +1,6 @@
 import { API as GitApi, GitExtension, Remote, Repository } from './@types/git';
 import gitUrlParse from 'git-url-parse';
-import { parse, ParsedPath, sep } from 'path';
+import { basename, parse, ParsedPath, sep } from 'path';
 import {
 	Disposable,
 	EventEmitter,
@@ -80,6 +80,18 @@ export class Data implements DisposableLike {
 		const v = this._file?.dir;
 		this.debug(4, `fullDirName(): ${v}`);
 		return v;
+	}
+
+	public get folderAndFile(): string | undefined {
+		const directory = basename(this._file?.dir ?? '');
+		const file = this._file ? this._file.name + this._file.ext : undefined;
+
+		if (!directory || !this.workspaceFolder?.name || directory === this.workspaceFolder?.name) {
+			return file;
+		}
+
+		this.debug(4, `folderAndFile(): ${directory + sep + file}`);
+		return directory + sep + file;
 	}
 
 	public get workspace(): string | undefined {

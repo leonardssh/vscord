@@ -283,7 +283,8 @@ function details(
 					? dataClass.gitRemoteUrl.name
 					: dataClass.gitRepoName ?? FAKE_EMPTY
 			)
-			.replace(REPLACE_KEYS.GitBranch, dataClass.gitBranchName ?? FAKE_EMPTY);
+			.replace(REPLACE_KEYS.GitBranch, dataClass.gitBranchName ?? FAKE_EMPTY)
+			.replace(REPLACE_KEYS.FolderAndFile, dataClass.folderAndFile ?? FAKE_EMPTY);
 	}
 
 	return raw;
