@@ -91,7 +91,7 @@ export class Data implements DisposableLike {
 		}
 
 		this.debug(4, `folderAndFile(): ${directory + sep + file}`);
-		return directory + sep + file;
+		return directory + '/' + file;
 	}
 
 	public get workspace(): string | undefined {
