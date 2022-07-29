@@ -13,6 +13,7 @@
 		{ "language": "diff", "image": "manifest" },
 		{ "language": "dockerfile", "image": "docker" },
 		{ "language": "fsharp", "image": "fsharp" },
+		{ "language": "fortran", "image" : "fortran"},
 		{ "language": "git-commit", "image": "manifest" },
 		{ "language": "git-rebase", "image": "manifest" },
 		{ "language": "go", "image": "go" },
@@ -484,6 +485,17 @@
 		"/^yarn(\\.lock)?$/i": { "image": "yarn" },
 		".yarnrc": { "image": "yarn" },
 		".zig": { "image": "zig" },
-		"/\\.(tfvars|tf)$/i": { "image": "terraform" }
+		"/\\.(tfvars|tf)$/i": { "image": "terraform" },
+		".f90": { "image": "fortran"},
+		".F90": { "image": "fortran"},
+		".f95": { "image": "fortran"},
+		".F95": { "image": "fortran"},
+		".f03": { "image": "fortran"},
+		".F03": { "image": "fortran"},
+		".f08": { "image": "fortran"},
+		".F08": { "image": "fortran"},
+		".F18": { "image": "fortran"},
+		".f18": { "image": "fortran"},
+		
 	}
 }
