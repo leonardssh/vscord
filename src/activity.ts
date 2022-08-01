@@ -1,4 +1,4 @@
-import { Presence } from 'discord-rpc';
+import { SetActivity } from '@xhayper/discord-rpc/dist/structures/ClientUser';
 import { getConfig } from './config';
 import {
 	debug,
@@ -50,7 +50,7 @@ export function onDiagnosticsChange() {
 	totalProblems = counted;
 }
 
-export function activity(previous: Presence = {}, isViewing = false): Presence {
+export function activity(previous: SetActivity = {}, isViewing = false): SetActivity {
 	const config = getConfig();
 	const { appName } = env;
 
@@ -73,7 +73,7 @@ export function activity(previous: Presence = {}, isViewing = false): Presence {
 	const removeLowerDetails = config[CONFIG_KEYS.RemoveLowerDetails];
 	const removeLowerDetailsIdling = config[CONFIG_KEYS.RemoveLowerDetailsIdling];
 
-	let presence: Presence = {
+	let presence: SetActivity = {
 		details: removeDetails
 			? undefined
 			: details(

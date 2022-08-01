@@ -1,4 +1,5 @@
-import { Client, Presence } from 'discord-rpc';
+import { SetActivity } from '@xhayper/discord-rpc/dist/structures/ClientUser';
+import { Client } from '@xhayper/discord-rpc';
 import { logError, logInfo } from './logger';
 import {
 	commands,
@@ -19,7 +20,7 @@ import { getApplicationId } from './helpers/getApplicationId';
 import { dataClass } from './data';
 import { getFileIcon } from './helpers/resolveFileIcon';
 
-let state: Presence = {};
+let state: SetActivity = {};
 let rpc: Client | undefined = undefined;
 let listeners: Disposable[] = [];
 let idleCheckTimeout: NodeJS.Timer | undefined = undefined;
@@ -30,10 +31,10 @@ statusBarIcon.text = '$(pulse) Connecting to Discord Gateway...';
 
 export const sendActivity = async (isViewing = false) => {
 	state = {
-		...(await activity(state, isViewing))
+		...activity(state, isViewing)
 	};
 
-	await rpc?.setActivity(state);
+	await rpc?.user?.setActivity(state);
 };
 
 export const listen = () => {
@@ -76,7 +77,7 @@ export const toggleIdling = async (windowState: WindowState) => {
 		} else {
 			idleCheckTimeout = setTimeout(async () => {
 				if (config[CONFIG_KEYS.DisconnectOnIdle]) {
-					await rpc?.clearActivity();
+					await rpc?.user?.clearActivity();
 
 					if (config[CONFIG_KEYS.ResetElapsedTimeAfterIdle]) {
 						state.startTimestamp = undefined;
@@ -91,7 +92,7 @@ export const toggleIdling = async (windowState: WindowState) => {
 					smallImageText: config[CONFIG_KEYS.IdleText]
 				};
 
-				await rpc?.setActivity(state);
+				await rpc?.user?.setActivity(state);
 			}, config[CONFIG_KEYS.IdleTimeout] * 1000);
 		}
 	}
@@ -100,10 +101,12 @@ export const toggleIdling = async (windowState: WindowState) => {
 export const login = async () => {
 	const config = getConfig();
 
+	const { clientId } = getApplicationId(config);
+
 	statusBarIcon.text = '$(search-refresh) Connecting to Discord Gateway...';
 	statusBarIcon.tooltip = 'Connecting to Discord Gateway...';
 
-	rpc = new Client({ transport: 'ipc' });
+	rpc = new Client({ clientId });
 
 	rpc.on('ready', async () => {
 		logInfo('Successfully connected to Discord');
@@ -135,10 +138,8 @@ export const login = async () => {
 		statusBarIcon.show();
 	});
 
-	const { clientId } = getApplicationId(config);
-
 	try {
-		await rpc.login({ clientId });
+		await rpc.login();
 		logInfo(`Successfully logged in to Discord with client ID ${clientId}`);
 	} catch (error: any) {
 		logError(`Encountered following error while trying to login:\n${error as string}`);
@@ -273,10 +274,4 @@ export function deactivate() {
 	rpc && rpc.destroy();
 
 	logInfo(`[004] Destroyed Discord RPC client`);
-}
-
-declare module 'discord-rpc' {
-	interface Client {
-		on(event: 'ready' | 'connected' | 'disconnected', listener: () => void): this;
-	}
 }
