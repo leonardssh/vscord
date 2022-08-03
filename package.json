@@ -42,7 +42,7 @@
 	},
 	"homepage": "https://github.com/LeonardSSH/vscord#readme",
 	"dependencies": {
-		"@xhayper/discord-rpc": "^0.0.4-beta",
+		"@xhayper/discord-rpc": "^0.0.5-beta",
 		"git-url-parse": "^12.0.0"
 	},
 	"optionalDependencies": {
@@ -55,11 +55,11 @@
 		"@types/git-url-parse": "^9.0.1",
 		"@types/node": "^18.6.3",
 		"@types/vscode": "^1.69.0",
-		"@typescript-eslint/eslint-plugin": "^5.31.0",
-		"@typescript-eslint/parser": "^5.31.0",
+		"@typescript-eslint/eslint-plugin": "^5.32.0",
+		"@typescript-eslint/parser": "^5.32.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"cz-conventional-changelog": "^3.3.0",
-		"eslint": "^8.20.0",
+		"eslint": "^8.21.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"husky": "^8.0.1",
@@ -100,7 +100,7 @@
 		"Other"
 	],
 	"engines": {
-		"vscode": "^1.63.1"
+		"vscode": "^1.69.0"
 	},
 	"contributes": {
 		"commands": [
