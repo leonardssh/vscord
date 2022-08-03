@@ -42,7 +42,7 @@
 	},
 	"homepage": "https://github.com/LeonardSSH/vscord#readme",
 	"dependencies": {
-		"@xhayper/discord-rpc": "^0.0.5-beta",
+		"@xhayper/discord-rpc": "^0.0.6-beta",
 		"git-url-parse": "^12.0.0"
 	},
 	"optionalDependencies": {

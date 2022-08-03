@@ -651,10 +651,10 @@
   resolved "https://registry.yarnpkg.com/@webpack-cli/serve/-/serve-1.7.0.tgz#e1993689ac42d2b16e9194376cfb6753f6254db1"
   integrity sha512-oxnCNGj88fL+xzV+dacXs44HcDwf1ovs3AuEzvP7mqXw7fQntqIhQ1BRmynh4qEKQSSSRSWVyXRjmTbZIX9V2Q==
 
-"@xhayper/discord-rpc@^0.0.5-beta":
-  version "0.0.5-beta"
-  resolved "https://registry.yarnpkg.com/@xhayper/discord-rpc/-/discord-rpc-0.0.5-beta.tgz#695513da2dc0e4f93f03e0e35833863ceed77e05"
-  integrity sha512-0j+XoBPUeAVUAOBpkM3iy6Edc+kuzFh8o3/DmvpFUycjWtMcoBQN2JbPeBhDRpTo0FpQ7X2OkAM1VtQ2A4HjKg==
+"@xhayper/discord-rpc@^0.0.6-beta":
+  version "0.0.6-beta"
+  resolved "https://registry.yarnpkg.com/@xhayper/discord-rpc/-/discord-rpc-0.0.6-beta.tgz#b8ef87e44b0702b44c2377a25e91e53cc20e54b7"
+  integrity sha512-fzMm7Na+upMP7V2FDMvg5z7lpXiyxv828S59TbGaokiIdULsBZhL+ZdGNE5NnXXXOId+kP8DsOST6lteXCjJsw==
   dependencies:
     axios "^0.27.2"
     discord-api-types "^0.37.0"
