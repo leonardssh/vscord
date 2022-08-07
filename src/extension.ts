@@ -1,5 +1,4 @@
-import { SetActivity } from '@xhayper/discord-rpc/dist/structures/ClientUser';
-import { Client } from '@xhayper/discord-rpc';
+import { Client, SetActivity } from '@xhayper/discord-rpc';
 import { logError, logInfo } from './logger';
 import {
 	commands,

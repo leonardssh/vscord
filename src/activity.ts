@@ -1,4 +1,4 @@
-import { SetActivity } from '@xhayper/discord-rpc/dist/structures/ClientUser';
+import { SetActivity } from '@xhayper/discord-rpc';
 import { getConfig } from './config';
 import {
 	debug,
@@ -95,7 +95,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
 				  ),
 		startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime]
 			? undefined
-			: previous.startTimestamp ?? Date.now(),
+			: previous.startTimestamp ?? new Date(),
 		largeImageKey: insiders
 			? getFileIcon(IDLE_VSCODE_IMAGE_KEY)
 			: getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY),
