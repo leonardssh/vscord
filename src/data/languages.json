@@ -57,6 +57,7 @@
         { "language": "shaderlab", "image": "manifest" },
         { "language": "shellscript", "image": "shell" },
         { "language": "slim", "image": "text" },
+        { "language": "solidity", "image": "solidity" },
         { "language": "sql", "image": "sql" },
         { "language": "starlark", "image": "bazel" },
         { "language": "stylus", "image": "stylus" },
