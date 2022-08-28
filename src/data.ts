@@ -1,6 +1,7 @@
 import { API as GitApi, GitExtension, Remote, Repository } from './@types/git';
 import gitUrlParse from 'git-url-parse';
-import { parse, ParsedPath, sep } from 'path';
+import { join, parse, ParsedPath, sep } from 'path';
+import { statSync } from 'fs';
 import {
 	Disposable,
 	EventEmitter,
@@ -67,6 +68,14 @@ export class Data implements DisposableLike {
 	public get fileExtension(): string | undefined {
 		const v = this._file ? this._file.ext : undefined;
 		this.debug(4, `fileExtension(): ${v}`);
+		return v;
+	}
+
+	public get fileSize(): number | undefined {
+		if (!this._file) return undefined;
+		const absolutePath = join(this._file.dir, this._file.base);
+		const v = statSync(absolutePath).size;
+		this.debug(4, `fileSize(): ${v}`);
 		return v;
 	}
 

@@ -26,6 +26,7 @@ import { dataClass } from './data';
 import { isObject } from './helpers/isObject';
 import { isExcluded } from './helpers/isExcluded';
 import { getFileIcon, resolveFileIcon, toLower, toTitle, toUpper } from './helpers/resolveFileIcon';
+import { getFileSize } from './helpers/getFileSize';
 
 let totalProblems = 0;
 
@@ -243,6 +244,8 @@ function details(
 		}`;
 
 		const fileIcon = resolveFileIcon(window.activeTextEditor.document);
+		const fileSize = getFileSize(config, dataClass);
+
 		const problems = config[CONFIG_KEYS.ShowProblems]
 			? config[CONFIG_KEYS.ProblemsText].replace(
 					REPLACE_KEYS.ProblemsCount,
@@ -269,6 +272,7 @@ function details(
 		raw = raw
 			.replace(REPLACE_KEYS.FileName, dataClass.fileName ?? FAKE_EMPTY)
 			.replace(REPLACE_KEYS.FileExtension, dataClass.fileExtension ?? FAKE_EMPTY)
+			.replace(REPLACE_KEYS.FileSize, fileSize ?? FAKE_EMPTY)
 			.replace(REPLACE_KEYS.DirName, dataClass.dirName ?? FAKE_EMPTY)
 			.replace(REPLACE_KEYS.Workspace, workspaceName)
 			.replace(REPLACE_KEYS.WorkspaceFolder, workspaceFolderName)

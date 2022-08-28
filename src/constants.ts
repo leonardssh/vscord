@@ -49,7 +49,11 @@ export const enum CONFIG_KEYS {
 	IgnoreOrganizations = 'ignoreOrganizations',
 	IgnoreGitHosts = 'ignoreGitHosts',
 	SuppressNotifications = 'suppressNotifications',
-	PrioritizeLanguagesOverExtensions = 'prioritizeLanguagesOverExtensions'
+	PrioritizeLanguagesOverExtensions = 'prioritizeLanguagesOverExtensions',
+	FileSizeHumanReadable = 'fileSizeHumanReadable',
+	FileSizeSpec = 'fileSizeSpec',
+	FileSizeFixed = 'fileSizeFixed',
+	FileSizeSpacer = 'fileSizeSpacer'
 }
 
 export const enum REPLACE_KEYS {
@@ -72,5 +76,6 @@ export const enum REPLACE_KEYS {
 	Problems = '{problems}',
 	ProblemsCount = '{problemsCount}',
 	GitRepo = '{git_repo}',
-	GitBranch = '{git_branch}'
+	GitBranch = '{git_branch}',
+	FileSize = '{file_size}'
 }

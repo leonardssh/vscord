@@ -375,6 +375,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.51.tgz#cfd70924a25a3fd32b218e5e420e6897e1ac4f40"
   integrity sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==
 
+"@types/file-size@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/file-size/-/file-size-1.0.1.tgz#1fd189bcae1b7446cc3deed947c974adfe53b3c5"
+  integrity sha512-jFSF8iZRWGD6trgBC6IfuTSDsEv8IHN5bW7cTO6FxPiS8FKP3kno68fI9FA7m7vV+XpplgV72wROkzigNmWcsg==
+
 "@types/git-url-parse@^9.0.1":
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/@types/git-url-parse/-/git-url-parse-9.0.1.tgz#1c7cc89527ca8b5afcf260ead3b0e4e373c43938"
@@ -1647,6 +1652,11 @@ file-entry-cache@^6.0.1:
   integrity sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==
   dependencies:
     flat-cache "^3.0.4"
+
+file-size@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/file-size/-/file-size-1.0.0.tgz#3338267d5d206bbf60f4df60c19d7ed3813a4657"
+  integrity sha512-tLIdonWTpABkU6Axg2yGChYdrOsy4V8xcm0IcyAP8fSsu6jiXLm5pgs083e4sq5fzNRZuAYolUbZyYmPvCKfwQ==
 
 fill-range@^7.0.1:
   version "7.0.1"
