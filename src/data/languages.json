@@ -128,7 +128,9 @@
 		".cmd": { "image": "bat" },
 		"/\\.(exe|com|msi)$/i": { "image": "bat" },
 		".reg": { "image": "bat" },
-		"/(^BUILD$)|(^WORKSPACE$)|(\\.bzl$)/": { "image": "bazel" },
+		"/^(BUILD)|(WORKSPACE)|(\\.bzl)|(\\.bazel(rc)?)|(\\.s(tar|ky))$/": {
+			"image": "bazel"
+		},
 		"/^(\\.bowerrc|bower\\.json|Bowerfile)$/i": { "image": "bower" },
 		"/\\.bf?$/i": { "image": "brainfuck" },
 		"/\\.c$/i": { "image": "c" },
