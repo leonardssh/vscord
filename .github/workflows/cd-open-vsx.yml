@@ -18,10 +18,9 @@ jobs:
           node-version: 16
 
       - name: Install Dependencies
-        run: npm install --no-save --no-package-lock
+        run: yarn install --immutable
 
       - name: Publish to Open VSX Registry
         uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.OPEN_VSX_TOKEN }}
-          yarn: false
