@@ -18,7 +18,7 @@ jobs:
           node-version: 16
 
       - name: Install Dependencies
-        run: npm --no-save --no-package-lock
+        run: npm install --no-save --no-package-lock
 
       - name: Publish to Visual Studio Marketplace
         uses: HaaLeo/publish-vscode-extension@v1
