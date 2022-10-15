@@ -47,13 +47,9 @@ export const listen = () => {
     const changeWindowState = window.onDidChangeWindowState((e: WindowState) => toggleIdling(e));
     const gitListener = dataClass.onUpdate(throttle(() => sendActivity(), 2000));
 
-    if (config[CONFIG_KEYS.ShowProblems]) {
-        listeners.push(diagnosticsChange);
-    }
+    if (config[CONFIG_KEYS.ShowProblems]) listeners.push(diagnosticsChange);
 
-    if (config[CONFIG_KEYS.CheckIdle]) {
-        listeners.push(changeWindowState);
-    }
+    if (config[CONFIG_KEYS.CheckIdle]) listeners.push(changeWindowState);
 
     listeners.push(fileSwitch, fileEdit, debugStart, debugEnd, gitListener);
 };
@@ -68,9 +64,7 @@ export const toggleIdling = async (windowState: WindowState) => {
 
     if (config[CONFIG_KEYS.IdleTimeout] !== 0) {
         if (windowState.focused) {
-            if (idleCheckTimeout) {
-                clearTimeout(idleCheckTimeout);
-            }
+            if (idleCheckTimeout) clearTimeout(idleCheckTimeout);
 
             await sendActivity();
         } else {
@@ -78,9 +72,7 @@ export const toggleIdling = async (windowState: WindowState) => {
                 if (config[CONFIG_KEYS.DisconnectOnIdle]) {
                     await rpc?.user?.clearActivity();
 
-                    if (config[CONFIG_KEYS.ResetElapsedTimeAfterIdle]) {
-                        state.startTimestamp = undefined;
-                    }
+                    if (config[CONFIG_KEYS.ResetElapsedTimeAfterIdle]) state.startTimestamp = undefined;
 
                     return;
                 }
@@ -119,9 +111,7 @@ export const login = async () => {
 
         listen();
 
-        if (timeout) {
-            clearTimeout(timeout);
-        }
+        if (timeout) clearTimeout(timeout);
 
         timeout = setTimeout(() => (statusBarIcon.text = "$(smiley)"), 5000);
     });
@@ -163,11 +153,10 @@ export const registerCommands = (ctx: ExtensionContext) => {
     const config = getConfig();
 
     const enable = async (update = true) => {
-        if (update) {
+        if (update)
             try {
                 await config.update("enabled", true);
             } catch {}
-        }
 
         cleanUp();
 
@@ -178,11 +167,10 @@ export const registerCommands = (ctx: ExtensionContext) => {
     };
 
     const disable = async (update = true) => {
-        if (update) {
+        if (update)
             try {
                 await config.update("enabled", false);
             } catch {}
-        }
 
         cleanUp();
 

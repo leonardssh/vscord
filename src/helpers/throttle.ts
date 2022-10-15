@@ -4,9 +4,7 @@ export const throttle = (fn: CallableFunction, delay: number) => {
     return (...args: any[]) => {
         const now = new Date().getTime();
 
-        if (now - lastCalled < delay) {
-            return;
-        }
+        if (now - lastCalled < delay) return;
 
         lastCalled = now;
         return fn(...args);

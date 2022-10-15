@@ -31,9 +31,8 @@ export function onDiagnosticsChange() {
                 if (
                     diagnostic.severity === DiagnosticSeverity.Warning ||
                     diagnostic.severity === DiagnosticSeverity.Error
-                ) {
+                )
                     counted++;
-                }
             });
         }
     });
@@ -255,17 +254,14 @@ function details(
 function fileDetails(_raw: string, document: TextDocument, selection: Selection) {
     let raw = _raw.slice();
 
-    if (raw.includes(REPLACE_KEYS.TotalLines)) {
+    if (raw.includes(REPLACE_KEYS.TotalLines))
         raw = raw.replace(REPLACE_KEYS.TotalLines, document.lineCount.toLocaleString());
-    }
 
-    if (raw.includes(REPLACE_KEYS.CurrentLine)) {
+    if (raw.includes(REPLACE_KEYS.CurrentLine))
         raw = raw.replace(REPLACE_KEYS.CurrentLine, (selection.active.line + 1).toLocaleString());
-    }
 
-    if (raw.includes(REPLACE_KEYS.CurrentColumn)) {
+    if (raw.includes(REPLACE_KEYS.CurrentColumn))
         raw = raw.replace(REPLACE_KEYS.CurrentColumn, (selection.active.character + 1).toLocaleString());
-    }
 
     return raw;
 }

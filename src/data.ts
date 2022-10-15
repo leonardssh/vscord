@@ -254,9 +254,7 @@ export class Data implements DisposableLike {
     private remote() {
         const remotes = this._repo?.state.remotes;
 
-        if (!remotes) {
-            return;
-        }
+        if (!remotes) return;
 
         return remotes.find((v) => v.name === "origin") ?? remotes[0];
     }

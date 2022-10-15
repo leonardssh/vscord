@@ -11,9 +11,7 @@ export const getApplicationId = (config: WorkspaceExtensionConfiguration) => {
 
     let clientId = config[CONFIG_KEYS.Id];
 
-    if (match !== null && applicationIds.has(match[0])) {
-        clientId = applicationIds.get(match[0]);
-    }
+    if (match !== null && applicationIds.has(match[0])) clientId = applicationIds.get(match[0]);
 
     return { clientId };
 };

@@ -14,14 +14,10 @@ export function resolveFileIcon(document: TextDocument) {
     const config = getConfig();
     const filename = basename(document.fileName);
     const findKnownExtension = Object.keys(KNOWN_EXTENSIONS).find((key) => {
-        if (filename.endsWith(key)) {
-            return true;
-        }
+        if (filename.endsWith(key)) return true;
 
         const match = /^\/(.*)\/([mgiy]+)$/.exec(key);
-        if (!match) {
-            return false;
-        }
+        if (!match) return false;
 
         const regex = new RegExp(match[1], match[2]);
         return regex.test(filename);

@@ -16,9 +16,7 @@ const logMessage = (message: string | Error, logLevel: LogLevel) => {
     } else if (message instanceof Error) {
         outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${message.message}`);
 
-        if (message.stack) {
-            outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${message.stack}`);
-        }
+        if (message.stack) outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${message.stack}`);
     } else if (typeof message === "object") {
         try {
             const json = JSON.stringify(message, null, 2);
@@ -27,14 +25,8 @@ const logMessage = (message: string | Error, logLevel: LogLevel) => {
     }
 };
 
-export const logInfo = (message: string) => {
-    logMessage(message, LogLevel.Info);
-};
+export const logInfo = (message: string) => void logMessage(message, LogLevel.Info);
 
-export const logWarn = (message: string) => {
-    logMessage(message, LogLevel.Warn);
-};
+export const logWarn = (message: string) => void logMessage(message, LogLevel.Warn);
 
-export const logError = (message: string) => {
-    logMessage(message, LogLevel.Error);
-};
+export const logError = (message: string) => void logMessage(message, LogLevel.Error);
