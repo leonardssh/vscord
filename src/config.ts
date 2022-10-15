@@ -1,4 +1,4 @@
-import { workspace, WorkspaceConfiguration } from 'vscode';
+import { workspace, WorkspaceConfiguration } from "vscode";
 import filesize from 'file-size';
 
 export type FileSizeConfig = Required<Parameters<typeof filesize>['1']>;
@@ -49,5 +49,5 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
 };
 
 export function getConfig(): WorkspaceExtensionConfiguration {
-	return workspace.getConfiguration('rpc') as WorkspaceExtensionConfiguration;
+    return workspace.getConfiguration("rpc") as WorkspaceExtensionConfiguration;
 }
