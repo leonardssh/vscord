@@ -276,7 +276,7 @@
         "/^makefile$/": { "image": "makefile" },
         "/^mkfile$/i": { "image": "makefile" },
         "/^\\.?qmake$/i": { "image": "makefile" },
-        "/\\.(h|geo|topo)$/i": { "image": "manifest" },
+        "/\\.(geo|topo)$/i": { "image": "manifest" },
         ".cson": { "image": "manifest" },
         ".json5": { "image": "manifest" },
         ".ndjson": { "image": "manifest" },
