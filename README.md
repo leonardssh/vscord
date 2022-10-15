@@ -70,6 +70,7 @@ Remember to 🌟 this GitHub if you 💖 it.
 -   Easily manually reconnect to Discord Gateway
 -   Idle indication when you tab out for a while
 -   Button that sends you to the GitHub repository
+-   flatpak/snapstore support
 
 > All texts are fully customizable using variables and a multitude of config options
 
