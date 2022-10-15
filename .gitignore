@@ -105,3 +105,12 @@ dist
 
 # Suck my ass
 suckmyass
+# wtf leonardssh
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
