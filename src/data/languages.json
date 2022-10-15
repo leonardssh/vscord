@@ -47,6 +47,7 @@
         { "language": "python", "image": "python" },
         { "language": "r", "image": "r" },
         { "language": "razor", "image": "cshtml" },
+        { "language": "reasonml", "image": "reasonml" },
         { "language": "ruby", "image": "ruby" },
         { "language": "rust", "image": "rust" },
         { "language": "scss", "image": "scss" },
