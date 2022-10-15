@@ -165,7 +165,10 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                     buttons: [
                         {
                             label: config[CONFIG_KEYS.ButtonActiveLabel],
-                            url: gitRepo
+                            url:
+                                config[CONFIG_KEYS.ButtonActiveUrl] != ""
+                                    ? config[CONFIG_KEYS.ButtonActiveUrl]
+                                    : gitRepo
                         }
                     ]
                 };

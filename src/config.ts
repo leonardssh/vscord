@@ -30,6 +30,7 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
     problemsText: string;
     buttonEnabled: boolean;
     buttonActiveLabel: string;
+    buttonActiveUrl: string;
     buttonInactiveLabel: string;
     buttonInactiveUrl: string;
     ignoreRepositories: string[];
