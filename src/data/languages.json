@@ -34,6 +34,7 @@
         { "language": "lua", "image": "lua" },
         { "language": "makefile", "image": "makefile" },
         { "language": "markdown", "image": "markdown" },
+        { "language": "moonscript", "image": "moonscript" },
         { "language": "objective-c", "image": "objective-c" },
         { "language": "objective-cpp", "image": "objective-c" },
         { "language": "odin", "image": "odin" },
@@ -302,6 +303,7 @@
         ".syntax": { "image": "manifest" },
         ".webmanifest": { "image": "manifest" },
         "/^pkginfo$/": { "image": "manifest" },
+        ".moon": { "image": "moonscript" },
         "/^mime\\.types$/i": { "image": "manifest" },
         "/^METADATA\\.pb$/": { "image": "manifest" },
         "/[\\/\\\\](?:magic[\\/\\\\]Magdir|file[\\/\\\\]magic)[\\/\\\\][-.\\w]+$/i": {
