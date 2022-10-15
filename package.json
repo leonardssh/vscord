@@ -57,7 +57,7 @@
         "typescript": "^4.8.4"
     },
     "scripts": {
-        "vscode:prepublish": "yarn run build",
+        "vscode:prepublish": "npm run build",
         "build": "tsup ./src/extension.ts --external vscode --minify",
         "watch": "tsup ./src/extension.ts --external vscode --watch --sourcemap",
         "lint": "prettier --check src/**/**",
