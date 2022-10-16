@@ -189,7 +189,6 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                         }
                     ]
                 };
-            else if (!gitRepo && CAN_USE_INACTIVE_BUTTON) presence.buttons = INACTIVE_BUTTON;
         }
     } else if (CAN_USE_INACTIVE_BUTTON) presence.buttons = INACTIVE_BUTTON;
 
