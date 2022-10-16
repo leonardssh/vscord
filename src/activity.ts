@@ -16,7 +16,9 @@ import {
     IDLE_VSCODE_INSIDERS_IMAGE_KEY,
     REPLACE_KEYS,
     VSCODE_IMAGE_KEY,
-    VSCODE_INSIDERS_IMAGE_KEY
+    VSCODE_INSIDERS_IMAGE_KEY,
+    VSCODIUM_IMAGE_KEY,
+    VSCODIUM_INSIDERS_IMAGE_KEY
 } from "./constants";
 
 let totalProblems = 0;
@@ -45,13 +47,14 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
     const config = getConfig();
     const { appName } = env;
 
-    const insiders = appName.includes("Insiders");
+    const isInsider = appName.includes("Insiders");
+    const isCodium = appName.startsWith("VSCodium") || appName.startsWith("codium");
 
     const defaultSmallImageKey = debug.activeDebugSession
         ? getFileIcon(DEBUGGING_IMAGE_KEY)
-        : insiders
-        ? getFileIcon(VSCODE_INSIDERS_IMAGE_KEY)
-        : getFileIcon(VSCODE_IMAGE_KEY);
+        : isInsider
+        ? getFileIcon(isCodium ? VSCODIUM_INSIDERS_IMAGE_KEY : VSCODE_INSIDERS_IMAGE_KEY)
+        : getFileIcon(isCodium ? VSCODIUM_IMAGE_KEY : VSCODE_IMAGE_KEY);
 
     const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(REPLACE_KEYS.AppName, appName);
 
@@ -82,7 +85,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                       isViewing
                   ),
         startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime] ? undefined : previous.startTimestamp ?? new Date(),
-        largeImageKey: insiders ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY),
+        largeImageKey: isInsider ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY),
         largeImageText: defaultLargeImageText,
         smallImageKey: defaultSmallImageKey,
         smallImageText: defaultSmallImageText

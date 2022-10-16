@@ -11,6 +11,8 @@ export const IDLE_VSCODE_INSIDERS_IMAGE_KEY = "idle-vscode-insiders" as const;
 export const DEBUGGING_IMAGE_KEY = "debugging" as const;
 export const VSCODE_IMAGE_KEY = "vscode" as const;
 export const VSCODE_INSIDERS_IMAGE_KEY = "vscode-insiders" as const;
+export const VSCODIUM_IMAGE_KEY = "vscodium" as const;
+export const VSCODIUM_INSIDERS_IMAGE_KEY = "vscodium-insiders" as const;
 
 export const enum CONFIG_KEYS {
     Id = "id",
