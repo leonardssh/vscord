@@ -1,3 +1,5 @@
+import "source-map-support/register";
+
 import { Client, type SetActivity } from "@xhayper/discord-rpc";
 import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY } from "./constants";
 import { getApplicationId } from "./helpers/getApplicationId";
