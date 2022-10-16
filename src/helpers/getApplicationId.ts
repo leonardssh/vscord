@@ -8,8 +8,8 @@ export const getApplicationId = (config: WorkspaceExtensionConfiguration) => {
         ["VSCodium", "1031067701474492496"]
     ]);
 
-    //TODO: Automatically generate regex
-    const match = /(Code|Visual Studio Code|VSCodium)/i.exec(config[CONFIG_KEYS.AppName]);
+    const appIdsRegex = new RegExp([...applicationIds.keys()].join("|"), "i");
+    const match = appIdsRegex.exec(config[CONFIG_KEYS.AppName]);
 
     let clientId = config[CONFIG_KEYS.Id];
     if (match !== null && applicationIds.has(match[0])) clientId = applicationIds.get(match[0])!;
