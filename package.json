@@ -106,7 +106,8 @@
                     "type": "string",
                     "enum": [
                         "Code",
-                        "Visual Studio Code"
+                        "Visual Studio Code",
+                        "VSCodium"
                     ],
                     "default": "Code",
                     "description": "Choose the name you want the application to use."
