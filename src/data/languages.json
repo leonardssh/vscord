@@ -300,6 +300,7 @@
         ".qbs": { "image": "manifest" },
         ".ston": { "image": "manifest" },
         ".ttl": { "image": "manifest" },
+        ".sol": { "image": "solidity" },
         ".rviz": { "image": "manifest" },
         ".syntax": { "image": "manifest" },
         ".webmanifest": { "image": "manifest" },
