@@ -55,7 +55,7 @@ Remember to 🌟 this GitHub if you 💖 it.
 
 ## 📌 Features
 
--   Switch between 2 IDE names (`Code` and `Visual Studio Code`) [(preview)](https://streamable.com/apjd4g)
+-   Switch between 3 IDE names (`Code`, `Visual Studio Code` and `VSCodium`) [(preview)](https://streamable.com/apjd4g)
 -   Highly customizable using the extension settings
 -   Shows what you're working on in Visual Studio Code
 -   Shows the amount of problems in your workspace
