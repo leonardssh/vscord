@@ -1,4 +1,8 @@
 import { workspace, WorkspaceConfiguration } from "vscode";
+import filesize from "file-size";
+
+export type FileSizeConfig = Required<Parameters<typeof filesize>["1"]>;
+export type FileSizeSpec = Parameters<ReturnType<typeof filesize<NonNullable<FileSizeConfig>>>["human"]>["0"];
 
 export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
     id: string;
@@ -37,6 +41,10 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
     ignoreOrganizations: string[];
     suppressNotifications: boolean;
     prioritizeLanguagesOverExtensions: boolean;
+    fileSizeHumanReadable: boolean;
+    fileSizeSpec: FileSizeSpec;
+    fileSizeFixed: number;
+    fileSizeSpacer: string;
 };
 
 export function getConfig(): WorkspaceExtensionConfiguration {
