@@ -8,6 +8,7 @@ export const getApplicationId = (config: WorkspaceExtensionConfiguration) => {
         ["VSCodium", "1031067701474492496"]
     ]);
 
+    // TODO: properly escape regex
     const appIdsRegex = new RegExp([...applicationIds.keys()].join("|"), "i");
     const match = appIdsRegex.exec(config[CONFIG_KEYS.AppName]);
 
