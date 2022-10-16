@@ -148,34 +148,38 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
             largeImageText
         };
 
-        if (config[CONFIG_KEYS.ButtonEnabled] && dataClass.gitRemoteUrl) {
-            const gitRepo = dataClass.gitRemoteUrl.toString("https").replace(/\.git$/, "");
-            const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
-            const gitHost = dataClass.gitRemoteUrl.source;
+        if (config[CONFIG_KEYS.ButtonEnabled]) {
+            let gitRepo;
+            if (dataClass.gitRemoteUrl) {
+                gitRepo = dataClass.gitRemoteUrl.toString("https").replace(/\.git$/, "");
+                const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
+                const gitHost = dataClass.gitRemoteUrl.source;
 
-            const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
+                const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
 
-            const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
+                const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
 
-            const isGitHostExcluded = isExcluded(config[CONFIG_KEYS.IgnoreGitHosts], gitHost);
+                const isGitHostExcluded = isExcluded(config[CONFIG_KEYS.IgnoreGitHosts], gitHost);
 
-            const isNotExcluded =
-                !isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded && !isGitHostExcluded;
+                const isNotExcluded =
+                    !isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded && !isGitHostExcluded;
 
-            if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && isNotExcluded) {
-                presence = {
-                    ...presence,
-                    buttons: [
-                        {
-                            label: config[CONFIG_KEYS.ButtonActiveLabel],
-                            url:
-                                config[CONFIG_KEYS.ButtonActiveUrl] != ""
-                                    ? config[CONFIG_KEYS.ButtonActiveUrl]
-                                    : gitRepo
-                        }
-                    ]
-                };
-            } else if (!gitRepo && config[CONFIG_KEYS.ButtonInactiveLabel] && config[CONFIG_KEYS.ButtonInactiveUrl]) {
+                if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && isNotExcluded)
+                    presence = {
+                        ...presence,
+                        buttons: [
+                            {
+                                label: config[CONFIG_KEYS.ButtonActiveLabel],
+                                url:
+                                    config[CONFIG_KEYS.ButtonActiveUrl] != ""
+                                        ? config[CONFIG_KEYS.ButtonActiveUrl]
+                                        : gitRepo
+                            }
+                        ]
+                    };
+            }
+
+            if (!gitRepo && config[CONFIG_KEYS.ButtonInactiveLabel] && config[CONFIG_KEYS.ButtonInactiveUrl])
                 presence = {
                     ...presence,
                     buttons: [
@@ -185,7 +189,6 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                         }
                     ]
                 };
-            }
         }
     }
 
