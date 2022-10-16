@@ -20,6 +20,7 @@ import {
     VSCODIUM_IMAGE_KEY,
     VSCODIUM_INSIDERS_IMAGE_KEY
 } from "./constants";
+import { logInfo } from "./logger";
 
 let totalProblems = 0;
 
@@ -91,6 +92,19 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
         smallImageText: defaultSmallImageText
     };
 
+    const CAN_USE_INACTIVE_BUTTON =
+        !!config[CONFIG_KEYS.ButtonEnabled] &&
+        !!config[CONFIG_KEYS.ButtonInactiveLabel] &&
+        !!config[CONFIG_KEYS.ButtonInactiveUrl];
+    const INACTIVE_BUTTON = CAN_USE_INACTIVE_BUTTON
+        ? [
+              {
+                  label: config[CONFIG_KEYS.ButtonInactiveLabel],
+                  url: config[CONFIG_KEYS.ButtonInactiveUrl]
+              }
+          ]
+        : undefined;
+
     if (window.activeTextEditor) {
         const largeImageKey = resolveFileIcon(window.activeTextEditor.document);
         const largeImageText = config[CONFIG_KEYS.LargeImage]
@@ -148,49 +162,36 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
             largeImageText
         };
 
-        if (config[CONFIG_KEYS.ButtonEnabled]) {
-            let gitRepo;
-            if (dataClass.gitRemoteUrl) {
-                gitRepo = dataClass.gitRemoteUrl.toString("https").replace(/\.git$/, "");
-                const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
-                const gitHost = dataClass.gitRemoteUrl.source;
+        if (config[CONFIG_KEYS.ButtonEnabled] && dataClass.gitRemoteUrl) {
+            const gitRepo = dataClass.gitRemoteUrl.toString("https").replace(/\.git$/, "");
+            const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
+            const gitHost = dataClass.gitRemoteUrl.source;
 
-                const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
+            const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
 
-                const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
+            const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
 
-                const isGitHostExcluded = isExcluded(config[CONFIG_KEYS.IgnoreGitHosts], gitHost);
+            const isGitHostExcluded = isExcluded(config[CONFIG_KEYS.IgnoreGitHosts], gitHost);
 
-                const isNotExcluded =
-                    !isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded && !isGitHostExcluded;
+            const isNotExcluded =
+                !isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded && !isGitHostExcluded;
 
-                if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && isNotExcluded)
-                    presence = {
-                        ...presence,
-                        buttons: [
-                            {
-                                label: config[CONFIG_KEYS.ButtonActiveLabel],
-                                url:
-                                    config[CONFIG_KEYS.ButtonActiveUrl] != ""
-                                        ? config[CONFIG_KEYS.ButtonActiveUrl]
-                                        : gitRepo
-                            }
-                        ]
-                    };
-            }
-
-            if (!gitRepo && config[CONFIG_KEYS.ButtonInactiveLabel] && config[CONFIG_KEYS.ButtonInactiveUrl])
+            if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && isNotExcluded)
                 presence = {
                     ...presence,
                     buttons: [
                         {
-                            label: config[CONFIG_KEYS.ButtonInactiveLabel],
-                            url: config[CONFIG_KEYS.ButtonInactiveUrl]
+                            label: config[CONFIG_KEYS.ButtonActiveLabel],
+                            url:
+                                config[CONFIG_KEYS.ButtonActiveUrl] != ""
+                                    ? config[CONFIG_KEYS.ButtonActiveUrl]
+                                    : gitRepo
                         }
                     ]
                 };
+            else if (CAN_USE_INACTIVE_BUTTON) presence.buttons = INACTIVE_BUTTON;
         }
-    }
+    } else if (CAN_USE_INACTIVE_BUTTON) presence.buttons = INACTIVE_BUTTON;
 
     return presence;
 }
