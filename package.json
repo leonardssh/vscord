@@ -44,15 +44,13 @@
         "Visualization",
         "Other"
     ],
-    "dependencies": {
-        "file-size": "^1.0.0"
-    },
     "devDependencies": {
         "@types/file-size": "^1.0.1",
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
         "@types/vscode": "^1.72.0",
         "@xhayper/discord-rpc": "^1.0.12",
+        "file-size": "^1.0.0",
         "git-url-parse": "^13.1.0",
         "husky": "^8.0.1",
         "prettier": "^2.7.1",

@@ -1,9 +1,9 @@
 import { Disposable, EventEmitter, Extension, extensions, window, workspace, WorkspaceFolder } from "vscode";
 import { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
-import { parse, ParsedPath, sep, join } from "path";
-import { statSync } from "fs";
+import { parse, ParsedPath, sep, join } from "node:path";
 import gitUrlParse from "git-url-parse";
 import { logInfo } from "./logger";
+import { statSync } from "node:fs";
 
 interface DisposableLike {
     dispose: () => any;
@@ -62,7 +62,7 @@ export class Data implements DisposableLike {
     }
 
     public get fileSize(): number | undefined {
-        if (!this._file) return undefined;
+        if (!this._file) return;
         const absolutePath = join(this._file.dir, this._file.base);
         const v = statSync(absolutePath).size;
         this.debug(4, `fileSize(): ${v}`);

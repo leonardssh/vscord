@@ -1,5 +1,5 @@
-import { CONFIG_KEYS } from "../constants";
 import { WorkspaceExtensionConfiguration } from "../config";
+import { CONFIG_KEYS } from "../constants";
 
 export const getApplicationId = (config: WorkspaceExtensionConfiguration) => {
     const applicationIds = new Map();

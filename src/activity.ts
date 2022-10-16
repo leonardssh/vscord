@@ -6,7 +6,7 @@ import { isObject } from "./helpers/isObject";
 import { getFileSize } from "./helpers/getFileSize";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
-import { sep } from "path";
+import { sep } from "node:path";
 import {
     CONFIG_KEYS,
     DEBUGGING_IMAGE_KEY,

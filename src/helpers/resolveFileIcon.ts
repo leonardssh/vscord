@@ -1,7 +1,7 @@
-import { TextDocument } from "vscode";
-import { basename } from "path";
-import { getConfig } from "../config";
 import { CONFIG_KEYS, KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from "../constants";
+import { TextDocument } from "vscode";
+import { getConfig } from "../config";
+import { basename } from "node:path";
 
 export const toLower = (str: string) => str.toLocaleLowerCase();
 export const toUpper = (str: string) => str.toLocaleUpperCase();
