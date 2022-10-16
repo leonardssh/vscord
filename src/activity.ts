@@ -1,9 +1,9 @@
 import { debug, DiagnosticSeverity, env, languages, Selection, TextDocument, window, workspace } from "vscode";
 import { getFileIcon, resolveFileIcon, toLower, toTitle, toUpper } from "./helpers/resolveFileIcon";
-import { SetActivity } from "@xhayper/discord-rpc";
+import { type SetActivity } from "@xhayper/discord-rpc";
+import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
 import { isObject } from "./helpers/isObject";
-import { getFileSize } from "./helpers/getFileSize";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";

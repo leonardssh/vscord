@@ -1,5 +1,5 @@
 import { Disposable, EventEmitter, Extension, extensions, window, workspace, WorkspaceFolder } from "vscode";
-import { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
+import type { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
 import { parse, ParsedPath, sep, join } from "node:path";
 import gitUrlParse from "git-url-parse";
 import { logInfo } from "./logger";

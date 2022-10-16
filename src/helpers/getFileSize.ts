@@ -1,7 +1,7 @@
 import { FileSizeConfig, FileSizeSpec, WorkspaceExtensionConfiguration } from "../config";
 import { CONFIG_KEYS } from "../constants";
 import type { Data } from "../data";
-import humanFileSize from "file-size";
+import filesize from "file-size";
 
 export const getFileSize = (config: WorkspaceExtensionConfiguration, dataClass: Data) => {
     if (!dataClass.fileSize) return;
@@ -22,7 +22,7 @@ export const getFileSize = (config: WorkspaceExtensionConfiguration, dataClass: 
     };
 
     fileSize = config[CONFIG_KEYS.FileSizeHumanReadable]
-        ? (fileSize = humanFileSize(dataClass.fileSize, fileSizeConfig).human(fileSizeSpec))
+        ? (fileSize = filesize(dataClass.fileSize, fileSizeConfig).human(fileSizeSpec))
         : (fileSize = `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer}B`);
 
     return fileSize;

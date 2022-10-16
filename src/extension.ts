@@ -1,7 +1,7 @@
+import { Client, type SetActivity } from "@xhayper/discord-rpc";
 import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY } from "./constants";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
-import { Client, SetActivity } from "@xhayper/discord-rpc";
 import { getFileIcon } from "./helpers/resolveFileIcon";
 import { throttle } from "./helpers/throttle";
 import { logError, logInfo } from "./logger";
