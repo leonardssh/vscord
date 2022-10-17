@@ -92,19 +92,6 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
         smallImageText: defaultSmallImageText
     };
 
-    const CAN_USE_INACTIVE_BUTTON =
-        !!config[CONFIG_KEYS.ButtonEnabled] &&
-        !!config[CONFIG_KEYS.ButtonInactiveLabel] &&
-        !!config[CONFIG_KEYS.ButtonInactiveUrl];
-    const INACTIVE_BUTTON = CAN_USE_INACTIVE_BUTTON
-        ? [
-              {
-                  label: config[CONFIG_KEYS.ButtonInactiveLabel],
-                  url: config[CONFIG_KEYS.ButtonInactiveUrl]
-              }
-          ]
-        : undefined;
-
     if (window.activeTextEditor) {
         const largeImageKey = resolveFileIcon(window.activeTextEditor.document);
         const largeImageText = config[CONFIG_KEYS.LargeImage]
@@ -190,7 +177,17 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                     ]
                 };
         }
-    } else if (CAN_USE_INACTIVE_BUTTON) presence.buttons = INACTIVE_BUTTON;
+    } else if (
+        !!config[CONFIG_KEYS.ButtonEnabled] &&
+        !!config[CONFIG_KEYS.ButtonInactiveLabel] &&
+        !!config[CONFIG_KEYS.ButtonInactiveUrl]
+    )
+        presence.buttons = [
+            {
+                label: config[CONFIG_KEYS.ButtonInactiveLabel],
+                url: config[CONFIG_KEYS.ButtonInactiveUrl]
+            }
+        ];
 
     return presence;
 }
