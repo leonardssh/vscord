@@ -3,20 +3,24 @@ name: CD - Open VSX Registry
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.4.0
-      - uses: actions/setup-node@v2.4.1
+      - name: Checkout Project
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
       - name: Install Dependencies
-        run: yarn --ignore-scripts --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Publish to Open VSX Registry
         uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.OPEN_VSX_TOKEN }}
-          yarn: true

@@ -55,7 +55,7 @@ Remember to 🌟 this GitHub if you 💖 it.
 
 ## 📌 Features
 
--   Switch between 2 IDE names (`Code` and `Visual Studio Code`) [(preview)](https://streamable.com/apjd4g)
+-   Switch between 3 IDE names (`Code`, `Visual Studio Code` and `VSCodium`) [(preview)](https://streamable.com/apjd4g)
 -   Highly customizable using the extension settings
 -   Shows what you're working on in Visual Studio Code
 -   Shows the amount of problems in your workspace
@@ -70,6 +70,7 @@ Remember to 🌟 this GitHub if you 💖 it.
 -   Easily manually reconnect to Discord Gateway
 -   Idle indication when you tab out for a while
 -   Button that sends you to the GitHub repository
+-   flatpak/snapstore support
 
 > All texts are fully customizable using variables and a multitude of config options
 
