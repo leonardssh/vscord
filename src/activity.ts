@@ -20,7 +20,6 @@ import {
     VSCODIUM_IMAGE_KEY,
     VSCODIUM_INSIDERS_IMAGE_KEY
 } from "./constants";
-import { logInfo } from "./logger";
 
 let totalProblems = 0;
 
