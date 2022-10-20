@@ -4,6 +4,8 @@ import { basename, parse, ParsedPath, sep, join } from "node:path";
 import gitUrlParse from "git-url-parse";
 import { logInfo } from "./logger";
 import { statSync } from "node:fs";
+import { getConfig } from "./config";
+import { CONFIG_KEYS } from "./constants";
 
 interface DisposableLike {
     dispose: () => any;
@@ -289,4 +291,4 @@ export class Data implements DisposableLike {
     }
 }
 
-export const dataClass = new Data();
+export const dataClass = new Data(getConfig()[CONFIG_KEYS.Behaviour.Debug] ? 100 : 0);

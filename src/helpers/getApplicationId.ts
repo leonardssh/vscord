@@ -6,12 +6,12 @@ export const getApplicationId = (config: WorkspaceExtensionConfiguration) => {
         ["Code", "782685898163617802"],
         ["Visual Studio Code", "810516608442695700"],
         ["VSCodium", "1031067701474492496"],
-        ["Custom", config.id]
+        ["Custom", config[CONFIG_KEYS.App.Id]]
     ]);
 
-    const currentAppName = config[CONFIG_KEYS.AppName];
+    const currentAppName = config[CONFIG_KEYS.App.Name];
 
-    let clientId = config[CONFIG_KEYS.Id];
+    let clientId = config[CONFIG_KEYS.App.Id];
     for (const [appName, id] of applicationIds.entries()) {
         if (currentAppName !== appName) continue;
         clientId = id;

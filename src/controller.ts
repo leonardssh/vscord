@@ -36,7 +36,7 @@ export class RPCController {
                 await this.rpcClient?.destroy();
                 logInfo(`[002] Destroyed Discord RPC client`);
 
-                if (!config[CONFIG_KEYS.SuppressNotifications]) {
+                if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications]) {
                     error?.message?.includes("ENOENT")
                         ? void window.showErrorMessage("No Discord client detected")
                         : void window.showErrorMessage(`Couldn't connect to Discord via RPC: ${error as string}`);
@@ -82,8 +82,8 @@ export class RPCController {
         const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
         const gitListener = dataClass.onUpdate(throttle(() => this.sendActivity(), 2000));
 
-        if (config[CONFIG_KEYS.ShowProblems]) this.listeners.push(diagnosticsChange);
-        if (config[CONFIG_KEYS.CheckIdle]) this.listeners.push(changeWindowState);
+        if (config[CONFIG_KEYS.Status.Problems.Enabled]) this.listeners.push(diagnosticsChange);
+        if (config[CONFIG_KEYS.Status.Idle.Check]) this.listeners.push(changeWindowState);
 
         this.listeners.push(fileSwitch, fileEdit, debugStart, debugEnd, gitListener);
     }
@@ -93,16 +93,16 @@ export class RPCController {
 
         const config = getConfig();
 
-        if (config[CONFIG_KEYS.IdleTimeout] !== 0) {
+        if (config[CONFIG_KEYS.Status.Idle.Timeout] !== 0) {
             if (windowState.focused) {
                 if (this.idleTimeout) clearTimeout(this.idleTimeout);
 
                 await this.sendActivity();
             } else {
                 this.idleTimeout = setTimeout(async () => {
-                    if (config[CONFIG_KEYS.DisconnectOnIdle]) {
+                    if (config[CONFIG_KEYS.Status.Idle.DisconnectOnIdle]) {
                         await this.disable();
-                        if (config[CONFIG_KEYS.ResetElapsedTimeAfterIdle]) this.state.startTimestamp = undefined;
+                        if (config[CONFIG_KEYS.Status.Idle.ResetElapsedTime]) this.state.startTimestamp = undefined;
                         return;
                     }
 
@@ -110,12 +110,12 @@ export class RPCController {
 
                     this.state = {
                         ...this.state,
-                        smallImageKey: getFileIcon(IDLE_SMALL_IMAGE_KEY),
-                        smallImageText: config[CONFIG_KEYS.IdleText]
+                        smallImageKey: getFileIcon(IDLE_SMALL_IMAGE_KEY), // TODO: Replace this
+                        smallImageText: config[CONFIG_KEYS.Status.Image.Small.Idle.Text]
                     };
 
                     await this.rpcClient?.user?.setActivity(this.state);
-                }, config[CONFIG_KEYS.IdleTimeout] * 1000);
+                }, config[CONFIG_KEYS.Status.Idle.Timeout] * 1000);
             }
         }
     }

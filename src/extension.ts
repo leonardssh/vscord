@@ -7,7 +7,7 @@ import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { logInfo } from "./logger";
 
-const controller = new RPCController(getApplicationId(getConfig()).clientId);
+const controller = new RPCController(getApplicationId(getConfig()).clientId, getConfig()[CONFIG_KEYS.Behaviour.Debug]);
 
 export const registerCommands = (ctx: ExtensionContext) => {
     const config = getConfig();
@@ -39,7 +39,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         logInfo("Enabled Discord Rich Presence.");
 
-        if (!config[CONFIG_KEYS.SuppressNotifications])
+        if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications])
             await window.showInformationMessage("Enabled Discord Rich Presence.");
     });
 
@@ -48,7 +48,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         logInfo("Disabled Discord Rich Presence.");
 
-        if (!config[CONFIG_KEYS.SuppressNotifications])
+        if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications])
             await window.showInformationMessage("Disabled Discord Rich Presence.");
     });
 
@@ -58,7 +58,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         logInfo("Enabled Discord Rich Presence for this workspace.");
 
-        if (!config[CONFIG_KEYS.SuppressNotifications])
+        if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications])
             await window.showInformationMessage("Enabled Discord Rich Presence for this workspace.");
     });
 
@@ -67,7 +67,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         logInfo("Disabled Discord Rich Presence for this workspace.");
 
-        if (!config[CONFIG_KEYS.SuppressNotifications])
+        if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications])
             await window.showInformationMessage("Disabled Discord Rich Presence for this workspace.");
     });
 

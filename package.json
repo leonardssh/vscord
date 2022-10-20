@@ -74,46 +74,49 @@
     "contributes": {
         "commands": [
             {
-                "command": "rpc.enable",
+                "command": "vscord.enable",
                 "title": "Enable Discord Presence",
                 "category": "Discord Rich Presence"
             },
             {
-                "command": "rpc.disable",
+                "command": "vscord.disable",
                 "title": "Disable Discord Presence",
                 "category": "Discord Rich Presence"
             },
             {
-                "command": "rpc.enableWorkspace",
+                "command": "vscord.workspace.enable",
                 "title": "Enable Discord Presence in the current workspace",
                 "category": "Discord Rich Presence"
             },
             {
-                "command": "rpc.disableWorkspace",
+                "command": "vscord.workspace.disable",
                 "title": "Disable Discord Presence in the current workspace",
                 "category": "Discord Rich Presence"
             },
             {
-                "command": "rpc.disconnect",
+                "command": "vscord.disconnect",
                 "title": "Disconnect Discord Presence from Discord",
                 "category": "Discord Rich Presence"
             },
             {
-                "command": "rpc.reconnect",
+                "command": "vscord.reconnect",
                 "title": "Reconnect Discord Presence to Discord Gateway",
                 "category": "Discord Rich Presence"
             }
         ],
         "configuration": {
-            "title": "Discord Presence Configuration",
-            "type": "Object",
+            "title": "Discord Rich Presence",
+            "type": "object",
             "properties": {
-                "rpc.id": {
-                    "type": "string",
-                    "default": "782685898163617802",
-                    "description": "Application id that will be used when `appName` is \"custom\" or when `appName` is invalid"
+                "vscord.enabled": {
+                    "type": "boolean",
+                    "default": true
                 },
-                "rpc.appName": {
+                "vscord.app.id": {
+                    "type": "string",
+                    "default": "782685898163617802"
+                },
+                "vscord.app.name": {
                     "type": "string",
                     "enum": [
                         "Code",
@@ -121,232 +124,214 @@
                         "VSCodium",
                         "Custom"
                     ],
-                    "default": "Code",
-                    "description": "Choose the name you want the application to use.\nChoosing \"Custom\" will make it so it use the \"rpc.id\" as application id"
+                    "default": "Code"
                 },
-                "rpc.enabled": {
+                "vscord.status.details.enabled": {
                     "type": "boolean",
-                    "default": true,
-                    "description": "Controls if the Discord Rich Presence should show across all workspaces."
+                    "default": true
                 },
-                "rpc.detailsEditing": {
-                    "type": "string",
-                    "default": "In {workspace} {problems}",
-                    "description": "Custom string for the details section of the rich presence\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.detailsIdling": {
-                    "type": "string",
-                    "default": "Idling",
-                    "description": "Custom string for the details section of the rich presence when idling\n\t- {empty} will be replaced with an empty space."
-                },
-                "rpc.detailsDebugging": {
-                    "type": "string",
-                    "default": "Debugging {file_name}",
-                    "description": "Custom string for the details section of the rich presence when debugging\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.detailsViewing": {
-                    "type": "string",
-                    "default": "In {workspace} {problems}",
-                    "description": "Custom string for the details section of the rich presence when viewing\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.lowerDetailsEditing": {
-                    "type": "string",
-                    "default": "Working on {file_name}:{current_line}:{current_column}",
-                    "description": "Custom string for the state section of the rich presence\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.lowerDetailsIdling": {
-                    "type": "string",
-                    "default": "Idling",
-                    "description": "Custom string for the state section of the rich presence when idling\n\t- {empty} will be replaced with an empty space."
-                },
-                "rpc.lowerDetailsDebugging": {
-                    "type": "string",
-                    "default": "Debugging: {workspace}",
-                    "description": "Custom string for the state section of the rich presence when debugging\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.lowerDetailsViewing": {
-                    "type": "string",
-                    "default": "Viewing {file_name}",
-                    "description": "Custom string for the state section of the rich presence when viewing\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.lowerDetailsNoWorkspaceFound": {
-                    "type": "string",
-                    "default": "No workspace.",
-                    "description": "Custom string for the state section of the rich presence when no workspace is found.\n- {empty} will be replaced with an empty space\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number."
-                },
-                "rpc.baseImageLink": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/",
-                    "description": "Override the base link for language icon, default is `https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/`, it will be used like this: \"${baseImageLink}${language_icon}.png\""
-                },
-                "rpc.largeImage": {
-                    "type": "string",
-                    "default": "Editing a {LANG} file",
-                    "description": "Custom string for the largeImageText section of the rich presence\n\t- {lang} will be replaced with the lowercased language ID\n\t- {Lang} will be replaced with the language ID, first letter being uppercase\n\t- {LANG} will be replaced with the uppercased language ID."
-                },
-                "rpc.largeImageIdling": {
-                    "type": "string",
-                    "default": "Idling",
-                    "description": "Custom string for the largeImageText section of the rich presence when idling."
-                },
-                "rpc.smallImage": {
-                    "type": "string",
-                    "default": "{app_name}",
-                    "description": "Custom string for the smallImageText section of the rich presence\n\t- {app_name} will get replaced with the current Visual Studio Code version."
-                },
-                "rpc.removeElapsedTime": {
+                "vscord.status.details.idle.enabled": {
                     "type": "boolean",
-                    "default": false,
-                    "description": "Controls if the RPC should display elapsed time for a workspace or a single file."
+                    "default": true
                 },
-                "rpc.removeDetails": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Controls if the RPC should remove the details"
-                },
-                "rpc.removeLowerDetails": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Controls if the RPC should remove the lower details"
-                },
-                "rpc.removeLowerDetailsIdling": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Controls if the RPC should remove the lower details when idling"
-                },
-                "rpc.showProblems": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Controls if the RPC should show the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.problemsText": {
+                "vscord.status.details.text.idle": {
                     "type": "string",
-                    "default": "- {problemsCount} problems found",
-                    "description": "Custom string of the text displaying the amount of problems in your workspace\n\t- {problemsCount} will be replaced by the respective amount of problems."
+                    "default": "Idling"
                 },
-                "rpc.ignoreWorkspaces": {
+                "vscord.status.details.text.editing": {
+                    "type": "string",
+                    "default": "In {workspace} {problems}"
+                },
+                "vscord.status.details.text.debugging": {
+                    "type": "string",
+                    "default": "Debugging {file_name}"
+                },
+                "vscord.status.details.text.viewing": {
+                    "type": "string",
+                    "default": "In {workspace} {problems}"
+                },
+                "vscord.status.state.enabled": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "vscord.status.state.idle.enabled": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "vscord.status.state.text.idle": {
+                    "type": "string",
+                    "default": ""
+                },
+                "vscord.status.state.text.editing": {
+                    "type": "string",
+                    "default": "Working on {file_name}:{current_line}:{current_column}"
+                },
+                "vscord.status.state.text.debugging": {
+                    "type": "string",
+                    "default": "Debugging: {workspace}"
+                },
+                "vscord.status.state.text.viewing": {
+                    "type": "string",
+                    "default": "Viewing {file_name}"
+                },
+                "vscord.status.state.text.noWorkspaceFound": {
+                    "type": "string",
+                    "default": "No workspace."
+                },
+                "vscord.status.image.baseLink": {
+                    "type": "string",
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/"
+                },
+                "vscord.status.image.large.key": {
+                    "type": "string",
+                    "default": "{icon}",
+                    "description": "Image to use"
+                },
+                "vscord.status.image.large.text": {
+                    "type": "string",
+                    "default": "Editing a {lang} file"
+                },
+                "vscord.status.image.large.idle.key": {
+                    "type": "string",
+                    "default": "idle-vscode"
+                },
+                "vscord.status.image.large.idle.text": {
+                    "type": "string",
+                    "default": "Idling"
+                },
+                "vscord.status.image.small.key": {
+                    "type": "string",
+                    "default": "{app_name}"
+                },
+                "vscord.status.image.small.text": {
+                    "type": "string",
+                    "default": "{app_name}"
+                },
+                "vscord.status.image.small.idle.key": {
+                    "type": "string",
+                    "default": "{app_name}"
+                },
+                "vscord.status.image.small.idle.text": {
+                    "type": "string",
+                    "default": "zZz"
+                },
+                "vscord.status.showElapsedTime": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "vscord.status.problems.enabled": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "vscord.status.problems.text": {
+                    "type": "string",
+                    "default": "- {problemsCount} problems found"
+                },
+                "vscord.status.idle.check": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "vscord.status.idle.disconnectOnIdle": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "vscord.status.idle.resetElapsedTime": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "vscord.status.idle.timeout": {
+                    "type": "number",
+                    "default": 300
+                },
+                "vscord.status.button.enabled": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "vscord.status.button.active.label": {
+                    "type": "string",
+                    "default": "View Repository"
+                },
+                "vscord.status.button.active.url": {
+                    "type": "url",
+                    "default": ""
+                },
+                "vscord.status.button.inactive.label": {
+                    "type": "string",
+                    "default": null
+                },
+                "vscord.status.button.inactive.url": {
+                    "type": "url",
+                    "default": null
+                },
+                "vscord.ignore.workspaces": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "default": [],
-                    "description": "List of patterns to match workspace names that should prevent their display."
+                    "default": []
                 },
-                "rpc.ignoreWorkspacesText": {
+                "vscord.ignore.workspacesText": {
                     "type": [
                         "string",
                         "object"
-                    ],
-                    "description": "Custom text string that is displayed if a workspace folder has been detected in the ignore list."
+                    ]
                 },
-                "rpc.checkIdle": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Whether or not to check if you are still active or idle and react accordingly."
-                },
-                "rpc.disconnectOnIdle": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Whether to stop RPC completely while idling."
-                },
-                "rpc.resetElapsedTimeAfterIdle": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Whether to reset activity's elapsed time after idling."
-                },
-                "rpc.idleTimeout": {
-                    "type": "number",
-                    "default": 300,
-                    "description": "How long the window should be unfocused (in seconds) to either disable rich presence or display you as idle."
-                },
-                "rpc.idleText": {
-                    "type": "string",
-                    "default": "zZz",
-                    "description": "Custom string of the text displaying if you're idle when hovering over the small icon."
-                },
-                "rpc.buttonEnabled": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enable a button on your presence with a link to the Git repository you're working in."
-                },
-                "rpc.buttonActiveLabel": {
-                    "type": "string",
-                    "default": "View Repository",
-                    "description": "The label to show on the button when the file you are currently editing is located in a Git repository."
-                },
-                "rpc.buttonActiveUrl": {
-                    "type": "string",
-                    "default": "",
-                    "description": "The URL to open when the button is clicked and the file you are currently editing is located in a Git repository."
-                },
-                "rpc.buttonInactiveLabel": {
-                    "type": "string",
-                    "default": null,
-                    "description": "The label to show on the button when you are not editing a file in a Git repository. Set to null to disable."
-                },
-                "rpc.buttonInactiveUrl": {
-                    "type": "string",
-                    "default": null,
-                    "description": "The URL of the button when you are not editing a file in a Git repository. Set to null to disable."
-                },
-                "rpc.ignoreRepositories": {
+                "vscord.ignore.repositories": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "default": [],
-                    "description": "List of patterns to match repository names that should prevent its display in the button."
+                    "default": []
                 },
-                "rpc.ignoreOrganizations": {
+                "vscord.ignore.organizations": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "default": [],
-                    "description": "List of patterns to match organizations names that should prevent its display in the button."
+                    "default": []
                 },
-                "rpc.ignoreGitHosts": {
+                "vscord.ignore.gitHosts": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "default": [],
-                    "description": "List of patterns to match git hostnames that should prevent its display in the button"
+                    "default": []
                 },
-                "rpc.suppressNotifications": {
+                "vscord.file.size.humanReadable": {
                     "type": "boolean",
-                    "default": true,
-                    "description": "Controls whether error messages should be shown to the user."
+                    "default": true
                 },
-                "rpc.prioritizeLanguagesOverExtensions": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Controls whether languages should be prioritized over extensions when matching a file name."
-                },
-                "rpc.fileSizeHumanReadable": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Controls whether the file size should be in human readable format or displayed as only bytes."
-                },
-                "rpc.fileSizeSpec": {
+                "vscord.file.size.spec": {
                     "type": "string",
                     "enum": [
                         "si",
                         "iec",
                         "jedec"
                     ],
-                    "default": "iec",
-                    "description": "Controls which spec the file size should display in, default is 'iec'"
+                    "default": "iec"
                 },
-                "rpc.fileSizeFixed": {
+                "vscord.file.size.fixed": {
                     "type": "number",
-                    "default": 2,
-                    "description": "Number of positions after the decimal to show for a file's file size, default is 2"
+                    "default": 2
                 },
-                "rpc.fileSizeSpacer": {
+                "vscord.file.size.spacer": {
                     "type": "string",
-                    "default": " ",
-                    "description": "String between the number and the unit in a file's file size, default is a space"
+                    "default": " "
+                },
+                "vscord.behaviour.additionalFileMapping": {
+                    "type": "object"
+                },
+                "vscord.behaviour.suppressNotifications": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "vscord.behavoiur.prioritizeLanguagesOverExtensions": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "vscord.behaviour.debug": {
+                    "type": "boolean",
+                    "default": false
                 }
             }
         }

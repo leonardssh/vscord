@@ -56,35 +56,37 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
         ? getFileIcon(isCodium ? VSCODIUM_INSIDERS_IMAGE_KEY : VSCODE_INSIDERS_IMAGE_KEY)
         : getFileIcon(isCodium ? VSCODIUM_IMAGE_KEY : VSCODE_IMAGE_KEY);
 
-    const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(REPLACE_KEYS.AppName, appName);
+    const defaultSmallImageText = config[CONFIG_KEYS.Status.Image.Small.Text].replace(REPLACE_KEYS.AppName, appName);
 
-    const defaultLargeImageText = config[CONFIG_KEYS.LargeImageIdling];
+    const defaultLargeImageText = config[CONFIG_KEYS.Status.Image.Large.Idle.Text];
 
-    const removeDetails = config[CONFIG_KEYS.RemoveDetails];
-    const removeLowerDetails = config[CONFIG_KEYS.RemoveLowerDetails];
-    const removeLowerDetailsIdling = config[CONFIG_KEYS.RemoveLowerDetailsIdling];
+    const removeDetails = !config[CONFIG_KEYS.Status.Details.Enabled];
+    const removeState = !config[CONFIG_KEYS.Status.State.Enabled];
+    const removeStateOnIdle = !config[CONFIG_KEYS.Status.State.Idle.Enabled];
 
     let presence: SetActivity = {
         details: removeDetails
             ? undefined
             : details(
-                  CONFIG_KEYS.DetailsIdling,
-                  CONFIG_KEYS.DetailsViewing,
-                  CONFIG_KEYS.DetailsEditing,
-                  CONFIG_KEYS.DetailsDebugging,
+                  CONFIG_KEYS.Status.Details.Text.Idle,
+                  CONFIG_KEYS.Status.Details.Text.Viewing,
+                  CONFIG_KEYS.Status.Details.Text.Editing,
+                  CONFIG_KEYS.Status.Details.Text.Debugging,
                   isViewing
               ),
         state:
-            removeLowerDetails || removeLowerDetailsIdling
+            removeState || removeStateOnIdle
                 ? undefined
                 : details(
-                      CONFIG_KEYS.LowerDetailsIdling,
-                      CONFIG_KEYS.LowerDetailsViewing,
-                      CONFIG_KEYS.LowerDetailsEditing,
-                      CONFIG_KEYS.LowerDetailsDebugging,
+                      CONFIG_KEYS.Status.State.Text.Idle,
+                      CONFIG_KEYS.Status.State.Text.Viewing,
+                      CONFIG_KEYS.Status.State.Text.Editing,
+                      CONFIG_KEYS.Status.State.Text.Debugging,
                       isViewing
                   ),
-        startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime] ? undefined : previous.startTimestamp ?? new Date(),
+        startTimestamp: config[CONFIG_KEYS.Status.Idle.ResetElapsedTime]
+            ? undefined
+            : previous.startTimestamp ?? new Date(),
         largeImageKey: isInsider ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY),
         largeImageText: defaultLargeImageText,
         smallImageKey: defaultSmallImageKey,
@@ -93,7 +95,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
 
     if (window.activeTextEditor) {
         const largeImageKey = resolveFileIcon(window.activeTextEditor.document);
-        const largeImageText = config[CONFIG_KEYS.LargeImage]
+        const largeImageText = config[CONFIG_KEYS.Status.Image.Large.Text]
             .replace(REPLACE_KEYS.LanguageLowerCase, toLower(largeImageKey))
             .replace(REPLACE_KEYS.LanguageTitleCase, toTitle(largeImageKey))
             .replace(REPLACE_KEYS.LanguageUpperCase, toUpper(largeImageKey))
@@ -104,17 +106,16 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
 
         if (dataClass.workspaceFolder && "uri" in dataClass.workspaceFolder) {
             isWorkspaceExcluded = isExcluded(
-                config[CONFIG_KEYS.IgnoreWorkspaces],
+                config[CONFIG_KEYS.Ignore.Workspaces],
                 dataClass.workspaceFolder.uri.fsPath
             );
         }
 
         if (isWorkspaceExcluded && dataClass.workspaceFolder && dataClass.workspaceFolder.name) {
-            const ignoreWorkspacesText = config[CONFIG_KEYS.IgnoreWorkspacesText];
+            const ignoreWorkspacesText = config[CONFIG_KEYS.Ignore.WorkspacesText];
 
             workspaceExcludedText = isObject(ignoreWorkspacesText)
-                ? // @ts-ignore Element implicitly has an 'any' type because index expression is not of type 'number'.
-                  ignoreWorkspacesText[dataClass.workspaceFolder.name]
+                ? ignoreWorkspacesText[dataClass.workspaceFolder.name]
                 : ignoreWorkspacesText
                 ? ignoreWorkspacesText
                 : "No workspace ignore text provided.";
@@ -127,83 +128,77 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                 : isWorkspaceExcluded
                 ? workspaceExcludedText
                 : details(
-                      CONFIG_KEYS.DetailsIdling,
-                      CONFIG_KEYS.DetailsViewing,
-                      CONFIG_KEYS.DetailsEditing,
-                      CONFIG_KEYS.DetailsDebugging,
+                      CONFIG_KEYS.Status.Details.Text.Idle,
+                      CONFIG_KEYS.Status.Details.Text.Viewing,
+                      CONFIG_KEYS.Status.Details.Text.Editing,
+                      CONFIG_KEYS.Status.Details.Text.Debugging,
                       isViewing
                   ),
-            state: removeLowerDetails
+            state: removeState
                 ? undefined
                 : isWorkspaceExcluded
                 ? undefined
                 : details(
-                      CONFIG_KEYS.LowerDetailsIdling,
-                      CONFIG_KEYS.LowerDetailsViewing,
-                      CONFIG_KEYS.LowerDetailsEditing,
-                      CONFIG_KEYS.LowerDetailsDebugging,
+                      CONFIG_KEYS.Status.State.Text.Idle,
+                      CONFIG_KEYS.Status.State.Text.Viewing,
+                      CONFIG_KEYS.Status.State.Text.Editing,
+                      CONFIG_KEYS.Status.State.Text.Debugging,
                       isViewing
                   ),
             largeImageKey: getFileIcon(largeImageKey),
             largeImageText
         };
 
-        if (config[CONFIG_KEYS.ButtonEnabled] && dataClass.gitRemoteUrl) {
+        if (config[CONFIG_KEYS.Status.Button.Enabled] && dataClass.gitRemoteUrl) {
             const gitRepo = dataClass.gitRemoteUrl.toString("https").replace(/\.git$/, "");
             const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
             const gitHost = dataClass.gitRemoteUrl.source;
 
-            const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
+            const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.Ignore.Repositories], gitRepo);
 
-            const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
+            const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.Ignore.Organizations], gitOrg);
 
-            const isGitHostExcluded = isExcluded(config[CONFIG_KEYS.IgnoreGitHosts], gitHost);
+            const isGitHostExcluded = isExcluded(config[CONFIG_KEYS.Ignore.GitHosts], gitHost);
 
             const isNotExcluded =
                 !isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded && !isGitHostExcluded;
 
-            if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && isNotExcluded)
+            if (gitRepo && config[CONFIG_KEYS.Status.Button.Active.Label] && isNotExcluded)
                 presence = {
                     ...presence,
                     buttons: [
                         {
-                            label: config[CONFIG_KEYS.ButtonActiveLabel],
+                            label: config[CONFIG_KEYS.Status.Button.Active.Label],
                             url:
-                                config[CONFIG_KEYS.ButtonActiveUrl] != ""
-                                    ? config[CONFIG_KEYS.ButtonActiveUrl]
+                                config[CONFIG_KEYS.Status.Button.Active.Url] != ""
+                                    ? config[CONFIG_KEYS.Status.Button.Active.Url]
                                     : gitRepo
                         }
                     ]
                 };
         }
     } else if (
-        !!config[CONFIG_KEYS.ButtonEnabled] &&
-        !!config[CONFIG_KEYS.ButtonInactiveLabel] &&
-        !!config[CONFIG_KEYS.ButtonInactiveUrl]
+        !!config[CONFIG_KEYS.Status.Button.Enabled] &&
+        !!config[CONFIG_KEYS.Status.Button.Inactive.Label] &&
+        !!config[CONFIG_KEYS.Status.Button.Inactive.Url]
     )
         presence.buttons = [
             {
-                label: config[CONFIG_KEYS.ButtonInactiveLabel],
-                url: config[CONFIG_KEYS.ButtonInactiveUrl]
+                label: config[CONFIG_KEYS.Status.Button.Inactive.Label],
+                url: config[CONFIG_KEYS.Status.Button.Inactive.Url]
             }
         ];
 
     return presence;
 }
 
-function details(
-    idling: CONFIG_KEYS,
-    viewing: CONFIG_KEYS,
-    editing: CONFIG_KEYS,
-    debugging: CONFIG_KEYS,
-    isViewing: boolean
-) {
+function details(idling: string, viewing: string, editing: string, debugging: string, isViewing: boolean) {
     const config = getConfig();
 
     let raw = (config[idling] as string).replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
     if (window.activeTextEditor) {
-        const noWorkspaceFound = config[CONFIG_KEYS.LowerDetailsNoWorkspaceFound].replace(
+        const noWorkspaceFound = config[CONFIG_KEYS.Status.State.Text.NoWorkspaceFound].replace(
             REPLACE_KEYS.Empty,
             FAKE_EMPTY
         );
@@ -219,8 +214,8 @@ function details(
         const fileIcon = resolveFileIcon(window.activeTextEditor.document);
         const fileSize = getFileSize(config, dataClass);
 
-        const problems = config[CONFIG_KEYS.ShowProblems]
-            ? config[CONFIG_KEYS.ProblemsText].replace(REPLACE_KEYS.ProblemsCount, totalProblems.toString())
+        const problems = config[CONFIG_KEYS.Status.Problems.Enabled]
+            ? config[CONFIG_KEYS.Status.Problems.Text].replace(REPLACE_KEYS.ProblemsCount, totalProblems.toString())
             : "";
 
         raw = config[debug.activeDebugSession ? debugging : isViewing ? viewing : editing] as string;

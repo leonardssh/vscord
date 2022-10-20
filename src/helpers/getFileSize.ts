@@ -7,21 +7,21 @@ export const getFileSize = (config: WorkspaceExtensionConfiguration, dataClass: 
     if (!dataClass.fileSize) return;
 
     let fixed = 2;
-    if (config[CONFIG_KEYS.FileSizeFixed] === 0 || config[CONFIG_KEYS.FileSizeFixed])
-        fixed = config[CONFIG_KEYS.FileSizeFixed];
+    if (config[CONFIG_KEYS.File.Size.Fixed] === 0 || config[CONFIG_KEYS.File.Size.Fixed])
+        fixed = config[CONFIG_KEYS.File.Size.Fixed];
 
     let spacer = " ";
-    if (config[CONFIG_KEYS.FileSizeSpacer] === "" || config[CONFIG_KEYS.FileSizeSpacer])
-        spacer = config[CONFIG_KEYS.FileSizeSpacer];
+    if (config[CONFIG_KEYS.File.Size.Spacer] === "" || config[CONFIG_KEYS.File.Size.Spacer])
+        spacer = config[CONFIG_KEYS.File.Size.Spacer];
 
     let fileSize: string | undefined;
-    const fileSizeSpec: FileSizeSpec = config[CONFIG_KEYS.FileSizeSpec] || "iec";
+    const fileSizeSpec: FileSizeSpec = config[CONFIG_KEYS.File.Size.Spec] ?? "iec";
     const fileSizeConfig: FileSizeConfig = {
         fixed,
         spacer
     };
 
-    fileSize = config[CONFIG_KEYS.FileSizeHumanReadable]
+    fileSize = config[CONFIG_KEYS.File.Size.HumanReadable]
         ? (fileSize = filesize(dataClass.fileSize, fileSizeConfig).human(fileSizeSpec))
         : (fileSize = `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer}B`);
 
