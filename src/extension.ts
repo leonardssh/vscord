@@ -18,8 +18,6 @@ export const registerCommands = (ctx: ExtensionContext) => {
                 await config.update(CONFIG_KEYS.Enabled, true);
             } catch (ignored) {}
 
-        controller.statusBarIcon.text = "$(search-refresh) Connecting to Discord Gateway...";
-        controller.statusBarIcon.tooltip = "Connecting to Discord Gateway...";
         await controller.enable();
     };
 
@@ -29,7 +27,6 @@ export const registerCommands = (ctx: ExtensionContext) => {
                 await config.update(CONFIG_KEYS.Enabled, false);
             } catch (ignored) {}
 
-        controller.cleanUp();
         await controller.disable();
 
         logInfo(`[003] Destroyed Discord RPC client`);
@@ -76,6 +73,9 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
     const reconnectCommand = commands.registerCommand("rpc.reconnect", async () => {
         logInfo("Reconnecting to Discord Gateway...");
+
+        controller.statusBarIcon.text = "$(search-refresh) Connecting to Discord Gateway...";
+        controller.statusBarIcon.tooltip = "Connecting to Discord Gateway...";
 
         await controller.login();
         await controller.enable();

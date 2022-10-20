@@ -141,8 +141,8 @@ export class RPCController {
 
     async disable() {
         this.enabled = false;
-        this.cleanUp();
 
+        this.cleanUp();
         if (this.idleTimeout) clearTimeout(this.idleTimeout);
         if (this.iconTimeout) clearTimeout(this.iconTimeout);
 
