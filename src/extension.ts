@@ -7,7 +7,10 @@ import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { logInfo } from "./logger";
 
-const controller = new RPCController(getApplicationId(getConfig()).clientId, getConfig()[CONFIG_KEYS.Behaviour.Debug]);
+const controller = new RPCController(
+    getApplicationId(getConfig()).clientId,
+    getConfig().get(CONFIG_KEYS.Behaviour.Debug)
+);
 
 export const registerCommands = (ctx: ExtensionContext) => {
     const config = getConfig();
@@ -33,45 +36,45 @@ export const registerCommands = (ctx: ExtensionContext) => {
         controller.statusBarIcon.hide();
     };
 
-    const enableCommand = commands.registerCommand("rpc.enable", async () => {
+    const enableCommand = commands.registerCommand("vscord.enable", async () => {
         await disable(false);
         await enable(false);
 
         logInfo("Enabled Discord Rich Presence.");
 
-        if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications])
+        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
             await window.showInformationMessage("Enabled Discord Rich Presence.");
     });
 
-    const disableCommand = commands.registerCommand("rpc.disable", async () => {
+    const disableCommand = commands.registerCommand("vscord.disable", async () => {
         await disable(false);
 
         logInfo("Disabled Discord Rich Presence.");
 
-        if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications])
+        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
             await window.showInformationMessage("Disabled Discord Rich Presence.");
     });
 
-    const enableWorkspaceCommand = commands.registerCommand("rpc.enableWorkspace", async () => {
+    const enableWorkspaceCommand = commands.registerCommand("vscord.enableWorkspace", async () => {
         await disable();
         await enable();
 
         logInfo("Enabled Discord Rich Presence for this workspace.");
 
-        if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications])
+        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
             await window.showInformationMessage("Enabled Discord Rich Presence for this workspace.");
     });
 
-    const disableWorkspaceCommand = commands.registerCommand("rpc.disableWorkspace", async () => {
+    const disableWorkspaceCommand = commands.registerCommand("vscord.disableWorkspace", async () => {
         await disable();
 
         logInfo("Disabled Discord Rich Presence for this workspace.");
 
-        if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications])
+        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
             await window.showInformationMessage("Disabled Discord Rich Presence for this workspace.");
     });
 
-    const reconnectCommand = commands.registerCommand("rpc.reconnect", async () => {
+    const reconnectCommand = commands.registerCommand("vscord.reconnect", async () => {
         logInfo("Reconnecting to Discord Gateway...");
 
         controller.statusBarIcon.text = "$(search-refresh) Connecting to Discord Gateway...";
@@ -81,13 +84,13 @@ export const registerCommands = (ctx: ExtensionContext) => {
         await controller.enable();
     });
 
-    const disconnectCommand = commands.registerCommand("rpc.disconnect", async () => {
+    const disconnectCommand = commands.registerCommand("vscord.disconnect", async () => {
         logInfo("Disconnecting from Discord Gateway...");
 
         await controller.destroy();
 
         controller.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
-        controller.statusBarIcon.command = "rpc.reconnect";
+        controller.statusBarIcon.command = "vscord.reconnect";
         controller.statusBarIcon.tooltip = "Reconnect to Discord Gateway";
         controller.statusBarIcon.show();
     });

@@ -53,22 +53,26 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
     const isInsider = appName.includes("Insiders");
     const isCodium = appName.startsWith("VSCodium") || appName.startsWith("codium");
 
-    const defaultSmallImageKey = config[CONFIG_KEYS.Status.Image.Small.Key].replace(
-        REPLACE_KEYS.SmallImageIcon,
-        debug.activeDebugSession
-            ? getFileIcon(DEBUGGING_IMAGE_KEY)
-            : isInsider
-            ? getFileIcon(isCodium ? VSCODIUM_INSIDERS_IMAGE_KEY : VSCODE_INSIDERS_IMAGE_KEY)
-            : getFileIcon(isCodium ? VSCODIUM_IMAGE_KEY : VSCODE_IMAGE_KEY)
-    );
+    const defaultSmallImageKey = config
+        .get(CONFIG_KEYS.Status.Image.Small.Key)
+        .replace(
+            REPLACE_KEYS.SmallImageIcon,
+            debug.activeDebugSession
+                ? getFileIcon(DEBUGGING_IMAGE_KEY)
+                : isInsider
+                ? getFileIcon(isCodium ? VSCODIUM_INSIDERS_IMAGE_KEY : VSCODE_INSIDERS_IMAGE_KEY)
+                : getFileIcon(isCodium ? VSCODIUM_IMAGE_KEY : VSCODE_IMAGE_KEY)
+        );
 
-    const defaultSmallImageText = config[CONFIG_KEYS.Status.Image.Small.Text].replace(REPLACE_KEYS.AppName, appName);
-    const defaultLargeImageText = config[CONFIG_KEYS.Status.Image.Large.Idle.Text];
+    const defaultSmallImageText = config
+        .get(CONFIG_KEYS.Status.Image.Small.Text)
+        .replace(REPLACE_KEYS.AppName, appName);
+    const defaultLargeImageText = config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text);
 
-    const removeDetails = !config[CONFIG_KEYS.Status.Details.Enabled];
-    const removeDetailsOnIdle = !config[CONFIG_KEYS.Status.Details.Idle.Enabled];
-    const removeState = !config[CONFIG_KEYS.Status.State.Enabled];
-    const removeStateOnIdle = !config[CONFIG_KEYS.Status.State.Idle.Enabled];
+    const removeDetails = !config.get(CONFIG_KEYS.Status.Details.Enabled);
+    const removeDetailsOnIdle = !config.get(CONFIG_KEYS.Status.Details.Idle.Enabled);
+    const removeState = !config.get(CONFIG_KEYS.Status.State.Enabled);
+    const removeStateOnIdle = !config.get(CONFIG_KEYS.Status.State.Idle.Enabled);
 
     let presence: SetActivity = {
         details:
@@ -91,13 +95,15 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                       CONFIG_KEYS.Status.State.Text.Debugging,
                       isViewing
                   ),
-        startTimestamp: config[CONFIG_KEYS.Status.Idle.ResetElapsedTime]
+        startTimestamp: config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime)
             ? undefined
             : previous.startTimestamp ?? new Date(),
-        largeImageKey: config[CONFIG_KEYS.Status.Image.Large.Idle.Key].replace(
-            REPLACE_KEYS.LargeImageIdleIcon,
-            isInsider ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY)
-        ),
+        largeImageKey: config
+            .get(CONFIG_KEYS.Status.Image.Large.Idle.Key)
+            .replace(
+                REPLACE_KEYS.LargeImageIdleIcon,
+                isInsider ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY)
+            ),
         largeImageText: defaultLargeImageText,
         smallImageKey: defaultSmallImageKey,
         smallImageText: defaultSmallImageText
@@ -105,7 +111,8 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
 
     if (window.activeTextEditor) {
         const largeImageKey = resolveFileIcon(window.activeTextEditor.document);
-        const largeImageText = config[CONFIG_KEYS.Status.Image.Large.Text]
+        const largeImageText = config
+            .get(CONFIG_KEYS.Status.Image.Large.Text)
             .replace(REPLACE_KEYS.LanguageLowerCase, toLower(largeImageKey))
             .replace(REPLACE_KEYS.LanguageTitleCase, toTitle(largeImageKey))
             .replace(REPLACE_KEYS.LanguageUpperCase, toUpper(largeImageKey))
@@ -116,13 +123,13 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
 
         if (dataClass.workspaceFolder && "uri" in dataClass.workspaceFolder) {
             isWorkspaceExcluded = isExcluded(
-                config[CONFIG_KEYS.Ignore.Workspaces],
+                config.get(CONFIG_KEYS.Ignore.Workspaces),
                 dataClass.workspaceFolder.uri.fsPath
             );
         }
 
         if (isWorkspaceExcluded && dataClass.workspaceFolder && dataClass.workspaceFolder.name) {
-            const ignoreWorkspacesText = config[CONFIG_KEYS.Ignore.WorkspacesText];
+            const ignoreWorkspacesText = config.get(CONFIG_KEYS.Ignore.WorkspacesText);
 
             workspaceExcludedText = isObject(ignoreWorkspacesText)
                 ? ignoreWorkspacesText[dataClass.workspaceFolder.name]
@@ -155,50 +162,49 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                       CONFIG_KEYS.Status.State.Text.Debugging,
                       isViewing
                   ),
-            largeImageKey: config[CONFIG_KEYS.Status.Image.Large.Key].replace(
-                REPLACE_KEYS.LargeImageIcon,
-                getFileIcon(largeImageKey)
-            ),
+            largeImageKey: config
+                .get(CONFIG_KEYS.Status.Image.Large.Key)
+                .replace(REPLACE_KEYS.LargeImageIcon, getFileIcon(largeImageKey)),
             largeImageText
         };
 
-        if (config[CONFIG_KEYS.Status.Button.Active.Enabled] && dataClass.gitRemoteUrl) {
+        if (config.get(CONFIG_KEYS.Status.Button.Active.Enabled) && dataClass.gitRemoteUrl) {
             const gitRepo = dataClass.gitRemoteUrl.toString("https").replace(/\.git$/, "");
             const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
             const gitHost = dataClass.gitRemoteUrl.source;
 
-            const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.Ignore.Repositories], gitRepo);
+            const isRepositoryExcluded = isExcluded(config.get(CONFIG_KEYS.Ignore.Repositories), gitRepo);
 
-            const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.Ignore.Organizations], gitOrg);
+            const isOrganizationExcluded = isExcluded(config.get(CONFIG_KEYS.Ignore.Organizations), gitOrg);
 
-            const isGitHostExcluded = isExcluded(config[CONFIG_KEYS.Ignore.GitHosts], gitHost);
+            const isGitHostExcluded = isExcluded(config.get(CONFIG_KEYS.Ignore.GitHosts), gitHost);
 
             const isNotExcluded =
                 !isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded && !isGitHostExcluded;
 
-            if (gitRepo && config[CONFIG_KEYS.Status.Button.Active.Label] && isNotExcluded)
+            if (gitRepo && config.get(CONFIG_KEYS.Status.Button.Active.Label) && isNotExcluded)
                 presence = {
                     ...presence,
                     buttons: [
                         {
-                            label: config[CONFIG_KEYS.Status.Button.Active.Label],
+                            label: config.get(CONFIG_KEYS.Status.Button.Active.Label),
                             url:
-                                config[CONFIG_KEYS.Status.Button.Active.Url] != ""
-                                    ? config[CONFIG_KEYS.Status.Button.Active.Url]
+                                config.get(CONFIG_KEYS.Status.Button.Active.Url) != ""
+                                    ? config.get(CONFIG_KEYS.Status.Button.Active.Url)
                                     : gitRepo
                         }
                     ]
                 };
         }
     } else if (
-        !!config[CONFIG_KEYS.Status.Button.Inactive.Enabled] &&
-        !!config[CONFIG_KEYS.Status.Button.Inactive.Label] &&
-        !!config[CONFIG_KEYS.Status.Button.Inactive.Url]
+        !!config.get(CONFIG_KEYS.Status.Button.Inactive.Enabled) &&
+        !!config.get(CONFIG_KEYS.Status.Button.Inactive.Label) &&
+        !!config.get(CONFIG_KEYS.Status.Button.Inactive.Url)
     )
         presence.buttons = [
             {
-                label: config[CONFIG_KEYS.Status.Button.Inactive.Label],
-                url: config[CONFIG_KEYS.Status.Button.Inactive.Url]
+                label: config.get(CONFIG_KEYS.Status.Button.Inactive.Label),
+                url: config.get(CONFIG_KEYS.Status.Button.Inactive.Url)
             }
         ];
 
@@ -208,13 +214,12 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
 function details(idling: string, viewing: string, editing: string, debugging: string, isViewing: boolean) {
     const config = getConfig();
 
-    let raw = (config[idling] as string).replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
+    let raw = (config.get(idling) as string).replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
     if (window.activeTextEditor) {
-        const noWorkspaceFound = config[CONFIG_KEYS.Status.State.Text.NoWorkspaceFound].replace(
-            REPLACE_KEYS.Empty,
-            FAKE_EMPTY
-        );
+        const noWorkspaceFound = config
+            .get(CONFIG_KEYS.Status.State.Text.NoWorkspaceFound)
+            .replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
 
         const workspaceFolderName = dataClass.workspaceFolder ? dataClass.workspaceFolder.name : noWorkspaceFound;
         const workspaceName = dataClass.workspace
@@ -227,11 +232,11 @@ function details(idling: string, viewing: string, editing: string, debugging: st
         const fileIcon = resolveFileIcon(window.activeTextEditor.document);
         const fileSize = getFileSize(config, dataClass);
 
-        const problems = config[CONFIG_KEYS.Status.Problems.Enabled]
-            ? config[CONFIG_KEYS.Status.Problems.Text].replace(REPLACE_KEYS.ProblemsCount, totalProblems.toString())
+        const problems = config.get(CONFIG_KEYS.Status.Problems.Enabled)
+            ? config.get(CONFIG_KEYS.Status.Problems.Text).replace(REPLACE_KEYS.ProblemsCount, totalProblems.toString())
             : "";
 
-        raw = config[debug.activeDebugSession ? debugging : isViewing ? viewing : editing] as string;
+        raw = config.get(debug.activeDebugSession ? debugging : isViewing ? viewing : editing) as string;
 
         if (dataClass.workspace) {
             const name = dataClass.workspace;

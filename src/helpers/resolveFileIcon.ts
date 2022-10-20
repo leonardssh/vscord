@@ -7,12 +7,12 @@ export const toLower = (str: string) => str.toLocaleLowerCase();
 export const toUpper = (str: string) => str.toLocaleUpperCase();
 export const toTitle = (str: string) => toLower(str).replace(/^\w/, (c) => toUpper(c));
 
-export const getFileIcon = (name: string) => `${getConfig()[CONFIG_KEYS.Status.Image.BaseLink]}${name}.png`;
+export const getFileIcon = (name: string) => `${getConfig().get(CONFIG_KEYS.Status.Image.BaseLink)}${name}.png`;
 
 export function resolveFileIcon(document: TextDocument) {
     const ALL_KNOWN_KNOWN_EXTENSIONS = KNOWN_EXTENSIONS;
 
-    for (const [key, value] of Object.entries(getConfig()[CONFIG_KEYS.Behaviour.AdditionalFileMapping] ?? {}))
+    for (const [key, value] of Object.entries(getConfig().get(CONFIG_KEYS.Behaviour.AdditionalFileMapping) ?? {}))
         ALL_KNOWN_KNOWN_EXTENSIONS[key] = { image: value };
 
     const config = getConfig();
@@ -27,7 +27,7 @@ export function resolveFileIcon(document: TextDocument) {
         return regex.test(filename);
     });
 
-    const areLanguagesPrioritized = config[CONFIG_KEYS.Behaviour.PrioritizeLanguagesOverExtensions];
+    const areLanguagesPrioritized = config.get(CONFIG_KEYS.Behaviour.PrioritizeLanguagesOverExtensions);
     const findKnownLanguage = KNOWN_LANGUAGES.find((key) => key.language === document.languageId);
 
     const knownExtension = findKnownExtension

@@ -291,4 +291,4 @@ export class Data implements DisposableLike {
     }
 }
 
-export const dataClass = new Data(getConfig()[CONFIG_KEYS.Behaviour.Debug] ? 100 : 0);
+export const dataClass = new Data(getConfig().get(CONFIG_KEYS.Behaviour.Debug) ? 100 : 0);

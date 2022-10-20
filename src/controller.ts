@@ -36,14 +36,14 @@ export class RPCController {
                 await this.rpcClient?.destroy();
                 logInfo(`[002] Destroyed Discord RPC client`);
 
-                if (!config[CONFIG_KEYS.Behaviour.SuppressNotifications]) {
+                if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
                     error?.message?.includes("ENOENT")
                         ? void window.showErrorMessage("No Discord client detected")
                         : void window.showErrorMessage(`Couldn't connect to Discord via RPC: ${error as string}`);
                 }
 
                 this.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
-                this.statusBarIcon.command = "rpc.reconnect";
+                this.statusBarIcon.command = "vscord.reconnect";
                 this.statusBarIcon.tooltip = "Reconnect to Discord Gateway";
             })
             .then(() => void logInfo(`Successfully logged in to Discord with client ID ${clientId}`));
@@ -66,7 +66,7 @@ export class RPCController {
     private onDisconnected() {
         this.cleanUp();
         this.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
-        this.statusBarIcon.command = "rpc.reconnect";
+        this.statusBarIcon.command = "vscord.reconnect";
         this.statusBarIcon.tooltip = "Reconnect to Discord Gateway";
         this.statusBarIcon.show();
     }
@@ -82,8 +82,8 @@ export class RPCController {
         const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
         const gitListener = dataClass.onUpdate(throttle(() => this.sendActivity(), 2000));
 
-        if (config[CONFIG_KEYS.Status.Problems.Enabled]) this.listeners.push(diagnosticsChange);
-        if (config[CONFIG_KEYS.Status.Idle.Check]) this.listeners.push(changeWindowState);
+        if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
+        if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
 
         this.listeners.push(fileSwitch, fileEdit, debugStart, debugEnd, gitListener);
     }
@@ -93,16 +93,16 @@ export class RPCController {
 
         const config = getConfig();
 
-        if (config[CONFIG_KEYS.Status.Idle.Timeout] !== 0) {
+        if (config.get(CONFIG_KEYS.Status.Idle.Timeout) !== 0) {
             if (windowState.focused) {
                 if (this.idleTimeout) clearTimeout(this.idleTimeout);
 
                 await this.sendActivity();
             } else {
                 this.idleTimeout = setTimeout(async () => {
-                    if (config[CONFIG_KEYS.Status.Idle.DisconnectOnIdle]) {
+                    if (config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle)) {
                         await this.disable();
-                        if (config[CONFIG_KEYS.Status.Idle.ResetElapsedTime]) this.state.startTimestamp = undefined;
+                        if (config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime)) this.state.startTimestamp = undefined;
                         return;
                     }
 
@@ -110,23 +110,22 @@ export class RPCController {
 
                     this.state = {
                         ...this.state,
-                        smallImageKey: config[CONFIG_KEYS.Status.Image.Small.Idle.Key].replace(
-                            REPLACE_KEYS.SmallImageIdleIcon,
-                            getFileIcon(IDLE_SMALL_IMAGE_KEY)
-                        ),
-                        smallImageText: config[CONFIG_KEYS.Status.Image.Small.Idle.Text],
-                        buttons: config[CONFIG_KEYS.Status.Button.Idle.Enabled]
+                        smallImageKey: config
+                            .get(CONFIG_KEYS.Status.Image.Small.Idle.Key)
+                            .replace(REPLACE_KEYS.SmallImageIdleIcon, getFileIcon(IDLE_SMALL_IMAGE_KEY)),
+                        smallImageText: config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text),
+                        buttons: config.get(CONFIG_KEYS.Status.Button.Idle.Enabled)
                             ? [
                                   {
-                                      label: config[CONFIG_KEYS.Status.Button.Idle.Label],
-                                      url: config[CONFIG_KEYS.Status.Button.Idle.Url]
+                                      label: config.get(CONFIG_KEYS.Status.Button.Idle.Label),
+                                      url: config.get(CONFIG_KEYS.Status.Button.Idle.Url)
                                   }
                               ]
                             : this.state.buttons
                     };
 
                     await this.rpcClient?.user?.setActivity(this.state);
-                }, config[CONFIG_KEYS.Status.Idle.Timeout] * 1000);
+                }, config.get(CONFIG_KEYS.Status.Idle.Timeout) * 1000);
             }
         }
     }

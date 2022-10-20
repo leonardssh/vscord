@@ -17,8 +17,7 @@ const logMessage = (message: string | Error, logLevel: LogLevel) => {
         outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${message.stack ?? message.message}`);
     } else if (typeof message === "object") {
         try {
-            const json = JSON.stringify(message, null, 2);
-            outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${json}`);
+            outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${JSON.stringify(message, null, 2)}`);
         } catch {}
     }
 };
