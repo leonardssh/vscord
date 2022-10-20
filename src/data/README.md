@@ -1,4 +1,4 @@
-# Adding Language
+# Adding Language Data
 
 There's currently two value that store information for language, that is `KNOWN_LANGUAGES` and `KNOWN_EXTENSIONS`.
 It's not nessecary to fill both field, only one is needed, but you can fill both field.<br>
