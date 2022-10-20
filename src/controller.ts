@@ -114,7 +114,15 @@ export class RPCController {
                             REPLACE_KEYS.SmallImageIdleIcon,
                             getFileIcon(IDLE_SMALL_IMAGE_KEY)
                         ),
-                        smallImageText: config[CONFIG_KEYS.Status.Image.Small.Idle.Text]
+                        smallImageText: config[CONFIG_KEYS.Status.Image.Small.Idle.Text],
+                        buttons: config[CONFIG_KEYS.Status.Button.Idle.Enabled]
+                            ? [
+                                  {
+                                      label: config[CONFIG_KEYS.Status.Button.Idle.Label],
+                                      url: config[CONFIG_KEYS.Status.Button.Idle.Url]
+                                  }
+                              ]
+                            : undefined
                     };
 
                     await this.rpcClient?.user?.setActivity(this.state);

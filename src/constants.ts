@@ -50,12 +50,18 @@ export const CONFIG_KEYS = {
             } as const
         } as const,
         Button: {
-            Enabled: "status.button.enabled" as const,
             Active: {
+                Enabled: "status.button.active.enabled" as const,
                 Label: "status.button.active.label" as const,
                 Url: "status.button.active.url" as const
             } as const,
+            Idle: {
+                Enabled: "status.button.idle.enabled" as const,
+                Label: "status.button.idle.label" as const,
+                Url: "status.button.idle.url" as const
+            } as const,
             Inactive: {
+                Enabled: "status.button.active.enabled" as const,
                 Label: "status.button.inactive.label" as const,
                 Url: "status.button.inactive.url" as const
             } as const

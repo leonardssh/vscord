@@ -21,9 +21,13 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
     "status.state.text.editing": string;
     "status.state.text.debugging": string;
     "status.state.text.noWorkspaceFound": string;
-    "status.button.enabled": boolean;
+    "status.button.active.enabled": boolean;
     "status.button.active.label": string;
     "status.button.active.url": string;
+    "status.button.idle.enabled": boolean;
+    "status.button.idle.label": string;
+    "status.button.idle.url": string;
+    "status.button.inactive.enabled": boolean;
     "status.button.inactive.label": string;
     "status.button.inactive.url": string;
     "status.image.baseLink": boolean;

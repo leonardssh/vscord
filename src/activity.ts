@@ -162,7 +162,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
             largeImageText
         };
 
-        if (config[CONFIG_KEYS.Status.Button.Enabled] && dataClass.gitRemoteUrl) {
+        if (config[CONFIG_KEYS.Status.Button.Active.Enabled] && dataClass.gitRemoteUrl) {
             const gitRepo = dataClass.gitRemoteUrl.toString("https").replace(/\.git$/, "");
             const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
             const gitHost = dataClass.gitRemoteUrl.source;
@@ -191,7 +191,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                 };
         }
     } else if (
-        !!config[CONFIG_KEYS.Status.Button.Enabled] &&
+        !!config[CONFIG_KEYS.Status.Button.Inactive.Enabled] &&
         !!config[CONFIG_KEYS.Status.Button.Inactive.Label] &&
         !!config[CONFIG_KEYS.Status.Button.Inactive.Url]
     )

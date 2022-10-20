@@ -246,6 +246,10 @@
                     "type": "boolean",
                     "default": true
                 },
+                "vscord.status.button.active.enabled": {
+                    "type": "boolean",
+                    "default": true
+                },
                 "vscord.status.button.active.label": {
                     "type": "string",
                     "default": "View Repository"
@@ -253,6 +257,22 @@
                 "vscord.status.button.active.url": {
                     "type": "url",
                     "default": ""
+                },
+                "vscord.status.button.idle.enabled": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "vscord.status.button.idle.label": {
+                    "type": "string",
+                    "default": ""
+                },
+                "vscord.status.button.idle.url": {
+                    "type": "url",
+                    "default": ""
+                },
+                "vscord.status.button.inactive.enabled": {
+                    "type": "boolean",
+                    "default": true
                 },
                 "vscord.status.button.inactive.label": {
                     "type": "string",
