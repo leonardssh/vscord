@@ -122,7 +122,7 @@ export class RPCController {
                                       url: config[CONFIG_KEYS.Status.Button.Idle.Url]
                                   }
                               ]
-                            : undefined
+                            : this.state.buttons
                     };
 
                     await this.rpcClient?.user?.setActivity(this.state);
