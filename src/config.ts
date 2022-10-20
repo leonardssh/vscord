@@ -17,6 +17,7 @@ export type WorkspaceExtensionConfiguration = WorkspaceConfiguration & {
     lowerDetailsDebugging: string;
     lowerDetailsNoWorkspaceFound: string;
     largeImageIdling: string;
+    baseImageLink: string;
     largeImage: string;
     smallImage: string;
     removeElapsedTime: boolean;

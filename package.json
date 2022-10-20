@@ -163,6 +163,11 @@
                     "default": "No workspace.",
                     "description": "Custom string for the state section of the rich presence when no workspace is found.\n- {empty} will be replaced with an empty space\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number."
                 },
+                "rpc.baseImageLink": {
+                    "type": "string",
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/",
+                    "description": "Override the base link for language icon, default is `https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/`, it will be used like this: \"${baseImageLink}${language_icon}.png\""
+                },
                 "rpc.largeImage": {
                     "type": "string",
                     "default": "Editing a {LANG} file",

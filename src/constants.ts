@@ -26,6 +26,7 @@ export const enum CONFIG_KEYS {
     LowerDetailsEditing = "lowerDetailsEditing",
     LowerDetailsDebugging = "lowerDetailsDebugging",
     LowerDetailsNoWorkspaceFound = "lowerDetailsNoWorkspaceFound",
+    BaseImageLink = "baseImageLink",
     LargeImageIdling = "largeImageIdling",
     LargeImage = "largeImage",
     SmallImage = "smallImage",
