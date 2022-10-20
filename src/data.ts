@@ -76,16 +76,14 @@ export class Data implements DisposableLike {
     }
 
     public get folderAndFile(): string | undefined {
-        const directory = basename(this._file?.dir ?? '');
+        const directory = basename(this._file?.dir ?? "");
         const file = this._file ? this._file.name + this._file.ext : undefined;
 
-		if (!directory || !this.workspaceFolder?.name || directory === this.workspaceFolder?.name) {
-            return file;
-		}
+        if (!directory || !this.workspaceFolder?.name || directory === this.workspaceFolder?.name) return file;
 
-		this.debug(4, `folderAndFile(): ${directory + sep + file}`);
-        return directory + '/' + file;
-	}
+        this.debug(4, `folderAndFile(): ${directory + sep + file}`);
+        return directory + "/" + file;
+    }
 
     public get fullDirName(): string | undefined {
         const v = this._file?.dir;
