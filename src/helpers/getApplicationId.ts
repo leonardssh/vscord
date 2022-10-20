@@ -6,7 +6,7 @@ const escapeRegex = (text: string) => text.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\
 
 export const getApplicationId = (config: WorkspaceExtensionConfiguration) => {
     const applicationIds = new Map([
-        ["Code", "782685898163617802"],
+        ["Code", config.id],
         ["Visual Studio Code", "810516608442695700"],
         ["VSCodium", "1031067701474492496"]
     ]);

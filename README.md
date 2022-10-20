@@ -55,16 +55,16 @@ Remember to 🌟 this GitHub if you 💖 it.
 
 ## 📌 Features
 
+-   Shows what you're working on in Visual Studio Code
 -   Switch between 3 IDE names (`Code`, `Visual Studio Code` and `VSCodium`) [(preview)](https://streamable.com/apjd4g)
 -   Highly customizable using the extension settings
--   Shows what you're working on in Visual Studio Code
 -   Shows the amount of problems in your workspace
 -   Shows the number of lines in your file and which line you're editing
 -   Shows the git repository and branch you are working on
--   Respects Discords 15sec limit when it comes to updating your status
+-   Shows the size of the file you are working on
+-   Respects Discord's 15 seconds ratelimit when updating your status
 -   Support for over 130+ of the most popular languages
 -   Enable/Disable RPC for individual workspaces
--   Custom string support
 -   Stable or Insiders build detection
 -   Debug mode detection
 -   Easily manually reconnect to Discord Gateway
@@ -73,8 +73,6 @@ Remember to 🌟 this GitHub if you 💖 it.
 -   flatpak/snapstore support
 
 > All texts are fully customizable using variables and a multitude of config options
-
-<!--You know other people can read this too?-->
 
 ![1](https://i.imgur.com/LaB4TqM.png)
 ![2](https://i.imgur.com/yTFIFiK.png)
@@ -109,6 +107,10 @@ To contribute to this repository, feel free to create a new fork of the reposito
 3. Make your changes.
 4. Commit your changes, and push them.
 5. Submit a Pull Request [here](https://github.com/LeonardSSH/vscord/pulls)!
+
+## 👨‍💻 Adding a new language
+
+To add a new language, you need to read "[Adding Language Data Guide](src/data/README.md)" and "[Adding Language Icon Guide](assets/icons/README.md)" first, then you can follow the Contributing steps above!
 
 ## 🎉 Thanks
 

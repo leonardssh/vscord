@@ -56,7 +56,7 @@
         "prettier": "^2.7.1",
         "pretty-quick": "^3.1.3",
         "source-map-support": "^0.5.21",
-        "tsup": "^6.2.3",
+        "tsup": "^6.3.0",
         "typescript": "^4.8.4"
     },
     "scripts": {
@@ -75,11 +75,21 @@
         "commands": [
             {
                 "command": "rpc.enable",
-                "title": "Enable Discord Presence in the current workspace",
+                "title": "Enable Discord Presence",
                 "category": "Discord Rich Presence"
             },
             {
                 "command": "rpc.disable",
+                "title": "Disable Discord Presence",
+                "category": "Discord Rich Presence"
+            },
+            {
+                "command": "rpc.enableWorkspace",
+                "title": "Enable Discord Presence in the current workspace",
+                "category": "Discord Rich Presence"
+            },
+            {
+                "command": "rpc.disableWorkspace",
                 "title": "Disable Discord Presence in the current workspace",
                 "category": "Discord Rich Presence"
             },
@@ -101,7 +111,7 @@
                 "rpc.id": {
                     "type": "string",
                     "default": "782685898163617802",
-                    "description": "Application ID. Change only if you known exactly what you're doing."
+                    "description": "Application ID. Change only if you known exactly what you're doing. This will be used when \"Code\" is selected as appName"
                 },
                 "rpc.appName": {
                     "type": "string",
@@ -162,6 +172,11 @@
                     "type": "string",
                     "default": "No workspace.",
                     "description": "Custom string for the state section of the rich presence when no workspace is found.\n- {empty} will be replaced with an empty space\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number."
+                },
+                "rpc.baseImageLink": {
+                    "type": "string",
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/",
+                    "description": "Override the base link for language icon, default is `https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/`, it will be used like this: \"${baseImageLink}${language_icon}.png\""
                 },
                 "rpc.largeImage": {
                     "type": "string",
