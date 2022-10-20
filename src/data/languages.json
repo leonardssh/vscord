@@ -17,7 +17,7 @@
         { "language": "git-commit", "image": "manifest" },
         { "language": "git-rebase", "image": "manifest" },
         { "language": "go", "image": "go" },
-        { "language": "grain", "image": "grain"},
+        { "language": "grain", "image": "grain" },
         { "language": "groovy", "image": "groovy" },
         { "language": "handlebars", "image": "handlebars" },
         { "language": "haml", "image": "text" },

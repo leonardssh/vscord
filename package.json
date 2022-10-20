@@ -101,7 +101,7 @@
                 "rpc.id": {
                     "type": "string",
                     "default": "782685898163617802",
-                    "description": "Application ID. Change only if you known exactly what you're doing."
+                    "description": "Application ID. Change only if you known exactly what you're doing. This will be used when \"Code\" is selected as appName"
                 },
                 "rpc.appName": {
                     "type": "string",
