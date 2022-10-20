@@ -62,7 +62,7 @@
     "scripts": {
         "vscode:prepublish": "yarn run build",
         "build": "tsup",
-        "watch": "tsup --watch --sourcemap",
+        "watch": "tsup --watch",
         "lint": "prettier --check src/**/**",
         "format": "prettier --write src/**/*",
         "update": "yarn upgrade-interactive",
