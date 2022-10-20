@@ -61,19 +61,21 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
     const defaultLargeImageText = config[CONFIG_KEYS.Status.Image.Large.Idle.Text];
 
     const removeDetails = !config[CONFIG_KEYS.Status.Details.Enabled];
+    const removeDetailsOnIdle = !config[CONFIG_KEYS.Status.Details.Idle.Enabled];
     const removeState = !config[CONFIG_KEYS.Status.State.Enabled];
     const removeStateOnIdle = !config[CONFIG_KEYS.Status.State.Idle.Enabled];
 
     let presence: SetActivity = {
-        details: removeDetails
-            ? undefined
-            : details(
-                  CONFIG_KEYS.Status.Details.Text.Idle,
-                  CONFIG_KEYS.Status.Details.Text.Viewing,
-                  CONFIG_KEYS.Status.Details.Text.Editing,
-                  CONFIG_KEYS.Status.Details.Text.Debugging,
-                  isViewing
-              ),
+        details:
+            removeDetails || removeDetailsOnIdle
+                ? undefined
+                : details(
+                      CONFIG_KEYS.Status.Details.Text.Idle,
+                      CONFIG_KEYS.Status.Details.Text.Viewing,
+                      CONFIG_KEYS.Status.Details.Text.Editing,
+                      CONFIG_KEYS.Status.Details.Text.Debugging,
+                      isViewing
+                  ),
         state:
             removeState || removeStateOnIdle
                 ? undefined
@@ -145,7 +147,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                       CONFIG_KEYS.Status.State.Text.Debugging,
                       isViewing
                   ),
-            largeImageKey: getFileIcon(largeImageKey),
+            largeImageKey: config[CONFIG_KEYS.Status.Image.Large.Key].replace("{icon}", getFileIcon(largeImageKey)),
             largeImageText
         };
 
