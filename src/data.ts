@@ -64,9 +64,15 @@ export class Data implements DisposableLike {
     public get fileSize(): number | undefined {
         if (!this._file) return;
         const absolutePath = join(this._file.dir, this._file.base);
-        const v = statSync(absolutePath).size;
-        this.debug(4, `fileSize(): ${v}`);
-        return v;
+        try {
+            const v = statSync(absolutePath).size;
+            this.debug(4, `fileSize(): ${v}`);
+            return v;
+        } catch (ignored) {
+            // TODO: find a real fix to this
+            // Cause by can't find file in SSH / WSL / VM / Container
+            return undefined;
+        }
     }
 
     public get dirName(): string | undefined {
