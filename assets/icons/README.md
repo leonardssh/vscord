@@ -24,5 +24,4 @@ Example: `C++ (cpp.png) (https://en.wikipedia.org/wiki/C%2B%2B)`
 
 -   MoonScript (moonscript.png) (https://moonscript.org/)
 -   Skript (skript.png) (https://docs.skriptlang.org/)
--   Hare (hare.png) (https://harelang.org/)
 -   Less (less.png) (https://lesscss.org/)
