@@ -1,6 +1,6 @@
 import { Disposable, EventEmitter, Extension, extensions, window, workspace, WorkspaceFolder } from "vscode";
 import type { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
-import { parse, ParsedPath, sep, join } from "node:path";
+import { basename, parse, ParsedPath, sep, join } from "node:path";
 import gitUrlParse from "git-url-parse";
 import { logInfo } from "./logger";
 import { statSync } from "node:fs";
@@ -74,6 +74,18 @@ export class Data implements DisposableLike {
         this.debug(4, `dirName(): ${v}`);
         return v;
     }
+
+    public get folderAndFile(): string | undefined {
+        const directory = basename(this._file?.dir ?? '');
+        const file = this._file ? this._file.name + this._file.ext : undefined;
+
+		if (!directory || !this.workspaceFolder?.name || directory === this.workspaceFolder?.name) {
+            return file;
+		}
+
+		this.debug(4, `folderAndFile(): ${directory + sep + file}`);
+        return directory + '/' + file;
+	}
 
     public get fullDirName(): string | undefined {
         const v = this._file?.dir;
