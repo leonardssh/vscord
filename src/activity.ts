@@ -43,6 +43,9 @@ export function onDiagnosticsChange() {
     totalProblems = counted;
 }
 
+// TODO: Idle small image
+// TODO: Polish function
+// TODO: Polish replace keys
 export function activity(previous: SetActivity = {}, isViewing = false): SetActivity {
     const config = getConfig();
     const { appName } = env;

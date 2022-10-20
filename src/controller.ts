@@ -110,7 +110,10 @@ export class RPCController {
 
                     this.state = {
                         ...this.state,
-                        smallImageKey: getFileIcon(IDLE_SMALL_IMAGE_KEY), // TODO: Replace this
+                        smallImageKey: config[CONFIG_KEYS.Status.Image.Small.Idle.Key].replace(
+                            "{icon}",
+                            getFileIcon(IDLE_SMALL_IMAGE_KEY)
+                        ),
                         smallImageText: config[CONFIG_KEYS.Status.Image.Small.Idle.Text]
                     };
 
