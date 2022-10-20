@@ -12,7 +12,7 @@ import { dataClass } from "./data";
 export class RPCController {
     statusBarIcon = window.createStatusBarItem(StatusBarAlignment.Left);
     listeners: Disposable[] = [];
-    enabled: boolean = false;
+    enabled: boolean = true;
     state: SetActivity = {};
     debug: boolean = false;
     rpcClient: Client;
