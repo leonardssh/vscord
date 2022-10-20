@@ -12,8 +12,8 @@ import { dataClass } from "./data";
 export class RPCController {
     statusBarIcon = window.createStatusBarItem(StatusBarAlignment.Left);
     listeners: Disposable[] = [];
+    enabled: boolean = false;
     state: SetActivity = {};
-    enabled: boolean = true;
     debug: boolean = false;
     rpcClient: Client;
 
@@ -60,7 +60,7 @@ export class RPCController {
         this.statusBarIcon.tooltip = "Connected to Discord";
         this.statusBarIcon.show();
 
-        this.enable();
+        if (this.enabled) this.enable();
     }
 
     private onDisconnected() {

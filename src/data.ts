@@ -283,4 +283,4 @@ export class Data implements DisposableLike {
     }
 }
 
-export const dataClass = new Data(100);
+export const dataClass = new Data();

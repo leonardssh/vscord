@@ -7,7 +7,7 @@ import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { logInfo } from "./logger";
 
-const controller = new RPCController(getApplicationId(getConfig()).clientId, true);
+const controller = new RPCController(getApplicationId(getConfig()).clientId);
 
 export const registerCommands = (ctx: ExtensionContext) => {
     const config = getConfig();
@@ -15,7 +15,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
     const enable = async (update = true) => {
         if (update)
             try {
-                await config.update("enabled", true);
+                await config.update(CONFIG_KEYS.Enabled, true);
             } catch (ignored) {}
 
         controller.statusBarIcon.text = "$(search-refresh) Connecting to Discord Gateway...";
@@ -26,7 +26,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
     const disable = async (update = true) => {
         if (update)
             try {
-                await config.update("enabled", false);
+                await config.update(CONFIG_KEYS.Enabled, false);
             } catch (ignored) {}
 
         controller.cleanUp();
@@ -81,6 +81,8 @@ export const registerCommands = (ctx: ExtensionContext) => {
 export async function activate(ctx: ExtensionContext) {
     logInfo("Discord Rich Presence for VS Code activated.");
     registerCommands(ctx);
+
+    if (!getConfig()[CONFIG_KEYS.Enabled]) await controller.disable();
 }
 
 export async function deactivate() {
