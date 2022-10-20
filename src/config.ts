@@ -81,7 +81,7 @@ export type WorkspaceConfigurationWithType<ConfigTypeMap extends { [key: string]
      */
     get<T, S extends keyof ConfigTypeMap>(
         section: S | string,
-        defaultValue: T
+        defaultValue: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T
     ): S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
 
     /**
