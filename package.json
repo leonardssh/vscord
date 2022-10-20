@@ -192,7 +192,7 @@
                 },
                 "vscord.status.image.large.idle.key": {
                     "type": "string",
-                    "default": "idle-vscode"
+                    "default": "{idle_icon}"
                 },
                 "vscord.status.image.large.idle.text": {
                     "type": "string",
@@ -208,7 +208,7 @@
                 },
                 "vscord.status.image.small.idle.key": {
                     "type": "string",
-                    "default": "{icon}"
+                    "default": "{idle_icon}"
                 },
                 "vscord.status.image.small.idle.text": {
                     "type": "string",
