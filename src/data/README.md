@@ -1,7 +1,9 @@
 # Adding Language
 
 There's currently two value that store information for language, that is `KNOWN_LANGUAGES` and `KNOWN_EXTENSIONS`.
-It's not nessecary to fill both field, only one is needed, but you can fill both field.
+It's not nessecary to fill both field, only one is needed, but you can fill both field.<br>
+
+If possible, please also sort the key by alphabetical order!
 
 ## KNOWN_LANGUAGES
 
