@@ -7,7 +7,7 @@ If possible, please also sort the key by alphabetical order!
 
 ## KNOWN_LANGUAGES
 
-`KNOWN_LANGUAGES` is a map of Language ID and icon, it's usually specified by extenstion developer who add support for that specific language.
+`KNOWN_LANGUAGES` is a [record](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type) of Language ID and icon, it's usually specified by extenstion developer who add support for that specific language.
 
 ### Finding Language ID
 
@@ -27,7 +27,7 @@ For example, in the Language Mode menu, when selecting `C++` it shows `C++ (cpp)
 K: Language ID
 V: Icon
 */
-const KNOWN_LANGUAGES: Map<string, string> = {
+const KNOWN_LANGUAGES: Record<string, string> = {
     cpp: "cpp",
     // Language with ID "cpp" is linked to image "cpp" in "assets" folder
     astro: "astro",
@@ -48,7 +48,7 @@ This is used when there's no matching id in the `KNOWN_LANGUAGES`, or when exten
 K: RegEx to test at the end of string
 V: Icon
 */
-const KNOWN_EXTENSIONS: Map<string, string> = {
+const KNOWN_EXTENSIONS: Record<string, string> = {
     ".cpp": "cpp",
     // File that end with ".cpp" is linked to image "cpp" in "assets" folder
     ".cc": "cpp",
