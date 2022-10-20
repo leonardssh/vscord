@@ -110,6 +110,10 @@ To contribute to this repository, feel free to create a new fork of the reposito
 4. Commit your changes, and push them.
 5. Submit a Pull Request [here](https://github.com/LeonardSSH/vscord/pulls)!
 
+## 👨‍💻 Adding a new language
+
+To add a new language, you need to read "[Adding Language Data Guide](https://github.com/leonardssh/vscord/tree/main/src/data/README.md)" and "[Adding Language Icon Guide](https://github.com/leonardssh/vscord/tree/main/assets/icons/README.md)" first, then you can follow the Contributing steps above!
+
 ## 🎉 Thanks
 
 -   [discordjs](https://github.com/discordjs/) - Creator of Discord RPC Client
