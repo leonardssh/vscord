@@ -184,8 +184,7 @@
                 },
                 "vscord.status.image.large.key": {
                     "type": "string",
-                    "default": "{icon}",
-                    "description": "Image to use"
+                    "default": "{icon}"
                 },
                 "vscord.status.image.large.text": {
                     "type": "string",
@@ -201,7 +200,7 @@
                 },
                 "vscord.status.image.small.key": {
                     "type": "string",
-                    "default": "{app_name}"
+                    "default": "{icon}"
                 },
                 "vscord.status.image.small.text": {
                     "type": "string",
@@ -209,7 +208,7 @@
                 },
                 "vscord.status.image.small.idle.key": {
                     "type": "string",
-                    "default": "{app_name}"
+                    "default": "{icon}"
                 },
                 "vscord.status.image.small.idle.text": {
                     "type": "string",

@@ -50,14 +50,16 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
     const isInsider = appName.includes("Insiders");
     const isCodium = appName.startsWith("VSCodium") || appName.startsWith("codium");
 
-    const defaultSmallImageKey = debug.activeDebugSession
-        ? getFileIcon(DEBUGGING_IMAGE_KEY)
-        : isInsider
-        ? getFileIcon(isCodium ? VSCODIUM_INSIDERS_IMAGE_KEY : VSCODE_INSIDERS_IMAGE_KEY)
-        : getFileIcon(isCodium ? VSCODIUM_IMAGE_KEY : VSCODE_IMAGE_KEY);
+    const defaultSmallImageKey = config[CONFIG_KEYS.Status.Image.Small.Key].replace(
+        "{icon}",
+        debug.activeDebugSession
+            ? getFileIcon(DEBUGGING_IMAGE_KEY)
+            : isInsider
+            ? getFileIcon(isCodium ? VSCODIUM_INSIDERS_IMAGE_KEY : VSCODE_INSIDERS_IMAGE_KEY)
+            : getFileIcon(isCodium ? VSCODIUM_IMAGE_KEY : VSCODE_IMAGE_KEY)
+    );
 
     const defaultSmallImageText = config[CONFIG_KEYS.Status.Image.Small.Text].replace(REPLACE_KEYS.AppName, appName);
-
     const defaultLargeImageText = config[CONFIG_KEYS.Status.Image.Large.Idle.Text];
 
     const removeDetails = !config[CONFIG_KEYS.Status.Details.Enabled];
@@ -89,7 +91,10 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
         startTimestamp: config[CONFIG_KEYS.Status.Idle.ResetElapsedTime]
             ? undefined
             : previous.startTimestamp ?? new Date(),
-        largeImageKey: isInsider ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY),
+        largeImageKey: config[CONFIG_KEYS.Status.Image.Large.Idle.Key].replace(
+            "{icon}",
+            isInsider ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY)
+        ),
         largeImageText: defaultLargeImageText,
         smallImageKey: defaultSmallImageKey,
         smallImageText: defaultSmallImageText
