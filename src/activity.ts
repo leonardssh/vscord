@@ -51,7 +51,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
     const isCodium = appName.startsWith("VSCodium") || appName.startsWith("codium");
 
     const defaultSmallImageKey = config[CONFIG_KEYS.Status.Image.Small.Key].replace(
-        "{icon}",
+        REPLACE_KEYS.SmallImageIcon,
         debug.activeDebugSession
             ? getFileIcon(DEBUGGING_IMAGE_KEY)
             : isInsider
@@ -92,7 +92,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
             ? undefined
             : previous.startTimestamp ?? new Date(),
         largeImageKey: config[CONFIG_KEYS.Status.Image.Large.Idle.Key].replace(
-            "{icon}",
+            REPLACE_KEYS.LargeImageIdleIcon,
             isInsider ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY)
         ),
         largeImageText: defaultLargeImageText,
@@ -152,7 +152,10 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                       CONFIG_KEYS.Status.State.Text.Debugging,
                       isViewing
                   ),
-            largeImageKey: config[CONFIG_KEYS.Status.Image.Large.Key].replace("{icon}", getFileIcon(largeImageKey)),
+            largeImageKey: config[CONFIG_KEYS.Status.Image.Large.Key].replace(
+                REPLACE_KEYS.LargeImageIcon,
+                getFileIcon(largeImageKey)
+            ),
             largeImageText
         };
 

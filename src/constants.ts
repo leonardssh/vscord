@@ -137,5 +137,8 @@ export const enum REPLACE_KEYS {
     GitRepo = "{git_repo}",
     GitBranch = "{git_branch}",
     FileSize = "{file_size}",
-    LargeImageIcon = "{icon}"
+    LargeImageIcon = "{icon}",
+    SmallImageIcon = "{icon}",
+    LargeImageIdleIcon = "{idle_icon}",
+    SmallImageIdleIcon = "{idle_icon}"
 }
