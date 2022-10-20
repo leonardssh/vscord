@@ -9,9 +9,11 @@ export const getApplicationId = (config: WorkspaceExtensionConfiguration) => {
         ["Custom", config.id]
     ]);
 
+    const currentAppName = config[CONFIG_KEYS.AppName];
+
     let clientId = config[CONFIG_KEYS.Id];
     for (const [appName, id] of applicationIds.entries()) {
-        if (config[CONFIG_KEYS.AppName] !== appName) continue;
+        if (currentAppName !== appName) continue;
         clientId = id;
         break;
     }
