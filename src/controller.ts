@@ -1,6 +1,6 @@
 import { debug, Disposable, languages, StatusBarAlignment, window, WindowState, workspace } from "vscode";
 import { Client, type SetActivity, type SetActivityResponse } from "@xhayper/discord-rpc";
-import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY } from "./constants";
+import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY, REPLACE_KEYS } from "./constants";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
 import { getFileIcon } from "./helpers/resolveFileIcon";
@@ -111,7 +111,7 @@ export class RPCController {
                     this.state = {
                         ...this.state,
                         smallImageKey: config[CONFIG_KEYS.Status.Image.Small.Idle.Key].replace(
-                            "{icon}",
+                            REPLACE_KEYS.SmallImageIdleIcon,
                             getFileIcon(IDLE_SMALL_IMAGE_KEY)
                         ),
                         smallImageText: config[CONFIG_KEYS.Status.Image.Small.Idle.Text]
