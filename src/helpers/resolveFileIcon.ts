@@ -17,7 +17,7 @@ export function resolveFileIcon(document: TextDocument) {
 
     const config = getConfig();
     const filename = basename(document.fileName);
-    const findKnownExtension = [...Object.keys(ALL_KNOWN_KNOWN_EXTENSIONS)].find((key) => {
+    const findKnownExtension = Object.keys(ALL_KNOWN_KNOWN_EXTENSIONS).find((key) => {
         if (filename.endsWith(key)) return true;
 
         const match = /^\/(.*)\/([mgiy]+)$/.exec(key);
