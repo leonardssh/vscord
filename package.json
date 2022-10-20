@@ -75,11 +75,21 @@
         "commands": [
             {
                 "command": "rpc.enable",
-                "title": "Enable Discord Presence in the current workspace",
+                "title": "Enable Discord Presence",
                 "category": "Discord Rich Presence"
             },
             {
                 "command": "rpc.disable",
+                "title": "Disable Discord Presence",
+                "category": "Discord Rich Presence"
+            },
+            {
+                "command": "rpc.enableWorkspace",
+                "title": "Enable Discord Presence in the current workspace",
+                "category": "Discord Rich Presence"
+            },
+            {
+                "command": "rpc.disableWorkspace",
                 "title": "Disable Discord Presence in the current workspace",
                 "category": "Discord Rich Presence"
             },

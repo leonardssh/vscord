@@ -37,6 +37,25 @@ export const registerCommands = (ctx: ExtensionContext) => {
     };
 
     const enableCommand = commands.registerCommand("rpc.enable", async () => {
+        await disable(false);
+        await enable(false);
+
+        logInfo("Enabled Discord Rich Presence.");
+
+        if (!config[CONFIG_KEYS.SuppressNotifications])
+            await window.showInformationMessage("Enabled Discord Rich Presence.");
+    });
+
+    const disableCommand = commands.registerCommand("rpc.disable", async () => {
+        await disable(false);
+
+        logInfo("Disabled Discord Rich Presence.");
+
+        if (!config[CONFIG_KEYS.SuppressNotifications])
+            await window.showInformationMessage("Disabled Discord Rich Presence.");
+    });
+
+    const enableWorkspaceCommand = commands.registerCommand("rpc.enableWorkspace", async () => {
         await disable();
         await enable();
 
@@ -46,7 +65,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
             await window.showInformationMessage("Enabled Discord Rich Presence for this workspace.");
     });
 
-    const disableCommand = commands.registerCommand("rpc.disable", async () => {
+    const disableWorkspaceCommand = commands.registerCommand("rpc.disableWorkspace", async () => {
         await disable();
 
         logInfo("Disabled Discord Rich Presence for this workspace.");
@@ -58,14 +77,14 @@ export const registerCommands = (ctx: ExtensionContext) => {
     const reconnectCommand = commands.registerCommand("rpc.reconnect", async () => {
         logInfo("Reconnecting to Discord Gateway...");
 
-        await disable(false);
-        await enable(false);
+        await controller.login();
+        await controller.enable();
     });
 
     const disconnectCommand = commands.registerCommand("rpc.disconnect", async () => {
         logInfo("Disconnecting from Discord Gateway...");
 
-        await disable(false);
+        await controller.destroy();
 
         controller.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
         controller.statusBarIcon.command = "rpc.reconnect";
@@ -73,7 +92,14 @@ export const registerCommands = (ctx: ExtensionContext) => {
         controller.statusBarIcon.show();
     });
 
-    ctx.subscriptions.push(enableCommand, disableCommand, reconnectCommand, disconnectCommand);
+    ctx.subscriptions.push(
+        enableCommand,
+        disableCommand,
+        enableWorkspaceCommand,
+        disableWorkspaceCommand,
+        reconnectCommand,
+        disconnectCommand
+    );
 
     logInfo("Registered Discord Rich Presence commands");
 };
