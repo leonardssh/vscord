@@ -178,37 +178,61 @@
                     "type": "string",
                     "default": "No workspace."
                 },
-                "vscord.status.image.large.key": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png"
-                },
-                "vscord.status.image.large.text": {
-                    "type": "string",
-                    "default": "Editing a {lang} file"
-                },
                 "vscord.status.image.large.idle.key": {
                     "type": "string",
-                    "default": "https://raw.githubusercontent.com/leonardssh/vscord/main/assets/icons/{idle_icon}.png"
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png"
                 },
                 "vscord.status.image.large.idle.text": {
                     "type": "string",
                     "default": "Idling"
                 },
-                "vscord.status.image.small.key": {
+                "vscord.status.image.large.viewing.key": {
                     "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{icon}.png"
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png"
                 },
-                "vscord.status.image.small.text": {
+                "vscord.status.image.large.viewing.text": {
                     "type": "string",
-                    "default": "{app_name}"
+                    "default": "Viewing a {LANG} file"
+                },
+                "vscord.status.image.large.editing.key": {
+                    "type": "string",
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png"
+                },
+                "vscord.status.image.large.editing.text": {
+                    "type": "string",
+                    "default": "Editing a {LANG} file"
+                },
+                "vscord.status.image.large.debugging.key": {
+                    "type": "string",
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png"
+                },
+                "vscord.status.image.large.debugging.text": {
+                    "type": "string",
+                    "default": "Debugging a {LANG} file"
                 },
                 "vscord.status.image.small.idle.key": {
                     "type": "string",
-                    "default": "{idle_icon}"
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png"
                 },
                 "vscord.status.image.small.idle.text": {
                     "type": "string",
                     "default": "zZz"
+                },
+                "vscord.status.image.small.viewing.key": {
+                    "type": "string",
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png"
+                },
+                "vscord.status.image.small.viewing.text": {
+                    "type": "string",
+                    "default": "{app_name}"
+                },
+                "vscord.status.image.small.editing.key": {
+                    "type": "string",
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png"
+                },
+                "vscord.status.image.small.editing.text": {
+                    "type": "string",
+                    "default": "{app_name}"
                 },
                 "vscord.status.image.small.debugging.key": {
                     "type": "string",
@@ -222,13 +246,17 @@
                     "type": "boolean",
                     "default": true
                 },
+                "vscord.status.resetElapsedTimePerFile": {
+                    "type": "boolean",
+                    "default": false
+                },
                 "vscord.status.problems.enabled": {
                     "type": "boolean",
                     "default": true
                 },
                 "vscord.status.problems.text": {
                     "type": "string",
-                    "default": "- {problemsCount} problems found"
+                    "default": "- {problems_count} problems found"
                 },
                 "vscord.status.idle.check": {
                     "type": "boolean",
@@ -259,8 +287,8 @@
                     "default": "View Repository"
                 },
                 "vscord.status.button.active.url": {
-                    "type": "url",
-                    "default": ""
+                    "type": "string",
+                    "default": "{git_repo}"
                 },
                 "vscord.status.button.idle.enabled": {
                     "type": "boolean",
@@ -271,20 +299,20 @@
                     "default": ""
                 },
                 "vscord.status.button.idle.url": {
-                    "type": "url",
+                    "type": "string",
                     "default": ""
                 },
                 "vscord.status.button.inactive.enabled": {
                     "type": "boolean",
-                    "default": true
+                    "default": false
                 },
                 "vscord.status.button.inactive.label": {
                     "type": "string",
-                    "default": null
+                    "default": ""
                 },
                 "vscord.status.button.inactive.url": {
-                    "type": "url",
-                    "default": null
+                    "type": "string",
+                    "default": ""
                 },
                 "vscord.ignore.workspaces": {
                     "type": "array",

@@ -1,11 +1,10 @@
 import { debug, Disposable, languages, StatusBarAlignment, window, WindowState, workspace } from "vscode";
 import { Client, type SetActivity, type SetActivityResponse } from "@xhayper/discord-rpc";
-import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY, REPLACE_KEYS } from "./constants";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
-import { getFileIcon } from "./helpers/resolveFileIcon";
-import { logError, logInfo } from "./logger";
 import { throttle } from "./helpers/throttle";
+import { logError, logInfo } from "./logger";
+import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 
@@ -108,21 +107,7 @@ export class RPCController {
 
                     if (!this.enabled) return;
 
-                    this.state = {
-                        ...this.state,
-                        smallImageKey: config
-                            .get(CONFIG_KEYS.Status.Image.Small.Idle.Key)
-                            .replace(REPLACE_KEYS.SmallImageIdleIcon, IDLE_SMALL_IMAGE_KEY),
-                        smallImageText: config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text),
-                        buttons: config.get(CONFIG_KEYS.Status.Button.Idle.Enabled)
-                            ? [
-                                  {
-                                      label: config.get(CONFIG_KEYS.Status.Button.Idle.Label),
-                                      url: config.get(CONFIG_KEYS.Status.Button.Idle.Url)
-                                  }
-                              ]
-                            : this.state.buttons
-                    };
+                    this.state = activity(this.state, false, true);
 
                     await this.rpcClient?.user?.setActivity(this.state);
                 }, config.get(CONFIG_KEYS.Status.Idle.Timeout) * 1000);

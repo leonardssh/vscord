@@ -8,15 +8,6 @@ export const { KNOWN_EXTENSIONS, KNOWN_LANGUAGES } = lang as {
 export const EMPTY = "" as const;
 export const FAKE_EMPTY = "\u200b\u200b" as const;
 
-export const IDLE_SMALL_IMAGE_KEY = "idle" as const;
-export const IDLE_VSCODE_IMAGE_KEY = "idle-vscode" as const;
-export const IDLE_VSCODE_INSIDERS_IMAGE_KEY = "idle-vscode-insiders" as const;
-export const DEBUGGING_IMAGE_KEY = "debugging" as const;
-export const VSCODE_IMAGE_KEY = "vscode" as const;
-export const VSCODE_INSIDERS_IMAGE_KEY = "vscode-insiders" as const;
-export const VSCODIUM_IMAGE_KEY = "vscodium" as const;
-export const VSCODIUM_INSIDERS_IMAGE_KEY = "vscodium-insiders" as const;
-
 export const CONFIG_KEYS = {
     Enabled: "enabled" as const,
     App: {
@@ -67,25 +58,40 @@ export const CONFIG_KEYS = {
             } as const
         } as const,
         Image: {
-            BaseLink: "status.image.baseLink" as const,
             Large: {
-                Key: "status.image.large.key" as const,
-                Text: "status.image.large.text" as const,
                 Idle: {
                     Key: "status.image.large.idle.key" as const,
                     Text: "status.image.large.idle.text" as const
+                } as const,
+                Editing: {
+                    Key: "status.image.large.editing.key" as const,
+                    Text: "status.image.large.editing.text" as const
+                } as const,
+                Debugging: {
+                    Key: "status.image.large.debugging.key" as const,
+                    Text: "status.image.large.debugging.text" as const
+                } as const,
+                Viewing: {
+                    Key: "status.image.large.viewing.key" as const,
+                    Text: "status.image.large.viewing.text" as const
                 } as const
             } as const,
             Small: {
-                Key: "status.image.small.key" as const,
-                Text: "status.image.small.text" as const,
                 Idle: {
                     Key: "status.image.small.idle.key" as const,
                     Text: "status.image.small.idle.text" as const
                 } as const,
+                Editing: {
+                    Key: "status.image.small.editing.key" as const,
+                    Text: "status.image.small.editing.text" as const
+                } as const,
                 Debugging: {
                     Key: "status.image.small.debugging.key" as const,
                     Text: "status.image.small.debugging.text" as const
+                } as const,
+                Viewing: {
+                    Key: "status.image.small.viewing.key" as const,
+                    Text: "status.image.small.viewing.text" as const
                 } as const
             } as const
         } as const,
@@ -99,7 +105,8 @@ export const CONFIG_KEYS = {
             ResetElapsedTime: "status.idle.resetElapsedTime" as const,
             Timeout: "status.idle.timeout" as const
         } as const,
-        ShowElapsedTime: "status.showElapsedTime" as const
+        ShowElapsedTime: "status.showElapsedTime" as const,
+        ResetElapsedTimePerFile: "status.resetElapsedTimePerFile" as const
     } as const,
     Ignore: {
         Workspaces: "ignore.workspaces" as const,
