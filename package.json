@@ -495,6 +495,244 @@
                         "description": "Enable debug mode"
                     }
                 }
+            },
+            {
+                "title": "@Deprecated",
+                "type": "object",
+                "properties": {
+                    "rpc.id": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.app.id#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.app.id instead."
+                    },
+                    "rpc.appName": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.app.name#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.app.name instead."
+                    },
+                    "rpc.enabled": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.enabled instead."
+                    },
+                    "rpc.detailsEditing": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.editing#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.editing instead."
+                    },
+                    "rpc.detailsIdling": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.idle#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.idle instead."
+                    },
+                    "rpc.detailsDebugging": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.debugging#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.debugging instead."
+                    },
+                    "rpc.detailsViewing": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.viewing#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.viewing instead."
+                    },
+                    "rpc.lowerDetailsEditing": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.editing#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.editing instead."
+                    },
+                    "rpc.lowerDetailsIdling": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.idle#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.idle instead."
+                    },
+                    "rpc.lowerDetailsDebugging": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.debugging#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.debugging instead."
+                    },
+                    "rpc.lowerDetailsViewing": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.viewing#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.viewing instead."
+                    },
+                    "rpc.lowerDetailsNoWorkspaceFound": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.noWorkspaceFound#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.noWorkspaceFound instead."
+                    },
+                    "rpc.baseImageLink": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image instead."
+                    },
+                    "rpc.largeImage": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image instead."
+                    },
+                    "rpc.largeImageIdling": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image.small.idle.key#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image.small.idle.key instead."
+                    },
+                    "rpc.smallImage": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image.small#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image.small instead."
+                    },
+                    "rpc.removeElapsedTime": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.showElapsedTime#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.showElapsedTime instead."
+                    },
+                    "rpc.removeDetails": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.enabled instead."
+                    },
+                    "rpc.removeLowerDetails": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details instead."
+                    },
+                    "rpc.removeLowerDetailsIdling": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.idle#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.idle instead."
+                    },
+                    "rpc.showProblems": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.problems.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.problems.enabled instead."
+                    },
+                    "rpc.problemsText": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.problems.text#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.problems.text instead."
+                    },
+                    "rpc.ignoreWorkspaces": {
+                        "type": "array",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.workspaces#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.workspaces instead."
+                    },
+                    "rpc.ignoreWorkspacesText": {
+                        "type": [
+                            "string",
+                            "object"
+                        ],
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.workspacesText#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.workspacesText instead."
+                    },
+                    "rpc.checkIdle": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.idle.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.idle.enabled instead."
+                    },
+                    "rpc.disconnectOnIdle": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.idle.disconnectOnIdle#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.idle.disconnectOnIdle instead."
+                    },
+                    "rpc.resetElapsedTimeAfterIdle": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.idle.resetElapsedTime#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.idle.resetElapsedTime instead."
+                    },
+                    "rpc.idleTimeout": {
+                        "type": "number",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.idle.timeout#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.idle.timeout instead."
+                    },
+                    "rpc.idleText": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image.small.idle.text#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image.small.idle.text instead."
+                    },
+                    "rpc.buttonEnabled": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.enabled instead."
+                    },
+                    "rpc.buttonActiveLabel": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.active.label#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.active.label instead."
+                    },
+                    "rpc.buttonActiveUrl": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.active.url#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.active.url instead."
+                    },
+                    "rpc.buttonInactiveLabel": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.inactive.label#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.inactive.label instead."
+                    },
+                    "rpc.buttonInactiveUrl": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.inactive.url#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.inactive.url instead."
+                    },
+                    "rpc.ignoreRepositories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.repositories#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.repositories instead."
+                    },
+                    "rpc.ignoreOrganizations": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.organizations#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.organizations instead."
+                    },
+                    "rpc.ignoreGitHosts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.gitHosts#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.gitHosts instead."
+                    },
+                    "rpc.suppressNotifications": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.behaviour.suppressNotifications#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.behaviour.suppressNotifications instead."
+                    },
+                    "rpc.prioritizeLanguagesOverExtensions": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.behaviour.prioritizeLanguagesOverExtensions#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.behaviour.prioritizeLanguagesOverExtensions instead."
+                    },
+                    "rpc.fileSizeHumanReadable": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.behaviour.size.humanReadable#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.behaviour.size.humanReadable instead."
+                    },
+                    "rpc.fileSizeSpec": {
+                        "type": "string",
+                        "enum": [
+                            "si",
+                            "iec",
+                            "jedec"
+                        ],
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.file.size.spec#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.file.size.spec instead."
+                    },
+                    "rpc.fileSizeFixed": {
+                        "type": "number",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.file.size.fixed#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.file.size.fixed instead."
+                    },
+                    "rpc.fileSizeSpacer": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.file.size.spacer#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.file.size.spacer instead."
+                    }
+                }
             }
         ]
     },
