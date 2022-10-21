@@ -12,8 +12,6 @@ import {
     window,
     workspace,
     WorkspaceFolder,
-    TextDocument,
-    Selection,
     TextEditor
 } from "vscode";
 
@@ -50,7 +48,6 @@ export class Data implements DisposableLike {
             window.onDidChangeActiveTextEditor(() => {
                 this.debug(2, `root(): window.onDidChangeActiveTextEditor`);
                 this.editor = window.activeTextEditor;
-                logInfo(this.editor);
                 this.updateGit();
             }),
             workspace.onDidChangeWorkspaceFolders(() => {
