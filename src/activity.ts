@@ -187,7 +187,6 @@ export function activity(previous: SetActivity = {}, isViewing = false, isIdling
             ];
     }
 
-    console.log(JSON.stringify(presence));
     return presence;
 }
 
