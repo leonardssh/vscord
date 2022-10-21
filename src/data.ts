@@ -1,11 +1,11 @@
 import { Disposable, EventEmitter, Extension, extensions, window, workspace, WorkspaceFolder } from "vscode";
 import type { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
 import { basename, parse, ParsedPath, sep, join } from "node:path";
+import { CONFIG_KEYS } from "./constants";
 import gitUrlParse from "git-url-parse";
+import { getConfig } from "./config";
 import { logInfo } from "./logger";
 import { statSync } from "node:fs";
-import { getConfig } from "./config";
-import { CONFIG_KEYS } from "./constants";
 
 interface DisposableLike {
     dispose: () => any;
@@ -179,15 +179,15 @@ export class Data implements DisposableLike {
             this.debug(1, `ext(): Changed to Extension`);
             this.gitExt = ext;
             if (this.gitExt.isActive) {
-                logInfo(`[data.ts] ext(): Git extension is active`);
+                logInfo("[data.ts] ext(): Git extension is active");
                 this.api(this.gitExt.exports.enabled);
                 this.gitExtListeners.push(this.gitExt.exports.onDidChangeEnablement((e) => this.api(e)));
             } else {
-                logInfo(`[data.ts] ext(): activate`);
+                logInfo("[data.ts] ext(): activate");
                 void ext.activate();
             }
         } else if (!ext && this.gitExt) {
-            this.debug(2, `[data.ts] ext(): Changed to undefined`);
+            this.debug(2, "[data.ts] ext(): Changed to undefined");
             this.gitExt = undefined;
             this.api(false);
             this.dispose(1);
@@ -287,7 +287,7 @@ export class Data implements DisposableLike {
     }
 
     private debug(level: number, message: string) {
-        if (this._debug >= level) logInfo(`[data.ts] ${message}`);
+        if (this._debug >= level) logInfo("[data.ts]", message);
     }
 }
 

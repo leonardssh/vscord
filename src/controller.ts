@@ -30,15 +30,15 @@ export class RPCController {
             .catch(async (error) => {
                 const config = getConfig();
 
-                logError(`Encountered following error while trying to login:\n${error as string}`);
+                logError("Encountered following error while trying to login:", error);
 
                 await this.rpcClient?.destroy();
-                logInfo(`[002] Destroyed Discord RPC client`);
+                logInfo("[002] Destroyed Discord RPC client");
 
                 if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
                     error?.message?.includes("ENOENT")
                         ? void window.showErrorMessage("No Discord client detected")
-                        : void window.showErrorMessage(`Couldn't connect to Discord via RPC: ${error as string}`);
+                        : void window.showErrorMessage("Couldn't connect to Discord via RPC:", error);
                 }
 
                 this.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";

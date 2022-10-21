@@ -32,7 +32,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         await controller.disable();
 
-        logInfo(`[003] Destroyed Discord RPC client`);
+        logInfo("[003] Destroyed Discord RPC client");
         controller.statusBarIcon.hide();
     };
 
@@ -117,5 +117,5 @@ export async function activate(ctx: ExtensionContext) {
 export async function deactivate() {
     logInfo("Discord Rich Presence for VS Code deactivated.");
     await controller.destroy();
-    logInfo(`[004] Destroyed Discord RPC client`);
+    logInfo("[004] Destroyed Discord RPC client");
 }
