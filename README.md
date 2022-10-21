@@ -69,6 +69,8 @@ Remember to 🌟 this GitHub if you 💖 it.
 -   Detect when you are using the [Insiders build](https://code.visualstudio.com/insiders/)!
 -   Detect when you are Idling!
 
+## 👀 Preview
+
 ![1](https://i.imgur.com/LaB4TqM.png)
 ![2](https://i.imgur.com/yTFIFiK.png)
 ![3](https://i.imgur.com/5OOkKUW.png)
