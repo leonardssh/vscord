@@ -31,7 +31,11 @@ export function onDiagnosticsChange() {
     totalProblems = counted;
 }
 
-export function activity(previous: SetActivity = {}, isViewing = false, isIdling = false): SetActivity {
+export const activity = async (
+    previous: SetActivity = {},
+    isViewing = false,
+    isIdling = false
+): Promise<SetActivity> => {
     const config = getConfig();
 
     const presence = previous;
@@ -77,80 +81,88 @@ export function activity(previous: SetActivity = {}, isViewing = false, isIdling
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
 
-    const PROBLEMS = replaceFileInfo(
+    const PROBLEMS = await replaceFileInfo(
         replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)), isGitExcluded),
         isWorkspaceExcluded,
-        window.activeTextEditor?.document,
-        window.activeTextEditor?.selection
+        dataClass.editor?.document,
+        dataClass.editor?.selection
     );
 
-    const replaceAllText = (text: string) =>
-        replaceFileInfo(
-            replaceGitInfo(replaceAppInfo(text), isGitExcluded),
-            isWorkspaceExcluded,
-            window.activeTextEditor?.document,
-            window.activeTextEditor?.selection
+    const replaceAllText = async (text: string) =>
+        (
+            await replaceFileInfo(
+                replaceGitInfo(replaceAppInfo(text), isGitExcluded),
+                isWorkspaceExcluded,
+                dataClass.editor?.document,
+                dataClass.editor?.selection
+            )
         ).replace("{problems}", PROBLEMS);
 
-    const detailsText =
-        detailsIdleEnabled && isIdling
-            ? replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle))
-            : replaceAllText(
+    const detailsText = detailsEnabled
+        ? isIdling || !!!dataClass.editor
+            ? detailsIdleEnabled
+                ? await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle))
+                : undefined
+            : await replaceAllText(
                   isDebugging
                       ? config.get(CONFIG_KEYS.Status.Details.Text.Debugging)
                       : isViewing
                       ? config.get(CONFIG_KEYS.Status.Details.Text.Viewing)
                       : config.get(CONFIG_KEYS.Status.Details.Text.Editing)
-              );
+              )
+        : undefined;
 
-    const stateText =
-        stateIdleEnabled && isIdling
-            ? replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle))
-            : replaceAllText(
+    const stateText = stateEnabled
+        ? isIdling || !!!dataClass.editor
+            ? stateIdleEnabled
+                ? await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle))
+                : undefined
+            : await replaceAllText(
                   isDebugging
                       ? config.get(CONFIG_KEYS.Status.State.Text.Debugging)
                       : isViewing
                       ? config.get(CONFIG_KEYS.Status.State.Text.Viewing)
                       : config.get(CONFIG_KEYS.Status.State.Text.Editing)
-              );
+              )
+        : undefined;
 
-    const largeImageKey = replaceAllText(
-        isDebugging
+    const largeImageKey = await replaceAllText(
+        isIdling || !!!dataClass.editor
+            ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key)
+            : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key)
             : isViewing
             ? config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key)
-            : isIdling
-            ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key)
             : config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key)
     );
 
-    const largeImageText = replaceAllText(
-        isDebugging
+    const largeImageText = await replaceAllText(
+        isIdling || !!!dataClass.editor
+            ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text)
+            : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text)
             : isViewing
             ? config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Text)
-            : isIdling
-            ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text)
             : config.get(CONFIG_KEYS.Status.Image.Large.Editing.Text)
     );
 
-    const smallImageKey = replaceAllText(
-        isDebugging
+    const smallImageKey = await replaceAllText(
+        isIdling || !!!dataClass.editor
+            ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key)
+            : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)
             : isViewing
             ? config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key)
-            : isIdling
-            ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key)
             : config.get(CONFIG_KEYS.Status.Image.Small.Editing.Key)
     );
 
-    const smallImageText = replaceAllText(
-        isDebugging
+    const smallImageText = await replaceAllText(
+        isIdling || !!!dataClass.editor
+            ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text)
+            : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text)
             : isViewing
             ? config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text)
-            : isIdling
-            ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text)
             : config.get(CONFIG_KEYS.Status.Image.Small.Editing.Text)
     );
 
@@ -161,34 +173,34 @@ export function activity(previous: SetActivity = {}, isViewing = false, isIdling
     presence.smallImageKey = smallImageKey;
     presence.smallImageText = smallImageText;
 
-    if (isIdling) {
+    if (isIdling || !!!dataClass.editor) {
         if (config.get(CONFIG_KEYS.Status.Button.Idle.Enabled))
             presence.buttons = [
                 {
-                    label: replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Label)),
-                    url: replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Url))
+                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Label)),
+                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Url))
                 }
             ];
     } else if (!isGitExcluded && dataClass.gitRemoteUrl) {
         if (config.get(CONFIG_KEYS.Status.Button.Active.Enabled))
             presence.buttons = [
                 {
-                    label: replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Label)),
-                    url: replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Url))
+                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Label)),
+                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Url))
                 }
             ];
     } else if (isGitExcluded) {
         if (config.get(CONFIG_KEYS.Status.Button.Inactive.Enabled))
             presence.buttons = [
                 {
-                    label: replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Label)),
-                    url: replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Url))
+                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Label)),
+                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Url))
                 }
             ];
     }
 
     return presence;
-}
+};
 
 export const replaceAppInfo = (text: string): string => {
     text = text.slice();
@@ -230,12 +242,12 @@ export const replaceGitInfo = (text: string, excluded: boolean = false): string 
     return text;
 };
 
-export const replaceFileInfo = (
+export const replaceFileInfo = async (
     text: string,
     excluded: boolean = false,
     document?: TextDocument,
     selection?: Selection
-): string => {
+): Promise<string> => {
     const config = getConfig();
     text = text.slice();
 
@@ -247,12 +259,12 @@ export const replaceFileInfo = (
         : FAKE_EMPTY;
 
     let fullDirectoryName: string = FAKE_EMPTY;
-    const fileIcon = window.activeTextEditor ? resolveLangName(window.activeTextEditor.document) : "text";
-    const fileSize = getFileSize(config, dataClass);
+    const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
+    const fileSize = await getFileSize(config, dataClass);
 
-    if (window.activeTextEditor && dataClass.workspace && !excluded) {
+    if (dataClass.editor && dataClass.workspace && !excluded) {
         const name = dataClass.workspace;
-        const relativePath = workspace.asRelativePath(window.activeTextEditor.document.fileName).split(sep);
+        const relativePath = workspace.asRelativePath(dataClass.editor.document.fileName).split(sep);
 
         relativePath.splice(-1, 1);
         fullDirectoryName = `${name}${sep}${relativePath.join(sep)}`;

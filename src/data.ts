@@ -1,11 +1,21 @@
-import { Disposable, EventEmitter, Extension, extensions, window, workspace, WorkspaceFolder } from "vscode";
 import type { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
-import { basename, parse, ParsedPath, sep, join } from "node:path";
+import { basename, parse, sep } from "node:path";
 import { CONFIG_KEYS } from "./constants";
 import gitUrlParse from "git-url-parse";
 import { getConfig } from "./config";
 import { logInfo } from "./logger";
-import { statSync } from "node:fs";
+import {
+    Disposable,
+    EventEmitter,
+    Extension,
+    extensions,
+    window,
+    workspace,
+    WorkspaceFolder,
+    TextDocument,
+    Selection,
+    TextEditor
+} from "vscode";
 
 interface DisposableLike {
     dispose: () => any;
@@ -14,7 +24,6 @@ interface DisposableLike {
 const API_VERSION: Parameters<GitExtension["getAPI"]>["0"] = 1;
 
 export class Data implements DisposableLike {
-    protected _file: ParsedPath | undefined;
     protected _repo: Repository | undefined;
     protected _remote: Remote | undefined;
 
@@ -29,15 +38,19 @@ export class Data implements DisposableLike {
     private gitExt: Extension<GitExtension> | undefined;
     private gitApi: GitApi | undefined;
 
+    // TODO: Figure out why this also got set when selecting the terminals
+    public editor: TextEditor | undefined;
+
     public constructor(debugLevel = 0) {
         this._debug = debugLevel;
-        this._file = window.activeTextEditor ? parse(window.activeTextEditor.document.fileName) : undefined;
+        this.editor = window.activeTextEditor;
         this.ext();
         this.api(this.gitExt?.exports.enabled || false);
         this.rootListeners.push(
-            window.onDidChangeActiveTextEditor((e) => {
+            window.onDidChangeActiveTextEditor(() => {
                 this.debug(2, `root(): window.onDidChangeActiveTextEditor`);
-                this._file = e ? parse(e.document.fileName) : undefined;
+                this.editor = window.activeTextEditor;
+                logInfo(this.editor);
                 this.updateGit();
             }),
             workspace.onDidChangeWorkspaceFolders(() => {
@@ -52,49 +65,55 @@ export class Data implements DisposableLike {
     }
 
     public get fileName(): string | undefined {
-        const v = this._file ? this._file.name + this._file.ext : undefined;
+        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const v = _file ? _file.base : undefined;
         this.debug(4, `fileName(): ${v}`);
         return v;
     }
 
     public get fileExtension(): string | undefined {
-        const v = this._file ? this._file.ext : undefined;
+        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const v = _file ? _file.ext : undefined;
         this.debug(4, `fileExtension(): ${v}`);
         return v;
     }
 
-    public get fileSize(): number | undefined {
-        if (!this._file) return;
-        const absolutePath = join(this._file.dir, this._file.base);
-        try {
-            const v = statSync(absolutePath).size;
-            this.debug(4, `fileSize(): ${v}`);
-            return v;
-        } catch (ignored) {
-            // TODO: find a real fix to this
-            // Cause by can't find file in SSH / WSL / VM / Container
-            return undefined;
-        }
+    public get fileSize(): Promise<number | undefined> {
+        return new Promise(async (resolve) => {
+            if (!this.editor?.document) return resolve(undefined);
+
+            try {
+                const v = await workspace.fs.stat(this.editor.document.uri);
+                this.debug(4, `fileSize(): ${v.size}`);
+                return resolve(v.size);
+            } catch (ignored) {
+                return resolve(undefined);
+            }
+        });
     }
 
     public get dirName(): string | undefined {
-        const v = this._file?.dir.split(sep).pop();
+        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const v = basename(_file?.dir ?? "");
         this.debug(4, `dirName(): ${v}`);
         return v;
     }
 
     public get folderAndFile(): string | undefined {
-        const directory = basename(this._file?.dir ?? "");
-        const file = this._file ? this._file.name + this._file.ext : undefined;
+        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const directory = basename(_file?.dir ?? "");
+        const file = _file ? _file.base : undefined;
 
         if (!directory || !this.workspaceFolder?.name || directory === this.workspaceFolder?.name) return file;
 
-        this.debug(4, `folderAndFile(): ${directory + sep + file}`);
-        return directory + "/" + file;
+        const v = directory + sep + file;
+        this.debug(4, `folderAndFile(): ${v}`);
+        return v;
     }
 
     public get fullDirName(): string | undefined {
-        const v = this._file?.dir;
+        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const v = _file?.dir;
         this.debug(4, `fullDirName(): ${v}`);
         return v;
     }
@@ -106,7 +125,7 @@ export class Data implements DisposableLike {
     }
 
     public get workspaceFolder(): WorkspaceFolder | undefined {
-        const uri = window?.activeTextEditor?.document.uri;
+        const uri = this.editor?.document ? this.editor.document.uri : undefined;
         let v: WorkspaceFolder | undefined = undefined;
         if (uri) v = workspace.getWorkspaceFolder(uri);
 
@@ -246,8 +265,9 @@ export class Data implements DisposableLike {
 
         const repos = this.gitApi.repositories;
 
-        if (this._file) {
-            const testString = this._file.dir;
+        if (this.editor?.document) {
+            const _file = parse(this.editor.document.uri.fsPath);
+            const testString = _file.dir;
             return (
                 repos
                     .filter((v) => v.rootUri.fsPath.length <= testString.length)

@@ -75,6 +75,7 @@ export class RPCController {
 
         const fileSwitch = window.onDidChangeActiveTextEditor(() => this.sendActivity(true));
         const fileEdit = workspace.onDidChangeTextDocument(throttle(() => this.sendActivity(), 2000));
+        const fileSelectionChanged = window.onDidChangeTextEditorSelection(throttle(() => this.sendActivity(), 5000));
         const debugStart = debug.onDidStartDebugSession(() => this.sendActivity());
         const debugEnd = debug.onDidTerminateDebugSession(() => this.sendActivity());
         const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
@@ -84,7 +85,7 @@ export class RPCController {
         if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
 
-        this.listeners.push(fileSwitch, fileEdit, debugStart, debugEnd, gitListener);
+        this.listeners.push(fileSwitch, fileEdit, fileSelectionChanged, debugStart, debugEnd, gitListener);
     }
 
     private async checkIdle(windowState: WindowState) {
@@ -95,7 +96,6 @@ export class RPCController {
         if (config.get(CONFIG_KEYS.Status.Idle.Timeout) !== 0) {
             if (windowState.focused) {
                 if (this.idleTimeout) clearTimeout(this.idleTimeout);
-
                 await this.sendActivity();
             } else {
                 this.idleTimeout = setTimeout(async () => {
@@ -107,9 +107,9 @@ export class RPCController {
 
                     if (!this.enabled) return;
 
-                    this.state = activity(this.state, false, true);
+                    this.state = await activity(this.state, false, true);
 
-                    await this.rpcClient?.user?.setActivity(this.state);
+                    await this.sendActivity(false, true);
                 }, config.get(CONFIG_KEYS.Status.Idle.Timeout) * 1000);
             }
         }
@@ -128,9 +128,12 @@ export class RPCController {
         if (!this.rpcClient.isConnected) await this.rpcClient.login();
     }
 
-    async sendActivity(isViewing: boolean = false): Promise<SetActivityResponse | undefined> {
+    async sendActivity(
+        isViewing: boolean = false,
+        isIdling: boolean = false
+    ): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
-        this.state = activity(this.state, isViewing);
+        this.state = await activity(this.state, isViewing, isIdling);
         return this.rpcClient.user?.setActivity(this.state);
     }
 

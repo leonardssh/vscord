@@ -3,7 +3,7 @@ import { CONFIG_KEYS } from "../constants";
 import type { Data } from "../data";
 import filesize from "file-size";
 
-export const getFileSize = (config: ExtenstionConfiguration, dataClass: Data) => {
+export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Data) => {
     if (!dataClass.fileSize) return;
 
     let fixed = 2;
@@ -22,7 +22,7 @@ export const getFileSize = (config: ExtenstionConfiguration, dataClass: Data) =>
     };
 
     fileSize = config.get(CONFIG_KEYS.File.Size.HumanReadable)
-        ? (fileSize = filesize(dataClass.fileSize, fileSizeConfig).human(fileSizeSpec))
+        ? (fileSize = filesize((await dataClass.fileSize) ?? 0, fileSizeConfig).human(fileSizeSpec))
         : (fileSize = `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer}B`);
 
     return fileSize;
