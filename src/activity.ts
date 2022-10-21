@@ -228,13 +228,11 @@ export const replaceGitInfo = (text: string, excluded: boolean = false): string 
     const replaceMap = new Map([
         [
             "{git_repo}",
-            !excluded
-                ? dataClass.gitRemoteUrl
-                    ? dataClass.gitRemoteUrl.name
-                    : dataClass.gitRepoName ?? FAKE_EMPTY
-                : FAKE_EMPTY
+            (!excluded ? (dataClass.gitRemoteUrl ? dataClass.gitRemoteUrl.name : dataClass.gitRepoName) : undefined) ??
+                FAKE_EMPTY
         ],
-        ["{git_branch}", !excluded ? dataClass.gitBranchName ?? FAKE_EMPTY : FAKE_EMPTY]
+        ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
+        ["{git_url}", (!excluded ? dataClass.gitRemoteUrl?.toString("https") : undefined) ?? FAKE_EMPTY]
     ]);
 
     for (const [key, value] of replaceMap) text = text.replace(key, value);
