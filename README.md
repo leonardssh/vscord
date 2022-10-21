@@ -20,7 +20,7 @@
             <img alt="Visual Studio Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord" />
         </a>
         <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-            <img alt="Visual Studio Marketplace Rating" src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg" />
+            <img alt="Visual Studio Marketplace Rating" src="https://img.shields.io/visual-studio-marketplace/r/LeonardSSH.vscord">
         </a>
 		<a href="https://github.com/LeonardSSH/vscord/actions/workflows/cd-vs-marketplace.yml">
 			<img alt="CD - Visual Studio Marketplace" src="https://img.shields.io/github/workflow/status/leonardssh/vscord/CD%20-%20Visual%20Studio%20Marketplace?label=CD%20-%20Visual%20Studio%20Marketplace">
