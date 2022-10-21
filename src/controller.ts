@@ -107,8 +107,6 @@ export class RPCController {
 
                     if (!this.enabled) return;
 
-                    this.state = await activity(this.state, false, true);
-
                     await this.sendActivity(false, true);
                 }, config.get(CONFIG_KEYS.Status.Idle.Timeout) * 1000);
             }
