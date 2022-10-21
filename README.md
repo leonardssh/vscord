@@ -53,20 +53,21 @@
 
 Remember to 🌟 this GitHub if you 💖 it.
 
-> Very customizable [Discord Rich Presence](https://discord.com/rich-presence) extenstion for [Visual Studio Code](https://code.visualstudio.com/)
+> Highly customizable [Discord Rich Presence](https://discord.com/rich-presence) extenstion for [Visual Studio Code](https://code.visualstudio.com/)
 
 ## 📌 Features
 
 -   Shows what you're working on!
--   Switch between 3 IDE names (`Code`, `Visual Studio Code` and `VSCodium`) and a custom one if you wish!
+-   Switch between 3 IDE names (`Code`, `Visual Studio Code` and `VSCodium`) or a custom one if you wish!
 -   Packed with 60+ extenstion settings!
 -   Tons of variable to use!
--   Support custom image for icons (using HTTP link)
+-   Support for over 130+ of the most popular languages!
+-   Support custom images (using HTTP link)
+-   Support custom button link!
 -   Support flatpak / snapstore version of Discord!
--   Detect when you are debugging!
--   Detect when you are using the insiders build!
--   Easily disable / enable the status!
--   Easily reconnect to Discord gateway!
+-   Detect when you are Debugging!
+-   Detect when you are using the [Insiders build](https://code.visualstudio.com/insiders/)!
+-   Detect when you are Idling!
 
 ![1](https://i.imgur.com/LaB4TqM.png)
 ![2](https://i.imgur.com/yTFIFiK.png)
