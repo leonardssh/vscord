@@ -99,7 +99,7 @@ export const activity = async (
         ).replace("{problems}", PROBLEMS);
 
     const detailsText = detailsEnabled
-        ? isIdling || !!!dataClass.editor
+        ? isIdling || !dataClass.editor
             ? detailsIdleEnabled
                 ? await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle))
                 : undefined
@@ -113,7 +113,7 @@ export const activity = async (
         : undefined;
 
     const stateText = stateEnabled
-        ? isIdling || !!!dataClass.editor
+        ? isIdling || !dataClass.editor
             ? stateIdleEnabled
                 ? await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle))
                 : undefined
@@ -127,7 +127,7 @@ export const activity = async (
         : undefined;
 
     const largeImageKey = await replaceAllText(
-        isIdling || !!!dataClass.editor
+        isIdling || !dataClass.editor
             ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key)
             : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key)
@@ -137,7 +137,7 @@ export const activity = async (
     );
 
     const largeImageText = await replaceAllText(
-        isIdling || !!!dataClass.editor
+        isIdling || !dataClass.editor
             ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text)
             : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text)
@@ -147,7 +147,7 @@ export const activity = async (
     );
 
     const smallImageKey = await replaceAllText(
-        isIdling || !!!dataClass.editor
+        isIdling || !dataClass.editor
             ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key)
             : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)
@@ -157,7 +157,7 @@ export const activity = async (
     );
 
     const smallImageText = await replaceAllText(
-        isIdling || !!!dataClass.editor
+        isIdling || !dataClass.editor
             ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text)
             : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text)
@@ -173,7 +173,7 @@ export const activity = async (
     presence.smallImageKey = smallImageKey;
     presence.smallImageText = smallImageText;
 
-    if (isIdling || !!!dataClass.editor) {
+    if (isIdling || !dataClass.editor) {
         if (config.get(CONFIG_KEYS.Status.Button.Idle.Enabled))
             presence.buttons = [
                 {
