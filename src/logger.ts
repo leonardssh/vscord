@@ -19,7 +19,7 @@ const logMessage = (logLevel: LogLevel, ...messageList: any) => {
             try {
                 messageToLog.push(JSON.stringify(message, null, 2));
             } catch (ignore) {
-                messageToLog.push(message);
+                messageToLog.push(`${message}`);
             }
         }
     }
