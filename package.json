@@ -104,288 +104,399 @@
                 "category": "Discord Rich Presence"
             }
         ],
-        "configuration": {
-            "title": "Discord Rich Presence",
-            "type": "object",
-            "properties": {
-                "vscord.enabled": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.app.id": {
-                    "type": "string",
-                    "default": "782685898163617802"
-                },
-                "vscord.app.name": {
-                    "type": "string",
-                    "enum": [
-                        "Code",
-                        "Visual Studio Code",
-                        "VSCodium",
-                        "Custom"
-                    ],
-                    "default": "Code"
-                },
-                "vscord.status.details.enabled": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.status.details.idle.enabled": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.status.details.text.idle": {
-                    "type": "string",
-                    "default": "Idling"
-                },
-                "vscord.status.details.text.editing": {
-                    "type": "string",
-                    "default": "In {workspace} {problems}"
-                },
-                "vscord.status.details.text.debugging": {
-                    "type": "string",
-                    "default": "Debugging {file_name}"
-                },
-                "vscord.status.details.text.viewing": {
-                    "type": "string",
-                    "default": "In {workspace} {problems}"
-                },
-                "vscord.status.state.enabled": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.status.state.idle.enabled": {
-                    "type": "boolean",
-                    "default": false
-                },
-                "vscord.status.state.text.idle": {
-                    "type": "string",
-                    "default": ""
-                },
-                "vscord.status.state.text.editing": {
-                    "type": "string",
-                    "default": "Working on {file_name}:{current_line}:{current_column}"
-                },
-                "vscord.status.state.text.debugging": {
-                    "type": "string",
-                    "default": "Debugging: {workspace}"
-                },
-                "vscord.status.state.text.viewing": {
-                    "type": "string",
-                    "default": "Viewing {file_name}"
-                },
-                "vscord.status.state.text.noWorkspaceFound": {
-                    "type": "string",
-                    "default": "No workspace."
-                },
-                "vscord.status.image.large.idle.key": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png"
-                },
-                "vscord.status.image.large.idle.text": {
-                    "type": "string",
-                    "default": "Idling"
-                },
-                "vscord.status.image.large.viewing.key": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png"
-                },
-                "vscord.status.image.large.viewing.text": {
-                    "type": "string",
-                    "default": "Viewing a {LANG} file"
-                },
-                "vscord.status.image.large.editing.key": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png"
-                },
-                "vscord.status.image.large.editing.text": {
-                    "type": "string",
-                    "default": "Editing a {LANG} file"
-                },
-                "vscord.status.image.large.debugging.key": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png"
-                },
-                "vscord.status.image.large.debugging.text": {
-                    "type": "string",
-                    "default": "Debugging a {LANG} file"
-                },
-                "vscord.status.image.small.idle.key": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png"
-                },
-                "vscord.status.image.small.idle.text": {
-                    "type": "string",
-                    "default": "zZz"
-                },
-                "vscord.status.image.small.viewing.key": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png"
-                },
-                "vscord.status.image.small.viewing.text": {
-                    "type": "string",
-                    "default": "{app_name}"
-                },
-                "vscord.status.image.small.editing.key": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png"
-                },
-                "vscord.status.image.small.editing.text": {
-                    "type": "string",
-                    "default": "{app_name}"
-                },
-                "vscord.status.image.small.debugging.key": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png"
-                },
-                "vscord.status.image.small.debugging.text": {
-                    "type": "string",
-                    "default": "{app_name}"
-                },
-                "vscord.status.showElapsedTime": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.status.resetElapsedTimePerFile": {
-                    "type": "boolean",
-                    "default": false
-                },
-                "vscord.status.problems.enabled": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.status.problems.text": {
-                    "type": "string",
-                    "default": "- {problems_count} problems found"
-                },
-                "vscord.status.idle.check": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.status.idle.disconnectOnIdle": {
-                    "type": "boolean",
-                    "default": false
-                },
-                "vscord.status.idle.resetElapsedTime": {
-                    "type": "boolean",
-                    "default": false
-                },
-                "vscord.status.idle.timeout": {
-                    "type": "number",
-                    "default": 300
-                },
-                "vscord.status.button.enabled": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.status.button.active.enabled": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.status.button.active.label": {
-                    "type": "string",
-                    "default": "View Repository"
-                },
-                "vscord.status.button.active.url": {
-                    "type": "string",
-                    "default": "{git_repo}"
-                },
-                "vscord.status.button.idle.enabled": {
-                    "type": "boolean",
-                    "default": false
-                },
-                "vscord.status.button.idle.label": {
-                    "type": "string",
-                    "default": ""
-                },
-                "vscord.status.button.idle.url": {
-                    "type": "string",
-                    "default": ""
-                },
-                "vscord.status.button.inactive.enabled": {
-                    "type": "boolean",
-                    "default": false
-                },
-                "vscord.status.button.inactive.label": {
-                    "type": "string",
-                    "default": ""
-                },
-                "vscord.status.button.inactive.url": {
-                    "type": "string",
-                    "default": ""
-                },
-                "vscord.ignore.workspaces": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+        "configuration": [
+            {
+                "title": "Discord Rich Presence",
+                "type": "object",
+                "properties": {
+                    "vscord.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Enable or disable the extension"
                     },
-                    "default": []
-                },
-                "vscord.ignore.workspacesText": {
-                    "type": [
-                        "string",
-                        "object"
-                    ]
-                },
-                "vscord.ignore.repositories": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                    "vscord.app.id": {
+                        "type": "string",
+                        "default": "782685898163617802",
+                        "description": "Application id that will be used when `appName` is \"custom\" or when `appName` is invalid"
                     },
-                    "default": []
-                },
-                "vscord.ignore.organizations": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                    "vscord.app.name": {
+                        "type": "string",
+                        "enum": [
+                            "Code",
+                            "Visual Studio Code",
+                            "VSCodium",
+                            "Custom"
+                        ],
+                        "default": "Code",
+                        "description": "Choose the name you want the application to use.\nChoosing \"Custom\" will make it so it use the \"rpc.id\" as application id"
+                    }
+                }
+            },
+            {
+                "title": "Status",
+                "type": "object",
+                "properties": {
+                    "vscord.status.showElapsedTime": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Show elapsed time in the details section of the rich presence."
                     },
-                    "default": []
-                },
-                "vscord.ignore.gitHosts": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                    "vscord.status.resetElapsedTimePerFile": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "If true, the elapsed time will be reset when you switch files."
                     },
-                    "default": []
-                },
-                "vscord.file.size.humanReadable": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.file.size.spec": {
-                    "type": "string",
-                    "enum": [
-                        "si",
-                        "iec",
-                        "jedec"
-                    ],
-                    "default": "iec"
-                },
-                "vscord.file.size.fixed": {
-                    "type": "number",
-                    "default": 2
-                },
-                "vscord.file.size.spacer": {
-                    "type": "string",
-                    "default": " "
-                },
-                "vscord.behaviour.additionalFileMapping": {
-                    "type": "object"
-                },
-                "vscord.behaviour.suppressNotifications": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "vscord.behavoiur.prioritizeLanguagesOverExtensions": {
-                    "type": "boolean",
-                    "default": false
-                },
-                "vscord.behaviour.debug": {
-                    "type": "boolean",
-                    "default": false
+                    "vscord.status.problems.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Show the number of problems in the status."
+                    },
+                    "vscord.status.problems.text": {
+                        "type": "string",
+                        "default": "- {problems_count} problems found",
+                        "description": "The text to show in the status when there are problems. {problems_count} will be replaced with the number of problems."
+                    },
+                    "vscord.status.idle.check": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Check if the user is idle or not."
+                    },
+                    "vscord.status.idle.disconnectOnIdle": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Disconnects from Discord when the user is idle."
+                    },
+                    "vscord.status.idle.resetElapsedTime": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Resets the elapsed time when the user becomes idle."
+                    },
+                    "vscord.status.idle.timeout": {
+                        "type": "number",
+                        "default": 300,
+                        "description": "Time in seconds before the user is considered idle."
+                    }
+                }
+            },
+            {
+                "title": "Ignore",
+                "type": "object",
+                "properties": {
+                    "vscord.ignore.workspaces": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "List of workspace names to ignore."
+                    },
+                    "vscord.ignore.workspacesText": {
+                        "type": [
+                            "string",
+                            "object"
+                        ],
+                        "description": "The text to show when the workspace is ignored."
+                    },
+                    "vscord.ignore.repositories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Ignore repositories by name"
+                    },
+                    "vscord.ignore.organizations": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Ignore all repositories from the specified organizations."
+                    },
+                    "vscord.ignore.gitHosts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Ignore all repositories from the specified git hosts."
+                    }
+                }
+            },
+            {
+                "title": "Details",
+                "type": "object",
+                "properties": {
+                    "vscord.status.details.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Controls if the Discord Rich Presence should show across all workspaces."
+                    },
+                    "vscord.status.details.idle.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Controls if the Discord Rich Presence should show when the user is idle."
+                    },
+                    "vscord.status.details.text.idle": {
+                        "type": "string",
+                        "default": "Idling",
+                        "description": "Custom string for the details section of the rich presence when editing\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.details.text.editing": {
+                        "type": "string",
+                        "default": "In {workspace} {problems}",
+                        "description": "Custom string for the details section of the rich presence when editing\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.details.text.debugging": {
+                        "type": "string",
+                        "default": "Debugging {file_name}",
+                        "description": "Custom string for the details section of the rich presence when editing\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.details.text.viewing": {
+                        "type": "string",
+                        "default": "In {workspace} {problems}",
+                        "description": "Custom string for the details section of the rich presence when editing\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    }
+                }
+            },
+            {
+                "title": "State",
+                "type": "object",
+                "properties": {
+                    "vscord.status.state.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Controls if the state should be shown."
+                    },
+                    "vscord.status.state.idle.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Controls if the Discord Rich Presence should show when the user is idle."
+                    },
+                    "vscord.status.state.text.idle": {
+                        "type": "string",
+                        "default": "",
+                        "description": "Custom string for the state section of the rich presence when idle\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.state.text.editing": {
+                        "type": "string",
+                        "default": "Working on {file_name}:{current_line}:{current_column}",
+                        "description": "Custom string for the state section of the rich presence when editing\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.state.text.debugging": {
+                        "type": "string",
+                        "default": "Debugging: {workspace}",
+                        "description": "Custom string for the state section of the rich presence when debugging\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.state.text.viewing": {
+                        "type": "string",
+                        "default": "Viewing {file_name}",
+                        "description": "Custom string for the state section of the rich presence when viewing\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.state.text.noWorkspaceFound": {
+                        "type": "string",
+                        "default": "No workspace.",
+                        "description": "Custom string for the state section of the rich presence when no workspace is found"
+                    }
+                }
+            },
+            {
+                "title": "Image",
+                "type": "object",
+                "properties": {
+                    "vscord.status.image.large.idle.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
+                        "description": "The key of the large image when the user is idle."
+                    },
+                    "vscord.status.image.large.idle.text": {
+                        "type": "string",
+                        "default": "Idling",
+                        "description": "Custom string for the large image text when idling"
+                    },
+                    "vscord.status.image.large.viewing.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png",
+                        "description": "Custom string for the large image key of the rich presence when viewing\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.large.viewing.text": {
+                        "type": "string",
+                        "default": "Viewing a {LANG} file",
+                        "description": "Custom string for the large image text when viewing a file\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.large.editing.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png",
+                        "description": "Custom string for the large image key of the rich presence when editing\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.large.editing.text": {
+                        "type": "string",
+                        "default": "Editing a {LANG} file",
+                        "description": "Custom string for the large image text of the rich presence when editing\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.large.debugging.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png",
+                        "description": "The key of the large image when debugging"
+                    },
+                    "vscord.status.image.large.debugging.text": {
+                        "type": "string",
+                        "default": "Debugging a {LANG} file",
+                        "description": "Custom string for the large image text of the rich presence when debugging\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.small.idle.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
+                        "description": "The key of the small image when idling."
+                    },
+                    "vscord.status.image.small.idle.text": {
+                        "type": "string",
+                        "default": "zZz",
+                        "description": "Custom string for the small image text when idling"
+                    },
+                    "vscord.status.image.small.viewing.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png"
+                    },
+                    "vscord.status.image.small.viewing.text": {
+                        "type": "string",
+                        "default": "{app_name}",
+                        "description": "Custom string for the small image text when viewing\n\t- {app_name} will be replaced with the name of the app\n\t- {app_id} will be replaced with the id of the app"
+                    },
+                    "vscord.status.image.small.editing.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png",
+                        "description": "The url to the image when editing, {app_id} will be replaced with the file extension of the file."
+                    },
+                    "vscord.status.image.small.editing.text": {
+                        "type": "string",
+                        "default": "{app_name}",
+                        "description": "Custom string for the small image text of the rich presence when editing"
+                    },
+                    "vscord.status.image.small.debugging.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png",
+                        "description": "The url to the image when debugging. {app_id} will be replaced with the file extension of the file."
+                    },
+                    "vscord.status.image.small.debugging.text": {
+                        "type": "string",
+                        "default": "{app_name}",
+                        "description": "Custom string for the small image text of the rich presence when debugging"
+                    }
+                }
+            },
+            {
+                "title": "Button",
+                "type": "object",
+                "properties": {
+                    "vscord.status.button.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Enable or disable the status button."
+                    },
+                    "vscord.status.button.active.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "If disabled, the button will be hidden when the user is active."
+                    },
+                    "vscord.status.button.active.label": {
+                        "type": "string",
+                        "default": "View Repository",
+                        "description": "The label of the button when the user is viewing a file from a repository."
+                    },
+                    "vscord.status.button.active.url": {
+                        "type": "string",
+                        "default": "{git_repo}",
+                        "description": "The active url for the button"
+                    },
+                    "vscord.status.button.idle.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Enable button when user is idle."
+                    },
+                    "vscord.status.button.idle.label": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The label of the button when the user is idle."
+                    },
+                    "vscord.status.button.idle.url": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The button Idle url when the user is idle."
+                    },
+                    "vscord.status.button.inactive.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Show a button when the user is not viewing a file."
+                    },
+                    "vscord.status.button.inactive.label": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The label of the button when the user is inactive."
+                    },
+                    "vscord.status.button.inactive.url": {
+                        "type": "string",
+                        "default": "",
+                        "description": "Url for when inactive"
+                    }
+                }
+            },
+            {
+                "title": "Misc",
+                "type": "object",
+                "properties": {
+                    "vscord.file.size.fixed": {
+                        "type": "number",
+                        "default": 2,
+                        "description": "The number of spaces to use when displaying the file size."
+                    },
+                    "vscord.file.size.spacer": {
+                        "type": "string",
+                        "default": " ",
+                        "description": "Spacer between the number and the unit"
+                    },
+                    "vscord.behaviour.additionalFileMapping": {
+                        "type": "object"
+                    },
+                    "vscord.behaviour.suppressNotifications": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Suppresses all notifications from the extension."
+                    },
+                    "vscord.behavoiur.prioritizeLanguagesOverExtensions": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Prioritize languages over extensions when determining the file type."
+                    },
+                    "vscord.file.size.humanReadable": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "If true, the file size will be displayed in a human readable format (e.g. 1.2 MB). If false, the file size will be displayed in bytes."
+                    },
+                    "vscord.file.size.spec": {
+                        "type": "string",
+                        "enum": [
+                            "si",
+                            "iec",
+                            "jedec"
+                        ],
+                        "default": "iec",
+                        "description": "The specification to use when displaying the file size."
+                    }
+                }
+            },
+            {
+                "title": "Advanced",
+                "type": "object",
+                "properties": {
+                    "vscord.behaviour.debug": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Enable debug mode"
+                    }
                 }
             }
-        }
+        ]
     },
     "packageManager": "yarn@3.2.4"
 }
