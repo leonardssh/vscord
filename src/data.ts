@@ -62,14 +62,14 @@ export class Data implements DisposableLike {
     }
 
     public get fileName(): string | undefined {
-        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = _file ? _file.base : undefined;
         this.debug(4, `fileName(): ${v}`);
         return v;
     }
 
     public get fileExtension(): string | undefined {
-        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = _file ? _file.ext : undefined;
         this.debug(4, `fileExtension(): ${v}`);
         return v;
@@ -77,7 +77,7 @@ export class Data implements DisposableLike {
 
     public get fileSize(): Promise<number | undefined> {
         return new Promise(async (resolve) => {
-            if (!this.editor?.document) return resolve(undefined);
+            if (!this.editor) return resolve(undefined);
 
             try {
                 const v = await workspace.fs.stat(this.editor.document.uri);
@@ -90,14 +90,14 @@ export class Data implements DisposableLike {
     }
 
     public get dirName(): string | undefined {
-        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = basename(_file?.dir ?? "");
         this.debug(4, `dirName(): ${v}`);
         return v;
     }
 
     public get folderAndFile(): string | undefined {
-        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const directory = basename(_file?.dir ?? "");
         const file = _file ? _file.base : undefined;
 
@@ -109,7 +109,7 @@ export class Data implements DisposableLike {
     }
 
     public get fullDirName(): string | undefined {
-        const _file = this.editor?.document ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = _file?.dir;
         this.debug(4, `fullDirName(): ${v}`);
         return v;
@@ -122,7 +122,7 @@ export class Data implements DisposableLike {
     }
 
     public get workspaceFolder(): WorkspaceFolder | undefined {
-        const uri = this.editor?.document ? this.editor.document.uri : undefined;
+        const uri = this.editor ? this.editor.document.uri : undefined;
         let v: WorkspaceFolder | undefined = undefined;
         if (uri) v = workspace.getWorkspaceFolder(uri);
 
@@ -262,7 +262,7 @@ export class Data implements DisposableLike {
 
         const repos = this.gitApi.repositories;
 
-        if (this.editor?.document) {
+        if (this.editor) {
             const _file = parse(this.editor.document.uri.fsPath);
             const testString = _file.dir;
             return (
