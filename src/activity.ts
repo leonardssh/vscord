@@ -102,7 +102,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
             .get(CONFIG_KEYS.Status.Image.Large.Idle.Key)
             .replace(
                 REPLACE_KEYS.LargeImageIdleIcon,
-                isInsider ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY)
+                isInsider ? IDLE_VSCODE_IMAGE_KEY : IDLE_VSCODE_INSIDERS_IMAGE_KEY
             ),
         largeImageText: defaultLargeImageText,
         smallImageKey: defaultSmallImageKey,
@@ -162,9 +162,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
                       CONFIG_KEYS.Status.State.Text.Debugging,
                       isViewing
                   ),
-            largeImageKey: config
-                .get(CONFIG_KEYS.Status.Image.Large.Key)
-                .replace(REPLACE_KEYS.LargeImageIcon, getFileIcon(largeImageKey)),
+            largeImageKey: config.get(CONFIG_KEYS.Status.Image.Large.Key).replace("{lang}", largeImageKey),
             largeImageText
         };
 

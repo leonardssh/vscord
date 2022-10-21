@@ -112,7 +112,7 @@ export class RPCController {
                         ...this.state,
                         smallImageKey: config
                             .get(CONFIG_KEYS.Status.Image.Small.Idle.Key)
-                            .replace(REPLACE_KEYS.SmallImageIdleIcon, getFileIcon(IDLE_SMALL_IMAGE_KEY)),
+                            .replace(REPLACE_KEYS.SmallImageIdleIcon, IDLE_SMALL_IMAGE_KEY),
                         smallImageText: config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text),
                         buttons: config.get(CONFIG_KEYS.Status.Button.Idle.Enabled)
                             ? [

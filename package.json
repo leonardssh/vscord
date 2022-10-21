@@ -188,7 +188,7 @@
                 },
                 "vscord.status.image.large.idle.key": {
                     "type": "string",
-                    "default": "{idle_icon}"
+                    "default": "https://raw.githubusercontent.com/leonardssh/vscord/main/assets/icons/{idle_icon}.png"
                 },
                 "vscord.status.image.large.idle.text": {
                     "type": "string",
