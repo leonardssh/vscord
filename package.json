@@ -196,7 +196,7 @@
                 },
                 "vscord.status.image.small.key": {
                     "type": "string",
-                    "default": "{icon}"
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{icon}.png"
                 },
                 "vscord.status.image.small.text": {
                     "type": "string",

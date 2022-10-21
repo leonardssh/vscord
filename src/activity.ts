@@ -53,16 +53,20 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
     const isInsider = appName.includes("Insiders");
     const isCodium = appName.startsWith("VSCodium") || appName.startsWith("codium");
 
-    const defaultSmallImageKey = config
-        .get(CONFIG_KEYS.Status.Image.Small.Key)
-        .replace(
-            REPLACE_KEYS.SmallImageIcon,
-            debug.activeDebugSession
-                ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)
-                : isInsider
-                ? getFileIcon(isCodium ? VSCODIUM_INSIDERS_IMAGE_KEY : VSCODE_INSIDERS_IMAGE_KEY)
-                : getFileIcon(isCodium ? VSCODIUM_IMAGE_KEY : VSCODE_IMAGE_KEY)
-        );
+    const defaultSmallImageKey = debug.activeDebugSession
+        ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)
+        : config
+              .get(CONFIG_KEYS.Status.Image.Small.Key)
+              .replace(
+                  REPLACE_KEYS.SmallImageIcon,
+                  isInsider
+                      ? isCodium
+                          ? VSCODIUM_INSIDERS_IMAGE_KEY
+                          : VSCODE_INSIDERS_IMAGE_KEY
+                      : isCodium
+                      ? VSCODIUM_IMAGE_KEY
+                      : VSCODE_IMAGE_KEY
+              );
 
     const defaultSmallImageText = config
         .get(CONFIG_KEYS.Status.Image.Small.Text)
