@@ -226,6 +226,8 @@ export const replaceGitInfo = (text: string, excluded: boolean = false): string 
     text = text.slice();
 
     const replaceMap = new Map([
+        ["{git_owner}", (!excluded ? dataClass.gitRemoteUrl?.owner : undefined) ?? FAKE_EMPTY],
+        ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
         [
             "{git_repo}",
             (!excluded ? (dataClass.gitRemoteUrl ? dataClass.gitRemoteUrl.name : dataClass.gitRepoName) : undefined) ??

@@ -137,7 +137,7 @@ export class Data implements DisposableLike {
     }
 
     public get gitRepoName(): string | undefined {
-        const v = this._repo?.rootUri.fsPath.split(sep).pop();
+        const v = this._repo?.rootUri.fsPath;
         this.debug(4, `gitRepoName(): ${v}`);
         return v;
     }
