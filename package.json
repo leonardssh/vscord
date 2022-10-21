@@ -212,7 +212,7 @@
                 },
                 "vscord.status.image.small.idle.key": {
                     "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png"
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png"
                 },
                 "vscord.status.image.small.idle.text": {
                     "type": "string",
