@@ -178,13 +178,9 @@
                     "type": "string",
                     "default": "No workspace."
                 },
-                "vscord.status.image.baseLink": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/"
-                },
                 "vscord.status.image.large.key": {
                     "type": "string",
-                    "default": "{icon}"
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png"
                 },
                 "vscord.status.image.large.text": {
                     "type": "string",
@@ -213,6 +209,14 @@
                 "vscord.status.image.small.idle.text": {
                     "type": "string",
                     "default": "zZz"
+                },
+                "vscord.status.image.small.debugging.key": {
+                    "type": "string",
+                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png"
+                },
+                "vscord.status.image.small.debugging.text": {
+                    "type": "string",
+                    "default": "{app_name}"
                 },
                 "vscord.status.showElapsedTime": {
                     "type": "boolean",

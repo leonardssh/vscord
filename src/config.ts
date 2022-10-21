@@ -38,6 +38,8 @@ export interface ExtenstionConfigTyping {
     "status.image.small.text": string;
     "status.image.small.idle.key": string;
     "status.image.small.idle.text": string;
+    "status.image.small.debugging.key": string;
+    "status.image.small.debugging.text": string;
     "status.image.problems.enabled": boolean;
     "status.image.problems.text": string;
     "status.problems.enabled": boolean;

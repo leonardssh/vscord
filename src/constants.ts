@@ -82,6 +82,10 @@ export const CONFIG_KEYS = {
                 Idle: {
                     Key: "status.image.small.idle.key" as const,
                     Text: "status.image.small.idle.text" as const
+                } as const,
+                Debugging: {
+                    Key: "status.image.small.debugging.key" as const,
+                    Text: "status.image.small.debugging.text" as const
                 } as const
             } as const
         } as const,

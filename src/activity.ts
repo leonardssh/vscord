@@ -58,7 +58,7 @@ export function activity(previous: SetActivity = {}, isViewing = false): SetActi
         .replace(
             REPLACE_KEYS.SmallImageIcon,
             debug.activeDebugSession
-                ? getFileIcon(DEBUGGING_IMAGE_KEY)
+                ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)
                 : isInsider
                 ? getFileIcon(isCodium ? VSCODIUM_INSIDERS_IMAGE_KEY : VSCODE_INSIDERS_IMAGE_KEY)
                 : getFileIcon(isCodium ? VSCODIUM_IMAGE_KEY : VSCODE_IMAGE_KEY)
