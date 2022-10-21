@@ -51,9 +51,9 @@
 
 # VSCord
 
-Remember to 🌟 this GitHub if you 💖 it.
+Highly customizable [Discord Rich Presence](https://discord.com/rich-presence) extenstion for [Visual Studio Code](https://code.visualstudio.com/)
 
-> Highly customizable [Discord Rich Presence](https://discord.com/rich-presence) extenstion for [Visual Studio Code](https://code.visualstudio.com/)
+> Remember to 🌟 this GitHub if you 💖 it.
 
 ## 📌 Features
 
