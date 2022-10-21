@@ -3,9 +3,9 @@ import { window } from "vscode";
 const outputChannel = window.createOutputChannel("VSCord");
 
 export const enum LogLevel {
-    Info = "INFO",
-    Warn = "WARN",
-    Error = "ERROR"
+    INFO = "INFO",
+    WARN = "WARN",
+    ERROR = "ERROR"
 }
 
 const logMessage = (logLevel: LogLevel, ...messageList: any) => {
@@ -27,8 +27,8 @@ const logMessage = (logLevel: LogLevel, ...messageList: any) => {
     outputChannel.appendLine(`[${timestamp}] [${logLevel}] ${messageToLog.join(" ")}`);
 };
 
-export const logInfo = (...message: any) => void logMessage(LogLevel.Info, ...message);
+export const logInfo = (...message: any) => void logMessage(LogLevel.INFO, ...message);
 
-export const logWarn = (...message: any) => void logMessage(LogLevel.Warn, ...message);
+export const logWarn = (...message: any) => void logMessage(LogLevel.WARN, ...message);
 
-export const logError = (...message: any) => void logMessage(LogLevel.Error, ...message);
+export const logError = (...message: any) => void logMessage(LogLevel.ERROR, ...message);

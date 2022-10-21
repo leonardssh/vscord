@@ -11,8 +11,8 @@ export const FAKE_EMPTY = "\u200b\u200b" as const;
 export const CONFIG_KEYS = {
     Enabled: "enabled" as const,
     App: {
-        Id: "app.id",
-        Name: "app.name"
+        Id: "app.id" as const,
+        Name: "app.name" as const
     } as const,
     Status: {
         Details: {

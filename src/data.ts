@@ -221,7 +221,7 @@ export class Data implements DisposableLike {
                 this.updateGit();
             }),
             this.gitApi.onDidChangeState((e) => {
-                this.debug(1, `listeners(): Change State ${e}`);
+                this.debug(1, "listeners(): Change State", e);
                 this.updateGit();
             })
         );
@@ -286,8 +286,8 @@ export class Data implements DisposableLike {
         return remotes.find((v) => v.name === "origin") ?? remotes[0];
     }
 
-    private debug(level: number, message: string) {
-        if (this._debug >= level) logInfo("[data.ts]", message);
+    private debug(level: number, ...message: any) {
+        if (this._debug >= level) logInfo("[data.ts]", ...message);
     }
 }
 
