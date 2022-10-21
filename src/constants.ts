@@ -130,32 +130,3 @@ export const CONFIG_KEYS = {
         Debug: "behaviour.debug" as const
     } as const
 } as const;
-
-export const enum REPLACE_KEYS {
-    Empty = "{empty}",
-    FileName = "{file_name}",
-    FileExtension = "{file_extension}",
-    DirName = "{dir_name}",
-    FullDirName = "{full_dir_name}",
-    Workspace = "{workspace}",
-    VSCodeWorkspace = "(Workspace)",
-    WorkspaceFolder = "{workspace_folder}",
-    FolderAndFile = "{folder_and_file}",
-    WorkspaceAndFolder = "{workspace_and_folder}",
-    LanguageLowerCase = "{lang}",
-    LanguageTitleCase = "{Lang}",
-    LanguageUpperCase = "{LANG}",
-    TotalLines = "{total_lines}",
-    CurrentLine = "{current_line}",
-    CurrentColumn = "{current_column}",
-    AppName = "{app_name}",
-    Problems = "{problems}",
-    ProblemsCount = "{problemsCount}",
-    GitRepo = "{git_repo}",
-    GitBranch = "{git_branch}",
-    FileSize = "{file_size}",
-    LargeImageIcon = "{icon}",
-    SmallImageIcon = "{icon}",
-    LargeImageIdleIcon = "{idle_icon}",
-    SmallImageIdleIcon = "{idle_icon}"
-}
