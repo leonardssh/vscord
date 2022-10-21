@@ -199,6 +199,15 @@ export const activity = async (
             ];
     }
 
+    // Clean up
+    presence.details === "" && delete presence.details;
+    presence.state === "" && delete presence.state;
+    presence.buttons?.length === 0 && delete presence.buttons;
+    presence.largeImageKey === "" && delete presence.largeImageKey;
+    presence.largeImageText === "" && delete presence.largeImageText;
+    presence.smallImageKey === "" && delete presence.smallImageKey;
+    presence.smallImageText === "" && delete presence.smallImageText;
+
     return presence;
 };
 
