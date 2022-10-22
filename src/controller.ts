@@ -72,17 +72,16 @@ export class RPCController {
 
     private listen() {
         const config = getConfig();
+        const activityThrottle = throttle(() => void this.sendActivity(), 2000, true);
 
-        const fileSwitch = window.onDidChangeActiveTextEditor(() => this.sendActivity(true));
-        const fileEdit = workspace.onDidChangeTextDocument(throttle(() => this.sendActivity(), 2000, true));
-        const fileSelectionChanged = window.onDidChangeTextEditorSelection(
-            throttle(() => this.sendActivity(), 5000, true)
-        );
-        const debugStart = debug.onDidStartDebugSession(() => this.sendActivity());
-        const debugEnd = debug.onDidTerminateDebugSession(() => this.sendActivity());
-        const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
-        const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
-        const gitListener = dataClass.onUpdate(throttle(() => this.sendActivity(), 2000, true));
+        const fileSwitch = window.onDidChangeActiveTextEditor(() => void this.sendActivity(true));
+        const fileEdit = workspace.onDidChangeTextDocument(activityThrottle);
+        const fileSelectionChanged = window.onDidChangeTextEditorSelection(activityThrottle);
+        const debugStart = debug.onDidStartDebugSession(() => void this.sendActivity());
+        const debugEnd = debug.onDidTerminateDebugSession(() => void this.sendActivity());
+        const diagnosticsChange = languages.onDidChangeDiagnostics(() => void onDiagnosticsChange());
+        const changeWindowState = window.onDidChangeWindowState((e: WindowState) => void this.checkIdle(e));
+        const gitListener = dataClass.onUpdate(activityThrottle);
 
         if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
