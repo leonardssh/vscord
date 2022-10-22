@@ -18,6 +18,7 @@ export class RPCController {
 
     private idleTimeout: NodeJS.Timer | undefined;
     private iconTimeout: NodeJS.Timer | undefined;
+    private activityThrottle = throttle(() => void this.sendActivity(), 2000, true);
 
     constructor(clientId: string, debug: boolean = false) {
         this.rpcClient = new Client({ clientId, debug });
@@ -72,16 +73,20 @@ export class RPCController {
 
     private listen() {
         const config = getConfig();
-        const activityThrottle = throttle(() => void this.sendActivity(), 2000, true);
 
-        const fileSwitch = window.onDidChangeActiveTextEditor(() => void this.sendActivity(true));
-        const fileEdit = workspace.onDidChangeTextDocument(activityThrottle);
-        const fileSelectionChanged = window.onDidChangeTextEditorSelection(activityThrottle);
-        const debugStart = debug.onDidStartDebugSession(() => void this.sendActivity());
-        const debugEnd = debug.onDidTerminateDebugSession(() => void this.sendActivity());
-        const diagnosticsChange = languages.onDidChangeDiagnostics(() => void onDiagnosticsChange());
-        const changeWindowState = window.onDidChangeWindowState((e: WindowState) => void this.checkIdle(e));
-        const gitListener = dataClass.onUpdate(activityThrottle);
+        const sendActivity = (isViewing: boolean = false, isIdling: boolean = false) => {
+            this.activityThrottle.reset();
+            this.sendActivity(isViewing, isIdling);
+        };
+
+        const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
+        const fileEdit = workspace.onDidChangeTextDocument(this.activityThrottle.callable);
+        const fileSelectionChanged = window.onDidChangeTextEditorSelection(this.activityThrottle.callable);
+        const debugStart = debug.onDidStartDebugSession(() => sendActivity());
+        const debugEnd = debug.onDidTerminateDebugSession(() => sendActivity());
+        const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
+        const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
+        const gitListener = dataClass.onUpdate(this.activityThrottle.callable);
 
         if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
@@ -108,6 +113,7 @@ export class RPCController {
 
                     if (!this.enabled) return;
 
+                    this.activityThrottle.reset();
                     await this.sendActivity(false, true);
                 }, config.get(CONFIG_KEYS.Status.Idle.Timeout) * 1000);
             }

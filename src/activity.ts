@@ -11,22 +11,16 @@ import { sep } from "node:path";
 
 let totalProblems = 0;
 
+const COUNTED_SEVERITIES = [DiagnosticSeverity.Error, DiagnosticSeverity.Warning];
+
 export const onDiagnosticsChange = () => {
     const diagnostics = languages.getDiagnostics();
 
     let counted = 0;
 
-    diagnostics.forEach((diagnostic) => {
-        if (diagnostic[1]) {
-            diagnostic[1].forEach((diagnostic) => {
-                if (
-                    diagnostic.severity === DiagnosticSeverity.Warning ||
-                    diagnostic.severity === DiagnosticSeverity.Error
-                )
-                    counted++;
-            });
-        }
-    });
+    for (const diagnostic of diagnostics.values())
+        for (const diagnosticItem of diagnostic[1])
+            if (COUNTED_SEVERITIES.includes(diagnosticItem.severity)) totalProblems++;
 
     totalProblems = counted;
 };
