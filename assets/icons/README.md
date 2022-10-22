@@ -5,7 +5,7 @@ When adding an icon for a language, please read the information below before doi
 ## Requirements
 
 -   It should have a size of 1024x1024.
--   It should be a PNG file.
+-   If possible, please use PNG file format
 -   It should have a background that is not transparent and white, should use the main color from the language website UNLESS it's really nessecary to use something else (can't find color, no logo)
 -   You should use the official logo of the language UNLESS it's nessecary to use other icon (not minimal, can't find transparent version)
 -   The icon should be minimalist.

@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-    target: "node16",
+    target: "esnext",
     entry: ["src/extension.ts"],
     external: ["vscode"],
     sourcemap: true,

@@ -1,8 +1,8 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "4.6.7",
-    "description": "Fully customizable VS Code extension to get Discord Rich Presence integration",
+    "version": "5.0.0",
+    "description": "Highly customizable Discord Rich Presence extenstion for Visual Studio Code",
     "main": "dist/extension.js",
     "author": "LeonardSSH <leonardssh22@gmail.com> (https://leonard.sh)",
     "contributors": [
@@ -22,12 +22,10 @@
     "homepage": "https://github.com/LeonardSSH/vscord#readme",
     "keywords": [
         "discord",
-        "vscode",
         "rich",
         "presence",
         "rich presence",
-        "rpc",
-        "game status"
+        "rpc"
     ],
     "galleryBanner": {
         "color": "#5865F2",
@@ -45,16 +43,12 @@
         "Other"
     ],
     "devDependencies": {
-        "@types/file-size": "^1.0.1",
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
         "@types/vscode": "^1.72.0",
         "@xhayper/discord-rpc": "^1.0.12",
-        "file-size": "^1.0.0",
+        "filesize": "^10.0.5",
         "git-url-parse": "^13.1.0",
-        "husky": "^8.0.1",
-        "prettier": "^2.7.1",
-        "pretty-quick": "^3.1.3",
         "source-map-support": "^0.5.21",
         "tsup": "^6.3.0",
         "typescript": "^4.8.4"
@@ -63,10 +57,8 @@
         "vscode:prepublish": "yarn run build",
         "build": "tsup",
         "watch": "tsup --watch",
-        "lint": "prettier --check src/**/**",
-        "format": "prettier --write src/**/*",
-        "update": "yarn upgrade-interactive",
-        "prepare": "husky install"
+        "lint": "prettier --check src/**/*",
+        "format": "prettier --write src/**/*"
     },
     "engines": {
         "vscode": "^1.72.0"
@@ -74,282 +66,666 @@
     "contributes": {
         "commands": [
             {
-                "command": "rpc.enable",
+                "command": "VSCord",
                 "title": "Enable Discord Presence",
                 "category": "Discord Rich Presence"
             },
             {
-                "command": "rpc.disable",
+                "command": "vscord.disable",
                 "title": "Disable Discord Presence",
-                "category": "Discord Rich Presence"
+                "category": "VSCord"
             },
             {
-                "command": "rpc.enableWorkspace",
+                "command": "vscord.workspace.enable",
                 "title": "Enable Discord Presence in the current workspace",
-                "category": "Discord Rich Presence"
+                "category": "VSCord"
             },
             {
-                "command": "rpc.disableWorkspace",
+                "command": "vscord.workspace.disable",
                 "title": "Disable Discord Presence in the current workspace",
-                "category": "Discord Rich Presence"
+                "category": "VSCord"
             },
             {
-                "command": "rpc.disconnect",
+                "command": "vscord.disconnect",
                 "title": "Disconnect Discord Presence from Discord",
-                "category": "Discord Rich Presence"
+                "category": "VSCord"
             },
             {
-                "command": "rpc.reconnect",
+                "command": "vscord.reconnect",
                 "title": "Reconnect Discord Presence to Discord Gateway",
-                "category": "Discord Rich Presence"
+                "category": "VSCord"
             }
         ],
-        "configuration": {
-            "title": "Discord Presence Configuration",
-            "type": "Object",
-            "properties": {
-                "rpc.id": {
-                    "type": "string",
-                    "default": "782685898163617802",
-                    "description": "Application id that will be used when `appName` is \"custom\" or when `appName` is invalid"
-                },
-                "rpc.appName": {
-                    "type": "string",
-                    "enum": [
-                        "Code",
-                        "Visual Studio Code",
-                        "VSCodium",
-                        "Custom"
-                    ],
-                    "default": "Code",
-                    "description": "Choose the name you want the application to use.\nChoosing \"Custom\" will make it so it use the \"rpc.id\" as application id"
-                },
-                "rpc.enabled": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Controls if the Discord Rich Presence should show across all workspaces."
-                },
-                "rpc.detailsEditing": {
-                    "type": "string",
-                    "default": "In {workspace} {problems}",
-                    "description": "Custom string for the details section of the rich presence\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.detailsIdling": {
-                    "type": "string",
-                    "default": "Idling",
-                    "description": "Custom string for the details section of the rich presence when idling\n\t- {empty} will be replaced with an empty space."
-                },
-                "rpc.detailsDebugging": {
-                    "type": "string",
-                    "default": "Debugging {file_name}",
-                    "description": "Custom string for the details section of the rich presence when debugging\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.detailsViewing": {
-                    "type": "string",
-                    "default": "In {workspace} {problems}",
-                    "description": "Custom string for the details section of the rich presence when viewing\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.lowerDetailsEditing": {
-                    "type": "string",
-                    "default": "Working on {file_name}:{current_line}:{current_column}",
-                    "description": "Custom string for the state section of the rich presence\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.lowerDetailsIdling": {
-                    "type": "string",
-                    "default": "Idling",
-                    "description": "Custom string for the state section of the rich presence when idling\n\t- {empty} will be replaced with an empty space."
-                },
-                "rpc.lowerDetailsDebugging": {
-                    "type": "string",
-                    "default": "Debugging: {workspace}",
-                    "description": "Custom string for the state section of the rich presence when debugging\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.lowerDetailsViewing": {
-                    "type": "string",
-                    "default": "Viewing {file_name}",
-                    "description": "Custom string for the state section of the rich presence when viewing\n\t- {empty} will be replaced with an empty space\n\t- {file_name} will be replaced with the current file name\n\t- {file_size} will be replaced with the current file's file size\n\t- {file_extension} will be replaced with the current file name\n\t- {dir_name} will get replaced with the folder name that has the current file\n\t- {folder_and_file} will display the parent folder of the current file if we aren't in the root of the workspace. Example: \"src/index.ts\" or \"index.ts\" if the file is in the root.\n\t- {full_dir_name} will get replaced with the full directory name without the current file name\n\t- {workspace} will be replaced with the current workspace name, if any\n\t- {workspace_folder} will be replaced with the currently accessed workspace folder, if any\n\t- {workspace_and_folder} will be replaced with the currently accessed workspace and workspace folder like this: 'Workspace - workspace_folder'\n\t- {current_column} will get replaced with the current column of the current line\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number\n\t- {git_repo} will be replaced by the current git repository (also detects repos in subdirectories) if any\n\t- {git_branch} will be replaced by the current git branch if in an repository\n\t- {problems} will be replaced with the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.lowerDetailsNoWorkspaceFound": {
-                    "type": "string",
-                    "default": "No workspace.",
-                    "description": "Custom string for the state section of the rich presence when no workspace is found.\n- {empty} will be replaced with an empty space\n\t- {current_line} will get replaced with the current line number\n\t- {total_lines} will get replaced with the total line number."
-                },
-                "rpc.baseImageLink": {
-                    "type": "string",
-                    "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/",
-                    "description": "Override the base link for language icon, default is `https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/`, it will be used like this: \"${baseImageLink}${language_icon}.png\""
-                },
-                "rpc.largeImage": {
-                    "type": "string",
-                    "default": "Editing a {LANG} file",
-                    "description": "Custom string for the largeImageText section of the rich presence\n\t- {lang} will be replaced with the lowercased language ID\n\t- {Lang} will be replaced with the language ID, first letter being uppercase\n\t- {LANG} will be replaced with the uppercased language ID."
-                },
-                "rpc.largeImageIdling": {
-                    "type": "string",
-                    "default": "Idling",
-                    "description": "Custom string for the largeImageText section of the rich presence when idling."
-                },
-                "rpc.smallImage": {
-                    "type": "string",
-                    "default": "{app_name}",
-                    "description": "Custom string for the smallImageText section of the rich presence\n\t- {app_name} will get replaced with the current Visual Studio Code version."
-                },
-                "rpc.removeElapsedTime": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Controls if the RPC should display elapsed time for a workspace or a single file."
-                },
-                "rpc.removeDetails": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Controls if the RPC should remove the details"
-                },
-                "rpc.removeLowerDetails": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Controls if the RPC should remove the lower details"
-                },
-                "rpc.removeLowerDetailsIdling": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Controls if the RPC should remove the lower details when idling"
-                },
-                "rpc.showProblems": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Controls if the RPC should show the count of problems (warnings, errors) present in your workspace."
-                },
-                "rpc.problemsText": {
-                    "type": "string",
-                    "default": "- {problemsCount} problems found",
-                    "description": "Custom string of the text displaying the amount of problems in your workspace\n\t- {problemsCount} will be replaced by the respective amount of problems."
-                },
-                "rpc.ignoreWorkspaces": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+        "configuration": [
+            {
+                "title": "VSCord",
+                "type": "object",
+                "properties": {
+                    "vscord.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Enable or disable the extension"
                     },
-                    "default": [],
-                    "description": "List of patterns to match workspace names that should prevent their display."
-                },
-                "rpc.ignoreWorkspacesText": {
-                    "type": [
-                        "string",
-                        "object"
-                    ],
-                    "description": "Custom text string that is displayed if a workspace folder has been detected in the ignore list."
-                },
-                "rpc.checkIdle": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Whether or not to check if you are still active or idle and react accordingly."
-                },
-                "rpc.disconnectOnIdle": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Whether to stop RPC completely while idling."
-                },
-                "rpc.resetElapsedTimeAfterIdle": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Whether to reset activity's elapsed time after idling."
-                },
-                "rpc.idleTimeout": {
-                    "type": "number",
-                    "default": 300,
-                    "description": "How long the window should be unfocused (in seconds) to either disable rich presence or display you as idle."
-                },
-                "rpc.idleText": {
-                    "type": "string",
-                    "default": "zZz",
-                    "description": "Custom string of the text displaying if you're idle when hovering over the small icon."
-                },
-                "rpc.buttonEnabled": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Enable a button on your presence with a link to the Git repository you're working in."
-                },
-                "rpc.buttonActiveLabel": {
-                    "type": "string",
-                    "default": "View Repository",
-                    "description": "The label to show on the button when the file you are currently editing is located in a Git repository."
-                },
-                "rpc.buttonActiveUrl": {
-                    "type": "string",
-                    "default": "",
-                    "description": "The URL to open when the button is clicked and the file you are currently editing is located in a Git repository."
-                },
-                "rpc.buttonInactiveLabel": {
-                    "type": "string",
-                    "default": null,
-                    "description": "The label to show on the button when you are not editing a file in a Git repository. Set to null to disable."
-                },
-                "rpc.buttonInactiveUrl": {
-                    "type": "string",
-                    "default": null,
-                    "description": "The URL of the button when you are not editing a file in a Git repository. Set to null to disable."
-                },
-                "rpc.ignoreRepositories": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                    "vscord.app.id": {
+                        "type": "string",
+                        "default": "782685898163617802",
+                        "description": "Application id that will be used when `appName` is \"custom\" or when `appName` is invalid"
                     },
-                    "default": [],
-                    "description": "List of patterns to match repository names that should prevent its display in the button."
-                },
-                "rpc.ignoreOrganizations": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                    "vscord.app.name": {
+                        "type": "string",
+                        "enum": [
+                            "Code",
+                            "Visual Studio Code",
+                            "VSCodium",
+                            "Custom"
+                        ],
+                        "default": "Code",
+                        "description": "Choose the name you want the application to use.\nChoosing \"Custom\" will make it so it use the \"rpc.id\" as application id"
+                    }
+                }
+            },
+            {
+                "title": "Status",
+                "type": "object",
+                "properties": {
+                    "vscord.status.showElapsedTime": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Show elapsed time in the details section of the rich presence."
                     },
-                    "default": [],
-                    "description": "List of patterns to match organizations names that should prevent its display in the button."
-                },
-                "rpc.ignoreGitHosts": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+                    "vscord.status.resetElapsedTimePerFile": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "If true, the elapsed time will be reset when you switch files."
                     },
-                    "default": [],
-                    "description": "List of patterns to match git hostnames that should prevent its display in the button"
-                },
-                "rpc.suppressNotifications": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Controls whether error messages should be shown to the user."
-                },
-                "rpc.prioritizeLanguagesOverExtensions": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Controls whether languages should be prioritized over extensions when matching a file name."
-                },
-                "rpc.fileSizeHumanReadable": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Controls whether the file size should be in human readable format or displayed as only bytes."
-                },
-                "rpc.fileSizeSpec": {
-                    "type": "string",
-                    "enum": [
-                        "si",
-                        "iec",
-                        "jedec"
-                    ],
-                    "default": "iec",
-                    "description": "Controls which spec the file size should display in, default is 'iec'"
-                },
-                "rpc.fileSizeFixed": {
-                    "type": "number",
-                    "default": 2,
-                    "description": "Number of positions after the decimal to show for a file's file size, default is 2"
-                },
-                "rpc.fileSizeSpacer": {
-                    "type": "string",
-                    "default": " ",
-                    "description": "String between the number and the unit in a file's file size, default is a space"
+                    "vscord.status.problems.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Show the number of problems in the status."
+                    },
+                    "vscord.status.problems.text": {
+                        "type": "string",
+                        "default": "- {problems_count} problems found",
+                        "description": "The text to show in the status when there are problems. {problems_count} will be replaced with the number of problems."
+                    },
+                    "vscord.status.idle.check": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Check if the user is idle or not."
+                    },
+                    "vscord.status.idle.disconnectOnIdle": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Disconnects from Discord when the user is idle."
+                    },
+                    "vscord.status.idle.resetElapsedTime": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Resets the elapsed time when the user becomes idle."
+                    },
+                    "vscord.status.idle.timeout": {
+                        "type": "number",
+                        "default": 300,
+                        "description": "Time in seconds before the user is considered idle."
+                    }
+                }
+            },
+            {
+                "title": "Ignore",
+                "type": "object",
+                "properties": {
+                    "vscord.ignore.workspaces": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "List of workspace names to ignore."
+                    },
+                    "vscord.ignore.workspacesText": {
+                        "type": [
+                            "string",
+                            "object"
+                        ],
+                        "description": "The text to show when the workspace is ignored."
+                    },
+                    "vscord.ignore.repositories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Ignore repositories by name"
+                    },
+                    "vscord.ignore.organizations": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Ignore all repositories from the specified organizations."
+                    },
+                    "vscord.ignore.gitHosts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Ignore all repositories from the specified git hosts."
+                    }
+                }
+            },
+            {
+                "title": "Details",
+                "type": "object",
+                "properties": {
+                    "vscord.status.details.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Controls if the Discord Rich Presence should show across all workspaces."
+                    },
+                    "vscord.status.details.idle.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Controls if the Discord Rich Presence should show when the user is idle."
+                    },
+                    "vscord.status.details.text.idle": {
+                        "type": "string",
+                        "default": "Idling",
+                        "description": "Custom string for the details section of the rich presence when editing\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.details.text.editing": {
+                        "type": "string",
+                        "default": "In {workspace} {problems}",
+                        "description": "Custom string for the details section of the rich presence when editing\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.details.text.debugging": {
+                        "type": "string",
+                        "default": "Debugging {file_name}{file_extenstion}",
+                        "description": "Custom string for the details section of the rich presence when editing\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.details.text.viewing": {
+                        "type": "string",
+                        "default": "In {workspace} {problems}",
+                        "description": "Custom string for the details section of the rich presence when editing\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    }
+                }
+            },
+            {
+                "title": "State",
+                "type": "object",
+                "properties": {
+                    "vscord.status.state.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Controls if the state should be shown."
+                    },
+                    "vscord.status.state.idle.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Controls if the Discord Rich Presence should show when the user is idle."
+                    },
+                    "vscord.status.state.text.idle": {
+                        "type": "string",
+                        "default": "",
+                        "description": "Custom string for the state section of the rich presence when idle\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.state.text.editing": {
+                        "type": "string",
+                        "default": "Working on {file_name}{file_extenstion}:{current_line}:{current_column}",
+                        "description": "Custom string for the state section of the rich presence when editing\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.state.text.debugging": {
+                        "type": "string",
+                        "default": "Debugging: {workspace}",
+                        "description": "Custom string for the state section of the rich presence when debugging\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.state.text.viewing": {
+                        "type": "string",
+                        "default": "Viewing {file_name}{file_extenstion}",
+                        "description": "Custom string for the state section of the rich presence when viewing\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.state.text.noWorkspaceFound": {
+                        "type": "string",
+                        "default": "No workspace.",
+                        "description": "Custom string for the state section of the rich presence when no workspace is found"
+                    }
+                }
+            },
+            {
+                "title": "Image",
+                "type": "object",
+                "properties": {
+                    "vscord.status.image.large.idle.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
+                        "description": "The key of the large image when the user is idle."
+                    },
+                    "vscord.status.image.large.idle.text": {
+                        "type": "string",
+                        "default": "Idling",
+                        "description": "Custom string for the large image text when idling"
+                    },
+                    "vscord.status.image.large.viewing.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png",
+                        "description": "Custom string for the large image key of the rich presence when viewing\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.large.viewing.text": {
+                        "type": "string",
+                        "default": "Viewing a {LANG} file",
+                        "description": "Custom string for the large image text when viewing a file\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.large.editing.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png",
+                        "description": "Custom string for the large image key of the rich presence when editing\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.large.editing.text": {
+                        "type": "string",
+                        "default": "Editing a {LANG} file",
+                        "description": "Custom string for the large image text of the rich presence when editing\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.large.debugging.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png",
+                        "description": "The key of the large image when debugging"
+                    },
+                    "vscord.status.image.large.debugging.text": {
+                        "type": "string",
+                        "default": "Debugging a {LANG} file",
+                        "description": "Custom string for the large image text of the rich presence when debugging\n\t- {app_name} will be replaced with current editor name.\n\t- {app_id} will be replaced with editor name that's suitable for using inside url.\n\t- {file_name} will be replaced with the name of the file\n\t- {file_extenstion} will be replaced with the extension of the file\n\t- {file_size} will be replaced with the size of the file\n\t- {folder_and_file} will be replaced with the folder and file name\n\t- {full_directory_name} will be replaced with the full directory name\n\t- {workspace} will be replaced with the name of the workspace\n\t- {workspace_folder} will be replaced with the name of the workspace folder\n\t- {workspace_and_folder} will be replaced with the name of the workspace and folder\n\t- {LANG} or {Lang} or {LANG} will replace the format of the lang string\n\t- {problems} will be replaced with the problems text defined in settings\n\t- {problems_count} will be replaced with the number of problems\n\t- {line_count} will be replaced with the number of lines\n\t- {current_line} will be replaced with the current line\n\t- {current_column} will be replaced with the current column\n\t- {git_url} will be replaced with the link to current git repository.\n\t- {git_owner} will be replaced with current git repository owner.\n\t- {git_provider} will be replaced with the domain (including .com) to the provider of current git repository.\n\t- {git_repo} will be replaced with the repository name for current repository.\n\t- {git_branch} will be replaced with current git branch.\n\t- {empty} will be replaced with an empty space."
+                    },
+                    "vscord.status.image.small.idle.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
+                        "description": "The key of the small image when idling."
+                    },
+                    "vscord.status.image.small.idle.text": {
+                        "type": "string",
+                        "default": "zZz",
+                        "description": "Custom string for the small image text when idling"
+                    },
+                    "vscord.status.image.small.viewing.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png"
+                    },
+                    "vscord.status.image.small.viewing.text": {
+                        "type": "string",
+                        "default": "{app_name}",
+                        "description": "Custom string for the small image text when viewing\n\t- {app_name} will be replaced with the name of the app\n\t- {app_id} will be replaced with the id of the app"
+                    },
+                    "vscord.status.image.small.editing.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png",
+                        "description": "The url to the image when editing, {app_id} will be replaced with the file extension of the file."
+                    },
+                    "vscord.status.image.small.editing.text": {
+                        "type": "string",
+                        "default": "{app_name}",
+                        "description": "Custom string for the small image text of the rich presence when editing"
+                    },
+                    "vscord.status.image.small.debugging.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png",
+                        "description": "The url to the image when debugging. {app_id} will be replaced with the file extension of the file."
+                    },
+                    "vscord.status.image.small.debugging.text": {
+                        "type": "string",
+                        "default": "{app_name}",
+                        "description": "Custom string for the small image text of the rich presence when debugging"
+                    }
+                }
+            },
+            {
+                "title": "Button",
+                "type": "object",
+                "properties": {
+                    "vscord.status.button.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Enable or disable the status button."
+                    },
+                    "vscord.status.button.active.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "If disabled, the button will be hidden when the user is active."
+                    },
+                    "vscord.status.button.active.label": {
+                        "type": "string",
+                        "default": "View Repository",
+                        "description": "The label of the button when the user is viewing a file from a repository."
+                    },
+                    "vscord.status.button.active.url": {
+                        "type": "string",
+                        "default": "{git_url}",
+                        "description": "The active url for the button"
+                    },
+                    "vscord.status.button.idle.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Enable button when user is idle."
+                    },
+                    "vscord.status.button.idle.label": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The label of the button when the user is idle."
+                    },
+                    "vscord.status.button.idle.url": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The button Idle url when the user is idle."
+                    },
+                    "vscord.status.button.inactive.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Show a button when the user is not viewing a file."
+                    },
+                    "vscord.status.button.inactive.label": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The label of the button when the user is inactive."
+                    },
+                    "vscord.status.button.inactive.url": {
+                        "type": "string",
+                        "default": "",
+                        "description": "Url for when inactive"
+                    }
+                }
+            },
+            {
+                "title": "Misc",
+                "type": "object",
+                "properties": {
+                    "vscord.file.size.round": {
+                        "type": "number",
+                        "default": 2,
+                        "description": "The number of decimal places to round the file size to."
+                    },
+                    "vscord.file.size.spacer": {
+                        "type": "string",
+                        "default": " ",
+                        "description": "Spacer between the number and the unit."
+                    },
+                    "vscord.behaviour.additionalFileMapping": {
+                        "type": "object"
+                    },
+                    "vscord.behaviour.suppressNotifications": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Suppresses all notifications from the extension."
+                    },
+                    "vscord.behavoiur.prioritizeLanguagesOverExtensions": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Prioritize languages over extensions when determining the file type."
+                    },
+                    "vscord.file.size.humanReadable": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "If true, the file size will be displayed in a human readable format (e.g. 1.2 MB). If false, the file size will be displayed in bytes."
+                    },
+                    "vscord.file.size.standard": {
+                        "type": "string",
+                        "enum": [
+                            "iec",
+                            "jedec"
+                        ],
+                        "default": "iec",
+                        "description": "The unit standard to use when displaying the file size."
+                    }
+                }
+            },
+            {
+                "title": "Advanced",
+                "type": "object",
+                "properties": {
+                    "vscord.behaviour.debug": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Enable debug mode"
+                    }
+                }
+            },
+            {
+                "title": "@Deprecated",
+                "type": "object",
+                "properties": {
+                    "rpc.id": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.app.id#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.app.id instead."
+                    },
+                    "rpc.appName": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.app.name#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.app.name instead."
+                    },
+                    "rpc.enabled": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.enabled instead."
+                    },
+                    "rpc.detailsEditing": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.editing#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.editing instead."
+                    },
+                    "rpc.detailsIdling": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.idle#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.idle instead."
+                    },
+                    "rpc.detailsDebugging": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.debugging#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.debugging instead."
+                    },
+                    "rpc.detailsViewing": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.viewing#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.viewing instead."
+                    },
+                    "rpc.lowerDetailsEditing": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.editing#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.editing instead."
+                    },
+                    "rpc.lowerDetailsIdling": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.idle#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.idle instead."
+                    },
+                    "rpc.lowerDetailsDebugging": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.debugging#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.debugging instead."
+                    },
+                    "rpc.lowerDetailsViewing": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.viewing#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.viewing instead."
+                    },
+                    "rpc.lowerDetailsNoWorkspaceFound": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.state.text.noWorkspaceFound#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.state.text.noWorkspaceFound instead."
+                    },
+                    "rpc.baseImageLink": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image instead."
+                    },
+                    "rpc.largeImage": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image instead."
+                    },
+                    "rpc.largeImageIdling": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image.small.idle.key#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image.small.idle.key instead."
+                    },
+                    "rpc.smallImage": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image.small#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image.small instead."
+                    },
+                    "rpc.removeElapsedTime": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.showElapsedTime#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.showElapsedTime instead."
+                    },
+                    "rpc.removeDetails": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.enabled instead."
+                    },
+                    "rpc.removeLowerDetails": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details instead."
+                    },
+                    "rpc.removeLowerDetailsIdling": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.details.text.idle#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.details.text.idle instead."
+                    },
+                    "rpc.showProblems": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.problems.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.problems.enabled instead."
+                    },
+                    "rpc.problemsText": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.problems.text#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.problems.text instead."
+                    },
+                    "rpc.ignoreWorkspaces": {
+                        "type": "array",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.workspaces#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.workspaces instead."
+                    },
+                    "rpc.ignoreWorkspacesText": {
+                        "type": [
+                            "string",
+                            "object"
+                        ],
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.workspacesText#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.workspacesText instead."
+                    },
+                    "rpc.checkIdle": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.idle.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.idle.enabled instead."
+                    },
+                    "rpc.disconnectOnIdle": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.idle.disconnectOnIdle#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.idle.disconnectOnIdle instead."
+                    },
+                    "rpc.resetElapsedTimeAfterIdle": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.idle.resetElapsedTime#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.idle.resetElapsedTime instead."
+                    },
+                    "rpc.idleTimeout": {
+                        "type": "number",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.idle.timeout#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.idle.timeout instead."
+                    },
+                    "rpc.idleText": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.image.small.idle.text#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.image.small.idle.text instead."
+                    },
+                    "rpc.buttonEnabled": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.enabled instead."
+                    },
+                    "rpc.buttonActiveLabel": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.active.label#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.active.label instead."
+                    },
+                    "rpc.buttonActiveUrl": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.active.url#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.active.url instead."
+                    },
+                    "rpc.buttonInactiveLabel": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.inactive.label#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.inactive.label instead."
+                    },
+                    "rpc.buttonInactiveUrl": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.inactive.url#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.button.inactive.url instead."
+                    },
+                    "rpc.ignoreRepositories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.repositories#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.repositories instead."
+                    },
+                    "rpc.ignoreOrganizations": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.organizations#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.organizations instead."
+                    },
+                    "rpc.ignoreGitHosts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.ignore.gitHosts#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.ignore.gitHosts instead."
+                    },
+                    "rpc.suppressNotifications": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.behaviour.suppressNotifications#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.behaviour.suppressNotifications instead."
+                    },
+                    "rpc.prioritizeLanguagesOverExtensions": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.behaviour.prioritizeLanguagesOverExtensions#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.behaviour.prioritizeLanguagesOverExtensions instead."
+                    },
+                    "rpc.fileSizeHumanReadable": {
+                        "type": "boolean",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.behaviour.size.humanReadable#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.behaviour.size.humanReadable instead."
+                    },
+                    "rpc.fileSizeSpec": {
+                        "type": "string",
+                        "enum": [
+                            "si",
+                            "iec",
+                            "jedec"
+                        ],
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.file.size.standard#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.file.size.standard instead."
+                    },
+                    "rpc.fileSizeFixed": {
+                        "type": "number",
+                        "markdownDeprecationMessage": "**Deprecated**",
+                        "deprecationMessage": "Deprecated"
+                    },
+                    "rpc.fileSizeSpacer": {
+                        "type": "string",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.file.size.spacer#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.file.size.spacer instead."
+                    }
                 }
             }
-        }
+        ]
     },
     "packageManager": "yarn@3.2.4"
 }

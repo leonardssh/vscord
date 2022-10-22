@@ -1,274 +1,304 @@
-import { debug, DiagnosticSeverity, env, languages, Selection, TextDocument, window, workspace } from "vscode";
-import { getFileIcon, resolveFileIcon, toLower, toTitle, toUpper } from "./helpers/resolveFileIcon";
+import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
+import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { type SetActivity } from "@xhayper/discord-rpc";
+import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
 import { isObject } from "./helpers/isObject";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";
-import {
-    CONFIG_KEYS,
-    DEBUGGING_IMAGE_KEY,
-    EMPTY,
-    FAKE_EMPTY,
-    IDLE_VSCODE_IMAGE_KEY,
-    IDLE_VSCODE_INSIDERS_IMAGE_KEY,
-    REPLACE_KEYS,
-    VSCODE_IMAGE_KEY,
-    VSCODE_INSIDERS_IMAGE_KEY,
-    VSCODIUM_IMAGE_KEY,
-    VSCODIUM_INSIDERS_IMAGE_KEY
-} from "./constants";
 
-let totalProblems = 0;
+// TODO: move this to data class
+export let totalProblems = 0;
 
-export function onDiagnosticsChange() {
+// TODO: make this configurable
+const COUNTED_SEVERITIES = [DiagnosticSeverity.Error, DiagnosticSeverity.Warning];
+
+export const onDiagnosticsChange = () => {
     const diagnostics = languages.getDiagnostics();
 
     let counted = 0;
 
-    diagnostics.forEach((diagnostic) => {
-        if (diagnostic[1]) {
-            diagnostic[1].forEach((diagnostic) => {
-                if (
-                    diagnostic.severity === DiagnosticSeverity.Warning ||
-                    diagnostic.severity === DiagnosticSeverity.Error
-                )
-                    counted++;
-            });
-        }
-    });
+    for (const diagnostic of diagnostics.values())
+        for (const diagnosticItem of diagnostic[1])
+            if (COUNTED_SEVERITIES.includes(diagnosticItem.severity)) totalProblems++;
 
     totalProblems = counted;
-}
+};
 
-export function activity(previous: SetActivity = {}, isViewing = false): SetActivity {
+export const activity = async (
+    previous: SetActivity = {},
+    isViewing = false,
+    isIdling = false
+): Promise<SetActivity> => {
     const config = getConfig();
+
+    const presence = previous;
+
+    presence.startTimestamp = config.get(CONFIG_KEYS.Status.ShowElapsedTime)
+        ? config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
+            ? Date.now()
+            : previous.startTimestamp ?? Date.now()
+        : undefined;
+
+    const detailsEnabled = config.get(CONFIG_KEYS.Status.Details.Enabled);
+    const detailsIdleEnabled = config.get(CONFIG_KEYS.Status.Details.Idle.Enabled);
+    const stateEnabled = config.get(CONFIG_KEYS.Status.State.Enabled);
+    const stateIdleEnabled = config.get(CONFIG_KEYS.Status.State.Idle.Enabled);
+
+    const gitRepo = dataClass.gitRemoteUrl?.toString("https").replace(/\.git$/, "");
+    const gitOrg = dataClass.gitRemoteUrl?.organization ?? dataClass.gitRemoteUrl?.owner;
+    const gitHost = dataClass.gitRemoteUrl?.source;
+
+    const isRepositoryExcluded = !!gitRepo && isExcluded(config.get(CONFIG_KEYS.Ignore.Repositories), gitRepo);
+    const isOrganizationExcluded = !!gitOrg && isExcluded(config.get(CONFIG_KEYS.Ignore.Organizations), gitOrg);
+    const isGitHostExcluded = !!gitHost && isExcluded(config.get(CONFIG_KEYS.Ignore.GitHosts), gitHost);
+    const isGitExcluded = isRepositoryExcluded || isOrganizationExcluded || isGitHostExcluded;
+
+    const isWorkspaceExcluded =
+        dataClass.workspaceFolder != null &&
+        (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceFolder.uri.fsPath) ||
+            isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceName));
+
+    const isDebugging = !!debug.activeDebugSession;
+    isViewing = !isDebugging && isViewing;
+
+    const PROBLEMS = await replaceFileInfo(
+        replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)), isGitExcluded),
+        isWorkspaceExcluded,
+        dataClass.editor?.document,
+        dataClass.editor?.selection
+    );
+
+    const replaceAllText = async (text: string) =>
+        (
+            await replaceFileInfo(
+                replaceGitInfo(replaceAppInfo(text), isGitExcluded),
+                isWorkspaceExcluded,
+                dataClass.editor?.document,
+                dataClass.editor?.selection
+            )
+        ).replaceAll("{problems}", PROBLEMS);
+
+    let workspaceExcludedText = "No workspace ignore text provided.";
+    const ignoreWorkspacesText = config.get(CONFIG_KEYS.Ignore.WorkspacesText);
+
+    if (isObject(ignoreWorkspacesText)) {
+        workspaceExcludedText =
+            (dataClass.workspaceFolder
+                ? await replaceAllText(ignoreWorkspacesText[dataClass.workspaceFolder.name])
+                : undefined) ?? workspaceExcludedText;
+    } else {
+        const text = await replaceAllText(ignoreWorkspacesText);
+        workspaceExcludedText = text !== "" ? text : undefined ?? workspaceExcludedText;
+    }
+
+    const detailsText = detailsEnabled
+        ? isWorkspaceExcluded
+            ? workspaceExcludedText
+            : isIdling || !dataClass.editor
+            ? detailsIdleEnabled
+                ? await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle))
+                : undefined
+            : await replaceAllText(
+                  isDebugging
+                      ? config.get(CONFIG_KEYS.Status.Details.Text.Debugging)
+                      : isViewing
+                      ? config.get(CONFIG_KEYS.Status.Details.Text.Viewing)
+                      : config.get(CONFIG_KEYS.Status.Details.Text.Editing)
+              )
+        : undefined;
+
+    const stateText =
+        stateEnabled && !isWorkspaceExcluded
+            ? isIdling || !dataClass.editor
+                ? stateIdleEnabled
+                    ? await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle))
+                    : undefined
+                : await replaceAllText(
+                      isDebugging
+                          ? config.get(CONFIG_KEYS.Status.State.Text.Debugging)
+                          : isViewing
+                          ? config.get(CONFIG_KEYS.Status.State.Text.Viewing)
+                          : config.get(CONFIG_KEYS.Status.State.Text.Editing)
+                  )
+            : undefined;
+
+    const largeImageKey = await replaceAllText(
+        isIdling || !dataClass.editor
+            ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key)
+            : isDebugging
+            ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key)
+            : isViewing
+            ? config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key)
+            : config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key)
+    );
+
+    const largeImageText = await replaceAllText(
+        isIdling || !dataClass.editor
+            ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text)
+            : isDebugging
+            ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text)
+            : isViewing
+            ? config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Text)
+            : config.get(CONFIG_KEYS.Status.Image.Large.Editing.Text)
+    );
+
+    const smallImageKey = await replaceAllText(
+        isIdling || !dataClass.editor
+            ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key)
+            : isDebugging
+            ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)
+            : isViewing
+            ? config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key)
+            : config.get(CONFIG_KEYS.Status.Image.Small.Editing.Key)
+    );
+
+    const smallImageText = await replaceAllText(
+        isIdling || !dataClass.editor
+            ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text)
+            : isDebugging
+            ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text)
+            : isViewing
+            ? config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text)
+            : config.get(CONFIG_KEYS.Status.Image.Small.Editing.Text)
+    );
+
+    presence.details = detailsEnabled ? detailsText : undefined;
+    presence.state = stateEnabled ? stateText : undefined;
+    presence.largeImageKey = largeImageKey;
+    presence.largeImageText = largeImageText;
+    presence.smallImageKey = smallImageKey;
+    presence.smallImageText = smallImageText;
+
+    if (isIdling || !dataClass.editor) {
+        if (config.get(CONFIG_KEYS.Status.Button.Idle.Enabled))
+            presence.buttons = [
+                {
+                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Label)),
+                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Url))
+                }
+            ];
+    } else if (!isGitExcluded && dataClass.gitRemoteUrl) {
+        if (config.get(CONFIG_KEYS.Status.Button.Active.Enabled))
+            presence.buttons = [
+                {
+                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Label)),
+                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Url))
+                }
+            ];
+    } else if (isGitExcluded) {
+        if (config.get(CONFIG_KEYS.Status.Button.Inactive.Enabled))
+            presence.buttons = [
+                {
+                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Label)),
+                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Url))
+                }
+            ];
+    }
+
+    // Clean up
+    presence.details === "" && delete presence.details;
+    presence.state === "" && delete presence.state;
+    presence.buttons?.length === 0 && delete presence.buttons;
+    presence.largeImageKey === "" && delete presence.largeImageKey;
+    presence.largeImageText === "" && delete presence.largeImageText;
+    presence.smallImageKey === "" && delete presence.smallImageKey;
+    presence.smallImageText === "" && delete presence.smallImageText;
+
+    return presence;
+};
+
+export const replaceAppInfo = (text: string): string => {
+    text = text.slice();
     const { appName } = env;
 
     const isInsider = appName.includes("Insiders");
     const isCodium = appName.startsWith("VSCodium") || appName.startsWith("codium");
 
-    const defaultSmallImageKey = debug.activeDebugSession
-        ? getFileIcon(DEBUGGING_IMAGE_KEY)
-        : isInsider
-        ? getFileIcon(isCodium ? VSCODIUM_INSIDERS_IMAGE_KEY : VSCODE_INSIDERS_IMAGE_KEY)
-        : getFileIcon(isCodium ? VSCODIUM_IMAGE_KEY : VSCODE_IMAGE_KEY);
+    const replaceMap = new Map([
+        ["{app_name}", appName],
+        [
+            "{app_id}",
+            isInsider ? (isCodium ? "vscodium-insiders" : "vscode-insiders") : isCodium ? "vscodium" : "vscode"
+        ]
+    ]);
 
-    const defaultSmallImageText = config[CONFIG_KEYS.SmallImage].replace(REPLACE_KEYS.AppName, appName);
+    for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
 
-    const defaultLargeImageText = config[CONFIG_KEYS.LargeImageIdling];
+    return text;
+};
 
-    const removeDetails = config[CONFIG_KEYS.RemoveDetails];
-    const removeLowerDetails = config[CONFIG_KEYS.RemoveLowerDetails];
-    const removeLowerDetailsIdling = config[CONFIG_KEYS.RemoveLowerDetailsIdling];
+export const replaceGitInfo = (text: string, excluded: boolean = false): string => {
+    text = text.slice();
 
-    let presence: SetActivity = {
-        details: removeDetails
-            ? undefined
-            : details(
-                  CONFIG_KEYS.DetailsIdling,
-                  CONFIG_KEYS.DetailsViewing,
-                  CONFIG_KEYS.DetailsEditing,
-                  CONFIG_KEYS.DetailsDebugging,
-                  isViewing
-              ),
-        state:
-            removeLowerDetails || removeLowerDetailsIdling
-                ? undefined
-                : details(
-                      CONFIG_KEYS.LowerDetailsIdling,
-                      CONFIG_KEYS.LowerDetailsViewing,
-                      CONFIG_KEYS.LowerDetailsEditing,
-                      CONFIG_KEYS.LowerDetailsDebugging,
-                      isViewing
-                  ),
-        startTimestamp: config[CONFIG_KEYS.RemoveElapsedTime] ? undefined : previous.startTimestamp ?? new Date(),
-        largeImageKey: isInsider ? getFileIcon(IDLE_VSCODE_IMAGE_KEY) : getFileIcon(IDLE_VSCODE_INSIDERS_IMAGE_KEY),
-        largeImageText: defaultLargeImageText,
-        smallImageKey: defaultSmallImageKey,
-        smallImageText: defaultSmallImageText
-    };
+    const replaceMap = new Map([
+        ["{git_owner}", (!excluded ? dataClass.gitRemoteUrl?.owner : undefined) ?? FAKE_EMPTY],
+        ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
+        [
+            "{git_repo}",
+            (!excluded ? (dataClass.gitRemoteUrl ? dataClass.gitRemoteUrl.name : dataClass.gitRepoName) : undefined) ??
+                FAKE_EMPTY
+        ],
+        ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
+        ["{git_url}", (!excluded ? dataClass.gitRemoteUrl?.toString("https") : undefined) ?? FAKE_EMPTY]
+    ]);
 
-    if (window.activeTextEditor) {
-        const largeImageKey = resolveFileIcon(window.activeTextEditor.document);
-        const largeImageText = config[CONFIG_KEYS.LargeImage]
-            .replace(REPLACE_KEYS.LanguageLowerCase, toLower(largeImageKey))
-            .replace(REPLACE_KEYS.LanguageTitleCase, toTitle(largeImageKey))
-            .replace(REPLACE_KEYS.LanguageUpperCase, toUpper(largeImageKey))
-            .padEnd(2, FAKE_EMPTY);
+    for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
 
-        let isWorkspaceExcluded = false;
-        let workspaceExcludedText = "No workspace ignore text provided.";
+    return text;
+};
 
-        if (dataClass.workspaceFolder && "uri" in dataClass.workspaceFolder) {
-            isWorkspaceExcluded = isExcluded(
-                config[CONFIG_KEYS.IgnoreWorkspaces],
-                dataClass.workspaceFolder.uri.fsPath
-            );
-        }
-
-        if (isWorkspaceExcluded && dataClass.workspaceFolder && dataClass.workspaceFolder.name) {
-            const ignoreWorkspacesText = config[CONFIG_KEYS.IgnoreWorkspacesText];
-
-            workspaceExcludedText = isObject(ignoreWorkspacesText)
-                ? // @ts-ignore Element implicitly has an 'any' type because index expression is not of type 'number'.
-                  ignoreWorkspacesText[dataClass.workspaceFolder.name]
-                : ignoreWorkspacesText
-                ? ignoreWorkspacesText
-                : "No workspace ignore text provided.";
-        }
-
-        presence = {
-            ...presence,
-            details: removeDetails
-                ? undefined
-                : isWorkspaceExcluded
-                ? workspaceExcludedText
-                : details(
-                      CONFIG_KEYS.DetailsIdling,
-                      CONFIG_KEYS.DetailsViewing,
-                      CONFIG_KEYS.DetailsEditing,
-                      CONFIG_KEYS.DetailsDebugging,
-                      isViewing
-                  ),
-            state: removeLowerDetails
-                ? undefined
-                : isWorkspaceExcluded
-                ? undefined
-                : details(
-                      CONFIG_KEYS.LowerDetailsIdling,
-                      CONFIG_KEYS.LowerDetailsViewing,
-                      CONFIG_KEYS.LowerDetailsEditing,
-                      CONFIG_KEYS.LowerDetailsDebugging,
-                      isViewing
-                  ),
-            largeImageKey: getFileIcon(largeImageKey),
-            largeImageText
-        };
-
-        if (config[CONFIG_KEYS.ButtonEnabled] && dataClass.gitRemoteUrl) {
-            const gitRepo = dataClass.gitRemoteUrl.toString("https").replace(/\.git$/, "");
-            const gitOrg = dataClass.gitRemoteUrl.organization ?? dataClass.gitRemoteUrl.owner;
-            const gitHost = dataClass.gitRemoteUrl.source;
-
-            const isRepositoryExcluded = isExcluded(config[CONFIG_KEYS.IgnoreRepositories], gitRepo);
-
-            const isOrganizationExcluded = isExcluded(config[CONFIG_KEYS.IgnoreOrganizations], gitOrg);
-
-            const isGitHostExcluded = isExcluded(config[CONFIG_KEYS.IgnoreGitHosts], gitHost);
-
-            const isNotExcluded =
-                !isRepositoryExcluded && !isWorkspaceExcluded && !isOrganizationExcluded && !isGitHostExcluded;
-
-            if (gitRepo && config[CONFIG_KEYS.ButtonActiveLabel] && isNotExcluded)
-                presence = {
-                    ...presence,
-                    buttons: [
-                        {
-                            label: config[CONFIG_KEYS.ButtonActiveLabel],
-                            url:
-                                config[CONFIG_KEYS.ButtonActiveUrl] != ""
-                                    ? config[CONFIG_KEYS.ButtonActiveUrl]
-                                    : gitRepo
-                        }
-                    ]
-                };
-        }
-    } else if (
-        !!config[CONFIG_KEYS.ButtonEnabled] &&
-        !!config[CONFIG_KEYS.ButtonInactiveLabel] &&
-        !!config[CONFIG_KEYS.ButtonInactiveUrl]
-    )
-        presence.buttons = [
-            {
-                label: config[CONFIG_KEYS.ButtonInactiveLabel],
-                url: config[CONFIG_KEYS.ButtonInactiveUrl]
-            }
-        ];
-
-    return presence;
-}
-
-function details(
-    idling: CONFIG_KEYS,
-    viewing: CONFIG_KEYS,
-    editing: CONFIG_KEYS,
-    debugging: CONFIG_KEYS,
-    isViewing: boolean
-) {
+export const replaceFileInfo = async (
+    text: string,
+    excluded: boolean = false,
+    document?: TextDocument,
+    selection?: Selection
+): Promise<string> => {
     const config = getConfig();
+    text = text.slice();
 
-    let raw = (config[idling] as string).replace(REPLACE_KEYS.Empty, FAKE_EMPTY);
+    const workspaceFolderName = (!excluded ? dataClass.workspaceFolder?.name : undefined) ?? FAKE_EMPTY;
+    const workspaceName = (!excluded ? dataClass.workspaceName : undefined) ?? workspaceFolderName;
+    const workspaceAndFolder = !excluded
+        ? `${workspaceName}${workspaceFolderName === FAKE_EMPTY ? "" : ` - ${workspaceFolderName}`}`
+        : FAKE_EMPTY;
 
-    if (window.activeTextEditor) {
-        const noWorkspaceFound = config[CONFIG_KEYS.LowerDetailsNoWorkspaceFound].replace(
-            REPLACE_KEYS.Empty,
-            FAKE_EMPTY
-        );
+    let fullDirectoryName: string = FAKE_EMPTY;
+    const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
+    const fileSize = await getFileSize(config, dataClass);
 
-        const workspaceFolderName = dataClass.workspaceFolder ? dataClass.workspaceFolder.name : noWorkspaceFound;
-        const workspaceName = dataClass.workspace
-            ? dataClass.workspace.replace(REPLACE_KEYS.VSCodeWorkspace, EMPTY)
-            : workspaceFolderName;
-        const workspaceAndFolder = `${workspaceName}${
-            workspaceFolderName === FAKE_EMPTY ? "" : ` - ${workspaceFolderName}`
-        }`;
+    if (dataClass.editor && dataClass.workspaceName && !excluded) {
+        const name = dataClass.workspaceName;
+        const relativePath = workspace.asRelativePath(dataClass.editor.document.fileName).split(sep);
 
-        const fileIcon = resolveFileIcon(window.activeTextEditor.document);
-        const fileSize = getFileSize(config, dataClass);
-
-        const problems = config[CONFIG_KEYS.ShowProblems]
-            ? config[CONFIG_KEYS.ProblemsText].replace(REPLACE_KEYS.ProblemsCount, totalProblems.toString())
-            : "";
-
-        raw = config[debug.activeDebugSession ? debugging : isViewing ? viewing : editing] as string;
-
-        if (dataClass.workspace) {
-            const name = dataClass.workspace;
-            const relativePath = workspace.asRelativePath(window.activeTextEditor.document.fileName).split(sep);
-
-            relativePath.splice(-1, 1);
-            raw = raw.replace(REPLACE_KEYS.FullDirName, `${name}${sep}${relativePath.join(sep)}`);
-        }
-
-        raw = fileDetails(raw, window.activeTextEditor.document, window.activeTextEditor.selection);
-
-        raw = raw
-            .replace(REPLACE_KEYS.FileName, dataClass.fileName ?? FAKE_EMPTY)
-            .replace(REPLACE_KEYS.FileExtension, dataClass.fileExtension ?? FAKE_EMPTY)
-            .replace(REPLACE_KEYS.FileSize, fileSize ?? FAKE_EMPTY)
-            .replace(REPLACE_KEYS.DirName, dataClass.dirName ?? FAKE_EMPTY)
-            .replace(REPLACE_KEYS.Workspace, workspaceName)
-            .replace(REPLACE_KEYS.WorkspaceFolder, workspaceFolderName)
-            .replace(REPLACE_KEYS.WorkspaceAndFolder, workspaceAndFolder)
-            .replace(REPLACE_KEYS.LanguageLowerCase, toLower(fileIcon))
-            .replace(REPLACE_KEYS.LanguageTitleCase, toTitle(fileIcon))
-            .replace(REPLACE_KEYS.LanguageUpperCase, toUpper(fileIcon))
-            .replace(REPLACE_KEYS.Problems, problems)
-            .replace(
-                REPLACE_KEYS.GitRepo,
-                dataClass.gitRemoteUrl ? dataClass.gitRemoteUrl.name : dataClass.gitRepoName ?? FAKE_EMPTY
-            )
-            .replace(REPLACE_KEYS.GitBranch, dataClass.gitBranchName ?? FAKE_EMPTY)
-            .replace(REPLACE_KEYS.FolderAndFile, dataClass.folderAndFile ?? FAKE_EMPTY);
+        relativePath.splice(-1, 1);
+        fullDirectoryName = `${name}${sep}${relativePath.join(sep)}`;
     }
 
-    return raw;
-}
+    const replaceMap = new Map([
+        ["{file_name}", dataClass.fileName ?? FAKE_EMPTY],
+        ["{file_extenstion}", dataClass.fileExtension ?? FAKE_EMPTY],
+        ["{file_size}", fileSize?.toLocaleString() ?? FAKE_EMPTY],
+        ["{folder_and_file}", dataClass.folderAndFile ?? FAKE_EMPTY],
+        ["{full_directory_name}", fullDirectoryName],
+        ["{workspace}", workspaceName],
+        ["{workspace_folder}", workspaceFolderName],
+        ["{workspace_and_folder}", workspaceAndFolder],
+        ["{lang}", toLower(fileIcon)],
+        ["{Lang}", toTitle(fileIcon)],
+        ["{LANG}", toUpper(fileIcon)],
+        [
+            "{problems_count}",
+            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? totalProblems.toLocaleString() : FAKE_EMPTY
+        ],
+        ["{line_count}", document?.lineCount.toLocaleString() ?? FAKE_EMPTY],
+        ["{current_line}", selection ? (selection.active.line + 1).toLocaleString() : FAKE_EMPTY],
+        ["{current_column}", selection ? (selection.active.character + 1).toLocaleString() : FAKE_EMPTY]
+    ]);
 
-function fileDetails(_raw: string, document: TextDocument, selection: Selection) {
-    let raw = _raw.slice();
+    for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
 
-    if (raw.includes(REPLACE_KEYS.TotalLines))
-        raw = raw.replace(REPLACE_KEYS.TotalLines, document.lineCount.toLocaleString());
-
-    if (raw.includes(REPLACE_KEYS.CurrentLine))
-        raw = raw.replace(REPLACE_KEYS.CurrentLine, (selection.active.line + 1).toLocaleString());
-
-    if (raw.includes(REPLACE_KEYS.CurrentColumn))
-        raw = raw.replace(REPLACE_KEYS.CurrentColumn, (selection.active.character + 1).toLocaleString());
-
-    return raw;
-}
+    return text;
+};
