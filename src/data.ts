@@ -193,7 +193,7 @@ export class Data implements DisposableLike {
         return this.eventEmitter.event(listener);
     }
 
-    private ext(): void {
+    private ext() {
         // Our extenstion
         this._debug = getConfig().get(CONFIG_KEYS.Behaviour.Debug);
 
@@ -201,7 +201,7 @@ export class Data implements DisposableLike {
         const ext = extensions.getExtension<GitExtension>("vscode.git");
         this.debug(`ext(): ${ext ? "Extension" : "undefined"}`);
         if (ext && !this.gitExt) {
-            this.debug(`ext(): Changed to Extension`);
+            this.debug("ext(): Changed to Extension");
             this.gitExt = ext;
             if (this.gitExt.isActive) {
                 this.debug("[data.ts] ext(): Git extension is active");
@@ -219,8 +219,9 @@ export class Data implements DisposableLike {
         }
     }
 
-    private api(e: boolean): void {
+    private api(e: boolean) {
         this.debug(`api(): ${e}`);
+
         if (e) {
             this.gitApi = this.gitExt?.exports.getAPI(API_VERSION);
             this.debug(`api(): ${this.gitApi ? "gitApi" : "undefined"}`);
@@ -229,13 +230,13 @@ export class Data implements DisposableLike {
             this.gitApi = undefined;
             this.dispose(2);
         }
+
         this.updateGit();
     }
 
-    private listeners(): void {
-        if (!this.gitApi) {
-            return;
-        }
+    private listeners() {
+        if (!this.gitApi) return;
+
         this.gitApiListeners.push(
             this.gitApi.onDidOpenRepository((e) => {
                 this.debug(`listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop()}`);
@@ -252,8 +253,8 @@ export class Data implements DisposableLike {
         );
     }
 
-    private updateGit(): void {
-        this.debug(`updateGit()`);
+    private updateGit() {
+        this.debug("updateGit()");
         if (!this.gitApi) {
             this._repo = undefined;
             this._remote = undefined;
@@ -281,11 +282,9 @@ export class Data implements DisposableLike {
                 .shift();
         }
 
-        this.debug(`repo(): no file open`);
+        this.debug("repo(): no file open");
 
-        if (!workspace.workspaceFolders) {
-            return undefined;
-        }
+        if (!workspace.workspaceFolders) return undefined;
 
         return workspace.workspaceFolders
             .map((v) => [v])
