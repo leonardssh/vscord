@@ -22,12 +22,10 @@
     "homepage": "https://github.com/LeonardSSH/vscord#readme",
     "keywords": [
         "discord",
-        "vscode",
         "rich",
         "presence",
         "rich presence",
-        "rpc",
-        "game status"
+        "rpc"
     ],
     "galleryBanner": {
         "color": "#5865F2",
@@ -67,7 +65,7 @@
         "prepare": "husky install"
     },
     "engines": {
-        "vscode": ">=1.72.0"
+        "vscode": "^1.72.0"
     },
     "contributes": {
         "commands": [
