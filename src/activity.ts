@@ -8,6 +8,7 @@ import { isObject } from "./helpers/isObject";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";
+import { logInfo } from "./logger";
 
 // TODO: move this to data class
 export let totalProblems = 0;
@@ -60,6 +61,8 @@ export const activity = async (
         dataClass.workspaceFolder != null &&
         (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceFolder.uri.fsPath) ||
             isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceName));
+
+    isIdling = isIdling || (!isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor));
 
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;

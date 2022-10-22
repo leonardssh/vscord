@@ -21,8 +21,8 @@ export const throttle = (fn: CallableFunction, delay: number, runAfterThrottleEn
 
             return run();
         },
-        reset: () => {
-            lastCalled = new Date().getTime();
+        reset: (setLastCalled: boolean = false) => {
+            if (setLastCalled) lastCalled = new Date().getTime();
             clearTimeout(timeout);
         }
     };

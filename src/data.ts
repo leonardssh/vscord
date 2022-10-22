@@ -130,8 +130,8 @@ export class Data implements DisposableLike {
     }
 
     public get workspaceFolder(): WorkspaceFolder | undefined {
-        const uri = this.editor ? this.editor.document.uri : undefined;
-        let v: WorkspaceFolder | undefined = undefined;
+        const uri = this.editor?.document.uri;
+        let v: WorkspaceFolder | undefined;
         if (uri) v = workspace.getWorkspaceFolder(uri);
 
         this.debug(`workspaceFolder(): ${uri ? "Found URI" : "No URI"}`, v);
