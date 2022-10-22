@@ -1,8 +1,8 @@
 import { ConfigurationTarget, workspace, WorkspaceConfiguration } from "vscode";
-import filesize from "file-size";
+import { filesize } from "filesize";
 
-export type FileSizeConfig = Required<Parameters<typeof filesize>["1"]>;
-export type FileSizeSpec = Parameters<ReturnType<typeof filesize<NonNullable<FileSizeConfig>>>["human"]>["0"];
+export type FileSizeConfig = Parameters<typeof filesize>["1"];
+export type FileSizeStandard = "iec" | "jedec";
 
 export interface ExtenstionConfigTyping {
     "app.id": string;
@@ -61,8 +61,8 @@ export interface ExtenstionConfigTyping {
     "ignore.organizations": string[];
     "ignore.gitHosts": string[];
     "file.size.humanReadable": boolean;
-    "file.size.spec": FileSizeSpec;
-    "file.size.fixed": number;
+    "file.size.standard": FileSizeStandard;
+    "file.size.round": number;
     "file.size.spacer": string;
     "behaviour.additionalFileMapping": Record<string, string>;
     "behaviour.suppressNotifications": boolean;

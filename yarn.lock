@@ -80,13 +80,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/file-size@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@types/file-size@npm:1.0.1"
-  checksum: 4c748f1c81faf820b468ae83e81b54f6f87713246a00e077c5e1eafe673972d536f300ee7aedaa21a20d9802d38ef4235d6e907ac045a6b8c7523b0d55c04b06
-  languageName: node
-  linkType: hard
-
 "@types/git-url-parse@npm:^9.0.1":
   version: 9.0.1
   resolution: "@types/git-url-parse@npm:9.0.1"
@@ -815,10 +808,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-size@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "file-size@npm:1.0.0"
-  checksum: 9de366e448db1c840a6b399619f53895c4225db9b6b4c78ab6e208a60aaafefa165920290bc98d8aea61564695e57d74f2f0ac5c57fc13a20e7ba250ca7fdb51
+"filesize@npm:^10.0.5":
+  version: 10.0.5
+  resolution: "filesize@npm:10.0.5"
+  checksum: b373ebd877566a49566564709c221943741a6e264649ae1f5d6c87c31cd87e94c5e51dae8ee16abbe414fda3fdb6855d8fe4f0ed8d1e33327563d2b59176eaa1
   languageName: node
   linkType: hard
 
@@ -2194,12 +2187,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vscord@workspace:."
   dependencies:
-    "@types/file-size": ^1.0.1
     "@types/git-url-parse": ^9.0.1
     "@types/node": 16.x
     "@types/vscode": ^1.72.0
     "@xhayper/discord-rpc": ^1.0.12
-    file-size: ^1.0.0
+    filesize: ^10.0.5
     git-url-parse: ^13.1.0
     husky: ^8.0.1
     prettier: ^2.7.1

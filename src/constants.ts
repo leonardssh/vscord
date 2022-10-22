@@ -118,8 +118,8 @@ export const CONFIG_KEYS = {
     File: {
         Size: {
             HumanReadable: "file.size.humanReadable" as const,
-            Spec: "file.size.spec" as const,
-            Fixed: "file.size.fixed" as const,
+            Standard: "file.size.standard" as const,
+            Round: "file.size.round" as const,
             Spacer: "file.size.spacer" as const
         } as const
     } as const,

@@ -282,7 +282,7 @@ export const replaceFileInfo = async (
     const replaceMap = new Map([
         ["{file_name}", dataClass.fileName ?? FAKE_EMPTY],
         ["{file_extenstion}", dataClass.fileExtension ?? FAKE_EMPTY],
-        ["{file_size}", fileSize?.toString() ?? FAKE_EMPTY],
+        ["{file_size}", fileSize?.toLocaleString() ?? FAKE_EMPTY],
         ["{folder_and_file}", dataClass.folderAndFile ?? FAKE_EMPTY],
         ["{full_directory_name}", fullDirectoryName],
         ["{workspace}", workspaceName],
@@ -291,10 +291,13 @@ export const replaceFileInfo = async (
         ["{lang}", toLower(fileIcon)],
         ["{Lang}", toTitle(fileIcon)],
         ["{LANG}", toUpper(fileIcon)],
-        ["{problems_count}", config.get(CONFIG_KEYS.Status.Problems.Enabled) ? totalProblems.toString() : FAKE_EMPTY],
-        ["{line_count}", document?.lineCount.toString() ?? FAKE_EMPTY],
-        ["{current_line}", selection ? (selection.active.line + 1).toString() : FAKE_EMPTY],
-        ["{current_column}", selection ? (selection.active.character + 1).toString() : FAKE_EMPTY]
+        [
+            "{problems_count}",
+            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? totalProblems.toLocaleString() : FAKE_EMPTY
+        ],
+        ["{line_count}", document?.lineCount.toLocaleString() ?? FAKE_EMPTY],
+        ["{current_line}", selection ? (selection.active.line + 1).toLocaleString() : FAKE_EMPTY],
+        ["{current_column}", selection ? (selection.active.character + 1).toLocaleString() : FAKE_EMPTY]
     ]);
 
     for (const [key, value] of replaceMap) text = text.replace(key, value);

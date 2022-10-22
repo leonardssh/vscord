@@ -1,28 +1,29 @@
-import { FileSizeConfig, FileSizeSpec, ExtenstionConfiguration } from "../config";
+import { FileSizeConfig, FileSizeStandard, ExtenstionConfiguration } from "../config";
+import { filesize as size } from "filesize";
 import { CONFIG_KEYS } from "../constants";
 import type { Data } from "../data";
-import filesize from "file-size";
 
 export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Data) => {
     if (!dataClass.fileSize) return;
 
-    let fixed = 2;
-    if (config.get(CONFIG_KEYS.File.Size.Fixed) === 0 || config.get(CONFIG_KEYS.File.Size.Fixed))
-        fixed = config.get(CONFIG_KEYS.File.Size.Fixed);
+    let round = 2;
+    if (config.get(CONFIG_KEYS.File.Size.Round) === 0 || config.get(CONFIG_KEYS.File.Size.Round))
+        round = config.get(CONFIG_KEYS.File.Size.Round);
 
     let spacer = " ";
     if (config.get(CONFIG_KEYS.File.Size.Spacer) === "" || config.get(CONFIG_KEYS.File.Size.Spacer))
         spacer = config.get(CONFIG_KEYS.File.Size.Spacer);
 
     let fileSize: string | undefined;
-    const fileSizeSpec: FileSizeSpec = config.get(CONFIG_KEYS.File.Size.Spec) ?? "iec";
+    const fileSizeStandard: FileSizeStandard = config.get(CONFIG_KEYS.File.Size.Standard) ?? "iec";
     const fileSizeConfig: FileSizeConfig = {
-        fixed,
-        spacer
+        round,
+        spacer,
+        standard: fileSizeStandard
     };
 
     fileSize = config.get(CONFIG_KEYS.File.Size.HumanReadable)
-        ? (fileSize = filesize((await dataClass.fileSize) ?? 0, fileSizeConfig).human(fileSizeSpec))
+        ? (fileSize = size((await dataClass.fileSize) ?? 0, fileSizeConfig).toLocaleString())
         : (fileSize = `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer}B`);
 
     return fileSize;
