@@ -241,6 +241,4 @@ export type WorkspaceConfigurationWithType<ConfigTypeMap extends { [key: string]
 
 export type ExtenstionConfiguration = WorkspaceConfigurationWithType<ExtenstionConfigTyping>;
 
-export function getConfig(): ExtenstionConfiguration {
-    return workspace.getConfiguration("vscord");
-}
+export const getConfig = () => workspace.getConfiguration("vscord") as ExtenstionConfiguration;

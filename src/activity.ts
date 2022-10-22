@@ -11,7 +11,7 @@ import { sep } from "node:path";
 
 let totalProblems = 0;
 
-export function onDiagnosticsChange() {
+export const onDiagnosticsChange = () => {
     const diagnostics = languages.getDiagnostics();
 
     let counted = 0;
@@ -29,7 +29,7 @@ export function onDiagnosticsChange() {
     });
 
     totalProblems = counted;
-}
+};
 
 export const activity = async (
     previous: SetActivity = {},
