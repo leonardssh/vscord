@@ -79,7 +79,7 @@ export const activity = async (
                 dataClass.editor?.document,
                 dataClass.editor?.selection
             )
-        ).replace("{problems}", PROBLEMS);
+        ).replaceAll("{problems}", PROBLEMS);
 
     let workspaceExcludedText = "No workspace ignore text provided.";
     const ignoreWorkspacesText = config.get(CONFIG_KEYS.Ignore.WorkspacesText);
@@ -225,7 +225,7 @@ export const replaceAppInfo = (text: string): string => {
         ]
     ]);
 
-    for (const [key, value] of replaceMap) text = text.replace(key, value);
+    for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
 
     return text;
 };
@@ -245,7 +245,7 @@ export const replaceGitInfo = (text: string, excluded: boolean = false): string 
         ["{git_url}", (!excluded ? dataClass.gitRemoteUrl?.toString("https") : undefined) ?? FAKE_EMPTY]
     ]);
 
-    for (const [key, value] of replaceMap) text = text.replace(key, value);
+    for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
 
     return text;
 };
@@ -298,7 +298,7 @@ export const replaceFileInfo = async (
         ["{current_column}", selection ? (selection.active.character + 1).toLocaleString() : FAKE_EMPTY]
     ]);
 
-    for (const [key, value] of replaceMap) text = text.replace(key, value);
+    for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
 
     return text;
 };
