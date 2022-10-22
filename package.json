@@ -66,9 +66,9 @@
     "contributes": {
         "commands": [
             {
-                "command": "VSCord",
+                "command": "vscord.enable",
                 "title": "Enable Discord Presence",
-                "category": "Discord Rich Presence"
+                "category": "VSCord"
             },
             {
                 "command": "vscord.disable",
