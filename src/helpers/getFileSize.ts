@@ -1,28 +1,29 @@
-import { FileSizeConfig, FileSizeSpec, WorkspaceExtensionConfiguration } from "../config";
+import type { FileSizeConfig, FileSizeStandard, ExtenstionConfiguration } from "../config";
 import { CONFIG_KEYS } from "../constants";
 import type { Data } from "../data";
-import filesize from "file-size";
+import { filesize } from "filesize";
 
-export const getFileSize = (config: WorkspaceExtensionConfiguration, dataClass: Data) => {
+export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Data) => {
     if (!dataClass.fileSize) return;
 
-    let fixed = 2;
-    if (config[CONFIG_KEYS.FileSizeFixed] === 0 || config[CONFIG_KEYS.FileSizeFixed])
-        fixed = config[CONFIG_KEYS.FileSizeFixed];
+    let round = 2;
+    if (config.get(CONFIG_KEYS.File.Size.Round) === 0 || config.get(CONFIG_KEYS.File.Size.Round))
+        round = config.get(CONFIG_KEYS.File.Size.Round);
 
     let spacer = " ";
-    if (config[CONFIG_KEYS.FileSizeSpacer] === "" || config[CONFIG_KEYS.FileSizeSpacer])
-        spacer = config[CONFIG_KEYS.FileSizeSpacer];
+    if (config.get(CONFIG_KEYS.File.Size.Spacer) === "" || config.get(CONFIG_KEYS.File.Size.Spacer))
+        spacer = config.get(CONFIG_KEYS.File.Size.Spacer);
 
     let fileSize: string | undefined;
-    const fileSizeSpec: FileSizeSpec = config[CONFIG_KEYS.FileSizeSpec] || "iec";
+    const fileSizeStandard: FileSizeStandard = config.get(CONFIG_KEYS.File.Size.Standard) ?? "iec";
     const fileSizeConfig: FileSizeConfig = {
-        fixed,
-        spacer
+        round,
+        spacer,
+        standard: fileSizeStandard
     };
 
-    fileSize = config[CONFIG_KEYS.FileSizeHumanReadable]
-        ? (fileSize = filesize(dataClass.fileSize, fileSizeConfig).human(fileSizeSpec))
+    fileSize = config.get(CONFIG_KEYS.File.Size.HumanReadable)
+        ? (fileSize = filesize((await dataClass.fileSize) ?? 0, fileSizeConfig).toLocaleString())
         : (fileSize = `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer}B`);
 
     return fileSize;

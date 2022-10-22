@@ -1,12 +1,29 @@
-export const throttle = (fn: CallableFunction, delay: number) => {
+export const throttle = (fn: CallableFunction, delay: number, runAfterThrottleEnd: boolean = false) => {
+    let timeout: NodeJS.Timeout | undefined;
     let lastCalled = 0;
 
-    return (...args: any[]) => {
-        const now = new Date().getTime();
+    return {
+        callable: (...args: any[]): any => {
+            const run = () => {
+                clearTimeout(timeout);
+                lastCalled = new Date().getTime();
+                return fn(...args);
+            };
 
-        if (now - lastCalled < delay) return;
+            const now = new Date().getTime();
+            if (now - lastCalled < delay) {
+                if (!runAfterThrottleEnd) return;
 
-        lastCalled = now;
-        return fn(...args);
+                clearTimeout(timeout);
+                timeout = setTimeout(run, delay - (now - lastCalled));
+                return;
+            }
+
+            return run();
+        },
+        reset: () => {
+            lastCalled = new Date().getTime();
+            clearTimeout(timeout);
+        }
     };
 };

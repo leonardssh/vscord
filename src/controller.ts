@@ -1,11 +1,10 @@
-import { debug, Disposable, languages, StatusBarAlignment, window, WindowState, workspace } from "vscode";
-import { Client, type SetActivity, type SetActivityResponse } from "@xhayper/discord-rpc";
-import { CONFIG_KEYS, IDLE_SMALL_IMAGE_KEY } from "./constants";
+import { type Disposable, type WindowState, debug, languages, StatusBarAlignment, window, workspace } from "vscode";
+import { type SetActivity, type SetActivityResponse, Client } from "@xhayper/discord-rpc";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
-import { getFileIcon } from "./helpers/resolveFileIcon";
-import { logError, logInfo } from "./logger";
 import { throttle } from "./helpers/throttle";
+import { logError, logInfo } from "./logger";
+import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 
@@ -19,6 +18,7 @@ export class RPCController {
 
     private idleTimeout: NodeJS.Timer | undefined;
     private iconTimeout: NodeJS.Timer | undefined;
+    private activityThrottle = throttle(() => void this.sendActivity(), 2000, true);
 
     constructor(clientId: string, debug: boolean = false) {
         this.rpcClient = new Client({ clientId, debug });
@@ -31,19 +31,19 @@ export class RPCController {
             .catch(async (error) => {
                 const config = getConfig();
 
-                logError(`Encountered following error while trying to login:\n${error as string}`);
+                logError("Encountered following error while trying to login:", error);
 
                 await this.rpcClient?.destroy();
-                logInfo(`[002] Destroyed Discord RPC client`);
+                logInfo("[002] Destroyed Discord RPC client");
 
-                if (!config[CONFIG_KEYS.SuppressNotifications]) {
+                if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
                     error?.message?.includes("ENOENT")
                         ? void window.showErrorMessage("No Discord client detected")
-                        : void window.showErrorMessage(`Couldn't connect to Discord via RPC: ${error as string}`);
+                        : void window.showErrorMessage("Couldn't connect to Discord via RPC:", error);
                 }
 
                 this.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
-                this.statusBarIcon.command = "rpc.reconnect";
+                this.statusBarIcon.command = "vscord.reconnect";
                 this.statusBarIcon.tooltip = "Reconnect to Discord Gateway";
             })
             .then(() => void logInfo(`Successfully logged in to Discord with client ID ${clientId}`));
@@ -66,7 +66,7 @@ export class RPCController {
     private onDisconnected() {
         this.cleanUp();
         this.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
-        this.statusBarIcon.command = "rpc.reconnect";
+        this.statusBarIcon.command = "vscord.reconnect";
         this.statusBarIcon.tooltip = "Reconnect to Discord Gateway";
         this.statusBarIcon.show();
     }
@@ -74,18 +74,24 @@ export class RPCController {
     private listen() {
         const config = getConfig();
 
-        const fileSwitch = window.onDidChangeActiveTextEditor(() => this.sendActivity(true));
-        const fileEdit = workspace.onDidChangeTextDocument(throttle(() => this.sendActivity(), 2000));
-        const debugStart = debug.onDidStartDebugSession(() => this.sendActivity());
-        const debugEnd = debug.onDidTerminateDebugSession(() => this.sendActivity());
+        const sendActivity = (isViewing: boolean = false, isIdling: boolean = false) => {
+            this.activityThrottle.reset();
+            this.sendActivity(isViewing, isIdling);
+        };
+
+        const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
+        const fileEdit = workspace.onDidChangeTextDocument(this.activityThrottle.callable);
+        const fileSelectionChanged = window.onDidChangeTextEditorSelection(this.activityThrottle.callable);
+        const debugStart = debug.onDidStartDebugSession(() => sendActivity());
+        const debugEnd = debug.onDidTerminateDebugSession(() => sendActivity());
         const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
         const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
-        const gitListener = dataClass.onUpdate(throttle(() => this.sendActivity(), 2000));
+        const gitListener = dataClass.onUpdate(this.activityThrottle.callable);
 
-        if (config[CONFIG_KEYS.ShowProblems]) this.listeners.push(diagnosticsChange);
-        if (config[CONFIG_KEYS.CheckIdle]) this.listeners.push(changeWindowState);
+        if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
+        if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
 
-        this.listeners.push(fileSwitch, fileEdit, debugStart, debugEnd, gitListener);
+        this.listeners.push(fileSwitch, fileEdit, fileSelectionChanged, debugStart, debugEnd, gitListener);
     }
 
     private async checkIdle(windowState: WindowState) {
@@ -93,36 +99,29 @@ export class RPCController {
 
         const config = getConfig();
 
-        if (config[CONFIG_KEYS.IdleTimeout] !== 0) {
+        if (config.get(CONFIG_KEYS.Status.Idle.Timeout) !== 0) {
             if (windowState.focused) {
                 if (this.idleTimeout) clearTimeout(this.idleTimeout);
-
                 await this.sendActivity();
             } else {
                 this.idleTimeout = setTimeout(async () => {
-                    if (config[CONFIG_KEYS.DisconnectOnIdle]) {
+                    if (config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle)) {
                         await this.disable();
-                        if (config[CONFIG_KEYS.ResetElapsedTimeAfterIdle]) this.state.startTimestamp = undefined;
+                        if (config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime)) this.state.startTimestamp = undefined;
                         return;
                     }
 
                     if (!this.enabled) return;
 
-                    this.state = {
-                        ...this.state,
-                        smallImageKey: getFileIcon(IDLE_SMALL_IMAGE_KEY),
-                        smallImageText: config[CONFIG_KEYS.IdleText]
-                    };
-
-                    await this.rpcClient?.user?.setActivity(this.state);
-                }, config[CONFIG_KEYS.IdleTimeout] * 1000);
+                    this.activityThrottle.reset();
+                    await this.sendActivity(false, true);
+                }, config.get(CONFIG_KEYS.Status.Idle.Timeout) * 1000);
             }
         }
     }
 
     async login() {
-        const config = getConfig();
-        const { clientId } = getApplicationId(config);
+        const { clientId } = getApplicationId(getConfig());
 
         if (this.rpcClient.isConnected && this.rpcClient.clientId === clientId) return;
 
@@ -133,9 +132,12 @@ export class RPCController {
         if (!this.rpcClient.isConnected) await this.rpcClient.login();
     }
 
-    async sendActivity(isViewing: boolean = false): Promise<SetActivityResponse | undefined> {
+    async sendActivity(
+        isViewing: boolean = false,
+        isIdling: boolean = false
+    ): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
-        this.state = activity(this.state, isViewing);
+        this.state = await activity(this.state, isViewing, isIdling);
         return this.rpcClient.user?.setActivity(this.state);
     }
 

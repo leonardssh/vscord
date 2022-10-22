@@ -1,9 +1,19 @@
-import { Disposable, EventEmitter, Extension, extensions, window, workspace, WorkspaceFolder } from "vscode";
 import type { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
-import { basename, parse, ParsedPath, sep, join } from "node:path";
+import { basename, parse, sep } from "node:path";
+import { CONFIG_KEYS } from "./constants";
 import gitUrlParse from "git-url-parse";
+import { getConfig } from "./config";
 import { logInfo } from "./logger";
-import { statSync } from "node:fs";
+import {
+    type WorkspaceFolder,
+    type TextEditor,
+    type Disposable,
+    type Extension,
+    EventEmitter,
+    extensions,
+    window,
+    workspace
+} from "vscode";
 
 interface DisposableLike {
     dispose: () => any;
@@ -12,11 +22,10 @@ interface DisposableLike {
 const API_VERSION: Parameters<GitExtension["getAPI"]>["0"] = 1;
 
 export class Data implements DisposableLike {
-    protected _file: ParsedPath | undefined;
     protected _repo: Repository | undefined;
     protected _remote: Remote | undefined;
 
-    protected _debug: number;
+    protected _debug: boolean;
 
     private eventEmitter = new EventEmitter<void>();
 
@@ -27,112 +36,127 @@ export class Data implements DisposableLike {
     private gitExt: Extension<GitExtension> | undefined;
     private gitApi: GitApi | undefined;
 
-    public constructor(debugLevel = 0) {
-        this._debug = debugLevel;
-        this._file = window.activeTextEditor ? parse(window.activeTextEditor.document.fileName) : undefined;
+    public editor: TextEditor | undefined;
+
+    public constructor(debug: boolean = false) {
+        this._debug = debug;
+        this.editor = window.activeTextEditor;
         this.ext();
         this.api(this.gitExt?.exports.enabled || false);
         this.rootListeners.push(
+            // TODO: there's a small delay when switching file, it will fire a event where e will be null, then after a few ms, it will fire again with non-null e, figure out how to work around that
             window.onDidChangeActiveTextEditor((e) => {
-                this.debug(2, `root(): window.onDidChangeActiveTextEditor`);
-                this._file = e ? parse(e.document.fileName) : undefined;
+                this.debug("root(): window.onDidChangeActiveTextEditor");
+
+                if (e && e.document.uri.scheme != "file")
+                    return this.debug(
+                        `root(): window.onDidChangeActiveTextEditor: got ${e.document.uri.scheme} scheme`
+                    );
+
+                this.editor = e;
                 this.updateGit();
             }),
             workspace.onDidChangeWorkspaceFolders(() => {
-                this.debug(2, `root(): workspace.onDidChangeWorkspaceFolders`);
+                this.debug("root(): workspace.onDidChangeWorkspaceFolders");
                 this.updateGit();
             }),
             extensions.onDidChange(() => {
-                this.debug(2, `root(): extensions.onDidChange`);
+                this.debug("root(): extensions.onDidChange");
                 this.ext();
             })
         );
     }
 
     public get fileName(): string | undefined {
-        const v = this._file ? this._file.name + this._file.ext : undefined;
-        this.debug(4, `fileName(): ${v}`);
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const v = _file ? _file.name : undefined;
+        this.debug(`fileName(): ${v}`);
         return v;
     }
 
     public get fileExtension(): string | undefined {
-        const v = this._file ? this._file.ext : undefined;
-        this.debug(4, `fileExtension(): ${v}`);
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const v = _file ? _file.ext : undefined;
+        this.debug(`fileExtension(): ${v}`);
         return v;
     }
 
-    public get fileSize(): number | undefined {
-        if (!this._file) return;
-        const absolutePath = join(this._file.dir, this._file.base);
-        try {
-            const v = statSync(absolutePath).size;
-            this.debug(4, `fileSize(): ${v}`);
-            return v;
-        } catch (ignored) {
-            // TODO: find a real fix to this
-            // Cause by can't find file in SSH / WSL / VM / Container
-            return undefined;
-        }
+    public get fileSize(): Promise<number | undefined> {
+        return new Promise(async (resolve) => {
+            if (!this.editor) return resolve(undefined);
+
+            try {
+                const v = await workspace.fs.stat(this.editor.document.uri);
+                this.debug(`fileSize(): ${v.size}`);
+                return resolve(v.size);
+            } catch (ignored) {
+                return resolve(undefined);
+            }
+        });
     }
 
     public get dirName(): string | undefined {
-        const v = this._file?.dir.split(sep).pop();
-        this.debug(4, `dirName(): ${v}`);
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const v = basename(_file?.dir ?? "");
+        this.debug(`dirName(): ${v}`);
         return v;
     }
 
     public get folderAndFile(): string | undefined {
-        const directory = basename(this._file?.dir ?? "");
-        const file = this._file ? this._file.name + this._file.ext : undefined;
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const directory = basename(_file?.dir ?? "");
+        const file = _file ? _file.base : undefined;
 
         if (!directory || !this.workspaceFolder?.name || directory === this.workspaceFolder?.name) return file;
 
-        this.debug(4, `folderAndFile(): ${directory + sep + file}`);
-        return directory + "/" + file;
-    }
-
-    public get fullDirName(): string | undefined {
-        const v = this._file?.dir;
-        this.debug(4, `fullDirName(): ${v}`);
+        const v = directory + sep + file;
+        this.debug(`folderAndFile(): ${v}`);
         return v;
     }
 
-    public get workspace(): string | undefined {
+    public get fullDirName(): string | undefined {
+        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const v = _file?.dir;
+        this.debug(`fullDirName(): ${v}`);
+        return v;
+    }
+
+    public get workspaceName(): string | undefined {
         const v = workspace.name;
-        this.debug(4, `workspace(): ${v}`);
+        this.debug(`workspaceName(): ${v}`);
         return v;
     }
 
     public get workspaceFolder(): WorkspaceFolder | undefined {
-        const uri = window?.activeTextEditor?.document.uri;
+        const uri = this.editor ? this.editor.document.uri : undefined;
         let v: WorkspaceFolder | undefined = undefined;
         if (uri) v = workspace.getWorkspaceFolder(uri);
 
-        this.debug(4, `workspaceFolder(): ${uri ? "Found URI" : "No URI"} ${v}`);
+        this.debug(`workspaceFolder(): ${uri ? "Found URI" : "No URI"}`, v);
         return v;
     }
 
     public get gitRepoPath(): string | undefined {
         const v = this._repo?.rootUri.fsPath;
-        this.debug(4, `gitRepoPath(): ${v}`);
+        this.debug(`gitRepoPath(): ${v}`);
         return v;
     }
 
     public get gitRepoName(): string | undefined {
         const v = this._repo?.rootUri.fsPath.split(sep).pop();
-        this.debug(4, `gitRepoName(): ${v}`);
+        this.debug(`gitRepoName(): ${v}`);
         return v;
     }
 
     public get gitRemoteName(): string | undefined {
         const v = this.gitRemoteUrl?.name;
-        this.debug(4, `gitRepoName(): ${v}`);
+        this.debug(`gitRepoName(): ${v}`);
         return v;
     }
 
     public get gitRemoteUrl(): gitUrlParse.GitUrl | undefined {
         const v = this._remote?.fetchUrl ?? this._remote?.pushUrl;
-        this.debug(4, `gitRemoteUrl(): Url: ${v}`);
+        this.debug(`gitRemoteUrl(): Url: ${v}`);
         if (!v) return;
 
         return gitUrlParse(v);
@@ -140,7 +164,7 @@ export class Data implements DisposableLike {
 
     public get gitBranchName(): string | undefined {
         const v = this._repo?.state.HEAD?.name;
-        this.debug(4, `gitBranchName(): ${v}`);
+        this.debug(`gitBranchName(): ${v}`);
         return v;
     }
 
@@ -169,64 +193,68 @@ export class Data implements DisposableLike {
         return this.eventEmitter.event(listener);
     }
 
-    private ext(): void {
+    private ext() {
+        // Our extenstion
+        this._debug = getConfig().get(CONFIG_KEYS.Behaviour.Debug);
+
+        // Git extenstion
         const ext = extensions.getExtension<GitExtension>("vscode.git");
-        this.debug(3, `ext(): ${ext ? "Extension" : "undefined"}`);
-        // Changed to Extension
+        this.debug(`ext(): ${ext ? "Extension" : "undefined"}`);
         if (ext && !this.gitExt) {
-            this.debug(1, `ext(): Changed to Extension`);
+            this.debug("ext(): Changed to Extension");
             this.gitExt = ext;
             if (this.gitExt.isActive) {
-                logInfo(`[data.ts] ext(): Git extension is active`);
+                this.debug("[data.ts] ext(): Git extension is active");
                 this.api(this.gitExt.exports.enabled);
                 this.gitExtListeners.push(this.gitExt.exports.onDidChangeEnablement((e) => this.api(e)));
             } else {
-                logInfo(`[data.ts] ext(): activate`);
+                this.debug("[data.ts] ext(): activate");
                 void ext.activate();
             }
         } else if (!ext && this.gitExt) {
-            this.debug(2, `[data.ts] ext(): Changed to undefined`);
+            this.debug("[data.ts] ext(): Changed to undefined");
             this.gitExt = undefined;
             this.api(false);
             this.dispose(1);
         }
     }
 
-    private api(e: boolean): void {
-        this.debug(2, `api(): ${e}`);
+    private api(e: boolean) {
+        this.debug(`api(): ${e}`);
+
         if (e) {
             this.gitApi = this.gitExt?.exports.getAPI(API_VERSION);
-            this.debug(2, `api(): ${this.gitApi ? "gitApi" : "undefined"}`);
+            this.debug(`api(): ${this.gitApi ? "gitApi" : "undefined"}`);
             this.listeners();
         } else {
             this.gitApi = undefined;
             this.dispose(2);
         }
+
         this.updateGit();
     }
 
-    private listeners(): void {
-        if (!this.gitApi) {
-            return;
-        }
+    private listeners() {
+        if (!this.gitApi) return;
+
         this.gitApiListeners.push(
             this.gitApi.onDidOpenRepository((e) => {
-                this.debug(1, `listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop()}`);
+                this.debug(`listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop()}`);
                 this.updateGit();
             }),
             this.gitApi.onDidCloseRepository((e) => {
-                this.debug(1, `listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop()}`);
+                this.debug(`listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop()}`);
                 this.updateGit();
             }),
             this.gitApi.onDidChangeState((e) => {
-                this.debug(1, `listeners(): Change State ${e}`);
+                this.debug("listeners(): Change State", e);
                 this.updateGit();
             })
         );
     }
 
-    private updateGit(): void {
-        this.debug(1, `[data.ts] updateGit()`);
+    private updateGit() {
+        this.debug("updateGit()");
         if (!this.gitApi) {
             this._repo = undefined;
             this._remote = undefined;
@@ -235,7 +263,7 @@ export class Data implements DisposableLike {
         }
         this._repo = this.repo();
         this._remote = this.remote();
-        this.debug(2, `updateGit(): repo ${this.gitRepoPath}`);
+        this.debug(`updateGit(): repo ${this.gitRepoPath}`);
         this.eventEmitter.fire();
     }
 
@@ -244,23 +272,19 @@ export class Data implements DisposableLike {
 
         const repos = this.gitApi.repositories;
 
-        if (this._file) {
-            const testString = this._file.dir;
-            return (
-                repos
-                    .filter((v) => v.rootUri.fsPath.length <= testString.length)
-                    .filter((v) => v.rootUri.fsPath === testString.substring(0, v.rootUri.fsPath.length))
-                    .sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
-                    // get first element
-                    .shift()
-            );
+        if (this.editor) {
+            const _file = parse(this.editor.document.uri.fsPath);
+            const testString = _file.dir;
+            return repos
+                .filter((v) => v.rootUri.fsPath.length <= testString.length)
+                .filter((v) => v.rootUri.fsPath === testString.substring(0, v.rootUri.fsPath.length))
+                .sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
+                .shift();
         }
 
-        this.debug(3, `repo(): no file open`);
+        this.debug("repo(): no file open");
 
-        if (!workspace.workspaceFolders) {
-            return undefined;
-        }
+        if (!workspace.workspaceFolders) return undefined;
 
         return workspace.workspaceFolders
             .map((v) => [v])
@@ -284,9 +308,10 @@ export class Data implements DisposableLike {
         return remotes.find((v) => v.name === "origin") ?? remotes[0];
     }
 
-    private debug(level: number, message: string) {
-        if (this._debug >= level) logInfo(`[data.ts] ${message}`);
+    private debug(...message: any) {
+        if (!this._debug) return;
+        logInfo("[data.ts]", ...message);
     }
 }
 
-export const dataClass = new Data();
+export const dataClass = new Data(getConfig().get(CONFIG_KEYS.Behaviour.Debug));

@@ -1,30 +1,34 @@
 import { window } from "vscode";
 
-const outputChannel = window.createOutputChannel("RPC");
+const outputChannel = window.createOutputChannel("VSCord");
 
 export const enum LogLevel {
-    Info = "INFO",
-    Warn = "WARN",
-    Error = "ERROR"
+    INFO = "INFO",
+    WARN = "WARN",
+    ERROR = "ERROR"
 }
 
-const logMessage = (message: string | Error, logLevel: LogLevel) => {
+const logMessage = (logLevel: LogLevel, ...messageList: any) => {
     const timestamp = new Date().toLocaleTimeString();
+    const messageToLog = [];
 
-    if (typeof message === "string") {
-        outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${message}`);
-    } else if (message instanceof Error) {
-        outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${message.stack ?? message.message}`);
-    } else if (typeof message === "object") {
-        try {
-            const json = JSON.stringify(message, null, 2);
-            outputChannel.appendLine(`[${timestamp} - ${logLevel}] ${json}`);
-        } catch {}
+    for (const message of messageList) {
+        if (typeof message === "string") messageToLog.push(message);
+        else if (message instanceof Error) messageToLog.push(message.stack ?? message.message);
+        else {
+            try {
+                messageToLog.push(JSON.stringify(message, null, 2));
+            } catch (ignore) {
+                messageToLog.push(`${message}`);
+            }
+        }
     }
+
+    outputChannel.appendLine(`[${timestamp}] [${logLevel}] ${messageToLog.join(" ")}`);
 };
 
-export const logInfo = (message: string | Error) => void logMessage(message, LogLevel.Info);
+export const logInfo = (...message: any) => void logMessage(LogLevel.INFO, ...message);
 
-export const logWarn = (message: string | Error) => void logMessage(message, LogLevel.Warn);
+export const logWarn = (...message: any) => void logMessage(LogLevel.WARN, ...message);
 
-export const logError = (message: string | Error) => void logMessage(message, LogLevel.Error);
+export const logError = (...message: any) => void logMessage(LogLevel.ERROR, ...message);

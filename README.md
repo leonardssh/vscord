@@ -18,7 +18,7 @@
             <img alt="Visual Studio Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord" />
         </a>
         <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-            <img alt="Visual Studio Marketplace Rating" src="https://vsmarketplacebadge.apphb.com/rating-short/LeonardSSH.vscord.svg" />
+            <img alt="Visual Studio Marketplace Rating" src="https://img.shields.io/visual-studio-marketplace/r/LeonardSSH.vscord">
         </a>
 		<a href="https://github.com/LeonardSSH/vscord/actions/workflows/cd-vs-marketplace.yml">
 			<img alt="CD - Visual Studio Marketplace" src="https://img.shields.io/github/workflow/status/leonardssh/vscord/CD%20-%20Visual%20Studio%20Marketplace?label=CD%20-%20Visual%20Studio%20Marketplace">
@@ -47,44 +47,33 @@
 
 <br>
 
-# Discord Rich Presence
+# VSCord
 
-Remember to 🌟 this GitHub if you 💖 it.
+Highly customizable [Discord Rich Presence](https://discord.com/rich-presence) extenstion for [Visual Studio Code](https://code.visualstudio.com/)
 
-> Fully customizable VS Code extension to get Discord Rich Presence integration
+> Remember to 🌟 this GitHub if you 💖 it.
 
 ## 📌 Features
 
--   Shows what you're working on in Visual Studio Code
--   Switch between 3 IDE names (`Code`, `Visual Studio Code` and `VSCodium`) [(preview)](https://streamable.com/apjd4g)
--   Highly customizable using the extension settings
--   Shows the amount of problems in your workspace
--   Shows the number of lines in your file and which line you're editing
--   Shows the git repository and branch you are working on
--   Shows the size of the file you are working on
--   Respects Discord's 15 seconds ratelimit when updating your status
--   Support for over 130+ of the most popular languages
--   Enable/Disable RPC for individual workspaces
--   Stable or Insiders build detection
--   Debug mode detection
--   Easily manually reconnect to Discord Gateway
--   Idle indication when you tab out for a while
--   Button that sends you to the GitHub repository
--   flatpak/snapstore support
+-   Shows what you're working on!
+-   Switch between 3 IDE names (`Code`, `Visual Studio Code` and `VSCodium`) or a custom one if you wish!
+-   Packed with 60+ extenstion settings!
+-   Tons of variable to use!
+-   Support for over 130+ of the most popular languages!
+-   Support custom images (using HTTP link)
+-   Support custom button link!
+-   Support flatpak / snapstore version of Discord!
+-   Detect when you are Debugging!
+-   Detect when you are using the [Insiders build](https://code.visualstudio.com/insiders/)!
+-   Detect when you are Idling!
 
-> All texts are fully customizable using variables and a multitude of config options
+## 👀 Preview
 
 ![1](https://i.imgur.com/LaB4TqM.png)
 ![2](https://i.imgur.com/yTFIFiK.png)
 ![3](https://i.imgur.com/5OOkKUW.png)
 
 ## 📥 Installation
-
-### Prerequisites
-
-**[Visual Studio Code](https://code.visualstudio.com/)** or **[Visual Studio Code Insiders](https://code.visualstudio.com/insiders/)**
-
-### Install
 
 Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
 
@@ -102,7 +91,7 @@ Use the **[Extension Marketplace](https://code.visualstudio.com/docs/editor/exte
 
 To contribute to this repository, feel free to create a new fork of the repository and submit a pull request.
 
-1. Fork / Clone and select the `main` branch.
+1. Fork / Clone the `main` branch.
 2. Create a new branch in your fork.
 3. Make your changes.
 4. Commit your changes, and push them.
