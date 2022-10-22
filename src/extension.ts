@@ -55,7 +55,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
             await window.showInformationMessage("Disabled Discord Rich Presence.");
     });
 
-    const enableWorkspaceCommand = commands.registerCommand("vscord.enableWorkspace", async () => {
+    const enableWorkspaceCommand = commands.registerCommand("vscord.workspace.enable", async () => {
         await disable();
         await enable();
 
@@ -65,7 +65,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
             await window.showInformationMessage("Enabled Discord Rich Presence for this workspace.");
     });
 
-    const disableWorkspaceCommand = commands.registerCommand("vscord.disableWorkspace", async () => {
+    const disableWorkspaceCommand = commands.registerCommand("vscord.workspace.disable", async () => {
         await disable();
 
         logInfo("Disabled Discord Rich Presence for this workspace.");
