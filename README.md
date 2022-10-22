@@ -1,5 +1,3 @@
-# ⚠️ BREAKING CHANGES ⚠️
-
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord" target="_blank" rel="noopener noreferrer">
     <img width="256" src="https://i.imgur.com/n7ieZfW.png" alt="VSCord Logo">
