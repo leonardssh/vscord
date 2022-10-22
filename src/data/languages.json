@@ -53,12 +53,12 @@
             "image": "docker"
         },
         {
-            "language": "fsharp",
-            "image": "fsharp"
+            "language": "fortran",
+            "image": "fortran"
         },
         {
-            "language": "fortran",
-            "image" : "fortran"
+            "language": "fsharp",
+            "image": "fsharp"
         },
         {
             "language": "git-commit",
@@ -623,6 +623,9 @@
         },
         ".erl": {
             "image": "erlang"
+        },
+        "/\\.([fF])(03|08|18|90|95)$/i": {
+            "image": "fortran"
         },
         ".beam": {
             "image": "erlang"
@@ -1472,36 +1475,6 @@
         },
         "/\\.(tfvars|tf)$/i": {
             "image": "terraform"
-        },
-        ".f90": {
-            "image": "fortran"
-        },
-		".F90": {
-            "image": "fortran"
-        },
-		".f95": {
-            "image": "fortran"
-        },
-		".F95": {
-            "image": "fortran"
-        },
-		".f03": {
-            "image": "fortran"
-        },
-		".F03": {
-            "image": "fortran"
-        },
-		".f08": {
-            "image": "fortran"
-        },
-		".F08": {
-            "image": "fortran"
-        },
-		".F18": {
-            "image": "fortran"
-        },
-		".f18": {
-            "image": "fortran"
-        },
+        }
     }
 }
