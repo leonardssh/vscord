@@ -1,5 +1,5 @@
 import { type ConfigurationTarget, type WorkspaceConfiguration, workspace } from "vscode";
-import { filesize } from "filesize";
+import { type filesize } from "filesize";
 
 export type FileSizeConfig = Parameters<typeof filesize>["1"];
 export type FileSizeStandard = "iec" | "jedec";

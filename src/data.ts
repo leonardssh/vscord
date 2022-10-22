@@ -25,7 +25,7 @@ export class Data implements DisposableLike {
     protected _repo: Repository | undefined;
     protected _remote: Remote | undefined;
 
-    protected _debug: number;
+    protected _debug: boolean;
 
     private eventEmitter = new EventEmitter<void>();
 
@@ -36,26 +36,32 @@ export class Data implements DisposableLike {
     private gitExt: Extension<GitExtension> | undefined;
     private gitApi: GitApi | undefined;
 
-    // TODO: Figure out why this also got set when selecting the terminals
     public editor: TextEditor | undefined;
 
-    public constructor(debugLevel = 0) {
-        this._debug = debugLevel;
+    public constructor(debug: boolean = false) {
+        this._debug = debug;
         this.editor = window.activeTextEditor;
         this.ext();
         this.api(this.gitExt?.exports.enabled || false);
         this.rootListeners.push(
-            window.onDidChangeActiveTextEditor(() => {
-                this.debug(2, `root(): window.onDidChangeActiveTextEditor`);
-                this.editor = window.activeTextEditor;
+            // TODO: there's a small delay when switching file, it will fire a event where e will be null, then after a few ms, it will fire again with non-null e, figure out how to work around that
+            window.onDidChangeActiveTextEditor((e) => {
+                this.debug("root(): window.onDidChangeActiveTextEditor");
+
+                if (e && e.document.uri.scheme != "file")
+                    return this.debug(
+                        `root(): window.onDidChangeActiveTextEditor: got ${e.document.uri.scheme} scheme`
+                    );
+
+                this.editor = e;
                 this.updateGit();
             }),
             workspace.onDidChangeWorkspaceFolders(() => {
-                this.debug(2, `root(): workspace.onDidChangeWorkspaceFolders`);
+                this.debug("root(): workspace.onDidChangeWorkspaceFolders");
                 this.updateGit();
             }),
             extensions.onDidChange(() => {
-                this.debug(2, `root(): extensions.onDidChange`);
+                this.debug("root(): extensions.onDidChange");
                 this.ext();
             })
         );
@@ -63,15 +69,15 @@ export class Data implements DisposableLike {
 
     public get fileName(): string | undefined {
         const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
-        const v = _file ? _file.base : undefined;
-        this.debug(4, `fileName(): ${v}`);
+        const v = _file ? _file.name : undefined;
+        this.debug(`fileName(): ${v}`);
         return v;
     }
 
     public get fileExtension(): string | undefined {
         const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = _file ? _file.ext : undefined;
-        this.debug(4, `fileExtension(): ${v}`);
+        this.debug(`fileExtension(): ${v}`);
         return v;
     }
 
@@ -81,7 +87,7 @@ export class Data implements DisposableLike {
 
             try {
                 const v = await workspace.fs.stat(this.editor.document.uri);
-                this.debug(4, `fileSize(): ${v.size}`);
+                this.debug(`fileSize(): ${v.size}`);
                 return resolve(v.size);
             } catch (ignored) {
                 return resolve(undefined);
@@ -92,7 +98,7 @@ export class Data implements DisposableLike {
     public get dirName(): string | undefined {
         const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = basename(_file?.dir ?? "");
-        this.debug(4, `dirName(): ${v}`);
+        this.debug(`dirName(): ${v}`);
         return v;
     }
 
@@ -104,20 +110,20 @@ export class Data implements DisposableLike {
         if (!directory || !this.workspaceFolder?.name || directory === this.workspaceFolder?.name) return file;
 
         const v = directory + sep + file;
-        this.debug(4, `folderAndFile(): ${v}`);
+        this.debug(`folderAndFile(): ${v}`);
         return v;
     }
 
     public get fullDirName(): string | undefined {
         const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = _file?.dir;
-        this.debug(4, `fullDirName(): ${v}`);
+        this.debug(`fullDirName(): ${v}`);
         return v;
     }
 
-    public get workspace(): string | undefined {
+    public get workspaceName(): string | undefined {
         const v = workspace.name;
-        this.debug(4, `workspace(): ${v}`);
+        this.debug(`workspaceName(): ${v}`);
         return v;
     }
 
@@ -126,31 +132,31 @@ export class Data implements DisposableLike {
         let v: WorkspaceFolder | undefined = undefined;
         if (uri) v = workspace.getWorkspaceFolder(uri);
 
-        this.debug(4, `workspaceFolder(): ${uri ? "Found URI" : "No URI"} ${v}`);
+        this.debug(`workspaceFolder(): ${uri ? "Found URI" : "No URI"}`, v);
         return v;
     }
 
     public get gitRepoPath(): string | undefined {
         const v = this._repo?.rootUri.fsPath;
-        this.debug(4, `gitRepoPath(): ${v}`);
+        this.debug(`gitRepoPath(): ${v}`);
         return v;
     }
 
     public get gitRepoName(): string | undefined {
         const v = this._repo?.rootUri.fsPath.split(sep).pop();
-        this.debug(4, `gitRepoName(): ${v}`);
+        this.debug(`gitRepoName(): ${v}`);
         return v;
     }
 
     public get gitRemoteName(): string | undefined {
         const v = this.gitRemoteUrl?.name;
-        this.debug(4, `gitRepoName(): ${v}`);
+        this.debug(`gitRepoName(): ${v}`);
         return v;
     }
 
     public get gitRemoteUrl(): gitUrlParse.GitUrl | undefined {
         const v = this._remote?.fetchUrl ?? this._remote?.pushUrl;
-        this.debug(4, `gitRemoteUrl(): Url: ${v}`);
+        this.debug(`gitRemoteUrl(): Url: ${v}`);
         if (!v) return;
 
         return gitUrlParse(v);
@@ -158,7 +164,7 @@ export class Data implements DisposableLike {
 
     public get gitBranchName(): string | undefined {
         const v = this._repo?.state.HEAD?.name;
-        this.debug(4, `gitBranchName(): ${v}`);
+        this.debug(`gitBranchName(): ${v}`);
         return v;
     }
 
@@ -188,22 +194,25 @@ export class Data implements DisposableLike {
     }
 
     private ext(): void {
+        // Our extenstion
+        this._debug = getConfig().get(CONFIG_KEYS.Behaviour.Debug);
+
+        // Git extenstion
         const ext = extensions.getExtension<GitExtension>("vscode.git");
-        this.debug(3, `ext(): ${ext ? "Extension" : "undefined"}`);
-        // Changed to Extension
+        this.debug(`ext(): ${ext ? "Extension" : "undefined"}`);
         if (ext && !this.gitExt) {
-            this.debug(1, `ext(): Changed to Extension`);
+            this.debug(`ext(): Changed to Extension`);
             this.gitExt = ext;
             if (this.gitExt.isActive) {
-                logInfo("[data.ts] ext(): Git extension is active");
+                this.debug("[data.ts] ext(): Git extension is active");
                 this.api(this.gitExt.exports.enabled);
                 this.gitExtListeners.push(this.gitExt.exports.onDidChangeEnablement((e) => this.api(e)));
             } else {
-                logInfo("[data.ts] ext(): activate");
+                this.debug("[data.ts] ext(): activate");
                 void ext.activate();
             }
         } else if (!ext && this.gitExt) {
-            this.debug(2, "[data.ts] ext(): Changed to undefined");
+            this.debug("[data.ts] ext(): Changed to undefined");
             this.gitExt = undefined;
             this.api(false);
             this.dispose(1);
@@ -211,10 +220,10 @@ export class Data implements DisposableLike {
     }
 
     private api(e: boolean): void {
-        this.debug(2, `api(): ${e}`);
+        this.debug(`api(): ${e}`);
         if (e) {
             this.gitApi = this.gitExt?.exports.getAPI(API_VERSION);
-            this.debug(2, `api(): ${this.gitApi ? "gitApi" : "undefined"}`);
+            this.debug(`api(): ${this.gitApi ? "gitApi" : "undefined"}`);
             this.listeners();
         } else {
             this.gitApi = undefined;
@@ -229,22 +238,22 @@ export class Data implements DisposableLike {
         }
         this.gitApiListeners.push(
             this.gitApi.onDidOpenRepository((e) => {
-                this.debug(1, `listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop()}`);
+                this.debug(`listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop()}`);
                 this.updateGit();
             }),
             this.gitApi.onDidCloseRepository((e) => {
-                this.debug(1, `listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop()}`);
+                this.debug(`listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop()}`);
                 this.updateGit();
             }),
             this.gitApi.onDidChangeState((e) => {
-                this.debug(1, "listeners(): Change State", e);
+                this.debug("listeners(): Change State", e);
                 this.updateGit();
             })
         );
     }
 
     private updateGit(): void {
-        this.debug(1, `[data.ts] updateGit()`);
+        this.debug(`updateGit()`);
         if (!this.gitApi) {
             this._repo = undefined;
             this._remote = undefined;
@@ -253,7 +262,7 @@ export class Data implements DisposableLike {
         }
         this._repo = this.repo();
         this._remote = this.remote();
-        this.debug(2, `updateGit(): repo ${this.gitRepoPath}`);
+        this.debug(`updateGit(): repo ${this.gitRepoPath}`);
         this.eventEmitter.fire();
     }
 
@@ -265,17 +274,14 @@ export class Data implements DisposableLike {
         if (this.editor) {
             const _file = parse(this.editor.document.uri.fsPath);
             const testString = _file.dir;
-            return (
-                repos
-                    .filter((v) => v.rootUri.fsPath.length <= testString.length)
-                    .filter((v) => v.rootUri.fsPath === testString.substring(0, v.rootUri.fsPath.length))
-                    .sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
-                    // get first element
-                    .shift()
-            );
+            return repos
+                .filter((v) => v.rootUri.fsPath.length <= testString.length)
+                .filter((v) => v.rootUri.fsPath === testString.substring(0, v.rootUri.fsPath.length))
+                .sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
+                .shift();
         }
 
-        this.debug(3, `repo(): no file open`);
+        this.debug(`repo(): no file open`);
 
         if (!workspace.workspaceFolders) {
             return undefined;
@@ -303,9 +309,10 @@ export class Data implements DisposableLike {
         return remotes.find((v) => v.name === "origin") ?? remotes[0];
     }
 
-    private debug(level: number, ...message: any) {
-        if (this._debug >= level) logInfo("[data.ts]", ...message);
+    private debug(...message: any) {
+        if (!this._debug) return;
+        logInfo("[data.ts]", ...message);
     }
 }
 
-export const dataClass = new Data(getConfig().get(CONFIG_KEYS.Behaviour.Debug) ? 100 : 0);
+export const dataClass = new Data(getConfig().get(CONFIG_KEYS.Behaviour.Debug));

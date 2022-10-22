@@ -1,5 +1,5 @@
-import { debug, type Disposable, languages, StatusBarAlignment, window, type WindowState, workspace } from "vscode";
-import { Client, type SetActivity, type SetActivityResponse } from "@xhayper/discord-rpc";
+import { type Disposable, type WindowState, debug, languages, StatusBarAlignment, window, workspace } from "vscode";
+import { type SetActivity, type SetActivityResponse, Client } from "@xhayper/discord-rpc";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
 import { throttle } from "./helpers/throttle";
@@ -121,8 +121,7 @@ export class RPCController {
     }
 
     async login() {
-        const config = getConfig();
-        const { clientId } = getApplicationId(config);
+        const { clientId } = getApplicationId(getConfig());
 
         if (this.rpcClient.isConnected && this.rpcClient.clientId === clientId) return;
 

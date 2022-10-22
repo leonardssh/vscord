@@ -1,6 +1,6 @@
 import "source-map-support/register";
 
-import { commands, type ExtensionContext, window } from "vscode";
+import { type ExtensionContext, commands, window } from "vscode";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { RPCController } from "./controller";
 import { CONFIG_KEYS } from "./constants";
@@ -111,7 +111,7 @@ export async function activate(ctx: ExtensionContext) {
     logInfo("Discord Rich Presence for VS Code activated.");
     registerCommands(ctx);
 
-    if (!getConfig()[CONFIG_KEYS.Enabled]) await controller.disable();
+    if (!getConfig().get(CONFIG_KEYS.Enabled)) await controller.disable();
 }
 
 export async function deactivate() {

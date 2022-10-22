@@ -1,7 +1,7 @@
 import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
-import { CONFIG_KEYS, EMPTY, FAKE_EMPTY } from "./constants";
 import { type SetActivity } from "@xhayper/discord-rpc";
+import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
 import { isObject } from "./helpers/isObject";
@@ -9,8 +9,10 @@ import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";
 
-let totalProblems = 0;
+// TODO: move this to data class
+export let totalProblems = 0;
 
+// TODO: make this configurable
 const COUNTED_SEVERITIES = [DiagnosticSeverity.Error, DiagnosticSeverity.Warning];
 
 export const onDiagnosticsChange = () => {
@@ -56,21 +58,8 @@ export const activity = async (
 
     const isWorkspaceExcluded =
         dataClass.workspaceFolder != null &&
-        "uri" in dataClass.workspaceFolder &&
-        isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceFolder.uri.fsPath);
-    let workspaceExcludedText = "No workspace ignore text provided.";
-
-    if (isWorkspaceExcluded) {
-        const ignoreWorkspacesText = config.get(CONFIG_KEYS.Ignore.WorkspacesText);
-
-        if (isObject(ignoreWorkspacesText)) {
-            workspaceExcludedText =
-                (dataClass.workspaceFolder ? ignoreWorkspacesText[dataClass.workspaceFolder.name] : undefined) ??
-                workspaceExcludedText;
-        } else {
-            workspaceExcludedText = ignoreWorkspacesText ?? workspaceExcludedText;
-        }
-    }
+        (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceFolder.uri.fsPath) ||
+            isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceName));
 
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
@@ -92,8 +81,23 @@ export const activity = async (
             )
         ).replace("{problems}", PROBLEMS);
 
+    let workspaceExcludedText = "No workspace ignore text provided.";
+    const ignoreWorkspacesText = config.get(CONFIG_KEYS.Ignore.WorkspacesText);
+
+    if (isObject(ignoreWorkspacesText)) {
+        workspaceExcludedText =
+            (dataClass.workspaceFolder
+                ? await replaceAllText(ignoreWorkspacesText[dataClass.workspaceFolder.name])
+                : undefined) ?? workspaceExcludedText;
+    } else {
+        const text = await replaceAllText(ignoreWorkspacesText);
+        workspaceExcludedText = text !== "" ? text : undefined ?? workspaceExcludedText;
+    }
+
     const detailsText = detailsEnabled
-        ? isIdling || !dataClass.editor
+        ? isWorkspaceExcluded
+            ? workspaceExcludedText
+            : isIdling || !dataClass.editor
             ? detailsIdleEnabled
                 ? await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle))
                 : undefined
@@ -106,19 +110,20 @@ export const activity = async (
               )
         : undefined;
 
-    const stateText = stateEnabled
-        ? isIdling || !dataClass.editor
-            ? stateIdleEnabled
-                ? await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle))
-                : undefined
-            : await replaceAllText(
-                  isDebugging
-                      ? config.get(CONFIG_KEYS.Status.State.Text.Debugging)
-                      : isViewing
-                      ? config.get(CONFIG_KEYS.Status.State.Text.Viewing)
-                      : config.get(CONFIG_KEYS.Status.State.Text.Editing)
-              )
-        : undefined;
+    const stateText =
+        stateEnabled && !isWorkspaceExcluded
+            ? isIdling || !dataClass.editor
+                ? stateIdleEnabled
+                    ? await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle))
+                    : undefined
+                : await replaceAllText(
+                      isDebugging
+                          ? config.get(CONFIG_KEYS.Status.State.Text.Debugging)
+                          : isViewing
+                          ? config.get(CONFIG_KEYS.Status.State.Text.Viewing)
+                          : config.get(CONFIG_KEYS.Status.State.Text.Editing)
+                  )
+            : undefined;
 
     const largeImageKey = await replaceAllText(
         isIdling || !dataClass.editor
@@ -255,8 +260,7 @@ export const replaceFileInfo = async (
     text = text.slice();
 
     const workspaceFolderName = (!excluded ? dataClass.workspaceFolder?.name : undefined) ?? FAKE_EMPTY;
-    const workspaceName =
-        (!excluded ? dataClass.workspace?.replace("(Workspace)", EMPTY) : undefined) ?? workspaceFolderName;
+    const workspaceName = (!excluded ? dataClass.workspaceName : undefined) ?? workspaceFolderName;
     const workspaceAndFolder = !excluded
         ? `${workspaceName}${workspaceFolderName === FAKE_EMPTY ? "" : ` - ${workspaceFolderName}`}`
         : FAKE_EMPTY;
@@ -265,8 +269,8 @@ export const replaceFileInfo = async (
     const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
     const fileSize = await getFileSize(config, dataClass);
 
-    if (dataClass.editor && dataClass.workspace && !excluded) {
-        const name = dataClass.workspace;
+    if (dataClass.editor && dataClass.workspaceName && !excluded) {
+        const name = dataClass.workspaceName;
         const relativePath = workspace.asRelativePath(dataClass.editor.document.fileName).split(sep);
 
         relativePath.splice(-1, 1);
