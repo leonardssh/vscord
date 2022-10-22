@@ -5,7 +5,7 @@ import { basename } from "node:path";
 
 export const toLower = (str: string) => str.toLocaleLowerCase();
 export const toUpper = (str: string) => str.toLocaleUpperCase();
-export const toTitle = (str: string) => toLower(str).replaceAll(/^\w/, (c) => toUpper(c));
+export const toTitle = (str: string) => toLower(str).replace(/^\w/, (c) => toUpper(c));
 
 export const resolveLangName = (document: TextDocument) => {
     const ALL_KNOWN_KNOWN_EXTENSIONS = KNOWN_EXTENSIONS;
