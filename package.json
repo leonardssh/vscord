@@ -98,7 +98,7 @@
         ],
         "configuration": [
             {
-                "title": "VSCord",
+                "title": "Extenstion",
                 "type": "object",
                 "properties": {
                     "vscord.enabled": {
