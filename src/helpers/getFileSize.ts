@@ -1,7 +1,7 @@
 import { FileSizeConfig, FileSizeStandard, ExtenstionConfiguration } from "../config";
-import { filesize as size } from "filesize";
 import { CONFIG_KEYS } from "../constants";
 import type { Data } from "../data";
+import { filesize } from "filesize";
 
 export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Data) => {
     if (!dataClass.fileSize) return;
@@ -23,7 +23,7 @@ export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Da
     };
 
     fileSize = config.get(CONFIG_KEYS.File.Size.HumanReadable)
-        ? (fileSize = size((await dataClass.fileSize) ?? 0, fileSizeConfig).toLocaleString())
+        ? (fileSize = filesize((await dataClass.fileSize) ?? 0, fileSizeConfig).toLocaleString())
         : (fileSize = `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer}B`);
 
     return fileSize;
