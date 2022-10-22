@@ -1,4 +1,4 @@
-import { debug, DiagnosticSeverity, env, languages, Selection, TextDocument, window, workspace } from "vscode";
+import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { CONFIG_KEYS, EMPTY, FAKE_EMPTY } from "./constants";
 import { type SetActivity } from "@xhayper/discord-rpc";

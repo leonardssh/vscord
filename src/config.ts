@@ -1,4 +1,4 @@
-import { ConfigurationTarget, workspace, WorkspaceConfiguration } from "vscode";
+import { type ConfigurationTarget, type WorkspaceConfiguration, workspace } from "vscode";
 import { filesize } from "filesize";
 
 export type FileSizeConfig = Parameters<typeof filesize>["1"];

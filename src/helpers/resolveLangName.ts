@@ -1,5 +1,5 @@
 import { CONFIG_KEYS, KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from "../constants";
-import { TextDocument } from "vscode";
+import { type TextDocument } from "vscode";
 import { getConfig } from "../config";
 import { basename } from "node:path";
 

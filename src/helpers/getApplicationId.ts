@@ -1,4 +1,4 @@
-import { ExtenstionConfiguration } from "../config";
+import type { ExtenstionConfiguration } from "../config";
 import { CONFIG_KEYS } from "../constants";
 
 export const getApplicationId = (config: ExtenstionConfiguration) => {

@@ -1,7 +1,7 @@
 import "source-map-support/register";
 
+import { commands, type ExtensionContext, window } from "vscode";
 import { getApplicationId } from "./helpers/getApplicationId";
-import { commands, ExtensionContext, window } from "vscode";
 import { RPCController } from "./controller";
 import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";

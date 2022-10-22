@@ -5,14 +5,14 @@ import gitUrlParse from "git-url-parse";
 import { getConfig } from "./config";
 import { logInfo } from "./logger";
 import {
-    Disposable,
+    type WorkspaceFolder,
+    type TextEditor,
+    type Disposable,
+    type Extension,
     EventEmitter,
-    Extension,
     extensions,
     window,
-    workspace,
-    WorkspaceFolder,
-    TextEditor
+    workspace
 } from "vscode";
 
 interface DisposableLike {

@@ -1,4 +1,4 @@
-import { debug, Disposable, languages, StatusBarAlignment, window, WindowState, workspace } from "vscode";
+import { debug, type Disposable, languages, StatusBarAlignment, window, type WindowState, workspace } from "vscode";
 import { Client, type SetActivity, type SetActivityResponse } from "@xhayper/discord-rpc";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
@@ -74,13 +74,15 @@ export class RPCController {
         const config = getConfig();
 
         const fileSwitch = window.onDidChangeActiveTextEditor(() => this.sendActivity(true));
-        const fileEdit = workspace.onDidChangeTextDocument(throttle(() => this.sendActivity(), 2000));
-        const fileSelectionChanged = window.onDidChangeTextEditorSelection(throttle(() => this.sendActivity(), 5000));
+        const fileEdit = workspace.onDidChangeTextDocument(throttle(() => this.sendActivity(), 2000, true));
+        const fileSelectionChanged = window.onDidChangeTextEditorSelection(
+            throttle(() => this.sendActivity(), 5000, true)
+        );
         const debugStart = debug.onDidStartDebugSession(() => this.sendActivity());
         const debugEnd = debug.onDidTerminateDebugSession(() => this.sendActivity());
         const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
         const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
-        const gitListener = dataClass.onUpdate(throttle(() => this.sendActivity(), 2000));
+        const gitListener = dataClass.onUpdate(throttle(() => this.sendActivity(), 2000, true));
 
         if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
