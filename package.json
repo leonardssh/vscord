@@ -714,13 +714,13 @@
                             "iec",
                             "jedec"
                         ],
-                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.file.size.spec#` instead.",
-                        "deprecationMessage": "Deprecated: Please use vscord.file.size.spec instead."
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.file.size.standard#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.file.size.standard instead."
                     },
                     "rpc.fileSizeFixed": {
                         "type": "number",
-                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.file.size.fixed#` instead.",
-                        "deprecationMessage": "Deprecated: Please use vscord.file.size.fixed instead."
+                        "markdownDeprecationMessage": "**Deprecated**",
+                        "deprecationMessage": "Deprecated"
                     },
                     "rpc.fileSizeSpacer": {
                         "type": "string",
