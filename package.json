@@ -448,7 +448,9 @@
                         "description": "Spacer between the number and the unit."
                     },
                     "vscord.behaviour.additionalFileMapping": {
-                        "type": "object"
+                        "type": "object",
+                        "default": {},
+                        "description": "Additional regex/string to check for file language, Key is regex / string and Value is the language name."
                     },
                     "vscord.behaviour.suppressNotifications": {
                         "type": "boolean",
