@@ -40,6 +40,7 @@ export class Data implements DisposableLike {
     private gitApi: GitApi | undefined;
 
     public editor: TextEditor | undefined;
+    public notebookEditor: NotebookEditor | undefined;
 
     public constructor(debug: boolean = false) {
         this._debug = debug;
@@ -57,6 +58,10 @@ export class Data implements DisposableLike {
                     );
 
                 this.editor = e;
+                this.updateGit();
+            }),
+            window.onDidChangeActiveNotebookEditor((e) => {
+                this.notebookEditor = e;
                 this.updateGit();
             }),
             workspace.onDidChangeWorkspaceFolders(() => {
