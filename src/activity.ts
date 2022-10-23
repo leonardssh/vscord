@@ -6,7 +6,8 @@ import {
     env,
     languages,
     workspace,
-    NotebookDocument
+    NotebookDocument,
+    NotebookRange
 } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { type SetActivity } from "@xhayper/discord-rpc";
