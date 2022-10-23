@@ -14,26 +14,26 @@ export class RPCController {
     enabled: boolean = true;
     state: SetActivity = {};
     debug: boolean = false;
-    rpcClient: Client;
+    client: Client;
 
     private idleTimeout: NodeJS.Timer | undefined;
     private iconTimeout: NodeJS.Timer | undefined;
     private activityThrottle = throttle(() => void this.sendActivity(), 2000, true);
 
     constructor(clientId: string, debug: boolean = false) {
-        this.rpcClient = new Client({ clientId, debug });
+        this.client = new Client({ clientId });
         this.debug = debug;
 
         this.statusBarIcon.text = "$(pulse) Connecting to Discord Gateway...";
 
-        this.rpcClient
+        this.client
             .login()
             .catch(async (error) => {
                 const config = getConfig();
 
                 logError("Encountered following error while trying to login:", error);
 
-                await this.rpcClient?.destroy();
+                await this.client?.destroy();
                 logInfo("[002] Destroyed Discord RPC client");
 
                 if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
@@ -48,8 +48,13 @@ export class RPCController {
             })
             .then(() => void logInfo(`Successfully logged in to Discord with client ID ${clientId}`));
 
-        this.rpcClient.on("ready", this.onReady.bind(this));
-        this.rpcClient.on("disconnected", this.onDisconnected.bind(this));
+        this.client.on("debug", (...data) => {
+            if (!this.debug) return;
+            logInfo("[003] Debug:", ...data);
+        });
+
+        this.client.on("ready", this.onReady.bind(this));
+        this.client.on("disconnected", this.onDisconnected.bind(this));
     }
 
     private async onReady() {
@@ -80,13 +85,19 @@ export class RPCController {
         };
 
         const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
-        const fileEdit = workspace.onDidChangeTextDocument(this.activityThrottle.callable);
-        const fileSelectionChanged = window.onDidChangeTextEditorSelection(this.activityThrottle.callable);
+        const fileEdit = workspace.onDidChangeTextDocument((e) => {
+            if (e.document !== dataClass.editor?.document) return;
+            this.activityThrottle.callable();
+        });
+        const fileSelectionChanged = window.onDidChangeTextEditorSelection((e) => {
+            if (e.textEditor !== dataClass.editor) return;
+            this.activityThrottle.callable();
+        });
         const debugStart = debug.onDidStartDebugSession(() => sendActivity());
         const debugEnd = debug.onDidTerminateDebugSession(() => sendActivity());
         const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
         const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
-        const gitListener = dataClass.onUpdate(this.activityThrottle.callable);
+        const gitListener = dataClass.onUpdate(() => this.activityThrottle.callable());
 
         if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
@@ -101,7 +112,7 @@ export class RPCController {
 
         if (config.get(CONFIG_KEYS.Status.Idle.Timeout) !== 0) {
             if (windowState.focused) {
-                if (this.idleTimeout) clearTimeout(this.idleTimeout);
+                clearTimeout(this.idleTimeout);
                 await this.sendActivity();
             } else {
                 this.idleTimeout = setTimeout(async () => {
@@ -123,13 +134,13 @@ export class RPCController {
     async login() {
         const { clientId } = getApplicationId(getConfig());
 
-        if (this.rpcClient.isConnected && this.rpcClient.clientId === clientId) return;
+        if (this.client.isConnected && this.client.clientId === clientId) return;
 
         this.statusBarIcon.text = "$(search-refresh) Connecting to Discord Gateway...";
         this.statusBarIcon.tooltip = "Connecting to Discord Gateway...";
 
-        if (this.rpcClient.clientId != clientId) await this.updateClientId(clientId);
-        if (!this.rpcClient.isConnected) await this.rpcClient.login();
+        if (this.client.clientId != clientId) await this.updateClientId(clientId);
+        else if (!this.client.isConnected) await this.client.login();
     }
 
     async sendActivity(
@@ -138,7 +149,7 @@ export class RPCController {
     ): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
         this.state = await activity(this.state, isViewing, isIdling);
-        return this.rpcClient.user?.setActivity(this.state);
+        return this.client.user?.setActivity(this.state);
     }
 
     async disable() {
@@ -148,7 +159,7 @@ export class RPCController {
         if (this.idleTimeout) clearTimeout(this.idleTimeout);
         if (this.iconTimeout) clearTimeout(this.iconTimeout);
 
-        await this.rpcClient.user?.clearActivity();
+        await this.client.user?.clearActivity();
     }
 
     async enable() {
@@ -164,10 +175,10 @@ export class RPCController {
     }
 
     async updateClientId(clientId: string) {
-        if (this.rpcClient.clientId === clientId) return;
-        await this.rpcClient.destroy();
-        this.rpcClient.clientId = clientId;
-        await this.rpcClient.login();
+        if (this.client.clientId === clientId) return;
+        await this.client.destroy();
+        this.client.clientId = clientId;
+        await this.client.login();
         if (this.enabled) await this.sendActivity();
     }
 
@@ -178,6 +189,6 @@ export class RPCController {
 
     async destroy() {
         await this.disable();
-        await this.rpcClient.destroy();
+        await this.client.destroy();
     }
 }

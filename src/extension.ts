@@ -1,6 +1,6 @@
 import "source-map-support/register";
 
-import { type ExtensionContext, commands, window } from "vscode";
+import { type ExtensionContext, commands, window, workspace } from "vscode";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { RPCController } from "./controller";
 import { CONFIG_KEYS } from "./constants";
@@ -11,6 +11,24 @@ const controller = new RPCController(
     getApplicationId(getConfig()).clientId,
     getConfig().get(CONFIG_KEYS.Behaviour.Debug)
 );
+
+export const registerListeners = (ctx: ExtensionContext) => {
+    const onConfigurationChanged = workspace.onDidChangeConfiguration(async () => {
+        const config = getConfig();
+        const clientId = getApplicationId(config).clientId;
+        const isEnabled = config.get(CONFIG_KEYS.Enabled);
+
+        controller.debug = config.get(CONFIG_KEYS.Behaviour.Debug);
+
+        if (controller.client.clientId !== clientId) {
+            if (!isEnabled) await controller.disable();
+            await controller.login();
+            if (isEnabled) await controller.enable();
+        }
+    });
+
+    ctx.subscriptions.push(onConfigurationChanged);
+};
 
 export const registerCommands = (ctx: ExtensionContext) => {
     const config = getConfig();
@@ -110,6 +128,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 export async function activate(ctx: ExtensionContext) {
     logInfo("Discord Rich Presence for VS Code activated.");
     registerCommands(ctx);
+    registerListeners(ctx);
 
     if (!getConfig().get(CONFIG_KEYS.Enabled)) await controller.disable();
 }

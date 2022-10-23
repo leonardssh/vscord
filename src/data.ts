@@ -56,11 +56,6 @@ export class Data implements DisposableLike {
                     );
 
                 this.editor = e;
-                this.updateGit();
-            }),
-            workspace.onDidChangeWorkspaceFolders(() => {
-                this.debug("root(): workspace.onDidChangeWorkspaceFolders");
-                this.updateGit();
             }),
             extensions.onDidChange(() => {
                 this.debug("root(): extensions.onDidChange");
@@ -250,6 +245,7 @@ export class Data implements DisposableLike {
             }),
             this.gitApi.onDidChangeState((e) => {
                 this.debug("listeners(): Change State", e);
+        
                 this.updateGit();
             })
         );

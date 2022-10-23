@@ -46,7 +46,7 @@
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
         "@types/vscode": "^1.72.0",
-        "@xhayper/discord-rpc": "^1.0.12",
+        "@xhayper/discord-rpc": "^1.0.13",
         "filesize": "^10.0.5",
         "git-url-parse": "^13.1.0",
         "source-map-support": "^0.5.21",
