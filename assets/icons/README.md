@@ -22,5 +22,4 @@ Example: `C++ (cpp.png) (https://en.wikipedia.org/wiki/C%2B%2B)`
 
 ### List
 
--   MoonScript (moonscript.png) (https://moonscript.org/)
 -   Skript (skript.png) (https://docs.skriptlang.org/)
