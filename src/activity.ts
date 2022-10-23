@@ -1,14 +1,3 @@
-import {
-    type Selection,
-    type TextDocument,
-    debug,
-    DiagnosticSeverity,
-    env,
-    languages,
-    workspace,
-    NotebookDocument,
-    NotebookRange
-} from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { type SetActivity } from "@xhayper/discord-rpc";
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
@@ -18,7 +7,16 @@ import { isObject } from "./helpers/isObject";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";
-import { logInfo } from "./logger";
+import {
+    type Selection,
+    type TextDocument,
+    type NotebookDocument,
+    debug,
+    DiagnosticSeverity,
+    env,
+    languages,
+    workspace
+} from "vscode";
 
 // TODO: move this to data class
 export let totalProblems = 0;

@@ -7,6 +7,7 @@ import { logInfo } from "./logger";
 import {
     type WorkspaceFolder,
     type TextEditor,
+    type NotebookEditor,
     type Disposable,
     type Extension,
     EventEmitter,
