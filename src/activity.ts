@@ -285,6 +285,7 @@ export const replaceFileInfo = async (
         ["{file_extenstion}", dataClass.fileExtension ?? FAKE_EMPTY],
         ["{file_size}", fileSize?.toLocaleString() ?? FAKE_EMPTY],
         ["{folder_and_file}", dataClass.folderAndFile ?? FAKE_EMPTY],
+        ["{directory_name}", dataClass.dirName ?? FAKE_EMPTY],
         ["{full_directory_name}", fullDirectoryName],
         ["{workspace}", workspaceName],
         ["{workspace_folder}", workspaceFolderName],
