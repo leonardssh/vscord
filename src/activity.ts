@@ -1,4 +1,3 @@
-import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { type SetActivity } from "@xhayper/discord-rpc";
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
@@ -8,7 +7,16 @@ import { isObject } from "./helpers/isObject";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";
-import { logInfo } from "./logger";
+import {
+    type Selection,
+    type TextDocument,
+    type NotebookDocument,
+    debug,
+    DiagnosticSeverity,
+    env,
+    languages,
+    workspace
+} from "vscode";
 
 // TODO: move this to data class
 export let totalProblems = 0;
@@ -62,7 +70,9 @@ export const activity = async (
         (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceFolder.uri.fsPath) ||
             isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceName));
 
-    isIdling = isIdling || (!isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor));
+    isIdling =
+        isIdling ||
+        (!isWorkspaceExcluded && (!dataClass.workspaceFolder || (!dataClass.editor && !dataClass.notebookEditor)));
 
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
@@ -70,7 +80,7 @@ export const activity = async (
     const PROBLEMS = await replaceFileInfo(
         replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)), isGitExcluded),
         isWorkspaceExcluded,
-        dataClass.editor?.document,
+        dataClass.editor?.document ?? dataClass.notebookEditor?.notebook,
         dataClass.editor?.selection
     );
 
@@ -79,7 +89,7 @@ export const activity = async (
             await replaceFileInfo(
                 replaceGitInfo(replaceAppInfo(text), isGitExcluded),
                 isWorkspaceExcluded,
-                dataClass.editor?.document,
+                dataClass.editor?.document ?? dataClass.notebookEditor?.notebook,
                 dataClass.editor?.selection
             )
         ).replaceAll("{problems}", PROBLEMS);
@@ -100,7 +110,7 @@ export const activity = async (
     const detailsText = detailsEnabled
         ? isWorkspaceExcluded
             ? workspaceExcludedText
-            : isIdling || !dataClass.editor
+            : isIdling || (!dataClass.editor && !dataClass.notebookEditor)
             ? detailsIdleEnabled
                 ? await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle))
                 : undefined
@@ -115,7 +125,7 @@ export const activity = async (
 
     const stateText =
         stateEnabled && !isWorkspaceExcluded
-            ? isIdling || !dataClass.editor
+            ? isIdling || (!dataClass.editor && !dataClass.notebookEditor)
                 ? stateIdleEnabled
                     ? await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle))
                     : undefined
@@ -129,7 +139,7 @@ export const activity = async (
             : undefined;
 
     const largeImageKey = await replaceAllText(
-        isIdling || !dataClass.editor
+        isIdling || (!dataClass.editor && !dataClass.notebookEditor)
             ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key)
             : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key)
@@ -139,7 +149,7 @@ export const activity = async (
     );
 
     const largeImageText = await replaceAllText(
-        isIdling || !dataClass.editor
+        isIdling || (!dataClass.editor && !dataClass.notebookEditor)
             ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text)
             : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text)
@@ -149,7 +159,7 @@ export const activity = async (
     );
 
     const smallImageKey = await replaceAllText(
-        isIdling || !dataClass.editor
+        isIdling || (!dataClass.editor && !dataClass.notebookEditor)
             ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key)
             : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)
@@ -159,7 +169,7 @@ export const activity = async (
     );
 
     const smallImageText = await replaceAllText(
-        isIdling || !dataClass.editor
+        isIdling || (!dataClass.editor && !dataClass.notebookEditor)
             ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text)
             : isDebugging
             ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text)
@@ -175,7 +185,7 @@ export const activity = async (
     presence.smallImageKey = smallImageKey;
     presence.smallImageText = smallImageText;
 
-    if (isIdling || !dataClass.editor) {
+    if (isIdling || (!dataClass.editor && !dataClass.notebookEditor)) {
         if (config.get(CONFIG_KEYS.Status.Button.Idle.Enabled))
             presence.buttons = [
                 {
@@ -256,7 +266,7 @@ export const replaceGitInfo = (text: string, excluded: boolean = false): string 
 export const replaceFileInfo = async (
     text: string,
     excluded: boolean = false,
-    document?: TextDocument,
+    document?: TextDocument | NotebookDocument,
     selection?: Selection
 ): Promise<string> => {
     const config = getConfig();
@@ -297,7 +307,10 @@ export const replaceFileInfo = async (
             "{problems_count}",
             config.get(CONFIG_KEYS.Status.Problems.Enabled) ? totalProblems.toLocaleString() : FAKE_EMPTY
         ],
-        ["{line_count}", document?.lineCount.toLocaleString() ?? FAKE_EMPTY],
+        [
+            "{line_count}",
+            (document && "lineCount" in document ? document.lineCount.toLocaleString() : undefined) ?? FAKE_EMPTY
+        ],
         ["{current_line}", selection ? (selection.active.line + 1).toLocaleString() : FAKE_EMPTY],
         ["{current_column}", selection ? (selection.active.character + 1).toLocaleString() : FAKE_EMPTY]
     ]);

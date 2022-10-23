@@ -7,6 +7,7 @@ import { logInfo } from "./logger";
 import {
     type WorkspaceFolder,
     type TextEditor,
+    type NotebookEditor,
     type Disposable,
     type Extension,
     EventEmitter,
@@ -39,6 +40,7 @@ export class Data implements DisposableLike {
     private gitApi: GitApi | undefined;
 
     public editor: TextEditor | undefined;
+    public notebookEditor: NotebookEditor | undefined;
 
     public constructor(debug: boolean = false) {
         this._debug = debug;
@@ -58,6 +60,10 @@ export class Data implements DisposableLike {
                 this.editor = e;
                 this.updateGit();
             }),
+            window.onDidChangeActiveNotebookEditor((e) => {
+                this.notebookEditor = e;
+                this.updateGit();
+            }),
             workspace.onDidChangeWorkspaceFolders(() => {
                 this.debug("root(): workspace.onDidChangeWorkspaceFolders");
                 this.updateGit();
@@ -70,14 +76,16 @@ export class Data implements DisposableLike {
     }
 
     public get fileName(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const uri = this.editor?.document.uri ?? this.notebookEditor?.notebook.uri;
+        const _file = uri ? parse(uri.fsPath) : undefined;
         const v = _file ? _file.name : undefined;
         this.debug(`fileName(): ${v}`);
         return v;
     }
 
     public get fileExtension(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const uri = this.editor?.document.uri ?? this.notebookEditor?.notebook.uri;
+        const _file = uri ? parse(uri.fsPath) : undefined;
         const v = _file ? _file.ext : undefined;
         this.debug(`fileExtension(): ${v}`);
         return v;
@@ -98,14 +106,16 @@ export class Data implements DisposableLike {
     }
 
     public get dirName(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const uri = this.editor?.document.uri ?? this.notebookEditor?.notebook.uri;
+        const _file = uri ? parse(uri.fsPath) : undefined;
         const v = basename(_file?.dir ?? "");
         this.debug(`dirName(): ${v}`);
         return v;
     }
 
     public get folderAndFile(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const uri = this.editor?.document.uri ?? this.notebookEditor?.notebook.uri;
+        const _file = uri ? parse(uri.fsPath) : undefined;
         const directory = basename(_file?.dir ?? "");
         const file = _file ? _file.base : undefined;
 
@@ -117,7 +127,8 @@ export class Data implements DisposableLike {
     }
 
     public get fullDirName(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const uri = this.editor?.document.uri ?? this.notebookEditor?.notebook.uri;
+        const _file = uri ? parse(uri.fsPath) : undefined;
         const v = _file?.dir;
         this.debug(`fullDirName(): ${v}`);
         return v;
@@ -130,7 +141,7 @@ export class Data implements DisposableLike {
     }
 
     public get workspaceFolder(): WorkspaceFolder | undefined {
-        const uri = this.editor?.document.uri;
+        const uri = this.editor?.document.uri ?? this.notebookEditor?.notebook.uri;
         let v: WorkspaceFolder | undefined;
         if (uri) v = workspace.getWorkspaceFolder(uri);
 
@@ -274,8 +285,9 @@ export class Data implements DisposableLike {
 
         const repos = this.gitApi.repositories;
 
-        if (this.editor) {
-            const _file = parse(this.editor.document.uri.fsPath);
+        if (this.editor || this.notebookEditor) {
+            const uri = this.editor?.document.uri ?? this.notebookEditor?.notebook.uri;
+            const _file = parse(uri!.fsPath);
             const testString = _file.dir;
             return repos
                 .filter((v) => v.rootUri.fsPath.length <= testString.length)

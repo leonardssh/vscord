@@ -80,8 +80,11 @@ export class RPCController {
         };
 
         const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
+        const notebookSwitch = window.onDidChangeActiveNotebookEditor(() => sendActivity(true));
         const fileEdit = workspace.onDidChangeTextDocument(this.activityThrottle.callable);
+        const notebookEdit = workspace.onDidChangeNotebookDocument(this.activityThrottle.callable);
         const fileSelectionChanged = window.onDidChangeTextEditorSelection(this.activityThrottle.callable);
+        const notebookSelectionChanged = window.onDidChangeNotebookEditorSelection(this.activityThrottle.callable);
         const debugStart = debug.onDidStartDebugSession(() => sendActivity());
         const debugEnd = debug.onDidTerminateDebugSession(() => sendActivity());
         const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
@@ -91,7 +94,17 @@ export class RPCController {
         if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
 
-        this.listeners.push(fileSwitch, fileEdit, fileSelectionChanged, debugStart, debugEnd, gitListener);
+        this.listeners.push(
+            fileSwitch,
+            notebookSwitch,
+            fileEdit,
+            notebookEdit,
+            fileSelectionChanged,
+            notebookSelectionChanged,
+            debugStart,
+            debugEnd,
+            gitListener
+        );
     }
 
     private async checkIdle(windowState: WindowState) {
