@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type ConfigurationTarget, type WorkspaceConfiguration, workspace } from "vscode";
 import { type filesize } from "filesize";
 

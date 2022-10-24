@@ -1,1 +1,2 @@
-export const isObject = (value: any): value is object => !!value && typeof value === "object" && !Array.isArray(value);
+export const isObject = (value: unknown): value is object =>
+    !!value && typeof value === "object" && !Array.isArray(value);

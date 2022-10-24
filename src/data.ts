@@ -18,7 +18,7 @@ import {
 const ALLOWED_SCHEME = ["file", "vscode-remote"];
 
 interface DisposableLike {
-    dispose: () => any;
+    dispose: () => unknown;
 }
 
 const API_VERSION: Parameters<GitExtension["getAPI"]>["0"] = 1;
@@ -40,7 +40,7 @@ export class Data implements DisposableLike {
 
     public editor: TextEditor | undefined;
 
-    public constructor(debug: boolean = false) {
+    public constructor(debug = false) {
         this._debug = debug;
         this.editor = window.activeTextEditor;
         this.ext();
@@ -67,28 +67,30 @@ export class Data implements DisposableLike {
     public get fileName(): string | undefined {
         const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = _file ? _file.name : undefined;
-        this.debug(`fileName(): ${v}`);
+        this.debug(`fileName(): ${v ?? ""}`);
         return v;
     }
 
     public get fileExtension(): string | undefined {
         const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = _file ? _file.ext : undefined;
-        this.debug(`fileExtension(): ${v}`);
+        this.debug(`fileExtension(): ${v ?? ""}`);
         return v;
     }
 
     public get fileSize(): Promise<number | undefined> {
-        return new Promise(async (resolve) => {
-            if (!this.editor) return resolve(undefined);
+        return new Promise((resolve) => {
+            void (async () => {
+                if (!this.editor) return resolve(undefined);
 
-            try {
-                const v = await workspace.fs.stat(this.editor.document.uri);
-                this.debug(`fileSize(): ${v.size}`);
-                return resolve(v.size);
-            } catch (ignored) {
-                return resolve(undefined);
-            }
+                try {
+                    const v = await workspace.fs.stat(this.editor.document.uri);
+                    this.debug(`fileSize(): ${v.size}`);
+                    return resolve(v.size);
+                } catch (ignored) {
+                    return resolve(undefined);
+                }
+            })();
         });
     }
 
@@ -106,7 +108,7 @@ export class Data implements DisposableLike {
 
         if (!directory || !this.workspaceFolder?.name || directory === this.workspaceFolder?.name) return file;
 
-        const v = directory + sep + file;
+        const v = `${directory}${sep}${file ?? ""}`;
         this.debug(`folderAndFile(): ${v}`);
         return v;
     }
@@ -114,13 +116,13 @@ export class Data implements DisposableLike {
     public get fullDirName(): string | undefined {
         const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
         const v = _file?.dir;
-        this.debug(`fullDirName(): ${v}`);
+        this.debug(`fullDirName(): ${v ?? ""}`);
         return v;
     }
 
     public get workspaceName(): string | undefined {
         const v = workspace.name;
-        this.debug(`workspaceName(): ${v}`);
+        this.debug(`workspaceName(): ${v ?? ""}`);
         return v;
     }
 
@@ -135,25 +137,25 @@ export class Data implements DisposableLike {
 
     public get gitRepoPath(): string | undefined {
         const v = this._repo?.rootUri.fsPath;
-        this.debug(`gitRepoPath(): ${v}`);
+        this.debug(`gitRepoPath(): ${v ?? ""}`);
         return v;
     }
 
     public get gitRepoName(): string | undefined {
         const v = this._repo?.rootUri.fsPath.split(sep).pop();
-        this.debug(`gitRepoName(): ${v}`);
+        this.debug(`gitRepoName(): ${v ?? ""}`);
         return v;
     }
 
     public get gitRemoteName(): string | undefined {
         const v = this.gitRemoteUrl?.name;
-        this.debug(`gitRepoName(): ${v}`);
+        this.debug(`gitRepoName(): ${v ?? ""}`);
         return v;
     }
 
     public get gitRemoteUrl(): gitUrlParse.GitUrl | undefined {
         const v = this._remote?.fetchUrl ?? this._remote?.pushUrl;
-        this.debug(`gitRemoteUrl(): Url: ${v}`);
+        this.debug(`gitRemoteUrl(): Url: ${v ?? ""}`);
         if (!v) return;
 
         return gitUrlParse(v);
@@ -161,7 +163,7 @@ export class Data implements DisposableLike {
 
     public get gitBranchName(): string | undefined {
         const v = this._repo?.state.HEAD?.name;
-        this.debug(`gitBranchName(): ${v}`);
+        this.debug(`gitBranchName(): ${v ?? ""}`);
         return v;
     }
 
@@ -186,6 +188,7 @@ export class Data implements DisposableLike {
         for (const disposable of disposeOf) disposable?.dispose();
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public onUpdate(listener: () => any): Disposable {
         return this.eventEmitter.event(listener);
     }
@@ -217,6 +220,7 @@ export class Data implements DisposableLike {
     }
 
     private api(e: boolean) {
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         this.debug(`api(): ${e}`);
 
         if (e) {
@@ -236,16 +240,16 @@ export class Data implements DisposableLike {
 
         this.gitApiListeners.push(
             this.gitApi.onDidOpenRepository((e) => {
-                this.debug(`listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop()}`);
+                this.debug(`listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop() ?? ""}`);
                 this.updateGit();
             }),
             this.gitApi.onDidCloseRepository((e) => {
-                this.debug(`listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop()}`);
+                this.debug(`listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop() ?? ""}`);
                 this.updateGit();
             }),
             this.gitApi.onDidChangeState((e) => {
                 this.debug("listeners(): Change State", e);
-        
+
                 this.updateGit();
             })
         );
@@ -261,7 +265,7 @@ export class Data implements DisposableLike {
         }
         this._repo = this.repo();
         this._remote = this.remote();
-        this.debug(`updateGit(): repo ${this.gitRepoPath}`);
+        this.debug(`updateGit(): repo ${this.gitRepoPath ?? ""}`);
         this.eventEmitter.fire();
     }
 
@@ -306,8 +310,10 @@ export class Data implements DisposableLike {
         return remotes.find((v) => v.name === "origin") ?? remotes[0];
     }
 
-    private debug(...message: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private debug(...message: any[]) {
         if (!this._debug) return;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         logInfo("[data.ts]", ...message);
     }
 }

@@ -1,13 +1,15 @@
-export const throttle = (fn: CallableFunction, delay: number, runAfterThrottleEnd: boolean = false) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const throttle = <F extends (...args: any[]) => any>(func: F, delay: number, runAfterThrottleEnd = false) => {
     let timeout: NodeJS.Timeout | undefined;
     let lastCalled = 0;
 
     return {
-        callable: (...args: any[]): any => {
+        callable: (...args: Parameters<F>): ReturnType<F> | undefined => {
             const run = () => {
                 clearTimeout(timeout);
                 lastCalled = new Date().getTime();
-                return fn(...args);
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                return func(...args);
             };
 
             const now = new Date().getTime();
@@ -17,10 +19,11 @@ export const throttle = (fn: CallableFunction, delay: number, runAfterThrottleEn
                 clearTimeout(timeout);
                 timeout = setTimeout(run, delay - (now - lastCalled));
             } else {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return run();
             }
         },
-        reset: (setLastCalled: boolean = false) => {
+        reset: (setLastCalled = false) => {
             if (setLastCalled) lastCalled = new Date().getTime();
             clearTimeout(timeout);
         }

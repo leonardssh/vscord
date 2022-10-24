@@ -4,15 +4,14 @@
     "version": "5.0.3",
     "description": "Highly customizable Discord Rich Presence extenstion for Visual Studio Code",
     "main": "dist/extension.js",
-    "author": "LeonardSSH <leonardssh22@gmail.com> (https://leonard.sh)",
+    "repository": "github:LeonardSSH/vscord",
+    "publisher": "LeonardSSH",
     "contributors": [
         "xhayper <hayper1919@gmail.com>"
     ],
-    "publisher": "LeonardSSH",
     "license": "MIT",
     "private": true,
     "icon": "assets/icon.png",
-    "repository": "github:LeonardSSH/vscord",
     "bugs": {
         "url": "https://github.com/LeonardSSH/vscord/issues"
     },
@@ -24,6 +23,14 @@
         "rich presence",
         "rpc"
     ],
+    "categories": [
+        "Visualization",
+        "Other"
+    ],
+    "extensionKind": [
+        "ui",
+        "workspace"
+    ],
     "galleryBanner": {
         "color": "#5865F2",
         "theme": "dark"
@@ -31,34 +38,29 @@
     "activationEvents": [
         "onStartupFinished"
     ],
-    "extensionKind": [
-        "ui",
-        "workspace"
-    ],
-    "categories": [
-        "Visualization",
-        "Other"
-    ],
+    "scripts": {
+        "vscode:prepublish": "yarn run build",
+        "build": "tsup",
+        "watch": "tsup --watch",
+        "lint": "eslint src"
+    },
     "devDependencies": {
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
-        "@types/vscode": "^1.72.0",
+        "@types/vscode": "^1.57.0",
+        "@typescript-eslint/eslint-plugin": "^5.40.1",
+        "@typescript-eslint/parser": "^5.40.1",
         "@xhayper/discord-rpc": "^1.0.13",
+        "eslint": "^8.26.0",
+        "eslint-config-prettier": "^8.5.0",
         "filesize": "^10.0.5",
         "git-url-parse": "^13.1.0",
         "source-map-support": "^0.5.21",
         "tsup": "^6.3.0",
         "typescript": "^4.8.4"
     },
-    "scripts": {
-        "vscode:prepublish": "yarn run build",
-        "build": "tsup",
-        "watch": "tsup --watch",
-        "lint": "prettier --check src/**/*",
-        "format": "prettier --write src/**/*"
-    },
     "engines": {
-        "vscode": "^1.72.0"
+        "vscode": "^1.57.0"
     },
     "contributes": {
         "commands": [
@@ -726,5 +728,8 @@
             }
         ]
     },
-    "packageManager": "yarn@3.2.4"
+    "packageManager": "yarn@3.2.4",
+    "dependencies": {
+        "prettier": "^2.7.1"
+    }
 }
