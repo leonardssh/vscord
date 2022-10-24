@@ -39,9 +39,9 @@
         "onStartupFinished"
     ],
     "scripts": {
-        "vscode:prepublish": "yarn run build",
-        "build": "tsup src",
-        "watch": "tsup --watch src",
+        "vscode:prepublish": "yarn run compile",
+        "compile": "tsup",
+        "watch": "tsup --watch",
         "lint": "eslint src"
     },
     "devDependencies": {

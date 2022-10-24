@@ -6,6 +6,5 @@ export default defineConfig({
     entry: ["src/extension.ts"],
     external: ["vscode"],
     sourcemap: true,
-    minify: true,
-    dts: true
+    minify: true
 });
