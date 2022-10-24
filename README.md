@@ -37,7 +37,7 @@
             <img alt="Continuous Integration" src="https://github.com/leonardssh/vscord/actions/workflows/CI.yml/badge.svg" />
         </a>
         <a href="https://gitter.im/LeonardSSH/vscord-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
-            <img alt="Glitter" src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
+            <img alt="Gitter" src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
         </a>
     </p>
 </p>
