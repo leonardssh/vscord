@@ -2,13 +2,16 @@ assets/icons/
 node_modules/
 .github/
 .vscode/
-.husky/
 .yarn/
 src/
 
-tsconfig.json
-.gitignore
+ADDING_LANGUAGE.md
 .gitattributes
+tsup.config.ts
+.eslintignore
+.eslintrc.cjs
 tsconfig.json
+.yarnrc.yml
+.gitignore
 yarn.lock
 suckmyass
