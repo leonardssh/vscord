@@ -40,8 +40,8 @@
     ],
     "scripts": {
         "vscode:prepublish": "yarn run build",
-        "build": "tsup",
-        "watch": "tsup --watch",
+        "build": "tsup src",
+        "watch": "tsup --watch src",
         "lint": "eslint src"
     },
     "devDependencies": {
