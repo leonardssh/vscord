@@ -22,5 +22,3 @@ Use the following format `(Language Name) ((Language Icon.png)) ([Link to langau
 Example: `C++ (cpp.png) (https://en.wikipedia.org/wiki/C%2B%2B)`
 
 ### List
-
--   Skript (skript.png) (https://docs.skriptlang.org/)
