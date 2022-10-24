@@ -1,4 +1,4 @@
-name: CD - Open VSX Registry
+name: Continuous Delivery
 
 on:
   push:
@@ -20,7 +20,18 @@ jobs:
       - name: Install Dependencies
         run: yarn install --immutable
 
+      - name: Lint
+        run: yarn run lint
+
       - name: Publish to Open VSX Registry
         uses: HaaLeo/publish-vscode-extension@v1
+        id: publishToOpenVSX
         with:
           pat: ${{ secrets.OPEN_VSX_TOKEN }}
+
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+          registryUrl: https://marketplace.visualstudio.com
+          extensionFile: ${{ steps.publishToOpenVSX.outputs.vsixPath }}

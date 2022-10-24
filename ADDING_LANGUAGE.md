@@ -1,15 +1,24 @@
-# Adding Language Data
+# Adding a Programming Language
+
+Adding a Programming Language to the extention is easy, you can either add it to the repository OR define it in `vscord.additionalFileMapping`.
+
+To make the language appear you need to add it extenstion to the language data json or `vscord.additionalFileMapping`, then to make icon appear you need to add it to [assets/icons/](/assets/icons/).
+
+Data for Programming Language will be located in [src/data/languages.json](/src/data/languages.json)
+Icon for Programming Language will be located in [assets/icons/](/assets/icons/)
+
+## Adding Language Data
 
 There's currently two value that store information for language, that is `KNOWN_LANGUAGES` and `KNOWN_EXTENSIONS`.
 It's not nessecary to fill both field, only one is needed, but you can fill both field.<br>
 
 If possible, please also sort the key by alphabetical order!
 
-## KNOWN_LANGUAGES
+### KNOWN_LANGUAGES
 
 `KNOWN_LANGUAGES` is a [record](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type) of Language ID and icon, it's usually specified by extenstion developer who add support for that specific language.
 
-### Finding Language ID
+#### Finding Language ID
 
 You can find the ID by doing the following.
 
@@ -20,7 +29,7 @@ You can find the ID by doing the following.
 
 For example, in the Language Mode menu, when selecting `C++` it shows `C++ (cpp)`, that mean that `cpp` is the language id
 
-### Example
+#### Example
 
 ```ts
 /*
@@ -37,11 +46,11 @@ const KNOWN_LANGUAGES: Record<string, string> = {
 };
 ```
 
-## KNOWN_EXTENSIONS
+### KNOWN_EXTENSIONS
 
 This is used when there's no matching id in the `KNOWN_LANGUAGES`, or when extenstion to that language id is not installed, it will check if current file ends with the specified value
 
-### Example
+#### Example
 
 ```ts
 /*
@@ -57,3 +66,30 @@ const KNOWN_EXTENSIONS: Record<string, string> = {
     // File that end with this regex is linked to image "cpp" in "assets" folder
 };
 ```
+
+## Adding a new Language Icon
+
+When adding an icon for a language, please read the information below before doing so!
+
+### Requirements
+
+-   It should have a size of 1024x1024.
+-   Please use PNG file format.
+-   Recommend logo size is 512x512, if it's too small you can make it bigger.
+-   We recommend using HSV instead of RGB when working with the background color, and please don't use plain color as background.
+-   You should use the official logo of the language UNLESS it's nessecary to use other icon (logo not minimal, can't find transparent version)
+-   The icon should be minimalist.
+
+### Note
+
+If you can't make an icon, then that's fine! Just add the language name to the list in next section! future contributor might be able to work on it!
+
+### Missing Icon List
+
+Use the following format `(Language Name) ((Language Icon.png)) ([Link to langauge website / information about the language])` where `()` is required, `[]` is optional
+
+Example: `C++ (cpp.png) (https://en.wikipedia.org/wiki/C%2B%2B)`
+
+#### List:
+
+- None

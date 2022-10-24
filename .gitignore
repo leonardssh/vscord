@@ -114,3 +114,6 @@ suckmyass
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# package
+vscord-*.vsix

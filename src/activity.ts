@@ -8,7 +8,6 @@ import { isObject } from "./helpers/isObject";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";
-import { logInfo } from "./logger";
 
 // TODO: move this to data class
 export let totalProblems = 0;
@@ -18,8 +17,7 @@ const COUNTED_SEVERITIES = [DiagnosticSeverity.Error, DiagnosticSeverity.Warning
 
 export const onDiagnosticsChange = () => {
     const diagnostics = languages.getDiagnostics();
-
-    let counted = 0;
+    const counted = 0;
 
     for (const diagnostic of diagnostics.values())
         for (const diagnosticItem of diagnostic[1])
@@ -233,7 +231,7 @@ export const replaceAppInfo = (text: string): string => {
     return text;
 };
 
-export const replaceGitInfo = (text: string, excluded: boolean = false): string => {
+export const replaceGitInfo = (text: string, excluded = false): string => {
     text = text.slice();
 
     const replaceMap = new Map([
@@ -255,7 +253,7 @@ export const replaceGitInfo = (text: string, excluded: boolean = false): string 
 
 export const replaceFileInfo = async (
     text: string,
-    excluded: boolean = false,
+    excluded = false,
     document?: TextDocument,
     selection?: Selection
 ): Promise<string> => {

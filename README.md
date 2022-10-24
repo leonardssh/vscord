@@ -20,9 +20,6 @@
         <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
             <img alt="Visual Studio Marketplace Rating" src="https://img.shields.io/visual-studio-marketplace/r/LeonardSSH.vscord">
         </a>
-		<a href="https://github.com/LeonardSSH/vscord/actions/workflows/cd-vs-marketplace.yml">
-			<img alt="CD - Visual Studio Marketplace" src="https://img.shields.io/github/workflow/status/leonardssh/vscord/CD%20-%20Visual%20Studio%20Marketplace?label=CD%20-%20Visual%20Studio%20Marketplace">
-		</a>
     </p>
     <p align="center">
 		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
@@ -34,13 +31,13 @@
 		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
 			<img alt="Open VSX Rating" src="https://img.shields.io/open-vsx/rating/LeonardSSH/vscord">
 		</a>
-		<a href="https://github.com/LeonardSSH/vscord/actions/workflows/cd-open-vsx.yml">
-			<img alt="CD - Open VSX Registry" src="https://img.shields.io/github/workflow/status/leonardssh/vscord/CD%20-%20Open%20VSX%20Registry?label=CD%20-%20Open%20VSX%20Registry">
-		</a>
 	</p>
     <p align="center">
+        <a href="https://github.com/leonardssh/vscord/actions/workflows/CI.yml">
+            <img alt="Continuous Integration" src="https://github.com/leonardssh/vscord/actions/workflows/CI.yml/badge.svg" />
+        </a>
         <a href="https://gitter.im/LeonardSSH/vscord-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
-            <img src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
+            <img alt="Gitter" src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
         </a>
     </p>
 </p>
@@ -99,7 +96,7 @@ To contribute to this repository, feel free to create a new fork of the reposito
 
 ## 👨‍💻 Adding a new language
 
-To add a new language, you need to read "[Adding Language Data Guide](src/data/README.md)" and "[Adding Language Icon Guide](assets/icons/README.md)" first, then you can follow the Contributing steps above!
+We have a guide for adding a new language [here](/ADDING_LANGUAGE.md)!
 
 ## 🎉 Thanks
 

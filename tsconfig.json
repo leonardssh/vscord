@@ -1,20 +1,21 @@
 {
     "compilerOptions": {
         /* Visit https://aka.ms/tsconfig.json to read more about this file */
-        "target": "ESNext",
-        "lib": ["ESNext"],
+        "target": "ES2021",
+        "lib": ["ES2021"],
         "experimentalDecorators": true,
         "moduleDetection": "auto",
         "module": "commonjs",
         "moduleResolution": "node",
         "resolveJsonModule": true,
+        "rootDir": "src",
         "allowJs": true,
         "checkJs": true,
-        "outDir": "./dist",
+        "outDir": "dist",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "skipLibCheck": true
     },
-    "include": ["src/**/*"]
+    "include": ["src"]
 }

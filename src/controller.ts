@@ -11,24 +11,24 @@ import { dataClass } from "./data";
 export class RPCController {
     statusBarIcon = window.createStatusBarItem(StatusBarAlignment.Left);
     listeners: Disposable[] = [];
-    enabled: boolean = true;
+    enabled = true;
     state: SetActivity = {};
-    debug: boolean = false;
+    debug = false;
     client: Client;
 
     private idleTimeout: NodeJS.Timer | undefined;
     private iconTimeout: NodeJS.Timer | undefined;
     private activityThrottle = throttle(() => void this.sendActivity(), 2000, true);
 
-    constructor(clientId: string, debug: boolean = false) {
+    constructor(clientId: string, debug = false) {
         this.client = new Client({ clientId });
         this.debug = debug;
 
         this.statusBarIcon.text = "$(pulse) Connecting to Discord Gateway...";
 
-        this.client
+        void this.client
             .login()
-            .catch(async (error) => {
+            .catch(async (error: Error) => {
                 const config = getConfig();
 
                 logError("Encountered following error while trying to login:", error);
@@ -39,7 +39,10 @@ export class RPCController {
                 if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
                     error?.message?.includes("ENOENT")
                         ? void window.showErrorMessage("No Discord client detected")
-                        : void window.showErrorMessage("Couldn't connect to Discord via RPC:", error);
+                        : void window.showErrorMessage(
+                              "Couldn't connect to Discord via RPC:",
+                              error.stack ?? error.message
+                          );
                 }
 
                 this.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
@@ -50,6 +53,7 @@ export class RPCController {
 
         this.client.on("debug", (...data) => {
             if (!this.debug) return;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             logInfo("[003] Debug:", ...data);
         });
 
@@ -57,7 +61,7 @@ export class RPCController {
         this.client.on("disconnected", this.onDisconnected.bind(this));
     }
 
-    private async onReady() {
+    private onReady() {
         logInfo("Successfully connected to Discord");
         this.cleanUp();
 
@@ -65,7 +69,7 @@ export class RPCController {
         this.statusBarIcon.tooltip = "Connected to Discord";
         this.statusBarIcon.show();
 
-        if (this.enabled) this.enable();
+        if (this.enabled) void this.enable();
     }
 
     private onDisconnected() {
@@ -79,9 +83,9 @@ export class RPCController {
     private listen() {
         const config = getConfig();
 
-        const sendActivity = (isViewing: boolean = false, isIdling: boolean = false) => {
+        const sendActivity = (isViewing = false, isIdling = false) => {
             this.activityThrottle.reset();
-            this.sendActivity(isViewing, isIdling);
+            void this.sendActivity(isViewing, isIdling);
         };
 
         const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
@@ -115,17 +119,20 @@ export class RPCController {
                 clearTimeout(this.idleTimeout);
                 await this.sendActivity();
             } else {
-                this.idleTimeout = setTimeout(async () => {
-                    if (config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle)) {
-                        await this.disable();
-                        if (config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime)) this.state.startTimestamp = undefined;
-                        return;
-                    }
+                this.idleTimeout = setTimeout(() => {
+                    void (async () => {
+                        if (config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle)) {
+                            await this.disable();
+                            if (config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime))
+                                this.state.startTimestamp = undefined;
+                            return;
+                        }
 
-                    if (!this.enabled) return;
+                        if (!this.enabled) return;
 
-                    this.activityThrottle.reset();
-                    await this.sendActivity(false, true);
+                        this.activityThrottle.reset();
+                        await this.sendActivity(false, true);
+                    })();
                 }, config.get(CONFIG_KEYS.Status.Idle.Timeout) * 1000);
             }
         }
@@ -143,10 +150,7 @@ export class RPCController {
         else if (!this.client.isConnected) await this.client.login();
     }
 
-    async sendActivity(
-        isViewing: boolean = false,
-        isIdling: boolean = false
-    ): Promise<SetActivityResponse | undefined> {
+    async sendActivity(isViewing = false, isIdling = false): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
         this.state = await activity(this.state, isViewing, isIdling);
         return this.client.user?.setActivity(this.state);

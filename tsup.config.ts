@@ -1,7 +1,8 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-    target: "esnext",
+    platform: "node",
+    format: "cjs",
     entry: ["src/extension.ts"],
     external: ["vscode"],
     sourcemap: true,

@@ -4,7 +4,7 @@ import type { Data } from "../data";
 import { filesize } from "filesize";
 
 export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Data) => {
-    if (!dataClass.fileSize) return;
+    if (!(await dataClass.fileSize)) return;
 
     let round = 2;
     if (config.get(CONFIG_KEYS.File.Size.Round) === 0 || config.get(CONFIG_KEYS.File.Size.Round))
@@ -24,7 +24,7 @@ export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Da
 
     fileSize = config.get(CONFIG_KEYS.File.Size.HumanReadable)
         ? (fileSize = filesize((await dataClass.fileSize) ?? 0, fileSizeConfig).toLocaleString())
-        : (fileSize = `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer}B`);
+        : (fileSize = `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer ?? " "}B`);
 
     return fileSize;
 };
