@@ -96,7 +96,7 @@ To contribute to this repository, feel free to create a new fork of the reposito
 
 ## 👨‍💻 Adding a new language
 
-To add a new language, you need to read "[Adding Language Data Guide](src/data/README.md)" and "[Adding Language Icon Guide](assets/icons/README.md)" first, then you can follow the Contributing steps above!
+We have a guide for adding a new language [here](/ADDING_LANGUAGE.md)!
 
 ## 🎉 Thanks
 
