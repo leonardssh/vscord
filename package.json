@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.0.4",
+    "version": "5.0.5",
     "description": "Highly customizable Discord Rich Presence extenstion for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -39,8 +39,8 @@
         "onStartupFinished"
     ],
     "scripts": {
-        "vscode:prepublish": "yarn run compile",
-        "compile": "tsup",
+        "vscode:prepublish": "yarn build",
+        "build": "tsup",
         "watch": "tsup --watch",
         "lint": "eslint src"
     },
@@ -48,8 +48,8 @@
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
         "@types/vscode": "^1.57.0",
-        "@typescript-eslint/eslint-plugin": "^5.40.1",
-        "@typescript-eslint/parser": "^5.40.1",
+        "@typescript-eslint/eslint-plugin": "^5.41.0",
+        "@typescript-eslint/parser": "^5.41.0",
         "@xhayper/discord-rpc": "^1.0.13",
         "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.5.0",
