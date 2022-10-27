@@ -1,7 +1,7 @@
 import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { type SetActivity } from "@xhayper/discord-rpc";
-import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
+import { CONFIG_KEYS, EMPTY, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
 import { isObject } from "./helpers/isObject";
@@ -112,77 +112,84 @@ export const activity = async (
         workspaceExcludedText = text !== "" ? text : undefined ?? workspaceExcludedText;
     }
 
-    let deatilsTemplate = isWorkspaceExcluded ? workspaceExcludedText : FAKE_EMPTY;
-    let stateTemplate = FAKE_EMPTY;
+    let details = isWorkspaceExcluded ? workspaceExcludedText : undefined;
+    let state = undefined;
 
-    let largeImageKeyTemplate = FAKE_EMPTY;
-    let largeImageTextTemplate = FAKE_EMPTY;
+    let largeImageKey = undefined;
+    let largeImageText = undefined;
 
-    let smallImageKeyTemplate = FAKE_EMPTY;
-    let smallImageTextTemplate = FAKE_EMPTY;
+    let smallImageKey = undefined;
+    let smallImageText = undefined;
 
     switch (status) {
         case CURRENT_STATUS.IDLE: {
             if (!isWorkspaceExcluded) {
                 if (detailsIdleEnabled && detailsEnabled)
-                    deatilsTemplate = config.get(CONFIG_KEYS.Status.Details.Text.Idle);
-                if (stateIdleEnabled && stateEnabled) stateTemplate = config.get(CONFIG_KEYS.Status.State.Text.Idle);
+                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle));
+                if (stateIdleEnabled && stateEnabled)
+                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle));
             }
 
-            largeImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key);
-            largeImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text);
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key));
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text));
 
-            smallImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key);
-            smallImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text);
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key));
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text));
             break;
         }
         case CURRENT_STATUS.EDITING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled) deatilsTemplate = config.get(CONFIG_KEYS.Status.Details.Text.Editing);
-                if (stateEnabled) stateTemplate = config.get(CONFIG_KEYS.Status.State.Text.Editing);
+                if (detailsEnabled)
+                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Editing));
+                if (stateEnabled)
+                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Editing));
             }
 
-            largeImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key);
-            largeImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Editing.Text);
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key));
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Editing.Text));
 
-            smallImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Editing.Key);
-            smallImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Editing.Text);
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Editing.Key));
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Editing.Text));
             break;
         }
         case CURRENT_STATUS.DEBUGGING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled) deatilsTemplate = config.get(CONFIG_KEYS.Status.Details.Text.Debugging);
-                if (stateEnabled) stateTemplate = config.get(CONFIG_KEYS.Status.State.Text.Debugging);
+                if (detailsEnabled)
+                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Debugging));
+                if (stateEnabled)
+                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Debugging));
             }
 
-            largeImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key);
-            largeImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text);
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key));
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text));
 
-            smallImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key);
-            smallImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text);
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key));
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text));
             break;
         }
         case CURRENT_STATUS.VIEWING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled) deatilsTemplate = config.get(CONFIG_KEYS.Status.Details.Text.Viewing);
-                if (stateEnabled) stateTemplate = config.get(CONFIG_KEYS.Status.State.Text.Viewing);
+                if (detailsEnabled)
+                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Viewing));
+                if (stateEnabled)
+                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Viewing));
             }
 
-            largeImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key);
-            largeImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Text);
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key));
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Text));
 
-            smallImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key);
-            smallImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text);
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key));
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text));
             break;
         }
     }
 
-    presence.details = detailsEnabled ? await replaceAllText(deatilsTemplate) : undefined;
-    presence.state = stateEnabled ? await replaceAllText(stateTemplate) : undefined;
-    presence.largeImageKey = await replaceAllText(largeImageKeyTemplate);
-    presence.largeImageText = await replaceAllText(largeImageTextTemplate);
-    presence.smallImageKey = await replaceAllText(smallImageKeyTemplate);
-    presence.smallImageText = await replaceAllText(smallImageTextTemplate);
+    presence.details = details;
+    presence.state = state;
+    presence.largeImageKey = largeImageKey;
+    presence.largeImageText = largeImageText;
+    presence.smallImageKey = smallImageKey;
+    presence.smallImageText = smallImageText;
 
     if (isIdling || !dataClass.editor) {
         if (config.get(CONFIG_KEYS.Status.Button.Idle.Enabled))
