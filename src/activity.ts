@@ -1,7 +1,7 @@
 import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { type SetActivity } from "@xhayper/discord-rpc";
-import { CONFIG_KEYS, EMPTY, FAKE_EMPTY } from "./constants";
+import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
 import { isObject } from "./helpers/isObject";
@@ -139,10 +139,8 @@ export const activity = async (
         }
         case CURRENT_STATUS.EDITING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled)
-                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Editing));
-                if (stateEnabled)
-                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Editing));
+                if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Editing));
+                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Editing));
             }
 
             largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key));
@@ -156,8 +154,7 @@ export const activity = async (
             if (!isWorkspaceExcluded) {
                 if (detailsEnabled)
                     details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Debugging));
-                if (stateEnabled)
-                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Debugging));
+                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Debugging));
             }
 
             largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key));
@@ -169,10 +166,8 @@ export const activity = async (
         }
         case CURRENT_STATUS.VIEWING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled)
-                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Viewing));
-                if (stateEnabled)
-                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Viewing));
+                if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Viewing));
+                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Viewing));
             }
 
             largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key));
