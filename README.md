@@ -40,6 +40,11 @@
             <img alt="Gitter" src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
         </a>
     </p>
+        <p align="center">
+        <a href="https://github.com/leonardssh/vscord/actions/workflows/CD.yml">
+            <img alt="Continuous Delivery" src="https://github.com/leonardssh/vscord/actions/workflows/CD.yml/badge.svg" />
+        </a>
+    </p>
 </p>
 
 <br>
