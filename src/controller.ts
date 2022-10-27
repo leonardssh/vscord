@@ -49,7 +49,7 @@ export class RPCController {
                 this.statusBarIcon.command = "vscord.reconnect";
                 this.statusBarIcon.tooltip = "Reconnect to Discord Gateway";
             })
-            .then(() => void logInfo(`Successfully logged in to Discord with client ID ${clientId}`));
+            .then(() => logInfo(`Successfully logged in to Discord with client ID ${clientId}`));
 
         this.client.on("debug", (...data) => {
             if (!this.debug) return;

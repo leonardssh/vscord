@@ -9,6 +9,13 @@ import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";
 
+export enum CURRENT_STATUS {
+    IDLE = "idle",
+    EDITING = "editing",
+    DEBUGGING = "debugging",
+    VIEWING = "viewing"
+}
+
 // TODO: move this to data class
 export let totalProblems = 0;
 
@@ -35,11 +42,13 @@ export const activity = async (
 
     const presence = previous;
 
-    presence.startTimestamp = config.get(CONFIG_KEYS.Status.ShowElapsedTime)
-        ? config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
+    if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
+        presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
             ? Date.now()
-            : previous.startTimestamp ?? Date.now()
-        : undefined;
+            : previous.startTimestamp ?? Date.now();
+    } else {
+        delete presence.startTimestamp;
+    }
 
     const detailsEnabled = config.get(CONFIG_KEYS.Status.Details.Enabled);
     const detailsIdleEnabled = config.get(CONFIG_KEYS.Status.Details.Idle.Enabled);
@@ -64,6 +73,12 @@ export const activity = async (
 
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
+
+    let status: CURRENT_STATUS;
+    if (isIdling) status = CURRENT_STATUS.IDLE;
+    else if (isDebugging) status = CURRENT_STATUS.DEBUGGING;
+    else if (isViewing) status = CURRENT_STATUS.VIEWING;
+    else status = CURRENT_STATUS.EDITING;
 
     const PROBLEMS = config.get(CONFIG_KEYS.Status.Problems.Enabled)
         ? await replaceFileInfo(
@@ -97,83 +112,77 @@ export const activity = async (
         workspaceExcludedText = text !== "" ? text : undefined ?? workspaceExcludedText;
     }
 
-    const detailsText = detailsEnabled
-        ? isWorkspaceExcluded
-            ? workspaceExcludedText
-            : isIdling || !dataClass.editor
-            ? detailsIdleEnabled
-                ? await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle))
-                : undefined
-            : await replaceAllText(
-                  isDebugging
-                      ? config.get(CONFIG_KEYS.Status.Details.Text.Debugging)
-                      : isViewing
-                      ? config.get(CONFIG_KEYS.Status.Details.Text.Viewing)
-                      : config.get(CONFIG_KEYS.Status.Details.Text.Editing)
-              )
-        : undefined;
+    let deatilsTemplate = isWorkspaceExcluded ? workspaceExcludedText : FAKE_EMPTY;
+    let stateTemplate = FAKE_EMPTY;
 
-    const stateText =
-        stateEnabled && !isWorkspaceExcluded
-            ? isIdling || !dataClass.editor
-                ? stateIdleEnabled
-                    ? await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle))
-                    : undefined
-                : await replaceAllText(
-                      isDebugging
-                          ? config.get(CONFIG_KEYS.Status.State.Text.Debugging)
-                          : isViewing
-                          ? config.get(CONFIG_KEYS.Status.State.Text.Viewing)
-                          : config.get(CONFIG_KEYS.Status.State.Text.Editing)
-                  )
-            : undefined;
+    let largeImageKeyTemplate = FAKE_EMPTY;
+    let largeImageTextTemplate = FAKE_EMPTY;
 
-    const largeImageKey = await replaceAllText(
-        isIdling || !dataClass.editor
-            ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key)
-            : isDebugging
-            ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key)
-            : isViewing
-            ? config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key)
-            : config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key)
-    );
+    let smallImageKeyTemplate = FAKE_EMPTY;
+    let smallImageTextTemplate = FAKE_EMPTY;
 
-    const largeImageText = await replaceAllText(
-        isIdling || !dataClass.editor
-            ? config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text)
-            : isDebugging
-            ? config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text)
-            : isViewing
-            ? config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Text)
-            : config.get(CONFIG_KEYS.Status.Image.Large.Editing.Text)
-    );
+    switch (status) {
+        case CURRENT_STATUS.IDLE: {
+            if (!isWorkspaceExcluded) {
+                if (detailsIdleEnabled && detailsEnabled)
+                    deatilsTemplate = config.get(CONFIG_KEYS.Status.Details.Text.Idle);
+                if (stateIdleEnabled && stateEnabled) stateTemplate = config.get(CONFIG_KEYS.Status.State.Text.Idle);
+            }
 
-    const smallImageKey = await replaceAllText(
-        isIdling || !dataClass.editor
-            ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key)
-            : isDebugging
-            ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)
-            : isViewing
-            ? config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key)
-            : config.get(CONFIG_KEYS.Status.Image.Small.Editing.Key)
-    );
+            largeImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key);
+            largeImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text);
 
-    const smallImageText = await replaceAllText(
-        isIdling || !dataClass.editor
-            ? config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text)
-            : isDebugging
-            ? config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text)
-            : isViewing
-            ? config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text)
-            : config.get(CONFIG_KEYS.Status.Image.Small.Editing.Text)
-    );
+            smallImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key);
+            smallImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text);
+            break;
+        }
+        case CURRENT_STATUS.EDITING: {
+            if (!isWorkspaceExcluded) {
+                if (detailsEnabled) deatilsTemplate = config.get(CONFIG_KEYS.Status.Details.Text.Editing);
+                if (stateEnabled) stateTemplate = config.get(CONFIG_KEYS.Status.State.Text.Editing);
+            }
 
-    presence.details = detailsEnabled ? detailsText : undefined;
-    presence.state = stateEnabled ? stateText : undefined;
-    presence.largeImageKey = largeImageKey;
-    presence.largeImageText = largeImageText;
-    presence.smallImageKey = smallImageKey;
-    presence.smallImageText = smallImageText;
+            largeImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key);
+            largeImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Editing.Text);
+
+            smallImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Editing.Key);
+            smallImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Editing.Text);
+            break;
+        }
+        case CURRENT_STATUS.DEBUGGING: {
+            if (!isWorkspaceExcluded) {
+                if (detailsEnabled) deatilsTemplate = config.get(CONFIG_KEYS.Status.Details.Text.Debugging);
+                if (stateEnabled) stateTemplate = config.get(CONFIG_KEYS.Status.State.Text.Debugging);
+            }
+
+            largeImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key);
+            largeImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text);
+
+            smallImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key);
+            smallImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text);
+            break;
+        }
+        case CURRENT_STATUS.VIEWING: {
+            if (!isWorkspaceExcluded) {
+                if (detailsEnabled) deatilsTemplate = config.get(CONFIG_KEYS.Status.Details.Text.Viewing);
+                if (stateEnabled) stateTemplate = config.get(CONFIG_KEYS.Status.State.Text.Viewing);
+            }
+
+            largeImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key);
+            largeImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Text);
+
+            smallImageKeyTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key);
+            smallImageTextTemplate = config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text);
+            break;
+        }
+    }
+
+    presence.details = detailsEnabled ? await replaceAllText(deatilsTemplate) : undefined;
+    presence.state = stateEnabled ? await replaceAllText(stateTemplate) : undefined;
+    presence.largeImageKey = await replaceAllText(largeImageKeyTemplate);
+    presence.largeImageText = await replaceAllText(largeImageTextTemplate);
+    presence.smallImageKey = await replaceAllText(smallImageKeyTemplate);
+    presence.smallImageText = await replaceAllText(smallImageTextTemplate);
 
     if (isIdling || !dataClass.editor) {
         if (config.get(CONFIG_KEYS.Status.Button.Idle.Enabled))
@@ -220,12 +229,12 @@ export const replaceAppInfo = (text: string): string => {
     const isInsider = appName.includes("Insiders");
     const isCodium = appName.startsWith("VSCodium") || appName.startsWith("codium");
 
+    const insiderAppName = isCodium ? "vscodium-insiders" : "vscode-insiders";
+    const normalAppName = isCodium ? "vscodium" : "vscode";
+
     const replaceMap = new Map([
         ["{app_name}", appName],
-        [
-            "{app_id}",
-            isInsider ? (isCodium ? "vscodium-insiders" : "vscode-insiders") : isCodium ? "vscodium" : "vscode"
-        ]
+        ["{app_id}", isInsider ? insiderAppName : normalAppName]
     ]);
 
     for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
@@ -239,11 +248,7 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
     const replaceMap = new Map([
         ["{git_owner}", (!excluded ? dataClass.gitRemoteUrl?.owner : undefined) ?? FAKE_EMPTY],
         ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
-        [
-            "{git_repo}",
-            (!excluded ? (dataClass.gitRemoteUrl ? dataClass.gitRemoteUrl.name : dataClass.gitRepoName) : undefined) ??
-                FAKE_EMPTY
-        ],
+        ["{git_repo}", (!excluded ? dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName : undefined) ?? FAKE_EMPTY],
         ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
         ["{git_url}", (!excluded ? dataClass.gitRemoteUrl?.toString("https") : undefined) ?? FAKE_EMPTY]
     ]);
@@ -262,11 +267,10 @@ export const replaceFileInfo = async (
     const config = getConfig();
     text = text.slice();
 
-    const workspaceFolderName = (!excluded ? dataClass.workspaceFolder?.name : undefined) ?? FAKE_EMPTY;
-    const workspaceName = (!excluded ? dataClass.workspaceName : undefined) ?? workspaceFolderName;
-    const workspaceAndFolder = !excluded
-        ? `${workspaceName}${workspaceFolderName === FAKE_EMPTY ? "" : ` - ${workspaceFolderName}`}`
-        : FAKE_EMPTY;
+    let workspaceFolderName = dataClass.workspaceFolder?.name ?? FAKE_EMPTY;
+    let workspaceName = dataClass.workspaceName ?? FAKE_EMPTY;
+    let workspaceAndFolder =
+        workspaceName + (workspaceFolderName != FAKE_EMPTY ? ` - ${workspaceFolderName}` : FAKE_EMPTY);
 
     let fullDirectoryName: string = FAKE_EMPTY;
     const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
@@ -278,6 +282,13 @@ export const replaceFileInfo = async (
 
         relativePath.splice(-1, 1);
         fullDirectoryName = `${name}${sep}${relativePath.join(sep)}`;
+    }
+
+    if (excluded) {
+        workspaceFolderName = FAKE_EMPTY;
+        workspaceName = FAKE_EMPTY;
+        workspaceAndFolder = FAKE_EMPTY;
+        fullDirectoryName = FAKE_EMPTY;
     }
 
     const replaceMap = new Map([
