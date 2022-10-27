@@ -70,7 +70,7 @@ export const activity = async (
         isWorkspaceExcluded,
         dataClass.editor?.document,
         dataClass.editor?.selection
-    ) : '';
+    ) : FAKE_EMPTY;
 
     const replaceAllText = async (text: string) =>
         (
