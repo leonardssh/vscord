@@ -65,12 +65,12 @@ export const activity = async (
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
 
-    const PROBLEMS = await replaceFileInfo(
+    const PROBLEMS =  config.get(CONFIG_KEYS.Status.Problems.Enabled) ? await replaceFileInfo(
         replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)), isGitExcluded),
         isWorkspaceExcluded,
         dataClass.editor?.document,
         dataClass.editor?.selection
-    );
+    ) : FAKE_EMPTY;
 
     const replaceAllText = async (text: string) =>
         (
