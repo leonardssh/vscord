@@ -18,7 +18,11 @@ export class RPCController {
 
     private idleTimeout: NodeJS.Timer | undefined;
     private iconTimeout: NodeJS.Timer | undefined;
-    private activityThrottle = throttle(() => void this.sendActivity(), 2000, true);
+    private activityThrottle = throttle(
+        (isViewing?: boolean, isIdling?: boolean) => this.sendActivity(isViewing, isIdling),
+        2000,
+        true
+    );
 
     constructor(clientId: string, debug = false) {
         this.client = new Client({ clientId });
@@ -91,11 +95,11 @@ export class RPCController {
         const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
         const fileEdit = workspace.onDidChangeTextDocument((e) => {
             if (e.document !== dataClass.editor?.document) return;
-            this.activityThrottle.callable();
+            void this.activityThrottle.callable();
         });
         const fileSelectionChanged = window.onDidChangeTextEditorSelection((e) => {
             if (e.textEditor !== dataClass.editor) return;
-            this.activityThrottle.callable();
+            void this.activityThrottle.callable();
         });
         const debugStart = debug.onDidStartDebugSession(() => sendActivity());
         const debugEnd = debug.onDidTerminateDebugSession(() => sendActivity());

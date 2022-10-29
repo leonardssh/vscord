@@ -1,7 +1,15 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "typescript.tsdk": "./node_modules/typescript/lib",
-    "task.allowAutomaticTasks": "on",
+    "typescript.tsc.autoDetect": "off",
     "eslint.enable": true,
-    "prettier.enable": true
+    "prettier.enable": true,
+    "files.exclude": {
+        "out": false,
+        "dist": false
+    },
+    "search.exclude": {
+        "out": true,
+        "dist": true
+    }
 }
