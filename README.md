@@ -40,11 +40,6 @@
             <img alt="Gitter" src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
         </a>
     </p>
-    <p align="center">
-        <a href="https://github.com/leonardssh/vscord/actions/workflows/CD.yml">
-            <img alt="Continuous Delivery" src="https://github.com/leonardssh/vscord/actions/workflows/CD.yml/badge.svg" />
-        </a>
-    </p>
 </p>
 
 <br>
@@ -88,6 +83,34 @@ ext install LeonardSSH.vscord
 Use the **[Extension Marketplace](https://code.visualstudio.com/docs/editor/extension-gallery)**
 
 ![a4](https://i.imgur.com/qMzox38.gif)
+
+## Variables
+The following variables will be replaced with the respective value in custom strings.
+| Variable                 | Value                                                              |
+| ------------------------ | -----------                                                        |
+| `{app_name}`             |  current editor name                                               |
+| `{app_id}`               |  editor name that's suitable for using inside url                  |
+| `{file_name}`            |  name of the file                                                  |
+| `{file_extenstion}`      |  extension of the file                                             |
+| `{file_size}`            |  size of the file                                                  |
+| `{folder_and_file}`      |  folder and file name                                              |
+| `{directory_name}`       |  directory name                                                    |
+| `{full_directory_name}`  |  full directory name                                               |
+| `{workspace}`            |  name of the workspace                                             |
+| `{workspace_folder}`     |  name of the workspace folder                                      |
+| `{workspace_and_folder}` |  name of the workspace and folder                                  |
+| `{LANG}` \| `{Lang}` \| `{LANG}` |  format of the lang string                                 |
+| `{problems}`             |  problems text defined in settings                                 |
+| `{problems_count}`       |  number of problems                                                |
+| `{line_count}`           |  number of lines                                                   |
+| `{current_line}`         |  current line                                                      |
+| `{current_column}`       |  current column                                                    |
+| `{git_url}`              |  link to current git repository                                    |
+| `{git_owner}`            |  current git repository owner                                      |
+| `{git_provider}`         |  domain (including .com) to the provider of current git repository |
+| `{git_repo}`             |  repository name for current repository                            |
+| `{git_branch}`           |  current git branch                                                |
+| `{empty}`                |  an empty space                                                    |
 
 ## 👨‍💻 Contributing
 
