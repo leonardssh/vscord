@@ -151,7 +151,7 @@
                     "vscord.status.problems.countedSeverities": {
                         "type": "array",
                         "default": ["error", "warnings"],
-                        "description": "Choose the log level of problem_count if it should have errors, warnings, info or hints. Include all values you want to show in the array [\"error\", \"warnings\", \"info\", \"hints\"]"
+                        "description": "Choose the log level of problem_count if it should have errors, warnings, info or hints. Include all values you want to show in the array [\"error\", \"warnings\", \"infos\", \"hints\"]"
                     },
                     "vscord.status.idle.check": {
                         "type": "boolean",
