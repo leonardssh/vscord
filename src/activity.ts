@@ -24,11 +24,11 @@ const COUNTED_SEVERITIES = [DiagnosticSeverity.Error, DiagnosticSeverity.Warning
 
 export const onDiagnosticsChange = () => {
     const diagnostics = languages.getDiagnostics();
-    const counted = 0;
+    let counted = 0;
 
     for (const diagnostic of diagnostics.values())
         for (const diagnosticItem of diagnostic[1])
-            if (COUNTED_SEVERITIES.includes(diagnosticItem.severity)) totalProblems++;
+            if (COUNTED_SEVERITIES.includes(diagnosticItem.severity)) counted++;
 
     totalProblems = counted;
 };
