@@ -5,28 +5,17 @@
     "tasks": [
         {
             "type": "npm",
-            "label": "npm: watch",
             "script": "watch",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
             "problemMatcher": ["$tsup-watch", "$tsup-tsc-watch"],
             "isBackground": true,
             "presentation": {
                 "reveal": "never",
                 "group": "watchers"
             },
-            "runOptions": {
-                "runOn": "folderOpen"
+            "group": {
+                "kind": "build",
+                "isDefault": true
             }
-        },
-        {
-            "type": "npm",
-            "label": "npm: build",
-            "script": "build",
-            "group": "build",
-            "problemMatcher": ["$tsup", "$tsup-tsc"]
         }
     ]
 }

@@ -5,8 +5,8 @@ export const { KNOWN_EXTENSIONS, KNOWN_LANGUAGES } = lang as {
     KNOWN_LANGUAGES: { language: string; image: string }[];
 };
 
-export const EMPTY = "" as const;
-export const FAKE_EMPTY = "\u200b\u200b" as const;
+export const EMPTY = "";
+export const FAKE_EMPTY = "\u200b\u200b";
 
 export const CONFIG_KEYS = {
     Enabled: "enabled" as const,

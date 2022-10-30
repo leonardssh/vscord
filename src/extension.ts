@@ -37,9 +37,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         if (update)
             try {
                 await config.update(CONFIG_KEYS.Enabled, true);
-            } catch {
-                null;
-            }
+            } catch {}
 
         await controller.enable();
     };
@@ -48,9 +46,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         if (update)
             try {
                 await config.update(CONFIG_KEYS.Enabled, false);
-            } catch {
-                null;
-            }
+            } catch {}
 
         await controller.disable();
 

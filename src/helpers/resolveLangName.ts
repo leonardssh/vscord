@@ -30,9 +30,7 @@ export const resolveLangName = (document: TextDocument) => {
 
     const knownExtension = findKnownExtension
         ? ALL_KNOWN_KNOWN_EXTENSIONS[findKnownExtension]
-        : findKnownLanguage
-        ? findKnownLanguage.image
-        : null;
+        : findKnownLanguage?.image;
 
     const knownLanguage = findKnownLanguage ? findKnownLanguage.image : knownExtension;
     const fileIcon = areLanguagesPrioritized ? knownLanguage : knownExtension;

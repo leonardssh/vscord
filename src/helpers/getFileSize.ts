@@ -14,7 +14,6 @@ export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Da
     if (config.get(CONFIG_KEYS.File.Size.Spacer) === "" || config.get(CONFIG_KEYS.File.Size.Spacer))
         spacer = config.get(CONFIG_KEYS.File.Size.Spacer);
 
-    let fileSize: string | undefined;
     const fileSizeStandard: FileSizeStandard = config.get(CONFIG_KEYS.File.Size.Standard) ?? "iec";
     const fileSizeConfig: FileSizeConfig = {
         round,
@@ -22,9 +21,9 @@ export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Da
         standard: fileSizeStandard
     };
 
-    fileSize = config.get(CONFIG_KEYS.File.Size.HumanReadable)
-        ? (fileSize = filesize((await dataClass.fileSize) ?? 0, fileSizeConfig).toLocaleString())
-        : (fileSize = `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer ?? " "}B`);
+    const fileSize = config.get(CONFIG_KEYS.File.Size.HumanReadable)
+        ? filesize((await dataClass.fileSize) ?? 0, fileSizeConfig).toLocaleString()
+        : `${dataClass.fileSize.toLocaleString()}${fileSizeConfig.spacer ?? " "}B`;
 
     return fileSize;
 };

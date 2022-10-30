@@ -30,8 +30,8 @@ const logMessage = (logLevel: LogLevel, ...messageList: unknown[]) => {
     outputChannel.appendLine(`[${timestamp}] [${logLevel}] ${messageToLog.join(" ")}`);
 };
 
-export const logInfo = (...message: unknown[]) => void logMessage(LogLevel.INFO, ...message);
+export const logInfo = (...message: unknown[]) => logMessage(LogLevel.INFO, ...message);
 
-export const logWarn = (...message: unknown[]) => void logMessage(LogLevel.WARN, ...message);
+export const logWarn = (...message: unknown[]) => logMessage(LogLevel.WARN, ...message);
 
-export const logError = (...message: unknown[]) => void logMessage(LogLevel.ERROR, ...message);
+export const logError = (...message: unknown[]) => logMessage(LogLevel.ERROR, ...message);

@@ -39,15 +39,15 @@
         "onStartupFinished"
     ],
     "scripts": {
-        "vscode:prepublish": "yarn build",
-        "build": "tsup",
+        "vscode:prepublish": "yarn run package",
+        "package": "tsup",
         "watch": "tsup --watch",
         "lint": "eslint src"
     },
     "devDependencies": {
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
-        "@types/vscode": "^1.57.0",
+        "@types/vscode": "1.57.0",
         "@typescript-eslint/eslint-plugin": "^5.41.0",
         "@typescript-eslint/parser": "^5.41.0",
         "@xhayper/discord-rpc": "^1.0.13",
@@ -55,6 +55,7 @@
         "eslint-config-prettier": "^8.5.0",
         "filesize": "^10.0.5",
         "git-url-parse": "^13.1.0",
+        "prettier": "^2.7.1",
         "source-map-support": "^0.5.21",
         "tsup": "^6.3.0",
         "typescript": "^4.8.4"
@@ -728,8 +729,5 @@
             }
         ]
     },
-    "packageManager": "yarn@3.2.4",
-    "dependencies": {
-        "prettier": "^2.7.1"
-    }
+    "packageManager": "yarn@3.2.4"
 }

@@ -44,13 +44,13 @@ __metadata:
   linkType: hard
 
 "@humanwhocodes/config-array@npm:^0.11.6":
-  version: 0.11.6
-  resolution: "@humanwhocodes/config-array@npm:0.11.6"
+  version: 0.11.7
+  resolution: "@humanwhocodes/config-array@npm:0.11.7"
   dependencies:
     "@humanwhocodes/object-schema": ^1.2.1
     debug: ^4.1.1
-    minimatch: ^3.0.4
-  checksum: 2fb7288638968dfeec27f06aef52f043726edd126ac47f24b54256902fdb35b3bf9863d4a4caf0423dccca5dd1354ca5899f3ac047b56774641ca0c4cbedb104
+    minimatch: ^3.0.5
+  checksum: cf506dc45d9488af7fbf108ea6ac2151ba1a25e6d2b94b9b4fc36d2c1e4099b89ff560296dbfa13947e44604d4ca4a90d97a4fb167370bf8dd01a6ca2b6d83ac
   languageName: node
   linkType: hard
 
@@ -150,10 +150,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/vscode@npm:^1.57.0":
-  version: 1.72.0
-  resolution: "@types/vscode@npm:1.72.0"
-  checksum: 590ec21d01d737176f231fde1cafae31e9774891cc3c89cc7167167c0d88a91547c5a9f2103f4e778804f4f55724e9e1d2e3499448e8cea0d33786a1c728e4b6
+"@types/vscode@npm:1.57.0":
+  version: 1.57.0
+  resolution: "@types/vscode@npm:1.57.0"
+  checksum: 1393f0c7302562638ddae31a305680935e50b17cfb922eff4f83aeb06e3cc6e196d92224e32781c9c78e5dc342cc9878da18d01066a76739b99fed4658bb2daf
   languageName: node
   linkType: hard
 
@@ -695,9 +695,9 @@ __metadata:
   linkType: hard
 
 "discord-api-types@npm:^0.37.14":
-  version: 0.37.14
-  resolution: "discord-api-types@npm:0.37.14"
-  checksum: 8f45f202e66acfd7b25624c8f4d225b363d9d8991d766959bcf246761548b99e21c12d9f7eafe00903913af66058595e5e56329dfb219eab8bb75a84f6413983
+  version: 0.37.15
+  resolution: "discord-api-types@npm:0.37.15"
+  checksum: c54d2feeb8074509bdda430fb8ec0f6ff315512e7327d47399e0e7a78bbd0a6f0f0dcfc4b5e39825eb6141a13f33efa942711af89c9a5936a721cfc1e1d69d19
   languageName: node
   linkType: hard
 
@@ -1810,7 +1810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^3.0.4, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
+"minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2
   resolution: "minimatch@npm:3.1.2"
   dependencies:
@@ -2705,7 +2705,7 @@ __metadata:
   dependencies:
     "@types/git-url-parse": ^9.0.1
     "@types/node": 16.x
-    "@types/vscode": ^1.57.0
+    "@types/vscode": 1.57.0
     "@typescript-eslint/eslint-plugin": ^5.41.0
     "@typescript-eslint/parser": ^5.41.0
     "@xhayper/discord-rpc": ^1.0.13
