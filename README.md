@@ -107,6 +107,10 @@ The following variables will be replaced with the respective value in custom str
 | `{lang}` \| `{Lang}` \| `{LANG}` | format of the lang string (css, Css, CSS)                          |
 | `{problems}`                     | problems text defined in settings                                  |
 | `{problems_count}`               | number of problems                                                 |
+| `{problems_count_errors}`        | number of problems that are errors                                 |
+| `{problems_count_warnings}`      | number of problems that are warnings                               |
+| `{problems_count_infos}`         | number of problems that are infos                                  |
+| `{problems_count_hints}`         | number of problems that are hints                                  |
 | `{line_count}`                   | number of lines                                                    |
 | `{current_line}`                 | current line                                                       |
 | `{current_column}`               | current column                                                     |

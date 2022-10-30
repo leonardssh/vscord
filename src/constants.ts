@@ -97,7 +97,8 @@ export const CONFIG_KEYS = {
         } as const,
         Problems: {
             Enabled: "status.problems.enabled" as const,
-            Text: "status.problems.text" as const
+            Text: "status.problems.text" as const,
+            countedSeverities: "status.problems.countedSeverities" as const
         } as const,
         Idle: {
             Check: "status.idle.check" as const,
