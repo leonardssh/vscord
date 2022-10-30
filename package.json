@@ -352,7 +352,7 @@
                     "vscord.status.image.small.viewing.text": {
                         "type": "string",
                         "default": "{app_name}",
-                        "description": "Custom string for the small image text when viewing- {app_name} will be replaced with the name of the app- {app_id} will be replaced with the id of the app"
+                        "description": "Custom string for the small image text when viewing"
                     },
                     "vscord.status.image.small.editing.key": {
                         "type": "string",
