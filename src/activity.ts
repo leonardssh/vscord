@@ -281,18 +281,10 @@ export const getTotalProblems = (countedSeverities: Array<string>): number => {
     let totalProblems = 0;
     countedSeverities.forEach(severity => {
         const logLevel = severity.toLowerCase()
-        if (logLevel === 'errors') {
-            totalProblems += COUNTED_SEVERITIES.errors;
-        }
-        if (logLevel === 'warnings') {
-            totalProblems += COUNTED_SEVERITIES.warnings;
-        }
-        if (logLevel === 'infos') {
-            totalProblems += COUNTED_SEVERITIES.infos;
-        }
-        if (logLevel === 'hints') {
-            totalProblems += COUNTED_SEVERITIES.hints;
-        }
+        if (logLevel === 'errors') totalProblems += COUNTED_SEVERITIES.errors;
+        if (logLevel === 'warnings') totalProblems += COUNTED_SEVERITIES.warnings;
+        if (logLevel === 'infos') totalProblems += COUNTED_SEVERITIES.infos;
+        if (logLevel === 'hints') totalProblems += COUNTED_SEVERITIES.hints;
     });
     return totalProblems;
 }
