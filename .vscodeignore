@@ -13,5 +13,6 @@ tsup.config.ts
 tsconfig.json
 .yarnrc.yml
 .gitignore
+cliff.toml
 yarn.lock
 suckmyass
