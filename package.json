@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.0.5",
+    "version": "5.0.6",
     "description": "Highly customizable Discord Rich Presence extenstion for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -454,7 +454,7 @@
                     },
                     "vscord.behaviour.suppressNotifications": {
                         "type": "boolean",
-                        "default": true,
+                        "default": false,
                         "description": "Suppresses all notifications from the extension."
                     },
                     "vscord.behavoiur.prioritizeLanguagesOverExtensions": {
