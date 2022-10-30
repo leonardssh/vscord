@@ -16,7 +16,7 @@ export enum CURRENT_STATUS {
     VIEWING = "viewing"
 }
 
-interface PROBLEM_LEVEL {
+interface PROBLEM_LEVELS {
     errors: number;
     warnings: number;
     infos: number;
@@ -24,7 +24,7 @@ interface PROBLEM_LEVEL {
 }
 
 // TODO: move this to data class
-const COUNTED_SEVERITIES: PROBLEM_LEVEL = {
+const COUNTED_SEVERITIES: PROBLEM_LEVELS = {
     errors: 0,
     warnings: 0,
     infos: 0,
@@ -341,19 +341,19 @@ export const replaceFileInfo = async (
         ],
         [
             "{problems_count_errors}",
-            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? COUNTED_SEVERITIES.errors.toLocaleString() : FAKE_EMPTY
+            COUNTED_SEVERITIES.errors.toLocaleString()
         ],
         [
             "{problems_count_warnings}",
-            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? COUNTED_SEVERITIES.warnings.toLocaleString() : FAKE_EMPTY
+            COUNTED_SEVERITIES.warnings.toLocaleString()
         ],
         [
             "{problems_count_infos}",
-            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? COUNTED_SEVERITIES.infos.toLocaleString() : FAKE_EMPTY
+            COUNTED_SEVERITIES.infos.toLocaleString()
         ],
         [
             "{problems_count_hints}",
-            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? COUNTED_SEVERITIES.hints.toLocaleString() : FAKE_EMPTY
+            COUNTED_SEVERITIES.hints.toLocaleString()
         ],
         ["{line_count}", document?.lineCount.toLocaleString() ?? FAKE_EMPTY],
         ["{current_line}", selection ? (selection.active.line + 1).toLocaleString() : FAKE_EMPTY],
