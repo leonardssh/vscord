@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [5.0.6] - 2022-10-30
 
-[12e9e5a](12e9e5a8552f5f623fd32871fd8f40585076f6d3)...[496b524](496b524fb018b9b2281af199b883c4e6efd8a076)
+[12e9e5a](12e9e5a8552f5f623fd32871fd8f40585076f6d3)...[3857d82](3857d828d5ac1a57071d9395641196dfcd5f451e)
 
 ### Bug Fixes
 
@@ -14,11 +14,13 @@ All notable changes to this project will be documented in this file.
 
 - Move variables to readme ([c161caf](c161caf064370356157f8402279a70a8a8be9852))
 - Fix duplicate key ([298bb25](298bb25b116499c152a877498f5a706029eb4974))
+- CHANGELOG ([7cafff3](7cafff34715f03033ea4de6753e01fc7b4d752e5))
 
 ### Features
 
 - Badge pyramid :) ([9b579a2](9b579a2b4505943768069cc3d19b7bf8b3fb0943))
 - Bump version ([496b524](496b524fb018b9b2281af199b883c4e6efd8a076))
+- Vscodeignore ([3857d82](3857d828d5ac1a57071d9395641196dfcd5f451e))
 
 ### Miscellaneous Tasks
 
