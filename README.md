@@ -104,7 +104,7 @@ The following variables will be replaced with the respective value in custom str
 | `{workspace}`            |  name of the workspace                                             |
 | `{workspace_folder}`     |  name of the workspace folder                                      |
 | `{workspace_and_folder}` |  name of the workspace and folder                                  |
-| `{LANG}` \| `{Lang}` \| `{LANG}` |  format of the lang string                                 |
+| `{lang}` \| `{Lang}` \| `{LANG}` |  format of the lang string                                 |
 | `{problems}`             |  problems text defined in settings                                 |
 | `{problems_count}`       |  number of problems                                                |
 | `{line_count}`           |  number of lines                                                   |
