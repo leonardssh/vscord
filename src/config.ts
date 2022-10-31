@@ -58,11 +58,11 @@ export interface ExtenstionConfigTyping {
     "status.idle.timeout": number;
     "status.showElapsedTime": boolean;
     "status.resetElapsedTimePerFile": boolean;
-    "ignore.workspaces": string[];
+    "ignore.workspaces": Array<string>;
     "ignore.workspacesText": string | Record<string, string>;
-    "ignore.repositories": string[];
-    "ignore.organizations": string[];
-    "ignore.gitHosts": string[];
+    "ignore.repositories": Array<string>;
+    "ignore.organizations": Array<string>;
+    "ignore.gitHosts": Array<string>;
     "file.size.humanReadable": boolean;
     "file.size.standard": FileSizeStandard;
     "file.size.round": number;
