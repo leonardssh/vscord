@@ -294,7 +294,7 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
     return text;
 };
 
-export const getTotalProblems = (countedSeverities: Array<PROBLEM_LEVEL>): number => {
+export const getTotalProblems = (countedSeverities: PROBLEM_LEVEL[]): number => {
     let totalProblems = 0;
     for (const severity of countedSeverities) {
         const logLevel = severity.toLowerCase();
