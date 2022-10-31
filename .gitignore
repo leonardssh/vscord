@@ -117,3 +117,6 @@ suckmyass
 
 # package
 vscord-*.vsix
+
+# macOS
+.DS_Store
