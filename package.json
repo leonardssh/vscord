@@ -471,6 +471,11 @@
                     },
                     "vscord.behaviour.additionalFileMapping": {
                         "type": "object",
+                        "patternProperties": {
+                            ".": {
+                                "type": "string"
+                            }
+                        },
                         "default": {},
                         "description": "Additional regex/string to check for file language, Key is regex / string and Value is the language name."
                     },
