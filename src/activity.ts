@@ -16,38 +16,55 @@ export enum CURRENT_STATUS {
     VIEWING = "viewing"
 }
 
-interface PROBLEM_LEVELS {
-    errors: number;
-    warnings: number;
-    infos: number;
-    hints: number;
+export enum PROBLEM_LEVEL {
+    ERROR = "error",
+    WARNING = "warning",
+    INFO = "info",
+    HINT = "hint"
 }
 
 // TODO: move this to data class
-const COUNTED_SEVERITIES: PROBLEM_LEVELS = {
-    errors: 0,
-    warnings: 0,
-    infos: 0,
-    hints: 0
-}
+const COUNTED_SEVERITIES: { [key in PROBLEM_LEVEL]: number } = {
+    error: 0,
+    warning: 0,
+    info: 0,
+    hint: 0
+};
+
 export const onDiagnosticsChange = () => {
     const diagnostics = languages.getDiagnostics();
-    let errors = 0;
-    let warnings = 0;
-    let infos = 0;
-    let hints = 0;
+
+    let errorCount = 0;
+    let warningCount = 0;
+    let infoCount = 0;
+    let hintCount = 0;
 
     for (const diagnostic of diagnostics.values())
         for (const diagnosticItem of diagnostic[1]) {
-            if (diagnosticItem.severity == DiagnosticSeverity.Error) errors++;
-            if (diagnosticItem.severity == DiagnosticSeverity.Warning) warnings++;
-            if (diagnosticItem.severity == DiagnosticSeverity.Information) infos++;
-            if (diagnosticItem.severity == DiagnosticSeverity.Hint) hints++;
+            switch (diagnosticItem.severity) {
+                case DiagnosticSeverity.Error: {
+                    errorCount++;
+                    break;
+                }
+                case DiagnosticSeverity.Warning: {
+                    warningCount++;
+                    break;
+                }
+                case DiagnosticSeverity.Information: {
+                    infoCount++;
+                    break;
+                }
+                case DiagnosticSeverity.Hint: {
+                    hintCount++;
+                    break;
+                }
+            }
         }
-    COUNTED_SEVERITIES.errors = errors;
-    COUNTED_SEVERITIES.warnings = warnings;
-    COUNTED_SEVERITIES.infos = infos;
-    COUNTED_SEVERITIES.hints = hints;
+
+    COUNTED_SEVERITIES.error = errorCount;
+    COUNTED_SEVERITIES.warning = warningCount;
+    COUNTED_SEVERITIES.info = infoCount;
+    COUNTED_SEVERITIES.hint = hintCount;
 };
 
 export const activity = async (
@@ -277,17 +294,32 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
     return text;
 };
 
-export const getTotalProblems = (countedSeverities: Array<string>): number => {
+export const getTotalProblems = (countedSeverities: Array<PROBLEM_LEVEL>): number => {
     let totalProblems = 0;
-    countedSeverities.forEach(severity => {
-        const logLevel = severity.toLowerCase()
-        if (logLevel === 'errors') totalProblems += COUNTED_SEVERITIES.errors;
-        if (logLevel === 'warnings') totalProblems += COUNTED_SEVERITIES.warnings;
-        if (logLevel === 'infos') totalProblems += COUNTED_SEVERITIES.infos;
-        if (logLevel === 'hints') totalProblems += COUNTED_SEVERITIES.hints;
-    });
+    for (const severity of countedSeverities) {
+        const logLevel = severity.toLowerCase();
+
+        switch (logLevel) {
+            case PROBLEM_LEVEL.ERROR: {
+                totalProblems += COUNTED_SEVERITIES.error;
+                break;
+            }
+            case PROBLEM_LEVEL.WARNING: {
+                totalProblems += COUNTED_SEVERITIES.warning;
+                break;
+            }
+            case PROBLEM_LEVEL.INFO: {
+                totalProblems += COUNTED_SEVERITIES.info;
+                break;
+            }
+            case PROBLEM_LEVEL.HINT: {
+                totalProblems += COUNTED_SEVERITIES.hint;
+                break;
+            }
+        }
+    }
     return totalProblems;
-}
+};
 
 export const replaceFileInfo = async (
     text: string,
@@ -337,24 +369,14 @@ export const replaceFileInfo = async (
         ["{LANG}", toUpper(fileIcon)],
         [
             "{problems_count}",
-            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? getTotalProblems(config.get(CONFIG_KEYS.Status.Problems.countedSeverities)).toLocaleString() : FAKE_EMPTY
+            config.get(CONFIG_KEYS.Status.Problems.Enabled)
+                ? getTotalProblems(config.get(CONFIG_KEYS.Status.Problems.countedSeverities)).toLocaleString()
+                : FAKE_EMPTY
         ],
-        [
-            "{problems_count_errors}",
-            COUNTED_SEVERITIES.errors.toLocaleString()
-        ],
-        [
-            "{problems_count_warnings}",
-            COUNTED_SEVERITIES.warnings.toLocaleString()
-        ],
-        [
-            "{problems_count_infos}",
-            COUNTED_SEVERITIES.infos.toLocaleString()
-        ],
-        [
-            "{problems_count_hints}",
-            COUNTED_SEVERITIES.hints.toLocaleString()
-        ],
+        ["{problems_count_errors}", COUNTED_SEVERITIES.error.toLocaleString()],
+        ["{problems_count_warnings}", COUNTED_SEVERITIES.warning.toLocaleString()],
+        ["{problems_count_infos}", COUNTED_SEVERITIES.info.toLocaleString()],
+        ["{problems_count_hints}", COUNTED_SEVERITIES.hint.toLocaleString()],
         ["{line_count}", document?.lineCount.toLocaleString() ?? FAKE_EMPTY],
         ["{current_line}", selection ? (selection.active.line + 1).toLocaleString() : FAKE_EMPTY],
         ["{current_column}", selection ? (selection.active.character + 1).toLocaleString() : FAKE_EMPTY]

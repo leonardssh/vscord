@@ -146,12 +146,15 @@
                     "vscord.status.problems.text": {
                         "type": "string",
                         "default": "- {problems_count} problems found",
-                        "description": "The text to show in the status when there are problems. {problems_count} will be replaced with the number of problems."
+                        "description": "The text to show in the status when there are problems."
                     },
                     "vscord.status.problems.countedSeverities": {
                         "type": "array",
-                        "default": ["error", "warnings"],
-                        "description": "Choose the log level of problem_count if it should have errors, warnings, info or hints. Include all values you want to show in the array [\"error\", \"warnings\", \"infos\", \"hints\"]"
+                        "default": [
+                            "error",
+                            "warning"
+                        ],
+                        "description": "Choose the log level of problem_count if it should have errors, warnings, info or hints. Include all values you want to show in the array [\"error\", \"warning\", \"info\", \"hint\"]"
                     },
                     "vscord.status.idle.check": {
                         "type": "boolean",

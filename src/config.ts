@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { type ConfigurationTarget, type WorkspaceConfiguration, workspace } from "vscode";
+import { type PROBLEM_LEVEL } from "./activity";
 import { type filesize } from "filesize";
 
 export type FileSizeConfig = Parameters<typeof filesize>["1"];
@@ -50,7 +51,7 @@ export interface ExtenstionConfigTyping {
     "status.image.problems.text": string;
     "status.problems.enabled": boolean;
     "status.problems.text": string;
-    "status.problems.countedSeverities": Array<string>
+    "status.problems.countedSeverities": Array<PROBLEM_LEVEL>;
     "status.idle.check": boolean;
     "status.idle.disconnectOnIdle": boolean;
     "status.idle.resetElapsedTime": boolean;
