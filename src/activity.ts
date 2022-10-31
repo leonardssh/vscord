@@ -16,21 +16,38 @@ export enum CURRENT_STATUS {
     VIEWING = "viewing"
 }
 
+interface PROBLEM_LEVELS {
+    errors: number;
+    warnings: number;
+    infos: number;
+    hints: number;
+}
+
 // TODO: move this to data class
-export let totalProblems = 0;
-
-// TODO: make this configurable
-const COUNTED_SEVERITIES = [DiagnosticSeverity.Error, DiagnosticSeverity.Warning];
-
+const COUNTED_SEVERITIES: PROBLEM_LEVELS = {
+    errors: 0,
+    warnings: 0,
+    infos: 0,
+    hints: 0
+}
 export const onDiagnosticsChange = () => {
     const diagnostics = languages.getDiagnostics();
-    const counted = 0;
+    let errors = 0;
+    let warnings = 0;
+    let infos = 0;
+    let hints = 0;
 
     for (const diagnostic of diagnostics.values())
-        for (const diagnosticItem of diagnostic[1])
-            if (COUNTED_SEVERITIES.includes(diagnosticItem.severity)) totalProblems++;
-
-    totalProblems = counted;
+        for (const diagnosticItem of diagnostic[1]) {
+            if (diagnosticItem.severity == DiagnosticSeverity.Error) errors++;
+            if (diagnosticItem.severity == DiagnosticSeverity.Warning) warnings++;
+            if (diagnosticItem.severity == DiagnosticSeverity.Information) infos++;
+            if (diagnosticItem.severity == DiagnosticSeverity.Hint) hints++;
+        }
+    COUNTED_SEVERITIES.errors = errors;
+    COUNTED_SEVERITIES.warnings = warnings;
+    COUNTED_SEVERITIES.infos = infos;
+    COUNTED_SEVERITIES.hints = hints;
 };
 
 export const activity = async (
@@ -260,6 +277,18 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
     return text;
 };
 
+export const getTotalProblems = (countedSeverities: Array<string>): number => {
+    let totalProblems = 0;
+    countedSeverities.forEach(severity => {
+        const logLevel = severity.toLowerCase()
+        if (logLevel === 'errors') totalProblems += COUNTED_SEVERITIES.errors;
+        if (logLevel === 'warnings') totalProblems += COUNTED_SEVERITIES.warnings;
+        if (logLevel === 'infos') totalProblems += COUNTED_SEVERITIES.infos;
+        if (logLevel === 'hints') totalProblems += COUNTED_SEVERITIES.hints;
+    });
+    return totalProblems;
+}
+
 export const replaceFileInfo = async (
     text: string,
     excluded = false,
@@ -308,7 +337,23 @@ export const replaceFileInfo = async (
         ["{LANG}", toUpper(fileIcon)],
         [
             "{problems_count}",
-            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? totalProblems.toLocaleString() : FAKE_EMPTY
+            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? getTotalProblems(config.get(CONFIG_KEYS.Status.Problems.countedSeverities)).toLocaleString() : FAKE_EMPTY
+        ],
+        [
+            "{problems_count_errors}",
+            COUNTED_SEVERITIES.errors.toLocaleString()
+        ],
+        [
+            "{problems_count_warnings}",
+            COUNTED_SEVERITIES.warnings.toLocaleString()
+        ],
+        [
+            "{problems_count_infos}",
+            COUNTED_SEVERITIES.infos.toLocaleString()
+        ],
+        [
+            "{problems_count_hints}",
+            COUNTED_SEVERITIES.hints.toLocaleString()
         ],
         ["{line_count}", document?.lineCount.toLocaleString() ?? FAKE_EMPTY],
         ["{current_line}", selection ? (selection.active.line + 1).toLocaleString() : FAKE_EMPTY],

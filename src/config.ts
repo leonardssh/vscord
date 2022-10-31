@@ -50,6 +50,7 @@ export interface ExtenstionConfigTyping {
     "status.image.problems.text": string;
     "status.problems.enabled": boolean;
     "status.problems.text": string;
+    "status.problems.countedSeverities": Array<string>
     "status.idle.check": boolean;
     "status.idle.disconnectOnIdle": boolean;
     "status.idle.resetElapsedTime": boolean;
