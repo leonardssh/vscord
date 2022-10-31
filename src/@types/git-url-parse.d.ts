@@ -69,7 +69,6 @@ declare module "git-url-parse" {
      *
      * @param url - The Git url to parse.
      * @return The `GitUrl` object.
-     *
      */
     declare function gitUrlParse(url: string): gitUrlParse.GitUrl;
 
