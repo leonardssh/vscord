@@ -2,13 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.7] - 2022-10-31
+
+[8e8748d...fa6d701](https://github.com/leonardssh/vscord/compare/8e8748d678adf2292b206bb63640f16f27fb62ea...fa6d701ae0d698aa82d3ccb0d88d2dfdc87cb27f)
+
+### Bug Fixes
+
+- Problem count now works again ([9c02043](https://github.com/leonardssh/vscord/commit/9c02043382eec3e17b07cf9a67ab0840500c7714))
+- Typo info -> infos ([2f1bbd6](https://github.com/leonardssh/vscord/commit/2f1bbd6a54efa2c78f42dc2e2de0ecb90f77fead))
+- Strings shouldnt be disabled if Probelms are disabled ([5b3d06c](https://github.com/leonardssh/vscord/commit/5b3d06c87ca49f726afbde02270a9bb398174f32))
+
+### Features
+
+- Advanced problem count infomation and variables ([f7e7d97](https://github.com/leonardssh/vscord/commit/f7e7d975a715bde6577e88a0e7ff05403d07eb2e))
+
+### Refactor
+
+- Code cleanup ([699b634](https://github.com/leonardssh/vscord/commit/699b634c6695e95075a719808c9c4bda0bc5bfb5))
+
 ## [5.0.6] - 2022-10-30
 
-[12e9e5a...99ad624](https://github.com/leonardssh/vscord/compare/12e9e5a8552f5f623fd32871fd8f40585076f6d3...99ad62459f955e594f4e8bb513f985f401f78ceb)
+[12e9e5a...8e8748d](https://github.com/leonardssh/vscord/compare/12e9e5a8552f5f623fd32871fd8f40585076f6d3...8e8748d678adf2292b206bb63640f16f27fb62ea)
 
 ### Bug Fixes
 
 - Oop ([c85229b](https://github.com/leonardssh/vscord/commit/c85229b680290a128c79fd8d519c3887175481df))
+- Fix cliff for real this time ([8e8748d](https://github.com/leonardssh/vscord/commit/8e8748d678adf2292b206bb63640f16f27fb62ea))
 
 ### Documentation
 
