@@ -3,10 +3,10 @@ import { type TextDocument } from "vscode";
 import { getConfig } from "../config";
 import { basename } from "node:path";
 
-export const toLower = <S extends string = string>(str: S): Lowercase<S> => str.toLocaleLowerCase() as Lowercase<S>;
-export const toUpper = <S extends string = string>(str: S): Uppercase<S> => str.toLocaleUpperCase() as Uppercase<S>;
-export const toTitle = <S extends string = string>(str: S): Capitalize<S> =>
-    toLower(str).replace(/^\w/, (c) => toUpper(c)) as Capitalize<S>;
+export const toLower = <S extends string>(str: S) => str.toLocaleLowerCase() as Lowercase<S>;
+export const toUpper = <S extends string>(str: S) => str.toLocaleUpperCase() as Uppercase<S>;
+export const toTitle = <S extends string>(str: S) =>
+    toLower(str).replace(/^\w/, (c) => toUpper(c)) as Capitalize<Lowercase<S>>;
 
 export const resolveLangName = (document: TextDocument) => {
     const ALL_KNOWN_KNOWN_EXTENSIONS = KNOWN_EXTENSIONS;

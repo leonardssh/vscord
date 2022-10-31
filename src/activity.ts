@@ -93,15 +93,15 @@ export const activity = async (
     const gitOrg = dataClass.gitRemoteUrl?.organization ?? dataClass.gitRemoteUrl?.owner;
     const gitHost = dataClass.gitRemoteUrl?.source;
 
-    const isRepositoryExcluded = !!gitRepo && isExcluded(config.get(CONFIG_KEYS.Ignore.Repositories), gitRepo);
-    const isOrganizationExcluded = !!gitOrg && isExcluded(config.get(CONFIG_KEYS.Ignore.Organizations), gitOrg);
-    const isGitHostExcluded = !!gitHost && isExcluded(config.get(CONFIG_KEYS.Ignore.GitHosts), gitHost);
+    const isRepositoryExcluded = !!gitRepo && isExcluded(config.get(CONFIG_KEYS.Ignore.Repositories)!, gitRepo);
+    const isOrganizationExcluded = !!gitOrg && isExcluded(config.get(CONFIG_KEYS.Ignore.Organizations)!, gitOrg);
+    const isGitHostExcluded = !!gitHost && isExcluded(config.get(CONFIG_KEYS.Ignore.GitHosts)!, gitHost);
     const isGitExcluded = isRepositoryExcluded || isOrganizationExcluded || isGitHostExcluded;
 
     const isWorkspaceExcluded =
         dataClass.workspaceFolder != null &&
-        (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceFolder.uri.fsPath) ||
-            isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces), dataClass.workspaceName));
+        (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceFolder.uri.fsPath) ||
+            isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName));
 
     isIdling = isIdling || (!isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor));
 
@@ -116,7 +116,7 @@ export const activity = async (
 
     const PROBLEMS = config.get(CONFIG_KEYS.Status.Problems.Enabled)
         ? await replaceFileInfo(
-              replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)), isGitExcluded),
+              replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)!), isGitExcluded),
               isWorkspaceExcluded,
               dataClass.editor?.document,
               dataClass.editor?.selection
@@ -134,7 +134,7 @@ export const activity = async (
         ).replaceAll("{problems}", PROBLEMS);
 
     let workspaceExcludedText = "No workspace ignore text provided.";
-    const ignoreWorkspacesText = config.get(CONFIG_KEYS.Ignore.WorkspacesText);
+    const ignoreWorkspacesText = config.get(CONFIG_KEYS.Ignore.WorkspacesText)!;
 
     if (isObject(ignoreWorkspacesText)) {
         workspaceExcludedText =
@@ -159,56 +159,58 @@ export const activity = async (
         case CURRENT_STATUS.IDLE: {
             if (!isWorkspaceExcluded) {
                 if (detailsIdleEnabled && detailsEnabled)
-                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle));
+                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle)!);
                 if (stateIdleEnabled && stateEnabled)
-                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle));
+                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle)!);
             }
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key));
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text));
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key)!);
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text)!);
 
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key));
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text));
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key)!);
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text)!);
             break;
         }
         case CURRENT_STATUS.EDITING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Editing));
-                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Editing));
+                if (detailsEnabled)
+                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Editing)!);
+                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Editing)!);
             }
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key));
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Editing.Text));
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key)!);
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Editing.Text)!);
 
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Editing.Key));
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Editing.Text));
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Editing.Key)!);
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Editing.Text)!);
             break;
         }
         case CURRENT_STATUS.DEBUGGING: {
             if (!isWorkspaceExcluded) {
                 if (detailsEnabled)
-                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Debugging));
-                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Debugging));
+                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Debugging)!);
+                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Debugging)!);
             }
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key));
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text));
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key)!);
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text)!);
 
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key));
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text));
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)!);
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text)!);
             break;
         }
         case CURRENT_STATUS.VIEWING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Viewing));
-                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Viewing));
+                if (detailsEnabled)
+                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Viewing)!);
+                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Viewing)!);
             }
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key));
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Text));
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key)!);
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Text)!);
 
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key));
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text));
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key)!);
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text)!);
             break;
         }
     }
@@ -224,24 +226,24 @@ export const activity = async (
         if (config.get(CONFIG_KEYS.Status.Button.Idle.Enabled))
             presence.buttons = [
                 {
-                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Label)),
-                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Url))
+                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Label)!),
+                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Idle.Url)!)
                 }
             ];
     } else if (!isGitExcluded && dataClass.gitRemoteUrl) {
         if (config.get(CONFIG_KEYS.Status.Button.Active.Enabled))
             presence.buttons = [
                 {
-                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Label)),
-                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Url))
+                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Label)!),
+                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Active.Url)!)
                 }
             ];
     } else if (isGitExcluded) {
         if (config.get(CONFIG_KEYS.Status.Button.Inactive.Enabled))
             presence.buttons = [
                 {
-                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Label)),
-                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Url))
+                    label: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Label)!),
+                    url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Url)!)
                 }
             ];
     }
@@ -370,7 +372,7 @@ export const replaceFileInfo = async (
         [
             "{problems_count}",
             config.get(CONFIG_KEYS.Status.Problems.Enabled)
-                ? getTotalProblems(config.get(CONFIG_KEYS.Status.Problems.countedSeverities)).toLocaleString()
+                ? getTotalProblems(config.get(CONFIG_KEYS.Status.Problems.countedSeverities)!).toLocaleString()
                 : FAKE_EMPTY
         ],
         ["{problems_count_errors}", COUNTED_SEVERITIES.error.toLocaleString()],

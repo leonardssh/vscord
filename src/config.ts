@@ -2,11 +2,12 @@
 import { type ConfigurationTarget, type WorkspaceConfiguration, workspace } from "vscode";
 import { type PROBLEM_LEVEL } from "./activity";
 import { type filesize } from "filesize";
+import { logInfo } from "./logger";
 
 export type FileSizeConfig = Parameters<typeof filesize>["1"];
 export type FileSizeStandard = "iec" | "jedec";
 
-export interface ExtenstionConfigTyping {
+export interface ExtenstionConfigurationType {
     "app.id": string;
     "app.name": "Code" | "Visual Studio Code" | "VSCodium" | "Custom";
     "status.details.enabled": boolean;
@@ -137,14 +138,16 @@ export interface ExtenstionConfigTyping {
  *
  * Refer to [Settings](https://code.visualstudio.com/docs/getstarted/settings) for more information.
  */
-export type WorkspaceConfigurationWithType<ConfigTypeMap extends { [key: string]: any }> = {
+export type WorkspaceConfigurationWithType<Configuration extends Record<string, any>> = {
     /**
      * Return a value from this configuration.
      *
      * @param section Configuration name, supports _dotted_ names.
      * @return The value `section` denotes or `undefined`.
      */
-    get<T, S extends keyof ConfigTypeMap>(section: S | string): S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
+    get<T, S extends keyof Configuration | (string & Record<never, never>)>(
+        section: S
+    ): (S extends keyof Configuration ? Configuration[S] : T) | undefined;
 
     /**
      * Return a value from this configuration.
@@ -153,10 +156,14 @@ export type WorkspaceConfigurationWithType<ConfigTypeMap extends { [key: string]
      * @param defaultValue A value should be returned when no value could be found, is `undefined`.
      * @return The value `section` denotes or the default.
      */
-    get<T, S extends keyof ConfigTypeMap>(
-        section: S | string,
-        defaultValue: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T
-    ): S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
+    get<
+        T,
+        S extends keyof Configuration | (string & Record<never, never>),
+        R = S extends keyof Configuration ? Configuration[S] : T
+    >(
+        section: S,
+        defaultValue: R
+    ): R;
 
     /**
      * Check if this configuration has a certain value.
@@ -164,7 +171,7 @@ export type WorkspaceConfigurationWithType<ConfigTypeMap extends { [key: string]
      * @param section Configuration name, supports _dotted_ names.
      * @return `true` if the section doesn't resolve to `undefined`.
      */
-    has<S extends keyof ConfigTypeMap>(section: S): boolean;
+    has<S extends keyof Configuration | (string & Record<never, never>)>(section: S): boolean;
 
     /**
      * Retrieve all information about a configuration setting. A configuration value
@@ -180,21 +187,25 @@ export type WorkspaceConfigurationWithType<ConfigTypeMap extends { [key: string]
      * @param section Configuration name, supports _dotted_ names.
      * @return Information about a configuration setting or `undefined`.
      */
-    inspect<T, S extends keyof ConfigTypeMap>(
-        section: S | string
+    inspect<
+        T,
+        S extends keyof Configuration | (string & Record<never, never>),
+        R = S extends keyof Configuration ? Configuration[S] : T
+    >(
+        section: S
     ):
         | {
-              key: string;
+              key: S;
 
-              defaultValue?: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
-              globalValue?: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
-              workspaceValue?: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
-              workspaceFolderValue?: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
+              defaultValue?: R;
+              globalValue?: R;
+              workspaceValue?: R;
+              workspaceFolderValue?: R;
 
-              defaultLanguageValue?: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
-              globalLanguageValue?: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
-              workspaceLanguageValue?: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
-              workspaceFolderLanguageValue?: S extends keyof ConfigTypeMap ? ConfigTypeMap[S] : T;
+              defaultLanguageValue?: R;
+              globalLanguageValue?: R;
+              workspaceLanguageValue?: R;
+              workspaceFolderLanguageValue?: R;
 
               languageIds?: string[];
           }
@@ -229,9 +240,9 @@ export type WorkspaceConfigurationWithType<ConfigTypeMap extends { [key: string]
      *	- configuration to workspace folder when there is no workspace folder settings.
      *	- configuration to workspace folder when {@link WorkspaceConfiguration} is not scoped to a resource.
      */
-    update<S extends keyof ExtenstionConfigTyping>(
-        section: S | string,
-        value: S extends keyof ExtenstionConfigTyping ? ExtenstionConfigTyping[S] : any,
+    update<S extends keyof Configuration | (string & Record<never, never>)>(
+        section: S,
+        value: S extends keyof Configuration ? Configuration[S] : unknown,
         configurationTarget?: ConfigurationTarget | boolean | null,
         overrideInLanguage?: boolean
     ): Thenable<void>;
@@ -242,6 +253,8 @@ export type WorkspaceConfigurationWithType<ConfigTypeMap extends { [key: string]
     readonly [key: string]: any;
 } & WorkspaceConfiguration;
 
-export type ExtenstionConfiguration = WorkspaceConfigurationWithType<ExtenstionConfigTyping>;
+export type ExtenstionConfiguration = WorkspaceConfigurationWithType<ExtenstionConfigurationType>;
 
 export const getConfig = () => workspace.getConfiguration("vscord") as ExtenstionConfiguration;
+
+logInfo(getConfig());
