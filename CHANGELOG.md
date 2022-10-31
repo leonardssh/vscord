@@ -2,9 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.8] - 2022-10-31
+
+[97ae847...00b9a1e](https://github.com/leonardssh/vscord/compare/97ae8473addebcf3bde14596a0831ebd5ba1543d...00b9a1eb6493d98dfeba80d0de9552c3d4307a9b)
+
+### Features
+
+- Make it array of enum instead of string ([00b9a1e](https://github.com/leonardssh/vscord/commit/00b9a1eb6493d98dfeba80d0de9552c3d4307a9b))
+
+### Miscellaneous Tasks
+
+- Gitignore ([fe01084](https://github.com/leonardssh/vscord/commit/fe01084789f39f692160a23853b35449d486ecfe))
+- Code cleanup ([3957b5a](https://github.com/leonardssh/vscord/commit/3957b5a1ab591f28b0ef9c249b46a55ea3420d98))
+- PROBLEM_LEVEL[] ([dd9a086](https://github.com/leonardssh/vscord/commit/dd9a0869f47b0c48dd502d7ac5d8f44b211b7379))
+- Stuff ([e93c7e3](https://github.com/leonardssh/vscord/commit/e93c7e3a6019ca9f020ebd58ee75958869f123f5))
+
 ## [5.0.7] - 2022-10-31
 
-[8e8748d...fa6d701](https://github.com/leonardssh/vscord/compare/8e8748d678adf2292b206bb63640f16f27fb62ea...fa6d701ae0d698aa82d3ccb0d88d2dfdc87cb27f)
+[8e8748d...97ae847](https://github.com/leonardssh/vscord/compare/8e8748d678adf2292b206bb63640f16f27fb62ea...97ae8473addebcf3bde14596a0831ebd5ba1543d)
 
 ### Bug Fixes
 
@@ -15,6 +30,7 @@ All notable changes to this project will be documented in this file.
 ### Features
 
 - Advanced problem count infomation and variables ([f7e7d97](https://github.com/leonardssh/vscord/commit/f7e7d975a715bde6577e88a0e7ff05403d07eb2e))
+- Bump version ([97ae847](https://github.com/leonardssh/vscord/commit/97ae8473addebcf3bde14596a0831ebd5ba1543d))
 
 ### Refactor
 
