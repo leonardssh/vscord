@@ -296,10 +296,9 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
 
 export const getTotalProblems = (countedSeverities: PROBLEM_LEVEL[]): number => {
     let totalProblems = 0;
-    for (const severity of countedSeverities) {
-        const logLevel = severity.toLowerCase();
 
-        switch (logLevel) {
+    for (const severity of countedSeverities) {
+        switch (severity) {
             case PROBLEM_LEVEL.ERROR: {
                 totalProblems += COUNTED_SEVERITIES.error;
                 break;
@@ -318,6 +317,7 @@ export const getTotalProblems = (countedSeverities: PROBLEM_LEVEL[]): number => 
             }
         }
     }
+
     return totalProblems;
 };
 
