@@ -150,6 +150,7 @@
                     },
                     "vscord.status.problems.countedSeverities": {
                         "type": "array",
+                        "uniqueItems": true,
                         "items": {
                             "type": "string",
                             "enum": [
@@ -163,7 +164,7 @@
                             "error",
                             "warning"
                         ],
-                        "description": "Choose the log level of problem_count if it should have errors, warnings, info or hints. Include all values you want to show in the array [\"error\", \"warning\", \"info\", \"hint\"]"
+                        "description": "Choose the log level of problem_count if it should have errors, warnings, info or hints."
                     },
                     "vscord.status.idle.check": {
                         "type": "boolean",
@@ -193,6 +194,7 @@
                 "properties": {
                     "vscord.ignore.workspaces": {
                         "type": "array",
+                        "uniqueItems": true,
                         "items": {
                             "type": "string"
                         },
@@ -208,6 +210,7 @@
                     },
                     "vscord.ignore.repositories": {
                         "type": "array",
+                        "uniqueItems": true,
                         "items": {
                             "type": "string"
                         },
@@ -216,6 +219,7 @@
                     },
                     "vscord.ignore.organizations": {
                         "type": "array",
+                        "uniqueItems": true,
                         "items": {
                             "type": "string"
                         },
@@ -224,6 +228,7 @@
                     },
                     "vscord.ignore.gitHosts": {
                         "type": "array",
+                        "uniqueItems": true,
                         "items": {
                             "type": "string"
                         },
