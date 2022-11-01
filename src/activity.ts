@@ -73,8 +73,7 @@ export const activity = async (
     isIdling = false
 ): Promise<SetActivity> => {
     const config = getConfig();
-
-    const presence = previous;
+    const presence: SetActivity = previous;
 
     if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
         presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
@@ -222,7 +221,7 @@ export const activity = async (
     presence.smallImageKey = smallImageKey;
     presence.smallImageText = smallImageText;
 
-    if (isIdling || !dataClass.editor) {
+    if (isIdling) {
         if (config.get(CONFIG_KEYS.Status.Button.Idle.Enabled))
             presence.buttons = [
                 {
@@ -246,6 +245,8 @@ export const activity = async (
                     url: await replaceAllText(config.get(CONFIG_KEYS.Status.Button.Inactive.Url)!)
                 }
             ];
+    } else {
+        delete presence.buttons;
     }
 
     // Clean up
@@ -280,22 +281,6 @@ export const replaceAppInfo = (text: string): string => {
     return text;
 };
 
-export const replaceGitInfo = (text: string, excluded = false): string => {
-    text = text.slice();
-
-    const replaceMap = new Map([
-        ["{git_owner}", (!excluded ? dataClass.gitRemoteUrl?.owner : undefined) ?? FAKE_EMPTY],
-        ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
-        ["{git_repo}", (!excluded ? dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName : undefined) ?? FAKE_EMPTY],
-        ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
-        ["{git_url}", (!excluded ? dataClass.gitRemoteUrl?.toString("https") : undefined) ?? FAKE_EMPTY]
-    ]);
-
-    for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
-
-    return text;
-};
-
 export const getTotalProblems = (countedSeverities: PROBLEM_LEVEL[]): number => {
     let totalProblems = 0;
 
@@ -321,6 +306,22 @@ export const getTotalProblems = (countedSeverities: PROBLEM_LEVEL[]): number => 
     }
 
     return totalProblems;
+};
+
+export const replaceGitInfo = (text: string, excluded = false): string => {
+    text = text.slice();
+
+    const replaceMap = new Map([
+        ["{git_owner}", (!excluded ? dataClass.gitRemoteUrl?.owner : undefined) ?? FAKE_EMPTY],
+        ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
+        ["{git_repo}", (!excluded ? dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName : undefined) ?? FAKE_EMPTY],
+        ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
+        ["{git_url}", (!excluded ? dataClass.gitRemoteUrl?.toString("https") : undefined) ?? FAKE_EMPTY]
+    ]);
+
+    for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
+
+    return text;
 };
 
 export const replaceFileInfo = async (
