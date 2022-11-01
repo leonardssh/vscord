@@ -73,7 +73,7 @@ export const activity = async (
     isIdling = false
 ): Promise<SetActivity> => {
     const config = getConfig();
-    const presence: SetActivity = previous;
+    const presence = previous;
 
     if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
         presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
