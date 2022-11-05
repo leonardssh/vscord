@@ -6,10 +6,14 @@
     "prettier.enable": true,
     "files.exclude": {
         "out": false,
-        "dist": false
+        "dist": false,
+        ".yarn": false,
+        "yarn.lock": false
     },
     "search.exclude": {
         "out": true,
-        "dist": true
+        "dist": true,
+        ".yarn": true,
+        "yarn.lock": true
     }
 }
