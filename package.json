@@ -67,32 +67,32 @@
         "commands": [
             {
                 "command": "vscord.enable",
-                "title": "Enable Discord Presence",
+                "title": "Enable Discord Presence.",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.disable",
-                "title": "Disable Discord Presence",
+                "title": "Disable Discord Presence.",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.workspace.enable",
-                "title": "Enable Discord Presence in the current workspace",
+                "title": "Enable Discord Presence in the current workspace.",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.workspace.disable",
-                "title": "Disable Discord Presence in the current workspace",
+                "title": "Disable Discord Presence in the current workspace.",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.disconnect",
-                "title": "Disconnect Discord Presence from Discord",
+                "title": "Disconnect from Discord Gateway.",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.reconnect",
-                "title": "Reconnect Discord Presence to Discord Gateway",
+                "title": "Reconnect to Discord Gateway.",
                 "category": "VSCord"
             }
         ],
@@ -104,7 +104,7 @@
                     "vscord.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Enable or disable the extension"
+                        "description": "Is the extenstion enabled?"
                     },
                     "vscord.app.id": {
                         "type": "string",
@@ -131,12 +131,12 @@
                     "vscord.status.showElapsedTime": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Show elapsed time in the details section of the rich presence."
+                        "description": "Should elapsed time be shown?"
                     },
                     "vscord.status.resetElapsedTimePerFile": {
                         "type": "boolean",
                         "default": false,
-                        "description": "If true, the elapsed time will be reset when you switch files."
+                        "description": "Should we reset the elapsed time after switching file?"
                     },
                     "vscord.status.problems.enabled": {
                         "type": "boolean",
@@ -146,7 +146,7 @@
                     "vscord.status.problems.text": {
                         "type": "string",
                         "default": "- {problems_count} problems found",
-                        "description": "The text to show in the status when there are problems."
+                        "description": "This text will be shown when there is a problem."
                     },
                     "vscord.status.problems.countedSeverities": {
                         "type": "array",
@@ -164,22 +164,22 @@
                             "error",
                             "warning"
                         ],
-                        "description": "Choose the log level of problem_count if it should have errors, warnings, info or hints."
+                        "description": "List of problem level to count for `problems_count`."
                     },
                     "vscord.status.idle.check": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Check if the user is idle or not."
+                        "description": "Should we check when you are idling?"
                     },
                     "vscord.status.idle.disconnectOnIdle": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Disconnects from Discord when the user is idle."
+                        "description": "Should going idle disconnect you from discord gateway?."
                     },
                     "vscord.status.idle.resetElapsedTime": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Resets the elapsed time when the user becomes idle."
+                        "description": "Should going idle reset the elapsed time?."
                     },
                     "vscord.status.idle.timeout": {
                         "type": "number",
@@ -199,14 +199,14 @@
                             "type": "string"
                         },
                         "default": [],
-                        "description": "List of workspace names to ignore."
+                        "description": "A list of workspace (name / path) to ignore."
                     },
                     "vscord.ignore.workspacesText": {
                         "type": [
                             "string",
                             "object"
                         ],
-                        "description": "The text to show when the workspace is ignored."
+                        "description": "The text / object to show in the status when current workspace is ignored, when using the object, key is workspace name and value is the text."
                     },
                     "vscord.ignore.repositories": {
                         "type": "array",
@@ -215,7 +215,7 @@
                             "type": "string"
                         },
                         "default": [],
-                        "description": "Ignore repositories by name"
+                        "description": "A list of repository name to ignore."
                     },
                     "vscord.ignore.organizations": {
                         "type": "array",
@@ -224,7 +224,7 @@
                             "type": "string"
                         },
                         "default": [],
-                        "description": "Ignore all repositories from the specified organizations."
+                        "description": "A list of git organizations to ignore."
                     },
                     "vscord.ignore.gitHosts": {
                         "type": "array",
@@ -233,7 +233,7 @@
                             "type": "string"
                         },
                         "default": [],
-                        "description": "Ignore all repositories from the specified git hosts."
+                        "description": "A list of git host to ignore."
                     }
                 }
             },
@@ -244,32 +244,32 @@
                     "vscord.status.details.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Controls if the Discord Rich Presence should show across all workspaces."
+                        "description": "Should details be shown?"
                     },
                     "vscord.status.details.idle.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Controls if the Discord Rich Presence should show when the user is idle."
+                        "description": "Should details be shown when idling?"
                     },
                     "vscord.status.details.text.idle": {
                         "type": "string",
                         "default": "Idling",
-                        "description": "Custom string for the details section of the rich presence when idle"
+                        "description": "The text to show when idling."
                     },
                     "vscord.status.details.text.editing": {
                         "type": "string",
                         "default": "In {workspace} {problems}",
-                        "description": "Custom string for the details section of the rich presence when editing"
+                        "description": "The text to show when editing a file."
                     },
                     "vscord.status.details.text.debugging": {
                         "type": "string",
                         "default": "Debugging {file_name}{file_extenstion}",
-                        "description": "Custom string for the details section of the rich presence when debugging"
+                        "description": "The text to show when debugging."
                     },
                     "vscord.status.details.text.viewing": {
                         "type": "string",
                         "default": "In {workspace} {problems}",
-                        "description": "Custom string for the details section of the rich presence when viewing"
+                        "description": "The text to show when viewing a file."
                     }
                 }
             },
@@ -280,37 +280,37 @@
                     "vscord.status.state.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Controls if the state should be shown."
+                        "description": "Should state be shown?"
                     },
                     "vscord.status.state.idle.enabled": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Controls if the Discord Rich Presence should show when the user is idle."
+                        "description": "Should state be shown when idling?"
                     },
                     "vscord.status.state.text.idle": {
                         "type": "string",
                         "default": "",
-                        "description": "Custom string for the state section of the rich presence when idle"
+                        "description": "The text to show when idling."
                     },
                     "vscord.status.state.text.editing": {
                         "type": "string",
                         "default": "Working on {file_name}{file_extenstion}:{current_line}:{current_column}",
-                        "description": "Custom string for the state section of the rich presence when editing"
+                        "description": "The text to show when editting a file."
                     },
                     "vscord.status.state.text.debugging": {
                         "type": "string",
                         "default": "Debugging: {workspace}",
-                        "description": "Custom string for the state section of the rich presence when debugging"
+                        "description": "The text to show when debugging."
                     },
                     "vscord.status.state.text.viewing": {
                         "type": "string",
                         "default": "Viewing {file_name}{file_extenstion}",
-                        "description": "Custom string for the state section of the rich presence when viewing"
+                        "description": "The text to show when viewing a file."
                     },
                     "vscord.status.state.text.noWorkspaceFound": {
                         "type": "string",
                         "default": "No workspace.",
-                        "description": "Custom string for the state section of the rich presence when no workspace is found"
+                        "description": "The text to show when no workspace is found."
                     }
                 }
             },
@@ -321,81 +321,82 @@
                     "vscord.status.image.large.idle.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
-                        "description": "The key of the large image when the user is idle."
+                        "description": "The image url to use when idling"
                     },
                     "vscord.status.image.large.idle.text": {
                         "type": "string",
                         "default": "Idling",
-                        "description": "Custom string for the large image text when idling"
+                        "description": "The large text to show when idling."
                     },
                     "vscord.status.image.large.viewing.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png",
-                        "description": "Custom string for the large image key of the rich presence when viewing"
+                        "description": "The image url to use when viewing a file."
                     },
                     "vscord.status.image.large.viewing.text": {
                         "type": "string",
                         "default": "Viewing a {LANG} file",
-                        "description": "Custom string for the large image text when viewing a file"
+                        "description": "The large text to show when viewing a file."
                     },
                     "vscord.status.image.large.editing.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png",
-                        "description": "Custom string for the large image key of the rich presence when editing"
+                        "description": "The image url to use when editing a file."
                     },
                     "vscord.status.image.large.editing.text": {
                         "type": "string",
                         "default": "Editing a {LANG} file",
-                        "description": "Custom string for the large image text of the rich presence when editing"
+                        "description": "The large text to show when editing a file."
                     },
                     "vscord.status.image.large.debugging.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png",
-                        "description": "The key of the large image when debugging"
+                        "description": "The image url to use when debugging."
                     },
                     "vscord.status.image.large.debugging.text": {
                         "type": "string",
                         "default": "Debugging a {LANG} file",
-                        "description": "Custom string for the large image text of the rich presence when debugging"
+                        "description": "The large text to show when debugging"
                     },
                     "vscord.status.image.small.idle.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
-                        "description": "The key of the small image when idling."
+                        "description": "The image url to use when idling."
                     },
                     "vscord.status.image.small.idle.text": {
                         "type": "string",
                         "default": "zZz",
-                        "description": "Custom string for the small image text when idling"
+                        "description": "The small text to show when idling."
                     },
                     "vscord.status.image.small.viewing.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png"
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png",
+                        "description": "The image url to use when viewing a file."
                     },
                     "vscord.status.image.small.viewing.text": {
                         "type": "string",
                         "default": "{app_name}",
-                        "description": "Custom string for the small image text when viewing"
+                        "description": "The small text to show when viewing a file."
                     },
                     "vscord.status.image.small.editing.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png",
-                        "description": "The url to the image when editing, {app_id} will be replaced with the file extension of the file."
+                        "description": "The image url to use when editting a file."
                     },
                     "vscord.status.image.small.editing.text": {
                         "type": "string",
                         "default": "{app_name}",
-                        "description": "Custom string for the small image text of the rich presence when editing"
+                        "description": "The small text to show when editting a file."
                     },
                     "vscord.status.image.small.debugging.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png",
-                        "description": "The url to the image when debugging. {app_id} will be replaced with the file extension of the file."
+                        "description": "The image url to use when debugging."
                     },
                     "vscord.status.image.small.debugging.text": {
                         "type": "string",
                         "default": "{app_name}",
-                        "description": "Custom string for the small image text of the rich presence when debugging"
+                        "description": "The small text to show when debugging."
                     }
                 }
             },
@@ -406,52 +407,52 @@
                     "vscord.status.button.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Enable or disable the status button."
+                        "description": "Enable or disable the button."
                     },
                     "vscord.status.button.active.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "If disabled, the button will be hidden when the user is active."
+                        "description": "Should the button be shown when active?"
                     },
                     "vscord.status.button.active.label": {
                         "type": "string",
                         "default": "View Repository",
-                        "description": "The label of the button when the user is viewing a file from a repository."
+                        "description": "The label to use when active."
                     },
                     "vscord.status.button.active.url": {
                         "type": "string",
                         "default": "{git_url}",
-                        "description": "The active url for the button"
+                        "description": "The button url to use when active."
                     },
                     "vscord.status.button.idle.enabled": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Enable button when user is idle."
+                        "description": "Should the button be shown when idle?"
                     },
                     "vscord.status.button.idle.label": {
                         "type": "string",
                         "default": "",
-                        "description": "The label of the button when the user is idle."
+                        "description": "The label to use when idle."
                     },
                     "vscord.status.button.idle.url": {
                         "type": "string",
                         "default": "",
-                        "description": "The button Idle url when the user is idle."
+                        "description": "The button url to use idle."
                     },
                     "vscord.status.button.inactive.enabled": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Show a button when the user is not viewing a file."
+                        "description": "Should the button be shown when inactive?"
                     },
                     "vscord.status.button.inactive.label": {
                         "type": "string",
                         "default": "",
-                        "description": "The label of the button when the user is inactive."
+                        "description": "The label to show when inactive."
                     },
                     "vscord.status.button.inactive.url": {
                         "type": "string",
                         "default": "",
-                        "description": "Url for when inactive"
+                        "description": "The button url to use when inactive."
                     }
                 }
             },
@@ -485,7 +486,7 @@
                     "vscord.behavoiur.prioritizeLanguagesOverExtensions": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Prioritize languages over extensions when determining the file type."
+                        "description": "Prioritize languages over file extension when determining programming language for the file."
                     },
                     "vscord.file.size.humanReadable": {
                         "type": "boolean",
