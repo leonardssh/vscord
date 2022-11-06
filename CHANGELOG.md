@@ -2,13 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.9] - 2022-11-06
+
+[371da98...b93c048](https://github.com/leonardssh/vscord/compare/371da98bac965b4f1ee436e02e6e364a6fadd1a9...b93c048c3fde96c4c21b911028ea27b9ce63a27e)
+
+### Bug Fixes
+
+- Coming back from idle broke github url ([d0a2e17](https://github.com/leonardssh/vscord/commit/d0a2e17cf3d4932a4f1454d2e49bdbe6722b3ce6))
+
+### Features
+
+- Add `uniqueItems` to array config ([771ce03](https://github.com/leonardssh/vscord/commit/771ce032f9869d15e41b79cca1f8abb19427b04f))
+- More typecheck for settings ([67a57bc](https://github.com/leonardssh/vscord/commit/67a57bc625001637643e68f1ac61d783dd831c2f))
+- This is a better way to handle it ([548ec91](https://github.com/leonardssh/vscord/commit/548ec91e097110d15d1f9044891b63c66dd2a4ec))
+- More strict typing ([bee02c3](https://github.com/leonardssh/vscord/commit/bee02c32b404b3fa2dfcd82615ae45569b378ea4))
+- Extra space ([128f761](https://github.com/leonardssh/vscord/commit/128f76111c4f4ee130fd23b8d5368c74338d7e2e))
+- Fix compile error ([ad27a79](https://github.com/leonardssh/vscord/commit/ad27a79c3c6531b0cf44e86a1c271218a39c97d8))
+- Bump version ([b93c048](https://github.com/leonardssh/vscord/commit/b93c048c3fde96c4c21b911028ea27b9ce63a27e))
+
+### Miscellaneous Tasks
+
+- Readability ([c535763](https://github.com/leonardssh/vscord/commit/c535763b0f656e374b8b447cd2a5ebbc6d00ba0c))
+- More typing ([54b5e85](https://github.com/leonardssh/vscord/commit/54b5e8523d87b0d52bcf73d84c00e624e867ef7d))
+- Unnessecary typing ([8e59b41](https://github.com/leonardssh/vscord/commit/8e59b412c099041478d4c548d3346d2b309f32e1))
+
+### Lint
+
+- Please ([cad0c0e](https://github.com/leonardssh/vscord/commit/cad0c0e8074d50542baddd44870d5d2d5f253789))
+
 ## [5.0.8] - 2022-10-31
 
-[97ae847...00b9a1e](https://github.com/leonardssh/vscord/compare/97ae8473addebcf3bde14596a0831ebd5ba1543d...00b9a1eb6493d98dfeba80d0de9552c3d4307a9b)
+[97ae847...371da98](https://github.com/leonardssh/vscord/compare/97ae8473addebcf3bde14596a0831ebd5ba1543d...371da98bac965b4f1ee436e02e6e364a6fadd1a9)
 
 ### Features
 
 - Make it array of enum instead of string ([00b9a1e](https://github.com/leonardssh/vscord/commit/00b9a1eb6493d98dfeba80d0de9552c3d4307a9b))
+- 5.0.8 ([371da98](https://github.com/leonardssh/vscord/commit/371da98bac965b4f1ee436e02e6e364a6fadd1a9))
 
 ### Miscellaneous Tasks
 
