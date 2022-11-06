@@ -475,7 +475,7 @@
                         "additionalProperties": {
                             "type": "string"
                         },
-                        "description": "Additional regex/string to check for file language, Key is regex / string and Value is the language name."
+                        "description": "Additional regex to check for language, key is regex and value is the language."
                     },
                     "vscord.behaviour.suppressNotifications": {
                         "type": "boolean",
