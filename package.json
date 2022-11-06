@@ -141,7 +141,7 @@
                     "vscord.status.problems.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Show the number of problems in the status."
+                        "description": "Should we count the problems?"
                     },
                     "vscord.status.problems.text": {
                         "type": "string",
@@ -407,7 +407,7 @@
                     "vscord.status.button.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Enable or disable the button."
+                        "description": "Should the button be shown?"
                     },
                     "vscord.status.button.active.enabled": {
                         "type": "boolean",
