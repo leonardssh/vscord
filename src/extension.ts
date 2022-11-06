@@ -18,7 +18,7 @@ export const registerListeners = (ctx: ExtensionContext) => {
         const clientId = getApplicationId(config).clientId;
         const isEnabled = config.get(CONFIG_KEYS.Enabled);
 
-        controller.debug = config.get(CONFIG_KEYS.Behaviour.Debug);
+        controller.debug = config.get(CONFIG_KEYS.Behaviour.Debug) ?? false;
 
         if (controller.client.clientId !== clientId) {
             if (!isEnabled) await controller.disable();

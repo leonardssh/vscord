@@ -122,9 +122,11 @@ export class RPCController {
             if (windowState.focused) {
                 clearTimeout(this.idleTimeout);
                 await this.sendActivity();
-            } else {
+            } else if (config.get(CONFIG_KEYS.Status.Idle.Check)) {
                 this.idleTimeout = setTimeout(() => {
                     void (async () => {
+                        if (!config.get(CONFIG_KEYS.Status.Idle.Check)) return;
+
                         if (config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle)) {
                             await this.disable();
                             if (config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime))
@@ -137,7 +139,7 @@ export class RPCController {
                         this.activityThrottle.reset();
                         await this.sendActivity(false, true);
                     })();
-                }, config.get(CONFIG_KEYS.Status.Idle.Timeout) * 1000);
+                }, config.get(CONFIG_KEYS.Status.Idle.Timeout)! * 1000);
             }
         }
     }
