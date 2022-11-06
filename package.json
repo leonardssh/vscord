@@ -486,7 +486,7 @@
                     "vscord.behavoiur.prioritizeLanguagesOverExtensions": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Prioritize languages over file extension when determining programming language for the file."
+                        "description": "Prioritize language defined by editor over file extension when determining the language for the file."
                     },
                     "vscord.file.size.humanReadable": {
                         "type": "boolean",
