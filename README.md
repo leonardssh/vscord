@@ -51,7 +51,7 @@
 
 # VSCord
 
-Highly customizable [Discord Rich Presence](https://discord.com/rich-presence) extenstion for [Visual Studio Code](https://code.visualstudio.com/)
+Highly customizable [Discord Rich Presence](https://discord.com/rich-presence) extension for [Visual Studio Code](https://code.visualstudio.com/)
 
 > Remember to 🌟 this GitHub if you 💖 it.
 
@@ -59,7 +59,7 @@ Highly customizable [Discord Rich Presence](https://discord.com/rich-presence) e
 
 -   Shows what you're working on!
 -   Switch between 3 IDE names (`Code`, `Visual Studio Code` and `VSCodium`) or a custom one if you wish!
--   Packed with 60+ extenstion settings!
+-   Packed with 60+ extension settings!
 -   Tons of variable to use!
 -   Support for over 130+ of the most popular languages!
 -   Support custom images (using HTTP link)
@@ -96,7 +96,7 @@ The following variables will be replaced with the respective value in custom str
 | `{app_name}`                     | current editor name                                                |
 | `{app_id}`                       | editor name that's suitable for using inside url                   |
 | `{file_name}`                    | name of the file                                                   |
-| `{file_extenstion}`              | extension of the file                                              |
+| `{file_extension}`              | extension of the file                                              |
 | `{file_size}`                    | size of the file                                                   |
 | `{folder_and_file}`              | folder and file name                                               |
 | `{directory_name}`               | directory name                                                     |

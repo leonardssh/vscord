@@ -2,12 +2,11 @@
 import { type ConfigurationTarget, type WorkspaceConfiguration, workspace } from "vscode";
 import { type PROBLEM_LEVEL } from "./activity";
 import { type filesize } from "filesize";
-import { logInfo } from "./logger";
 
 export type FileSizeConfig = Parameters<typeof filesize>["1"];
 export type FileSizeStandard = "iec" | "jedec";
 
-export interface ExtenstionConfigurationType {
+export interface ExtensionConfigurationType {
     "app.id": string;
     "app.name": "Code" | "Visual Studio Code" | "VSCodium" | "Custom";
     "status.details.enabled": boolean;
@@ -74,7 +73,7 @@ export interface ExtenstionConfigurationType {
     "behaviour.debug": boolean;
 }
 
-// Created by hayper1919, you may use it inside your extenstion
+// Created by hayper1919, you may use it inside your extension
 /**
  * Represents the configuration. It is a merged view of
  *
@@ -253,8 +252,6 @@ export type WorkspaceConfigurationWithType<Configuration extends Record<string, 
     readonly [key: string]: any;
 } & WorkspaceConfiguration;
 
-export type ExtenstionConfiguration = WorkspaceConfigurationWithType<ExtenstionConfigurationType>;
+export type ExtensionConfiguration = WorkspaceConfigurationWithType<ExtensionConfigurationType>;
 
-export const getConfig = () => workspace.getConfiguration("vscord") as ExtenstionConfiguration;
-
-logInfo(getConfig());
+export const getConfig = () => workspace.getConfiguration("vscord") as ExtensionConfiguration;

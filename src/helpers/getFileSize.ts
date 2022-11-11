@@ -1,9 +1,9 @@
-import type { FileSizeConfig, FileSizeStandard, ExtenstionConfiguration } from "../config";
+import type { FileSizeConfig, FileSizeStandard, ExtensionConfiguration } from "../config";
 import { CONFIG_KEYS } from "../constants";
 import type { Data } from "../data";
 import { filesize } from "filesize";
 
-export const getFileSize = async (config: ExtenstionConfiguration, dataClass: Data) => {
+export const getFileSize = async (config: ExtensionConfiguration, dataClass: Data) => {
     if (!(await dataClass.fileSize)) return;
 
     let round = 2;

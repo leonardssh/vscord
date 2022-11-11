@@ -194,10 +194,10 @@ export class Data implements DisposableLike {
     }
 
     private ext() {
-        // Our extenstion
+        // Our extension
         this._debug = getConfig().get(CONFIG_KEYS.Behaviour.Debug) ?? false;
 
-        // Git extenstion
+        // Git extension
         const ext = extensions.getExtension<GitExtension>("vscode.git");
         this.debug(`ext(): ${ext ? "Extension" : "undefined"}`);
         if (ext && !this.gitExt) {
