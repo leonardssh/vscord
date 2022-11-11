@@ -17,6 +17,8 @@ body = """
 {% if previous %}\
     {% if previous.commit_id %}
         [{{ previous.commit_id | truncate(length=7, end="") }}...{{ commit_id | truncate(length=7, end="") }}](https://github.com/leonardssh/vscord/compare/{{ previous.commit_id }}...{{ commit_id }})
+    {% else %}\
+        [{{ commit_id | truncate(length=7, end="") }}](https://github.com/leonardssh/vscord/commit/{{ commit_id }})
     {% endif %}\
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}

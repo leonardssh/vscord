@@ -2,9 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [5.0.10] - 2022-11-06
+## [5.0.10] - 2022-11-11
 
-[5693dc8...8405d06](https://github.com/leonardssh/vscord/compare/5693dc82b8cb3910fe8d20e482b36b39e18574a0...8405d065b10950eed6ef0e4788fa6afe0ce4a616)
+[5693dc8...8eb4ffe](https://github.com/leonardssh/vscord/compare/5693dc82b8cb3910fe8d20e482b36b39e18574a0...8eb4ffe3dc1b68c6d7e2b60680a6b0e100259e11)
+
+### Features
+
+- Update cliff ([8eb4ffe](https://github.com/leonardssh/vscord/commit/8eb4ffe3dc1b68c6d7e2b60680a6b0e100259e11))
 
 ### Miscellaneous Tasks
 
@@ -841,6 +845,7 @@ All notable changes to this project will be documented in this file.
 - Delete publish workflow ([06eb9c7](https://github.com/leonardssh/vscord/commit/06eb9c745a41a38844662c213ff0ef06c17b4141))
 
 ## [3.1.0] - 2021-02-16
+[86b1a3b](https://github.com/leonardssh/vscord/commit/86b1a3baaafb431d924e92684f58e4dd4b3d90af)
 
 ### Bug Fixes
 
