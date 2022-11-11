@@ -1,8 +1,8 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.0.9",
-    "description": "Highly customizable Discord Rich Presence extenstion for Visual Studio Code",
+    "version": "5.0.10",
+    "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
     "publisher": "LeonardSSH",
@@ -104,7 +104,7 @@
                     "vscord.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Is the extenstion enabled?"
+                        "description": "Is the extension enabled?"
                     },
                     "vscord.app.id": {
                         "type": "string",
@@ -263,7 +263,7 @@
                     },
                     "vscord.status.details.text.debugging": {
                         "type": "string",
-                        "default": "Debugging {file_name}{file_extenstion}",
+                        "default": "Debugging {file_name}{file_extension}",
                         "description": "The text to show when debugging."
                     },
                     "vscord.status.details.text.viewing": {
@@ -294,7 +294,7 @@
                     },
                     "vscord.status.state.text.editing": {
                         "type": "string",
-                        "default": "Working on {file_name}{file_extenstion}:{current_line}:{current_column}",
+                        "default": "Working on {file_name}{file_extension}:{current_line}:{current_column}",
                         "description": "The text to show when editting a file."
                     },
                     "vscord.status.state.text.debugging": {
@@ -304,7 +304,7 @@
                     },
                     "vscord.status.state.text.viewing": {
                         "type": "string",
-                        "default": "Viewing {file_name}{file_extenstion}",
+                        "default": "Viewing {file_name}{file_extension}",
                         "description": "The text to show when viewing a file."
                     },
                     "vscord.status.state.text.noWorkspaceFound": {
