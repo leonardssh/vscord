@@ -4,11 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## [5.0.10] - 2022-11-11
 
-[5693dc8...8eb4ffe](https://github.com/leonardssh/vscord/compare/5693dc82b8cb3910fe8d20e482b36b39e18574a0...8eb4ffe3dc1b68c6d7e2b60680a6b0e100259e11)
+[5693dc8...0afe816](https://github.com/leonardssh/vscord/compare/5693dc82b8cb3910fe8d20e482b36b39e18574a0...0afe8167d60827c25f1b99d794444e9c8bffef9a)
+
+### Bug Fixes
+
+- #140 ([059ac6a](https://github.com/leonardssh/vscord/commit/059ac6a55bced97fcf9bdd80343e5b2d64e00d7a))
+- #139 ([0b6432a](https://github.com/leonardssh/vscord/commit/0b6432a653bd3c2d781f6c3d55012ad380abef60))
+- README table ([0afe816](https://github.com/leonardssh/vscord/commit/0afe8167d60827c25f1b99d794444e9c8bffef9a))
 
 ### Features
 
 - Update cliff ([8eb4ffe](https://github.com/leonardssh/vscord/commit/8eb4ffe3dc1b68c6d7e2b60680a6b0e100259e11))
+- Update cliff ([50fc78a](https://github.com/leonardssh/vscord/commit/50fc78a693a2799a191b29ce5ffcd3d1d8239486))
 
 ### Miscellaneous Tasks
 
