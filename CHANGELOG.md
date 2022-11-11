@@ -2,9 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.10] - 2022-11-06
+
+[5693dc8...8405d06](https://github.com/leonardssh/vscord/compare/5693dc82b8cb3910fe8d20e482b36b39e18574a0...8405d065b10950eed6ef0e4788fa6afe0ce4a616)
+
+### Miscellaneous Tasks
+
+- Update description for a setting ([211bb4d](https://github.com/leonardssh/vscord/commit/211bb4d3e25e367e7c5fc647608a0735ca83f0fa))
+- Settings description update ([bcabf5f](https://github.com/leonardssh/vscord/commit/bcabf5f4ff429485196f1fde73346411457afde7))
+- Make the description accurate ([a1cf7c6](https://github.com/leonardssh/vscord/commit/a1cf7c6064ae660c3ec8abf4765db9c0d4bd0138))
+- More description update ([8405d06](https://github.com/leonardssh/vscord/commit/8405d065b10950eed6ef0e4788fa6afe0ce4a616))
+
 ## [5.0.9] - 2022-11-06
 
-[371da98...b93c048](https://github.com/leonardssh/vscord/compare/371da98bac965b4f1ee436e02e6e364a6fadd1a9...b93c048c3fde96c4c21b911028ea27b9ce63a27e)
+[371da98...5693dc8](https://github.com/leonardssh/vscord/compare/371da98bac965b4f1ee436e02e6e364a6fadd1a9...5693dc82b8cb3910fe8d20e482b36b39e18574a0)
 
 ### Bug Fixes
 
@@ -25,8 +36,9 @@ All notable changes to this project will be documented in this file.
 - Readability ([c535763](https://github.com/leonardssh/vscord/commit/c535763b0f656e374b8b447cd2a5ebbc6d00ba0c))
 - More typing ([54b5e85](https://github.com/leonardssh/vscord/commit/54b5e8523d87b0d52bcf73d84c00e624e867ef7d))
 - Unnessecary typing ([8e59b41](https://github.com/leonardssh/vscord/commit/8e59b412c099041478d4c548d3346d2b309f32e1))
+- Changelog ([5693dc8](https://github.com/leonardssh/vscord/commit/5693dc82b8cb3910fe8d20e482b36b39e18574a0))
 
-### Lint
+### Uncategorized
 
 - Please ([cad0c0e](https://github.com/leonardssh/vscord/commit/cad0c0e8074d50542baddd44870d5d2d5f253789))
 
@@ -119,13 +131,6 @@ All notable changes to this project will be documented in this file.
 - README ([1cc5563](https://github.com/leonardssh/vscord/commit/1cc5563c03e2a438fcb19ef5118d8e10cfd99eb4))
 - Typo ([c67c1d8](https://github.com/leonardssh/vscord/commit/c67c1d813e09d2ec56a550895edb9396e4349c73))
 
-### CI
-
-- Added another CI ([c253070](https://github.com/leonardssh/vscord/commit/c253070e3c71e6e7228a928ea775e7a0f0a19999))
-- Update condition ([fbdb9db](https://github.com/leonardssh/vscord/commit/fbdb9dba6af7b17d58bac01e4e564b15b26a66a5))
-- Fix ci ([5333b02](https://github.com/leonardssh/vscord/commit/5333b02492bb4d59583fcf6fea72055f1ced35f0))
-- OS Matrix ([36a2785](https://github.com/leonardssh/vscord/commit/36a27857e3af88dd5497a34606071ccf5e2523cc))
-
 ### Features
 
 - Update repository ([eb5b69d](https://github.com/leonardssh/vscord/commit/eb5b69d5bedddcd996465ef6e2c70e9027ed420b))
@@ -141,17 +146,15 @@ All notable changes to this project will be documented in this file.
 - Reduce package file list ([de549d2](https://github.com/leonardssh/vscord/commit/de549d24fc698cc3b4bd0d8d31f91e1fcb583658))
 - Bump version ([369ef58](https://github.com/leonardssh/vscord/commit/369ef587ac1734067dd4907f1149ddca2b875035))
 
-### Ci
-
-- Update name ([7acb80d](https://github.com/leonardssh/vscord/commit/7acb80d499026f7738ea0276bda78e000c0d134e))
-
-### Devops
+### Uncategorized
 
 - Removed less from icon readme ([089aca0](https://github.com/leonardssh/vscord/commit/089aca09582b7d4f73ef59be28dfc7723ba09d73))
-
-### Lint
-
 - Add ESLINT ([321bf02](https://github.com/leonardssh/vscord/commit/321bf02f8cfa8a8c2ced0b034d9f61927af64c92))
+- Update name ([7acb80d](https://github.com/leonardssh/vscord/commit/7acb80d499026f7738ea0276bda78e000c0d134e))
+- Added another CI ([c253070](https://github.com/leonardssh/vscord/commit/c253070e3c71e6e7228a928ea775e7a0f0a19999))
+- Update condition ([fbdb9db](https://github.com/leonardssh/vscord/commit/fbdb9dba6af7b17d58bac01e4e564b15b26a66a5))
+- Fix ci ([5333b02](https://github.com/leonardssh/vscord/commit/5333b02492bb4d59583fcf6fea72055f1ced35f0))
+- OS Matrix ([36a2785](https://github.com/leonardssh/vscord/commit/36a27857e3af88dd5497a34606071ccf5e2523cc))
 
 ## [5.0.3] - 2022-10-23
 
@@ -257,12 +260,9 @@ All notable changes to this project will be documented in this file.
 - Code cleanup ([9ddac09](https://github.com/leonardssh/vscord/commit/9ddac093a8efeb364159dacb7cf86de643984b54))
 - Dependencies cleanup ([42fcff4](https://github.com/leonardssh/vscord/commit/42fcff4265308b7846a7667958ffb50b8706eebd))
 
-### Pref
+### Uncategorized
 
 - A bit of optimization ([1318e2b](https://github.com/leonardssh/vscord/commit/1318e2ba8e7d88b5b43f9083937328d31f647437))
-
-### Removed
-
 - Replace key map ([48b8302](https://github.com/leonardssh/vscord/commit/48b8302bc1be8f0c9ee98f1b9cadf031a4415b88))
 
 ## [4.6.7] - 2022-10-20
@@ -434,10 +434,6 @@ All notable changes to this project will be documented in this file.
 - Fix packagejson ([e79b651](https://github.com/leonardssh/vscord/commit/e79b651e9a6f8338df73860f2f024782d825cd2a))
 - Bump version ([c6833e8](https://github.com/leonardssh/vscord/commit/c6833e83d5a39e6e48442cb335e3c67e92373c22))
 
-### Fix
-
-- Issue #65 ([1477321](https://github.com/leonardssh/vscord/commit/1477321409d92ed881e4595387dd4e70a0cfd3d5))
-
 ### Miscellaneous Tasks
 
 - Bump deps ([37c61ae](https://github.com/leonardssh/vscord/commit/37c61ae9b3de100d3679179f7a5a3a50490e2a37))
@@ -448,8 +444,9 @@ All notable changes to this project will be documented in this file.
 
 - Fix typo ([6a3277b](https://github.com/leonardssh/vscord/commit/6a3277b87c7da3072d37697a65d3771cd7b4a724))
 
-### Ci
+### Uncategorized
 
+- Issue #65 ([1477321](https://github.com/leonardssh/vscord/commit/1477321409d92ed881e4595387dd4e70a0cfd3d5))
 - Fix ([dfdcc5b](https://github.com/leonardssh/vscord/commit/dfdcc5b400df8d5c0d650df881a70cdec6397954))
 - Fix CI ([c6d5da7](https://github.com/leonardssh/vscord/commit/c6d5da7f17daea5f7ebb7e5307a377d73f3d158c))
 - Fix ci ([9cbd9b1](https://github.com/leonardssh/vscord/commit/9cbd9b1316c0a8e368983889df372498412f1bdf))
@@ -544,7 +541,7 @@ All notable changes to this project will be documented in this file.
 
 - Some refactoring ([54aac75](https://github.com/leonardssh/vscord/commit/54aac75e09b5eee6a3ecd7cb553b820413dafa28))
 
-### Ci
+### Uncategorized
 
 - More convenient workflow names ([781dc70](https://github.com/leonardssh/vscord/commit/781dc70855d31b4ec6bd306d51a1190cdca7cdf3))
 
@@ -600,7 +597,7 @@ All notable changes to this project will be documented in this file.
 
 - Bump patch version ([5f475e7](https://github.com/leonardssh/vscord/commit/5f475e74d6fe118a6ab12e67dce714016276898d))
 
-### Ci
+### Uncategorized
 
 - Split cd workflows ([4117411](https://github.com/leonardssh/vscord/commit/411741128b4c15e16a4eae656cc12aebafd10093))
 - Use HaaLeo/publish-vscode-extension v1 ([db57722](https://github.com/leonardssh/vscord/commit/db57722747ecb3d1df9e50ce002091b6108873a4))
@@ -641,14 +638,11 @@ All notable changes to this project will be documented in this file.
 - Set 'false' as default value for sendActivity's isViewing option ([fc2e53d](https://github.com/leonardssh/vscord/commit/fc2e53d61b67e6e0ecbf7a9e3f9a388e025d44bb))
 - Diagnostics variable name conventions ([d9000e3](https://github.com/leonardssh/vscord/commit/d9000e3b5843bd8e81db5e7803c155d044987bfc))
 
-### Ci
+### Uncategorized
 
 - Fix cd workflow ([84f5b92](https://github.com/leonardssh/vscord/commit/84f5b929780b06dc27a3e16d581d68c95b631e74))
 - Install deps before build & publish ([0b18ce5](https://github.com/leonardssh/vscord/commit/0b18ce5824d7fcfe3a6aa21e7b8b7572c138998f))
 - Deploy only on tags ([5ba9b70](https://github.com/leonardssh/vscord/commit/5ba9b707bbc7f5631307382d3336405fe1744bf2))
-
-### Src
-
 - Languages.json: Add Ansible language ([c87b77b](https://github.com/leonardssh/vscord/commit/c87b77b25f97a76088f2dfeafb3b7a422a62f8e8))
 - Languages.json: Add another Jinja file extension ([4136e88](https://github.com/leonardssh/vscord/commit/4136e88eb68d8a5573ddfd6ffe94c81fc0500602))
 
@@ -842,7 +836,7 @@ All notable changes to this project will be documented in this file.
 
 - Extension icon ([f4fb613](https://github.com/leonardssh/vscord/commit/f4fb6132f2067c6215d8506a7d47201b01073d2a))
 
-### Ci
+### Uncategorized
 
 - Delete publish workflow ([06eb9c7](https://github.com/leonardssh/vscord/commit/06eb9c745a41a38844662c213ff0ef06c17b4141))
 
@@ -943,13 +937,10 @@ All notable changes to this project will be documented in this file.
 
 - Delete dots ([67c935f](https://github.com/leonardssh/vscord/commit/67c935f5be0ca703f250148a9ae1f55992820ec1))
 
-### Build
+### Uncategorized
 
 - Change vscode engine version ([56c96e5](https://github.com/leonardssh/vscord/commit/56c96e558aee2a7b6d5c8a268ada0cc039466882))
 - Setup husky v5 & bump dependencies ([7a9397e](https://github.com/leonardssh/vscord/commit/7a9397e683ad542a5c7cf0e533fba87107d3ef64))
-
-### Ci
-
 - Fix ci workflow ([c92997b](https://github.com/leonardssh/vscord/commit/c92997b3b156801dc7067149afe019e0d0860e3d))
 - 2nd try to fix ci workflow ([5d54e49](https://github.com/leonardssh/vscord/commit/5d54e49361910df8938ec916ee8ecca200455076))
 - Add publish workflow ([e3eeafd](https://github.com/leonardssh/vscord/commit/e3eeafd5a12891674047cafa8077b5229e7fb2e2))
