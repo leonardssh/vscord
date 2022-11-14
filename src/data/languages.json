@@ -69,6 +69,10 @@
             "image": "manifest"
         },
         {
+            "language": "glsl",
+            "image": "glsl"
+        },
+        {
             "language": "go",
             "image": "go"
         },
@@ -91,6 +95,10 @@
         {
             "language": "html",
             "image": "html"
+        },
+        {
+            "language": "hlsl",
+            "image": "hlsl"
         },
         {
             "language": "ini",
@@ -746,6 +754,42 @@
         },
         ".lhs": {
             "image": "haskell"
+        },
+        ".hlsl": {
+            "image": "hlsl"
+        },
+        ".cginc": {
+            "image": "hlsl"
+        },
+        ".cg": {
+            "image": "hlsl"
+        },
+        ".shader": {
+            "image": "hlsl"
+        },
+        ".fx" : {
+            "image": "hlsl"
+        },
+        ".glsl" : {
+            "image": "glsl"
+        },
+        ".vert" : {
+            "image": "glsl"
+        },
+        ".frag" : {
+            "image": "glsl"
+        },
+        ".geom" : {
+            "image": "glsl"
+        },
+        ".tesc" : {
+            "image": "glsl"
+        },
+        ".tese" : {
+            "image": "glsl"
+        },
+        ".comp" : {
+            "image": "glsl"
         },
         ".hx": {
             "image": "haxe"
