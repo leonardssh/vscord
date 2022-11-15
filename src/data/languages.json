@@ -704,10 +704,7 @@
         ".groovy": {
             "image": "groovy"
         },
-        ".gvy": {
-            "image": "groovy"
-        },
-        ".gy": {
+        "/\\.gv?y$/i": {
             "image": "groovy"
         },
         ".gsh": {
@@ -755,46 +752,13 @@
         ".lhs": {
             "image": "haskell"
         },
-        ".hlsl": {
+        "/\\.(hlsl|cginc|cg|shader|fx)$/i": {
             "image": "hlsl"
         },
-        ".cginc": {
-            "image": "hlsl"
-        },
-        ".cg": {
-            "image": "hlsl"
-        },
-        ".shader": {
-            "image": "hlsl"
-        },
-        ".fx" : {
-            "image": "hlsl"
-        },
-        ".glsl" : {
+        "/\\.(glsl|vert|frag|geom|tesc|tese|comp)$/i": {
             "image": "glsl"
         },
-        ".vert" : {
-            "image": "glsl"
-        },
-        ".frag" : {
-            "image": "glsl"
-        },
-        ".geom" : {
-            "image": "glsl"
-        },
-        ".tesc" : {
-            "image": "glsl"
-        },
-        ".tese" : {
-            "image": "glsl"
-        },
-        ".comp" : {
-            "image": "glsl"
-        },
-        ".hx": {
-            "image": "haxe"
-        },
-        ".hxml": {
+        "/\\.hx(ml)?$/i": {
             "image": "haxe"
         },
         "/^procfile/i": {
@@ -857,43 +821,22 @@
         ".ipynb": {
             "image": "jupyter"
         },
-        ".kt": {
-            "image": "kotlin"
-        },
-        ".ktm": {
-            "image": "kotlin"
-        },
-        ".kts": {
+        "/\\.kt[ms]$/i": {
             "image": "kotlin"
         },
         ".less": {
             "image": "less"
         },
-        ".lsp": {
+        "/\\.l(i?sp)?$/i": {
             "image": "lisp"
         },
-        ".lisp": {
-            "image": "lisp"
-        },
-        ".l": {
-            "image": "lisp"
-        },
-        ".nl": {
-            "image": "lisp"
-        },
-        ".ny": {
+        "/\\.n[ly]$/i": {
             "image": "lisp"
         },
         ".podsl": {
             "image": "lisp"
         },
-        ".sexp": {
-            "image": "lisp"
-        },
-        ".ss": {
-            "image": "lisp"
-        },
-        ".scm": {
+        "/\\.s([s]|(cm)|(exp))$/i": {
             "image": "lisp"
         },
         ".ls": {
@@ -902,16 +845,10 @@
         ".log": {
             "image": "log"
         },
-        ".lua": {
-            "image": "lua"
-        },
-        ".pd_lua": {
+        "/\\.([w]|(pd_))?lua$/i": {
             "image": "lua"
         },
         ".rbxs": {
-            "image": "lua"
-        },
-        ".wlua": {
             "image": "lua"
         },
         "/^Makefile/": {
@@ -1067,25 +1004,10 @@
         ".x": {
             "image": "objective-c"
         },
-        ".ml": {
+        "/\\.eliom[i]?$/i": {
             "image": "ocaml"
         },
-        ".mli": {
-            "image": "ocaml"
-        },
-        ".eliom": {
-            "image": "ocaml"
-        },
-        ".eliomi": {
-            "image": "ocaml"
-        },
-        ".ml4": {
-            "image": "ocaml"
-        },
-        ".mll": {
-            "image": "ocaml"
-        },
-        ".mly": {
+        "/\\.ml[4lyi]?$/i": {
             "image": "ocaml"
         },
         ".mt": {
@@ -1100,16 +1022,13 @@
         ".lpr": {
             "image": "pascal"
         },
-        ".p": {
-            "image": "pawn"
-        },
         ".inc": {
             "image": "pawn"
         },
         ".sma": {
             "image": "pawn"
         },
-        ".pwn": {
+        "/\\.p(wn)?$/i": {
             "image": "pawn"
         },
         ".sp": {
@@ -1121,13 +1040,7 @@
         ".al": {
             "image": "perl"
         },
-        ".ph": {
-            "image": "perl"
-        },
-        ".plx": {
-            "image": "perl"
-        },
-        ".pm": {
+        "/\\.p([hm]|(lx))$/i": {
             "image": "perl"
         },
         "/\\.(psgi|xs)$/i": {
@@ -1169,13 +1082,7 @@
         ".pcss": {
             "image": "postcss"
         },
-        ".ps1": {
-            "image": "powershell"
-        },
-        ".psd1": {
-            "image": "powershell"
-        },
-        ".psm1": {
+        "/\\.ps[md]?1$/i": {
             "image": "powershell"
         },
         ".ps1xml": {
@@ -1199,9 +1106,6 @@
         ".purs": {
             "image": "purescript"
         },
-        ".py": {
-            "image": "python"
-        },
         ".ipy": {
             "image": "python"
         },
@@ -1211,28 +1115,13 @@
         ".pep": {
             "image": "python"
         },
-        ".gyp": {
-            "image": "python"
-        },
-        ".gypi": {
+        "/\\.gypi?$/i": {
             "image": "python"
         },
         ".pyde": {
             "image": "python"
         },
-        ".pyp": {
-            "image": "python"
-        },
-        ".pyt": {
-            "image": "python"
-        },
-        ".py3": {
-            "image": "python"
-        },
-        ".pyi": {
-            "image": "python"
-        },
-        ".pyw": {
+        "/\\.py([wi3tp]|(de))?$/i": {
             "image": "python"
         },
         ".tac": {
@@ -1289,10 +1178,7 @@
         "/\\.(sc|scala)$/i": {
             "image": "scala"
         },
-        ".scss": {
-            "image": "scss"
-        },
-        ".sass": {
+        "/\\.s[ac]ss$/i": {
             "image": "scss"
         },
         "/\\.(sh|rc|bats|bash|tool|install|command)$/i": {
@@ -1382,7 +1268,7 @@
         ".swift": {
             "image": "swift"
         },
-        ".tex": {
+        "/\\.tex(i)?$/i": {
             "image": "tex"
         },
         ".ltx": {
@@ -1409,13 +1295,7 @@
         ".mkiv": {
             "image": "tex"
         },
-        ".mkvi": {
-            "image": "tex"
-        },
-        ".mkii": {
-            "image": "tex"
-        },
-        ".texi": {
+        "/\\.mk[vi]i$/i": {
             "image": "tex"
         },
         "/^hyphen(ex)?\\.(cs|den|det|fr|sv|us)$/": {
