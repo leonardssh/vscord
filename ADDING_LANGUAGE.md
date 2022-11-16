@@ -2,7 +2,7 @@
 
 Adding a Programming Language to the extention is easy, you can either add it to the repository OR define it in `vscord.additionalFileMapping`.
 
-To make the language appear you need to add it extenstion to the language data json or `vscord.additionalFileMapping`, then to make icon appear you need to add it to [assets/icons/](/assets/icons/).
+To make the language appear you need to add it extension to the language data json or `vscord.additionalFileMapping`, then to make icon appear you need to add it to [assets/icons/](/assets/icons/).
 
 Data for Programming Language will be located in [src/data/languages.json](/src/data/languages.json)
 Icon for Programming Language will be located in [assets/icons/](/assets/icons/)
@@ -16,7 +16,7 @@ If possible, please also sort the key by alphabetical order!
 
 ### KNOWN_LANGUAGES
 
-`KNOWN_LANGUAGES` is a [record](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type) of Language ID and icon, it's usually specified by extenstion developer who add support for that specific language.
+`KNOWN_LANGUAGES` is a [record](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type) of Language ID and icon, it's usually specified by extension developer who add support for that specific language.
 
 #### Finding Language ID
 
@@ -48,7 +48,7 @@ const KNOWN_LANGUAGES: Record<string, string> = {
 
 ### KNOWN_EXTENSIONS
 
-This is used when there's no matching id in the `KNOWN_LANGUAGES`, or when extenstion to that language id is not installed, it will check if current file ends with the specified value
+This is used when there's no matching id in the `KNOWN_LANGUAGES`, or when extension to that language id is not installed, it will check if current file ends with the specified value
 
 #### Example
 

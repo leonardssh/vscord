@@ -1,7 +1,7 @@
-import type { ExtenstionConfiguration } from "../config";
+import type { ExtensionConfiguration } from "../config";
 import { CONFIG_KEYS } from "../constants";
 
-export const getApplicationId = (config: ExtenstionConfiguration) => {
+export const getApplicationId = (config: ExtensionConfiguration) => {
     const applicationIds = new Map([
         ["Code", "782685898163617802"],
         ["Visual Studio Code", "810516608442695700"],

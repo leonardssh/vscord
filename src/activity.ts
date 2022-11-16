@@ -359,7 +359,7 @@ export const replaceFileInfo = async (
 
     const replaceMap = new Map([
         ["{file_name}", dataClass.fileName ?? FAKE_EMPTY],
-        ["{file_extenstion}", dataClass.fileExtension ?? FAKE_EMPTY],
+        ["{file_extension}", dataClass.fileExtension ?? FAKE_EMPTY],
         ["{file_size}", fileSize?.toLocaleString() ?? FAKE_EMPTY],
         ["{folder_and_file}", dataClass.folderAndFile ?? FAKE_EMPTY],
         ["{directory_name}", dataClass.dirName ?? FAKE_EMPTY],

@@ -1,8 +1,8 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.0.9",
-    "description": "Highly customizable Discord Rich Presence extenstion for Visual Studio Code",
+    "version": "5.0.10",
+    "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
     "publisher": "LeonardSSH",
@@ -48,8 +48,8 @@
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
         "@types/vscode": "1.57.0",
-        "@typescript-eslint/eslint-plugin": "^5.42.0",
-        "@typescript-eslint/parser": "^5.42.0",
+        "@typescript-eslint/eslint-plugin": "^5.43.0",
+        "@typescript-eslint/parser": "^5.43.0",
         "@xhayper/discord-rpc": "^1.0.13",
         "eslint": "^8.27.0",
         "eslint-config-prettier": "^8.5.0",
@@ -57,8 +57,8 @@
         "git-url-parse": "^13.1.0",
         "prettier": "^2.7.1",
         "source-map-support": "^0.5.21",
-        "tsup": "^6.4.0",
-        "typescript": "^4.8.4"
+        "tsup": "^6.5.0",
+        "typescript": "^4.9.3"
     },
     "engines": {
         "vscode": "^1.57.0"
@@ -104,7 +104,7 @@
                     "vscord.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Is the extenstion enabled?"
+                        "description": "Is the extension enabled?"
                     },
                     "vscord.app.id": {
                         "type": "string",
@@ -263,7 +263,7 @@
                     },
                     "vscord.status.details.text.debugging": {
                         "type": "string",
-                        "default": "Debugging {file_name}{file_extenstion}",
+                        "default": "Debugging {file_name}{file_extension}",
                         "description": "The text to show when debugging."
                     },
                     "vscord.status.details.text.viewing": {
@@ -294,7 +294,7 @@
                     },
                     "vscord.status.state.text.editing": {
                         "type": "string",
-                        "default": "Working on {file_name}{file_extenstion}:{current_line}:{current_column}",
+                        "default": "Working on {file_name}{file_extension}:{current_line}:{current_column}",
                         "description": "The text to show when editting a file."
                     },
                     "vscord.status.state.text.debugging": {
@@ -304,7 +304,7 @@
                     },
                     "vscord.status.state.text.viewing": {
                         "type": "string",
-                        "default": "Viewing {file_name}{file_extenstion}",
+                        "default": "Viewing {file_name}{file_extension}",
                         "description": "The text to show when viewing a file."
                     },
                     "vscord.status.state.text.noWorkspaceFound": {
