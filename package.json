@@ -58,7 +58,7 @@
         "prettier": "^2.7.1",
         "source-map-support": "^0.5.21",
         "tsup": "^6.5.0",
-        "typescript": "^4.8.4"
+        "typescript": "^4.9.3"
     },
     "engines": {
         "vscode": "^1.57.0"
