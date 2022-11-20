@@ -158,8 +158,9 @@ export class RPCController {
     async sendActivity(isViewing = false, isIdling = false): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
         this.state = await activity(this.state, isViewing, isIdling);
-        if (!this.state || Object.keys(this.state).length === 0) return void this.client.user?.clearActivity();
-        return this.client.user?.setActivity(this.state);
+        if (!this.state || Object.keys(this.state).length === 0)
+            return void this.client.user?.clearActivity(process.pid);
+        return this.client.user?.setActivity(this.state, process.pid);
     }
 
     async disable() {
@@ -169,7 +170,7 @@ export class RPCController {
         if (this.idleTimeout) clearTimeout(this.idleTimeout);
         if (this.iconTimeout) clearTimeout(this.iconTimeout);
 
-        await this.client.user?.clearActivity();
+        await this.client.user?.clearActivity(process.pid);
     }
 
     async enable() {
