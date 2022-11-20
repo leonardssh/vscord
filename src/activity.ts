@@ -1,6 +1,6 @@
 import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
-import { type SetActivity } from "@xhayper/discord-rpc";
+import { Client, type SetActivity } from "@xhayper/discord-rpc";
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
@@ -103,6 +103,10 @@ export const activity = async (
             isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName));
 
     isIdling = isIdling || (!isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor));
+
+    if (!isIdling && !config.get(CONFIG_KEYS.Status.Idle.Enabled)) {
+        return {};
+    }
 
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;

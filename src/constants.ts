@@ -101,6 +101,7 @@ export const CONFIG_KEYS = {
             countedSeverities: "status.problems.countedSeverities" as const
         } as const,
         Idle: {
+            Enabled: "status.idle.enabled" as const,
             Check: "status.idle.check" as const,
             DisconnectOnIdle: "status.idle.disconnectOnIdle" as const,
             ResetElapsedTime: "status.idle.resetElapsedTime" as const,

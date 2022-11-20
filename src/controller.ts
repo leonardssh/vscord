@@ -44,8 +44,7 @@ export class RPCController {
                     error?.message?.includes("ENOENT")
                         ? void window.showErrorMessage("No Discord client detected")
                         : void window.showErrorMessage(
-                              "Couldn't connect to Discord via RPC:",
-                              error.stack ?? error.message
+                              `Couldn't connect to Discord via RPC:\n${error.stack ?? error.message}`
                           );
                 }
 
@@ -159,6 +158,7 @@ export class RPCController {
     async sendActivity(isViewing = false, isIdling = false): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
         this.state = await activity(this.state, isViewing, isIdling);
+        if (!this.state || Object.keys(this.state).length === 0) return void this.client.user?.clearActivity();
         return this.client.user?.setActivity(this.state);
     }
 
