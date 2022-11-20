@@ -1,6 +1,6 @@
 import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
-import { Client, type SetActivity } from "@xhayper/discord-rpc";
+import { type SetActivity } from "@xhayper/discord-rpc";
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
@@ -11,6 +11,7 @@ import { sep } from "node:path";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",
+    NOT_IN_FILE = "notInFile",
     EDITING = "editing",
     DEBUGGING = "debugging",
     VIEWING = "viewing"
@@ -75,6 +76,8 @@ export const activity = async (
     const config = getConfig();
     const presence = previous;
 
+    if (isIdling && !config.get(CONFIG_KEYS.Status.Idle.Enabled)) return {};
+
     if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
         presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
             ? Date.now()
@@ -102,17 +105,14 @@ export const activity = async (
         (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceFolder.uri.fsPath) ||
             isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName));
 
-    isIdling = isIdling || (!isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor));
-
-    if (!isIdling && !config.get(CONFIG_KEYS.Status.Idle.Enabled)) {
-        return {};
-    }
+    const isNotInFile = !isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor);
 
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
 
     let status: CURRENT_STATUS;
     if (isIdling) status = CURRENT_STATUS.IDLE;
+    else if (isNotInFile) status = CURRENT_STATUS.NOT_IN_FILE;
     else if (isDebugging) status = CURRENT_STATUS.DEBUGGING;
     else if (isViewing) status = CURRENT_STATUS.VIEWING;
     else status = CURRENT_STATUS.EDITING;
@@ -215,6 +215,16 @@ export const activity = async (
             smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key)!);
             smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text)!);
             break;
+        }
+        case CURRENT_STATUS.NOT_IN_FILE: {
+            if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInFile)!);
+            if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.NotInFile)!);
+
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFile.Key)!);
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFile.Text)!);
+
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Key)!);
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Text)!);
         }
     }
 

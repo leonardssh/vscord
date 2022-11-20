@@ -166,6 +166,11 @@
                         ],
                         "description": "List of problem level to count for `problems_count`."
                     },
+                    "vscord.status.idle.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Should we enable the idle status?"
+                    },
                     "vscord.status.idle.check": {
                         "type": "boolean",
                         "default": true,
@@ -270,6 +275,11 @@
                         "type": "string",
                         "default": "In {workspace} {problems}",
                         "description": "The text to show when viewing a file."
+                    },
+                    "vscord.status.details.text.notInFile": {
+                        "type": "string",
+                        "default": "Not in a file!",
+                        "description": "The text to show when you are not in a file."
                     }
                 }
             },
@@ -281,11 +291,6 @@
                         "type": "boolean",
                         "default": true,
                         "description": "Should state be shown?"
-                    },
-                    "vscord.status.state.idle.enabled": {
-                        "type": "boolean",
-                        "default": false,
-                        "description": "Should state be shown when idling?"
                     },
                     "vscord.status.state.text.idle": {
                         "type": "string",
@@ -311,6 +316,11 @@
                         "type": "string",
                         "default": "No workspace.",
                         "description": "The text to show when no workspace is found."
+                    },
+                    "vscord.status.state.text.notInFile": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The text to show when you are not in a file."
                     }
                 }
             },
@@ -358,6 +368,16 @@
                         "default": "Debugging a {LANG} file",
                         "description": "The large text to show when debugging"
                     },
+                    "vscord.status.image.large.notInFile.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
+                        "description": "The image url to use when you are not in a file."
+                    },
+                    "vscord.status.image.large.notInFile.text": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The lage text to show when you are not in a file."
+                    },
                     "vscord.status.image.small.idle.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
@@ -397,6 +417,16 @@
                         "type": "string",
                         "default": "{app_name}",
                         "description": "The small text to show when debugging."
+                    },
+                    "vscord.status.image.small.notInFile.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
+                        "description": "The image url to use when you are not in a file."
+                    },
+                    "vscord.status.image.small.notInFile.text": {
+                        "type": "string",
+                        "default": "Snoozin...",
+                        "description": "The small text to show when you are not in a file."
                     }
                 }
             },
