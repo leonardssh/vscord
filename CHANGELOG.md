@@ -2,9 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.11] - 2022-11-20
+
+[e38c250...12ecdd3](https://github.com/leonardssh/vscord/compare/e38c2501ca2c2bf635e6ad0a4b9c8b4c7f1d12d4...12ecdd34acf76f2b267f8e8b91a0ff84dd10a4c9)
+
+### Features
+
+- Added a way to disable idle state ([a95492c](https://github.com/leonardssh/vscord/commit/a95492ceaf4167be44cfff47cf82e1064da62d60))
+
+### Miscellaneous Tasks
+
+- Dependencies update ([611a9c8](https://github.com/leonardssh/vscord/commit/611a9c889b58c398a1aeb6a5fb6b8f675f5ebac1))
+- Dependencies update ([87bc533](https://github.com/leonardssh/vscord/commit/87bc53398cdd685f56b3c391e24b8536bfedc31f))
+- Update yarn ([952d0ef](https://github.com/leonardssh/vscord/commit/952d0ef3179c10234079611eed864ebc11bda1d6))
+- Dependencies update ([12ecdd3](https://github.com/leonardssh/vscord/commit/12ecdd34acf76f2b267f8e8b91a0ff84dd10a4c9))
+
 ## [5.0.10] - 2022-11-11
 
-[5693dc8...0afe816](https://github.com/leonardssh/vscord/compare/5693dc82b8cb3910fe8d20e482b36b39e18574a0...0afe8167d60827c25f1b99d794444e9c8bffef9a)
+[5693dc8...e38c250](https://github.com/leonardssh/vscord/compare/5693dc82b8cb3910fe8d20e482b36b39e18574a0...e38c2501ca2c2bf635e6ad0a4b9c8b4c7f1d12d4)
 
 ### Bug Fixes
 
@@ -16,6 +31,7 @@ All notable changes to this project will be documented in this file.
 
 - Update cliff ([8eb4ffe](https://github.com/leonardssh/vscord/commit/8eb4ffe3dc1b68c6d7e2b60680a6b0e100259e11))
 - Update cliff ([50fc78a](https://github.com/leonardssh/vscord/commit/50fc78a693a2799a191b29ce5ffcd3d1d8239486))
+- Bump version ([e38c250](https://github.com/leonardssh/vscord/commit/e38c2501ca2c2bf635e6ad0a4b9c8b4c7f1d12d4))
 
 ### Miscellaneous Tasks
 
@@ -23,6 +39,7 @@ All notable changes to this project will be documented in this file.
 - Settings description update ([bcabf5f](https://github.com/leonardssh/vscord/commit/bcabf5f4ff429485196f1fde73346411457afde7))
 - Make the description accurate ([a1cf7c6](https://github.com/leonardssh/vscord/commit/a1cf7c6064ae660c3ec8abf4765db9c0d4bd0138))
 - More description update ([8405d06](https://github.com/leonardssh/vscord/commit/8405d065b10950eed6ef0e4788fa6afe0ce4a616))
+- Changelog ([abea034](https://github.com/leonardssh/vscord/commit/abea0342226c2aaaa3f1cd1d4bd452f1074b5e51))
 
 ## [5.0.9] - 2022-11-06
 
