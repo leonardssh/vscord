@@ -41,21 +41,15 @@
     "scripts": {
         "vscode:prepublish": "yarn run package",
         "package": "tsup",
-        "watch": "tsup --watch",
-        "lint": "eslint src"
+        "watch": "tsup --watch"
     },
     "devDependencies": {
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
         "@types/vscode": "1.57.0",
-        "@typescript-eslint/eslint-plugin": "^5.43.0",
-        "@typescript-eslint/parser": "^5.43.0",
         "@xhayper/discord-rpc": "^1.0.13",
-        "eslint": "^8.28.0",
-        "eslint-config-prettier": "^8.5.0",
         "filesize": "^10.0.5",
         "git-url-parse": "^13.1.0",
-        "prettier": "^2.7.1",
         "source-map-support": "^0.5.21",
         "tsup": "^6.5.0",
         "typescript": "^4.9.3"
@@ -276,10 +270,10 @@
                         "default": "In {workspace} {problems}",
                         "description": "The text to show when viewing a file."
                     },
-                    "vscord.status.details.text.notInFile": {
+                    "vscord.status.details.text.notInWorkspace": {
                         "type": "string",
-                        "default": "Not in a file!",
-                        "description": "The text to show when you are not in a file."
+                        "default": "Not in a workspace!",
+                        "description": "The text to show when you are not in a workspace."
                     }
                 }
             },
@@ -317,10 +311,10 @@
                         "default": "No workspace.",
                         "description": "The text to show when no workspace is found."
                     },
-                    "vscord.status.state.text.notInFile": {
+                    "vscord.status.state.text.notInWorkspace": {
                         "type": "string",
                         "default": "",
-                        "description": "The text to show when you are not in a file."
+                        "description": "The text to show when you are not in a workspace."
                     }
                 }
             },
@@ -368,15 +362,15 @@
                         "default": "Debugging a {LANG} file",
                         "description": "The large text to show when debugging"
                     },
-                    "vscord.status.image.large.notInFile.key": {
+                    "vscord.status.image.large.notInWorkspace.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
-                        "description": "The image url to use when you are not in a file."
+                        "description": "The image url to use when you are not in a workspace."
                     },
-                    "vscord.status.image.large.notInFile.text": {
+                    "vscord.status.image.large.notInWorkspace.text": {
                         "type": "string",
                         "default": "",
-                        "description": "The lage text to show when you are not in a file."
+                        "description": "The lage text to show when you are not in a workspace."
                     },
                     "vscord.status.image.small.idle.key": {
                         "type": "string",
@@ -418,15 +412,15 @@
                         "default": "{app_name}",
                         "description": "The small text to show when debugging."
                     },
-                    "vscord.status.image.small.notInFile.key": {
+                    "vscord.status.image.small.notInWorkspace.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
-                        "description": "The image url to use when you are not in a file."
+                        "description": "The image url to use when you are not in a workspace."
                     },
-                    "vscord.status.image.small.notInFile.text": {
+                    "vscord.status.image.small.notInWorkspace.text": {
                         "type": "string",
                         "default": "Snoozin...",
-                        "description": "The small text to show when you are not in a file."
+                        "description": "The small text to show when you are not in a workspace."
                     }
                 }
             },

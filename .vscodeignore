@@ -8,8 +8,6 @@ src/
 ADDING_LANGUAGE.md
 .gitattributes
 tsup.config.ts
-.eslintignore
-.eslintrc.cjs
 tsconfig.json
 .yarnrc.yml
 .gitignore

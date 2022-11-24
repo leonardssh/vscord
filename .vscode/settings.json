@@ -2,7 +2,6 @@
 {
     "typescript.tsdk": "./node_modules/typescript/lib",
     "typescript.tsc.autoDetect": "off",
-    "eslint.enable": true,
     "prettier.enable": true,
     "files.exclude": {
         "out": false,

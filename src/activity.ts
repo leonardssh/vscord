@@ -11,7 +11,7 @@ import { sep } from "node:path";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",
-    NOT_IN_FILE = "notInFile",
+    NOT_IN_WORKSPACE = "notInWorkspace",
     EDITING = "editing",
     DEBUGGING = "debugging",
     VIEWING = "viewing"
@@ -105,14 +105,14 @@ export const activity = async (
         (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceFolder.uri.fsPath) ||
             isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName));
 
-    const isNotInFile = !isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor);
+    const isNotInWorkspace = !isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor);
 
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
 
     let status: CURRENT_STATUS;
     if (isIdling) status = CURRENT_STATUS.IDLE;
-    else if (isNotInFile) status = CURRENT_STATUS.NOT_IN_FILE;
+    else if (isNotInWorkspace) status = CURRENT_STATUS.NOT_IN_WORKSPACE;
     else if (isDebugging) status = CURRENT_STATUS.DEBUGGING;
     else if (isViewing) status = CURRENT_STATUS.VIEWING;
     else status = CURRENT_STATUS.EDITING;
@@ -216,15 +216,15 @@ export const activity = async (
             smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text)!);
             break;
         }
-        case CURRENT_STATUS.NOT_IN_FILE: {
-            if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInFile)!);
-            if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.NotInFile)!);
+        case CURRENT_STATUS.NOT_IN_WORKSPACE: {
+            if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInWorkspace)!);
+            if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.NotInWorkspace)!);
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFile.Key)!);
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFile.Text)!);
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInWorkspace.Key)!);
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInWorkspace.Text)!);
 
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Key)!);
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Text)!);
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInWorkspace.Key)!);
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInWorkspace.Text)!);
         }
     }
 
