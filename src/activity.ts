@@ -217,7 +217,8 @@ export const activity = async (
             break;
         }
         case CURRENT_STATUS.NOT_IN_WORKSPACE: {
-            if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInWorkspace)!);
+            if (detailsEnabled)
+                details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInWorkspace)!);
             if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.NotInWorkspace)!);
 
             largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInWorkspace.Key)!);
@@ -264,13 +265,13 @@ export const activity = async (
     }
 
     // Clean up
-    presence.details === "" && delete presence.details;
-    presence.state === "" && delete presence.state;
+    presence.details?.trim() === "" && delete presence.details;
+    presence.state?.trim() === "" && delete presence.state;
+    presence.largeImageKey?.trim() === "" && delete presence.largeImageKey;
+    presence.largeImageText?.trim() === "" && delete presence.largeImageText;
+    presence.smallImageKey?.trim() === "" && delete presence.smallImageKey;
+    presence.smallImageText?.trim() === "" && delete presence.smallImageText;
     presence.buttons?.length === 0 && delete presence.buttons;
-    presence.largeImageKey === "" && delete presence.largeImageKey;
-    presence.largeImageText === "" && delete presence.largeImageText;
-    presence.smallImageKey === "" && delete presence.smallImageKey;
-    presence.smallImageText === "" && delete presence.smallImageText;
 
     return presence;
 };
