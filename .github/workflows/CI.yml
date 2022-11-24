@@ -23,9 +23,6 @@ jobs:
       - name: Install Dependencies
         run: yarn install --immutable
 
-      - name: Lint
-        run: yarn run lint
-
       - name: Build
         run: |
           npm i -g vsce
