@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.0.11",
+    "version": "5.0.12",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -270,6 +270,11 @@
                         "default": "In {workspace} {problems}",
                         "description": "The text to show when viewing a file."
                     },
+                    "vscord.status.details.text.notInFile": {
+                        "type": "string",
+                        "default": "Not in a file!",
+                        "description": "The text to show when you are not in a file."
+                    },
                     "vscord.status.details.text.notInWorkspace": {
                         "type": "string",
                         "default": "Not in a workspace!",
@@ -311,15 +316,20 @@
                         "default": "Viewing {file_name}{file_extension}",
                         "description": "The text to show when viewing a file."
                     },
-                    "vscord.status.state.text.noWorkspaceFound": {
+                    "vscord.status.state.text.notInFile": {
                         "type": "string",
-                        "default": "No workspace.",
-                        "description": "The text to show when no workspace is found."
+                        "default": "",
+                        "description": "The text to show when you are not in a file."
                     },
                     "vscord.status.state.text.notInWorkspace": {
                         "type": "string",
                         "default": "",
                         "description": "The text to show when you are not in a workspace."
+                    },
+                    "vscord.status.state.text.noWorkspaceFound": {
+                        "type": "string",
+                        "default": "No workspace.",
+                        "description": "The text to show when no workspace is found."
                     }
                 }
             },
@@ -366,6 +376,16 @@
                         "type": "string",
                         "default": "Debugging a {LANG} file",
                         "description": "The large text to show when debugging"
+                    },
+                    "vscord.status.image.large.notInFile.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
+                        "description": "The image url to use when you are not in a file."
+                    },
+                    "vscord.status.image.large.notInFile.text": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The lage text to show when you are not in a file."
                     },
                     "vscord.status.image.large.notInWorkspace.key": {
                         "type": "string",
@@ -416,6 +436,16 @@
                         "type": "string",
                         "default": "{app_name}",
                         "description": "The small text to show when debugging."
+                    },
+                    "vscord.status.image.small.notInFile.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
+                        "description": "The image url to use when you are not in a file."
+                    },
+                    "vscord.status.image.small.notInFile.text": {
+                        "type": "string",
+                        "default": "Snoozin...",
+                        "description": "The small text to show when you are not in a file."
                     },
                     "vscord.status.image.small.notInWorkspace.key": {
                         "type": "string",
