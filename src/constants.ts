@@ -25,6 +25,8 @@ export const CONFIG_KEYS = {
                 Editing: "status.details.text.editing" as const,
                 Viewing: "status.details.text.viewing" as const,
                 NotInWorkspace: "status.details.text.notInWorkspace" as const,
+                NotInFile: "status.details.text.notInFile" as const,
+                NoWorkspaceText: "status.details.text.noWorkSpaceText" as const,
                 Debugging: "status.details.text.debugging" as const
             } as const
         } as const,
@@ -39,6 +41,7 @@ export const CONFIG_KEYS = {
                 Debugging: "status.state.text.debugging" as const,
                 Viewing: "status.state.text.viewing" as const,
                 NotInWorkspace: "status.state.text.notInWorkspace" as const,
+                NotInFile: "status.state.text.notInFile" as const,
                 NoWorkspaceFound: "status.state.text.noWorkspaceFound" as const
             } as const
         } as const,
@@ -80,6 +83,10 @@ export const CONFIG_KEYS = {
                 NotInWorkspace: {
                     Key: "status.image.large.notInWorkspace.key" as const,
                     Text: "status.image.large.notInWorkspace.text" as const
+                } as const,
+                NotInFile: {
+                    Key: "status.image.large.notInFile.key" as const,
+                    Text: "status.image.large.notInFile.text" as const
                 } as const
             } as const,
             Small: {
@@ -102,6 +109,10 @@ export const CONFIG_KEYS = {
                 NotInWorkspace: {
                     Key: "status.image.small.notInWorkspace.key" as const,
                     Text: "status.image.small.notInWorkspace.text" as const
+                } as const,
+                NotInFile: {
+                    Key: "status.image.small.notInFile.key" as const,
+                    Text: "status.image.small.notInFile.text" as const
                 } as const
             } as const
         } as const,

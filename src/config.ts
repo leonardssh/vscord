@@ -16,6 +16,8 @@ export interface ExtensionConfigurationType {
     "status.details.text.editing": string;
     "status.details.text.debugging": string;
     "status.details.text.notInWorkspace": string;
+    "status.details.text.notInFile": string;
+    "status.details.text.noWorkSpaceText": string;
     "status.state.enabled": boolean;
     "status.state.idle.enabled": boolean;
     "status.state.text.idle": string;
@@ -23,6 +25,7 @@ export interface ExtensionConfigurationType {
     "status.state.text.editing": string;
     "status.state.text.debugging": string;
     "status.state.text.notInWorkspace": string;
+    "status.state.text.notInFile": string;
     "status.state.text.noWorkspaceFound": string;
     "status.button.active.enabled": boolean;
     "status.button.active.label": string;
@@ -43,6 +46,8 @@ export interface ExtensionConfigurationType {
     "status.image.large.debugging.text": string;
     "status.image.large.notInWorkspace.key": string;
     "status.image.large.notInWorkspace.text": string;
+    "status.image.large.notInFile.key": string;
+    "status.image.large.notInFile.text": string;
     "status.image.small.idle.key": string;
     "status.image.small.idle.text": string;
     "status.image.small.viewing.key": string;
@@ -53,6 +58,8 @@ export interface ExtensionConfigurationType {
     "status.image.small.debugging.text": string;
     "status.image.small.notInWorkspace.key": string;
     "status.image.small.notInWorkspace.text": string;
+    "status.image.small.notInFile.key": string;
+    "status.image.small.notInFile.text": string;
     "status.image.problems.enabled": boolean;
     "status.image.problems.text": string;
     "status.problems.enabled": boolean;

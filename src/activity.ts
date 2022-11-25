@@ -12,6 +12,7 @@ import { sep } from "node:path";
 export enum CURRENT_STATUS {
     IDLE = "idle",
     NOT_IN_WORKSPACE = "notInWorkspace",
+    NOT_IN_FILE = "notInFile",
     EDITING = "editing",
     DEBUGGING = "debugging",
     VIEWING = "viewing"
@@ -100,18 +101,24 @@ export const activity = async (
     const isGitHostExcluded = !!gitHost && isExcluded(config.get(CONFIG_KEYS.Ignore.GitHosts)!, gitHost);
     const isGitExcluded = isRepositoryExcluded || isOrganizationExcluded || isGitHostExcluded;
 
-    const isWorkspaceExcluded =
-        dataClass.workspaceFolder != null &&
-        (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceFolder.uri.fsPath) ||
-            isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName));
+    let isWorkspaceExcluded =
+        dataClass.workspaceFolder !== undefined &&
+        isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceFolder.uri.fsPath);
 
-    const isNotInWorkspace = !isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor);
+    if (!isWorkspaceExcluded)
+        isWorkspaceExcluded =
+            dataClass.workspaceName !== undefined &&
+            isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName);
+
+    const isNotInWorkspace = !isWorkspaceExcluded && !dataClass.workspaceFolder;
+    const isNotInFile = !isWorkspaceExcluded && !dataClass.editor;
 
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
 
     let status: CURRENT_STATUS;
     if (isIdling) status = CURRENT_STATUS.IDLE;
+    else if (isNotInFile) status = CURRENT_STATUS.NOT_IN_FILE;
     else if (isNotInWorkspace) status = CURRENT_STATUS.NOT_IN_WORKSPACE;
     else if (isDebugging) status = CURRENT_STATUS.DEBUGGING;
     else if (isViewing) status = CURRENT_STATUS.VIEWING;
@@ -216,6 +223,17 @@ export const activity = async (
             smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text)!);
             break;
         }
+        case CURRENT_STATUS.NOT_IN_FILE: {
+            if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInFile)!);
+            if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.NotInFile)!);
+
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFile.Key)!);
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFile.Text)!);
+
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Key)!);
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Text)!);
+            break;
+        }
         case CURRENT_STATUS.NOT_IN_WORKSPACE: {
             if (detailsEnabled)
                 details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInWorkspace)!);
@@ -226,6 +244,7 @@ export const activity = async (
 
             smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInWorkspace.Key)!);
             smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInWorkspace.Text)!);
+            break;
         }
     }
 
@@ -348,10 +367,16 @@ export const replaceFileInfo = async (
     const config = getConfig();
     text = text.slice();
 
-    let workspaceFolderName = dataClass.workspaceFolder?.name ?? FAKE_EMPTY;
-    let workspaceName = dataClass.workspaceName ?? FAKE_EMPTY;
+    let workspaceFolderName =
+        dataClass.workspaceFolder?.name ?? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!;
+    let workspaceName = dataClass.workspaceName ?? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!;
     let workspaceAndFolder =
         workspaceName + (workspaceFolderName != FAKE_EMPTY ? ` - ${workspaceFolderName}` : FAKE_EMPTY);
+
+    workspaceAndFolder =
+        workspaceAndFolder.trim() === ""
+            ? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!
+            : workspaceAndFolder;
 
     let fullDirectoryName: string = FAKE_EMPTY;
     const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
