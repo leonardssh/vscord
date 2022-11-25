@@ -9,6 +9,9 @@ export type FileSizeStandard = "iec" | "jedec";
 export interface ExtensionConfigurationType {
     "app.id": string;
     "app.name": "Code" | "Visual Studio Code" | "VSCodium" | "Custom";
+    "app.whitelistEnabled": boolean;
+    "app.whitelistIsBlacklist": boolean;
+    "app.whitelist": string[];
     "status.details.enabled": boolean;
     "status.details.idle.enabled": boolean;
     "status.details.text.idle": string;

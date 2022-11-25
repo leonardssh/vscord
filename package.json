@@ -98,12 +98,8 @@
                     "vscord.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Is the extension enabled?"
-                    },
-                    "vscord.app.id": {
-                        "type": "string",
-                        "default": "782685898163617802",
-                        "description": "Application id that will be used when `appName` is \"custom\" or when `appName` is invalid"
+                        "description": "Is the extension enabled?",
+                        "order": 0
                     },
                     "vscord.app.name": {
                         "type": "string",
@@ -114,7 +110,36 @@
                             "Custom"
                         ],
                         "default": "Code",
-                        "description": "Choose the name you want the application to use.\nChoosing \"Custom\" will make it so it use the \"rpc.id\" as application id"
+                        "description": "Choose the name you want the application to use.\nChoosing \"Custom\" will make it so it use the \"rpc.id\" as application id",
+                        "order": 1
+                    },
+                    "vscord.app.id": {
+                        "type": "string",
+                        "default": "782685898163617802",
+                        "description": "Application id that will be used when `appName` is \"custom\" or when `appName` is invalid",
+                        "order": 2
+                    },
+                    "vscord.app.whitelistEnabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Is the whitelist enabled?",
+                        "order": 3
+                    },
+                    "vscord.app.whitelistIsBlacklist": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Switches the whitelist to a blacklist.",
+                        "order": 4
+                    },
+                    "vscord.app.whitelist": {
+                        "type": "array",
+                        "default": [],
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "List of discord user ids that will be able to use the extension.",
+                        "order": 5
                     }
                 }
             },
