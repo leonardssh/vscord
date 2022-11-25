@@ -284,13 +284,13 @@ export const activity = async (
     }
 
     // Clean up
-    if(presence.details) presence.details.trim() === "" && delete presence.details ;
-    if(presence.state) presence.state?.trim() === "" && delete presence.state;
-    if(presence.largeImageText) presence.largeImageKey?.trim() === "" && delete presence.largeImageKey;
-    if(presence.largeImageText) presence.largeImageText?.trim() === "" && delete presence.largeImageText;
-    if(presence.smallImageKey) presence.smallImageKey?.trim() === "" && delete presence.smallImageKey;
-    if(presence.smallImageText) presence.smallImageText?.trim() === "" && delete presence.smallImageText;
-    if(presence.buttons) presence.buttons?.length === 0 && delete presence.buttons;
+    if (!presence.details || presence.details.trim() === "") delete presence.details ;
+    if (!presence.state || presence.state.trim() === "") delete presence.state;
+    if (!presence.largeImageKey || presence.largeImageKey.trim() === "") delete presence.largeImageKey;
+    if (!presence.largeImageText || presence.largeImageText.trim() === "") delete presence.largeImageText;
+    if (!presence.smallImageKey || presence.smallImageKey.trim() === "") delete presence.smallImageKey;
+    if (!presence.smallImageText || presence.smallImageText.trim() === "") delete presence.smallImageText;
+    if(!presence.buttons || presence.buttons.length === 0) delete presence.buttons;
 
     return presence;
 };
