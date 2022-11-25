@@ -368,7 +368,11 @@ export const replaceFileInfo = async (
     let workspaceName = dataClass.workspaceName ?? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!;
     let workspaceAndFolder =
         workspaceName + (workspaceFolderName != FAKE_EMPTY ? ` - ${workspaceFolderName}` : FAKE_EMPTY);
-    workspaceAndFolder == "" ? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText) : workspaceAndFolder;
+
+    workspaceAndFolder =
+        workspaceAndFolder.trim() === ""
+            ? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!
+            : workspaceAndFolder;
 
     let fullDirectoryName: string = FAKE_EMPTY;
     const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
