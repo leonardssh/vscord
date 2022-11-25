@@ -352,7 +352,6 @@ export const getPresenceButtons = async (isIdling: boolean, isGitExcluded: boole
             }
         }
     }
-    // Cant be same object that push variable to presence.buttons causes a weird bug were more then 2 buttons are put into the array
     return tempPresenceButton;
 }
 
