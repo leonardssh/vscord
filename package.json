@@ -485,58 +485,164 @@
                 }
             },
             {
-                "title": "Button",
+                "title": "Buttons",
                 "type": "object",
                 "properties": {
-                    "vscord.status.button.enabled": {
+                    "vscord.status.buttons.button1.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Should the button be shown?"
+                        "description": "Should the button1 be shown?",
+                        "order": 0
                     },
-                    "vscord.status.button.active.enabled": {
+                    "vscord.status.buttons.button1.active.enabled": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Should the button be shown when active?"
+                        "description": "Should the button1 be shown when active?",
+                        "order": 1
                     },
-                    "vscord.status.button.active.label": {
+                    "vscord.status.buttons.button1.active.label": {
+                        "type": "string",
+                        "default": "Active Label",
+                        "description": "The label to use when button1 is active.",
+                        "order": 2
+                    },
+                    "vscord.status.buttons.button1.active.url": {
+                        "type": "string",
+                        "default": "https://github.com/leonardssh/vscord/",
+                        "description": "The button1 url to use when active.",
+                        "order": 3
+                    },
+                    "vscord.status.buttons.button1.git.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Should the button1 be shown when active?",
+                        "order": 4
+                    },
+                    "vscord.status.buttons.button1.git.label": {
                         "type": "string",
                         "default": "View Repository",
-                        "description": "The label to use when active."
+                        "description": "The label to use when button1 is active.",
+                        "order": 5
                     },
-                    "vscord.status.button.active.url": {
+                    "vscord.status.buttons.button1.git.url": {
                         "type": "string",
                         "default": "{git_url}",
-                        "description": "The button url to use when active."
+                        "description": "The button1 url to use when active.",
+                        "order": 6
                     },
-                    "vscord.status.button.idle.enabled": {
+                    "vscord.status.buttons.button1.idle.enabled": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Should the button be shown when idle?"
+                        "description": "Should the button1 be shown when idle?",
+                        "order": 7
                     },
-                    "vscord.status.button.idle.label": {
+                    "vscord.status.buttons.button1.idle.label": {
                         "type": "string",
                         "default": "",
-                        "description": "The label to use when idle."
+                        "description": "The label to use when button1 is idle.",
+                        "order": 8
                     },
-                    "vscord.status.button.idle.url": {
+                    "vscord.status.buttons.button1.idle.url": {
                         "type": "string",
                         "default": "",
-                        "description": "The button url to use idle."
+                        "description": "The button1 url to use idle.",
+                        "order": 9
                     },
-                    "vscord.status.button.inactive.enabled": {
+                    "vscord.status.buttons.button1.inactive.enabled": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Should the button be shown when inactive?"
+                        "description": "Should the button1 be shown when inactive?",
+                        "order": 10
                     },
-                    "vscord.status.button.inactive.label": {
+                    "vscord.status.buttons.button1.inactive.label": {
                         "type": "string",
                         "default": "",
-                        "description": "The label to show when inactive."
+                        "description": "The label to show when button1 is inactive.",
+                        "order": 11
                     },
-                    "vscord.status.button.inactive.url": {
+                    "vscord.status.buttons.button1.inactive.url": {
                         "type": "string",
                         "default": "",
-                        "description": "The button url to use when inactive."
+                        "description": "The button1 url to use when inactive.",
+                        "order": 12
+                    },
+                    "vscord.status.buttons.button2.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Should the button2 be shown?",
+                        "order": 13
+                    },
+                    "vscord.status.buttons.button2.active.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Should the button2 be shown when active?",
+                        "order": 14
+                    },
+                    "vscord.status.buttons.button2.active.label": {
+                        "type": "string",
+                        "default": "Active Label",
+                        "description": "The label to use when button2 is active.",
+                        "order": 15
+                    },
+                    "vscord.status.buttons.button2.active.url": {
+                        "type": "string",
+                        "default": "https://github.com/leonardssh/vscord/",
+                        "description": "The button2 url to use when active.",
+                        "order": 16
+                    },
+                    "vscord.status.buttons.button2.git.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Should the button2 be shown when active?",
+                        "order": 17
+                    },
+                    "vscord.status.buttons.button2.git.label": {
+                        "type": "string",
+                        "default": "View Repository",
+                        "description": "The label to use when button2 is active.",
+                        "order": 18
+                    },
+                    "vscord.status.buttons.button2.git.url": {
+                        "type": "string",
+                        "default": "{git_url}",
+                        "description": "The button2 url to use when active.",
+                        "order": 19
+                    },
+                    "vscord.status.buttons.button2.idle.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Should the button2 be shown when idle?",
+                        "order": 20
+                    },
+                    "vscord.status.buttons.button2.idle.label": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The label to use when button2 is idle.",
+                        "order": 21
+                    },
+                    "vscord.status.buttons.button2.idle.url": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The button2 url to use idle.",
+                        "order": 22
+                    },
+                    "vscord.status.buttons.button2.inactive.enabled": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Should the button2 be shown when inactive?",
+                        "order": 23
+                    },
+                    "vscord.status.buttons.button2.inactive.label": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The label to show when inactive.",
+                        "order": 24
+                    },
+                    "vscord.status.buttons.button2.inactive.url": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The button2 url to use when inactive.",
+                        "order": 25
                     }
                 }
             },

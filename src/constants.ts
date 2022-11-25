@@ -48,22 +48,54 @@ export const CONFIG_KEYS = {
                 NoWorkspaceFound: "status.state.text.noWorkspaceFound" as const
             } as const
         } as const,
-        Button: {
-            Active: {
-                Enabled: "status.button.active.enabled" as const,
-                Label: "status.button.active.label" as const,
-                Url: "status.button.active.url" as const
-            } as const,
-            Idle: {
-                Enabled: "status.button.idle.enabled" as const,
-                Label: "status.button.idle.label" as const,
-                Url: "status.button.idle.url" as const
-            } as const,
-            Inactive: {
-                Enabled: "status.button.active.enabled" as const,
-                Label: "status.button.inactive.label" as const,
-                Url: "status.button.inactive.url" as const
-            } as const
+        Buttons: {
+            Button1: {
+                Enabled: "status.buttons.button1.enabled" as const,
+                Active: {
+                    Enabled: "status.buttons.button1.active.enabled" as const,
+                    Label: "status.buttons.button1.active.label" as const,
+                    Url: "status.buttons.button1.active.url" as const
+                } as const,
+                Git: {
+                    Enabled: "status.buttons.button1.git.enabled" as const,
+                    Label: "status.buttons.button1.git.label" as const,
+                    Url: "status.buttons.button1.git.url" as const
+                } as const,
+                Idle: {
+                    Enabled: "status.buttons.button1.idle.enabled" as const,
+                    Label: "status.buttons.button1.idle.label" as const,
+                    Url: "status.buttons.button1.idle.url" as const
+                } as const,
+                Inactive: {
+                    Enabled: "status.buttons.button1.active.enabled" as const,
+                    Label: "status.buttons.button1.inactive.label" as const,
+                    Url: "status.buttons.button1.inactive.url" as const
+                } as const
+            },
+            Button2: {
+                Enabled: "status.buttons.button2.enabled" as const,
+                Active: {
+                    Enabled: "status.buttons.button2.active.enabled" as const,
+                    Label: "status.buttons.button2.active.label" as const,
+                    Url: "status.buttons.button2.active.url" as const
+                } as const,
+                Git: {
+                    Enabled: "status.buttons.button1.git.enabled" as const,
+                    Label: "status.buttons.button1.git.label" as const,
+                    Url: "status.buttons.button1.git.url" as const
+                } as const,
+                Idle: {
+                    Enabled: "status.buttons.button2.idle.enabled" as const,
+                    Label: "status.buttons.button2.idle.label" as const,
+                    Url: "status.buttons.button2.idle.url" as const
+                } as const,
+                Inactive: {
+                    Enabled: "status.buttons.button2.active.enabled" as const,
+                    Label: "status.buttons.button2.inactive.label" as const,
+                    Url: "status.buttons.button2.inactive.url" as const
+                } as const
+            }
+
         } as const,
         Image: {
             Large: {
