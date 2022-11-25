@@ -101,10 +101,14 @@ export const activity = async (
     const isGitHostExcluded = !!gitHost && isExcluded(config.get(CONFIG_KEYS.Ignore.GitHosts)!, gitHost);
     const isGitExcluded = isRepositoryExcluded || isOrganizationExcluded || isGitHostExcluded;
 
-    const isWorkspaceExcluded =
-        (dataClass.workspaceFolder != null &&
-        isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceFolder.uri.fsPath) ||
-        dataClass.workspaceName && isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName));
+    let isWorkspaceExcluded =
+        dataClass.workspaceFolder !== undefined &&
+        isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceFolder.uri.fsPath);
+
+    if (!isWorkspaceExcluded)
+        isWorkspaceExcluded =
+            dataClass.workspaceName !== undefined &&
+            isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName);
 
     const isNotInWorkspace = !isWorkspaceExcluded && !dataClass.workspaceFolder;
     const isNotInFile = !isWorkspaceExcluded && !dataClass.editor;

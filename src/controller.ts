@@ -151,7 +151,7 @@ export class RPCController {
         this.statusBarIcon.text = "$(search-refresh) Connecting to Discord Gateway...";
         this.statusBarIcon.tooltip = "Connecting to Discord Gateway...";
 
-        if (this.client.clientId != clientId) await this.updateClientId(clientId);
+        if (this.client.clientId !== clientId) await this.updateClientId(clientId);
         else if (!this.client.isConnected) await this.client.login();
     }
 
