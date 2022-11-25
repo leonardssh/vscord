@@ -440,6 +440,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"discord-api-types@npm:^0.37.20":
+  version: 0.37.20
+  resolution: "discord-api-types@npm:0.37.20"
+  checksum: 88ebed85aada3483e83ac46a1b4574c0d59948060ac72f451d658fa646b20d62bd6f21792043621dcc5a9e9353d95c25de70646b8d2a93f0022154345800b26c
+  languageName: node
+  linkType: hard
+
 "emoji-regex@npm:^8.0.0":
   version: 8.0.0
   resolution: "emoji-regex@npm:8.0.0"
@@ -1960,6 +1967,7 @@ __metadata:
     "@types/node": 16.x
     "@types/vscode": 1.57.0
     "@xhayper/discord-rpc": ^1.0.13
+    discord-api-types: ^0.37.20
     filesize: ^10.0.5
     git-url-parse: ^13.1.0
     source-map-support: ^0.5.21

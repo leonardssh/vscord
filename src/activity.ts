@@ -1,6 +1,7 @@
 import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { type SetActivity } from "@xhayper/discord-rpc";
+import {GatewayActivityButton} from "discord-api-types/v10"
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
@@ -247,22 +248,36 @@ export const activity = async (
             break;
         }
     }
-
+    let buttons = await getPresenceButtons(isIdling, isGitExcluded, status, replaceAllText)
+    //
     presence.details = details;
     presence.state = state;
     presence.largeImageKey = largeImageKey;
     presence.largeImageText = largeImageText;
     presence.smallImageKey = smallImageKey;
     presence.smallImageText = smallImageText;
+    presence.buttons = buttons;
+
+
+    // Clean up
+    presence.details?.trim() === "" && delete presence.details;
+    presence.state?.trim() === "" && delete presence.state;
+    presence.largeImageKey?.trim() === "" && delete presence.largeImageKey;
+    presence.largeImageText?.trim() === "" && delete presence.largeImageText;
+    presence.smallImageKey?.trim() === "" && delete presence.smallImageKey;
+    presence.smallImageText?.trim() === "" && delete presence.smallImageText;
+    presence.buttons?.length === 0 && delete presence.buttons;
+
+    return presence;
+};
+
+export const getPresenceButtons = async (isIdling: boolean, isGitExcluded: boolean, status: CURRENT_STATUS, replaceAllText: (text: string) => Promise<string>): Promise<GatewayActivityButton[]> => {
+    const config = getConfig();
     let button1Enabled = config.get(CONFIG_KEYS.Status.Buttons.Button1.Enabled)!;
     let button2Enabled = config.get(CONFIG_KEYS.Status.Buttons.Button2.Enabled)!;
 
-    console.log('giturl', dataClass.gitRemoteUrl);
-    console.log('isGitExluded', isGitExcluded)
     let tempPresenceButton = []
-    delete presence.buttons;
     if(button1Enabled || button2Enabled) {
-        // make buttons empty
         if (isIdling) {
             if(config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Enabled) || config.get(CONFIG_KEYS.Status.Buttons.Button2.Idle.Enabled) ) {
                 let button1GitIdleEnabled = config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Enabled)! as boolean;
@@ -338,19 +353,8 @@ export const activity = async (
         }
     }
     // Cant be same object that push variable to presence.buttons causes a weird bug were more then 2 buttons are put into the array
-    presence.buttons = tempPresenceButton;
-
-    // Clean up
-    presence.details?.trim() === "" && delete presence.details;
-    presence.state?.trim() === "" && delete presence.state;
-    presence.largeImageKey?.trim() === "" && delete presence.largeImageKey;
-    presence.largeImageText?.trim() === "" && delete presence.largeImageText;
-    presence.smallImageKey?.trim() === "" && delete presence.smallImageKey;
-    presence.smallImageText?.trim() === "" && delete presence.smallImageText;
-    presence.buttons?.length === 0 && delete presence.buttons;
-
-    return presence;
-};
+    return tempPresenceButton;
+}
 
 export const replaceAppInfo = (text: string): string => {
     text = text.slice();
