@@ -274,6 +274,11 @@
                         "type": "string",
                         "default": "Not in a workspace!",
                         "description": "The text to show when you are not in a workspace."
+                    },
+                    "vscord.status.details.text.noWorkSpaceText": {
+                        "type": "string",
+                        "default": "No workspace",
+                        "description": "The text to show when you are not in a workspace and there is no workspace text."
                     }
                 }
             },

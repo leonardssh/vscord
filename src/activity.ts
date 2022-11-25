@@ -105,14 +105,15 @@ export const activity = async (
         (isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceFolder.uri.fsPath) ||
             isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName));
 
-    const isNotInWorkspace = !isWorkspaceExcluded && (!dataClass.workspaceFolder || !dataClass.editor);
+    const isNotInWorkspace = (!isWorkspaceExcluded && (!dataClass.workspaceFolder));
+    const isNotInFile = (!isWorkspaceExcluded && !dataClass.editor);
 
     const isDebugging = !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
 
     let status: CURRENT_STATUS;
     if (isIdling) status = CURRENT_STATUS.IDLE;
-    else if (isNotInWorkspace) status = CURRENT_STATUS.NOT_IN_WORKSPACE;
+    else if (isNotInWorkspace && isNotInFile) status = CURRENT_STATUS.NOT_IN_WORKSPACE;
     else if (isDebugging) status = CURRENT_STATUS.DEBUGGING;
     else if (isViewing) status = CURRENT_STATUS.VIEWING;
     else status = CURRENT_STATUS.EDITING;
@@ -348,10 +349,11 @@ export const replaceFileInfo = async (
     const config = getConfig();
     text = text.slice();
 
-    let workspaceFolderName = dataClass.workspaceFolder?.name ?? FAKE_EMPTY;
-    let workspaceName = dataClass.workspaceName ?? FAKE_EMPTY;
+    let workspaceFolderName = dataClass.workspaceFolder?.name ?? config.get(CONFIG_KEYS.Status.Details.Text.noWorkSpaceText);
+    let workspaceName = dataClass.workspaceName ?? config.get(CONFIG_KEYS.Status.Details.Text.noWorkSpaceText);
     let workspaceAndFolder =
         workspaceName + (workspaceFolderName != FAKE_EMPTY ? ` - ${workspaceFolderName}` : FAKE_EMPTY);
+    workspaceAndFolder == '' ? config.get(CONFIG_KEYS.Status.Details.Text.noWorkSpaceText) : workspaceAndFolder;
 
     let fullDirectoryName: string = FAKE_EMPTY;
     const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";

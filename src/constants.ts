@@ -25,6 +25,7 @@ export const CONFIG_KEYS = {
                 Editing: "status.details.text.editing" as const,
                 Viewing: "status.details.text.viewing" as const,
                 NotInWorkspace: "status.details.text.notInWorkspace" as const,
+                noWorkSpaceText: "status.details.text.noWorkSpaceText" as const,
                 Debugging: "status.details.text.debugging" as const
             } as const
         } as const,

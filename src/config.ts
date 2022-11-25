@@ -16,6 +16,7 @@ export interface ExtensionConfigurationType {
     "status.details.text.editing": string;
     "status.details.text.debugging": string;
     "status.details.text.notInWorkspace": string;
+    "status.details.text.noWorkSpaceText": string;
     "status.state.enabled": boolean;
     "status.state.idle.enabled": boolean;
     "status.state.text.idle": string;
