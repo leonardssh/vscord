@@ -175,9 +175,8 @@ export class RPCController {
     async sendActivity(isViewing = false, isIdling = false): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
         this.checkCanSend();
-        if(!this.canSendActivity) return void this.client.user?.clearActivity(process.pid);
         this.state = await activity(this.state, isViewing, isIdling);
-        if (!this.state || Object.keys(this.state).length === 0)
+        if (!this.state || Object.keys(this.state).length === 0 || !this.canSendActivity)
             return void this.client.user?.clearActivity(process.pid);
         return this.client.user?.setActivity(this.state, process.pid);
     }
