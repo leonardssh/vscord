@@ -111,22 +111,20 @@ export class RPCController {
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
 
         this.listeners.push(fileSwitch, fileEdit, fileSelectionChanged, debugStart, debugEnd, gitListener);
-
     }
     private checkCanSend(): boolean {
         const config = getConfig();
         let userId = this.client.user?.id;
-        if(!userId) return false;
+        if (!userId) return false;
         let whitelistEnabled = config.get(CONFIG_KEYS.App.WhitelistEnabled);
-        if(whitelistEnabled) {
+        if (whitelistEnabled) {
             let whitelist = config.get(CONFIG_KEYS.App.Whitelist);
-            if(config.get(CONFIG_KEYS.App.whitelistIsBlacklist))
-                if(whitelist!.includes(userId)) return this.canSendActivity = false;
-                else return this.canSendActivity = true;
-            else
-                if(!whitelist!.includes(userId)) return this.canSendActivity = false;
+            if (config.get(CONFIG_KEYS.App.whitelistIsBlacklist))
+                if (whitelist!.includes(userId)) return (this.canSendActivity = false);
+                else return (this.canSendActivity = true);
+            else if (!whitelist!.includes(userId)) return (this.canSendActivity = false);
         }
-        return this.canSendActivity = true;
+        return (this.canSendActivity = true);
     }
 
     private async checkIdle(windowState: WindowState) {
@@ -176,6 +174,7 @@ export class RPCController {
         if (!this.enabled) return;
         this.checkCanSend();
         this.state = await activity(this.state, isViewing, isIdling);
+        this.state.instance = true;
         if (!this.state || Object.keys(this.state).length === 0 || !this.canSendActivity)
             return void this.client.user?.clearActivity(process.pid);
         return this.client.user?.setActivity(this.state, process.pid);
