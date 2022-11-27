@@ -15,7 +15,7 @@ import {
     workspace
 } from "vscode";
 
-const ALLOWED_SCHEME = ["file", "vscode-remote"];
+const ALLOWED_SCHEME = ["file", "vscode-remote", "untitled"];
 
 interface DisposableLike {
     dispose: () => unknown;
