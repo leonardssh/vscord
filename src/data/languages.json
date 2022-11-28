@@ -899,6 +899,9 @@
         ".json.eex": {
             "image": "manifest"
         },
+        ".pawn": {
+            "image": "pawn"
+        },
         ".proto": {
             "image": "manifest"
         },
