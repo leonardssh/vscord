@@ -322,6 +322,11 @@
                         "default": true,
                         "description": "Should state be shown?"
                     },
+                    "vscord.status.state.idle.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Should state be shown when idling?"
+                    },
                     "vscord.status.state.text.idle": {
                         "type": "string",
                         "default": "",
