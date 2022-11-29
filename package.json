@@ -901,8 +901,8 @@
                     },
                     "rpc.buttonEnabled": {
                         "type": "boolean",
-                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.enabled#` instead.",
-                        "deprecationMessage": "Deprecated: Please use vscord.status.button.enabled instead."
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.buttons.button1.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.buttons.button1.enabled instead."
                     },
                     "rpc.buttonActiveLabel": {
                         "type": "string",
