@@ -1,6 +1,7 @@
 // Type definitions for git-url-parse 13.1
 // Project: https://github.com/IonicaBizau/git-url-parse
 // Definitions by: Klaus Meinhardt <https://github.com/ajafff>
+// Improved by: xhayper <https://github.com/xhayper>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 declare module "git-url-parse" {
