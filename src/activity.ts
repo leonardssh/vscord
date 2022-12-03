@@ -1,7 +1,7 @@
 import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { type SetActivity } from "@xhayper/discord-rpc";
-import {GatewayActivityButton} from "discord-api-types/v10"
+import { GatewayActivityButton } from "discord-api-types/v10";
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
@@ -248,7 +248,7 @@ export const activity = async (
             break;
         }
     }
-    let buttons = await getPresenceButtons(isIdling, isGitExcluded, status, replaceAllText)
+    let buttons = await getPresenceButtons(isIdling, isGitExcluded, status, replaceAllText);
     //
     presence.details = details;
     presence.state = state;
@@ -258,102 +258,123 @@ export const activity = async (
     presence.smallImageText = smallImageText;
     presence.buttons = buttons;
 
-
     // Clean up
-    if (!presence.details || presence.details.trim() === "") delete presence.details ;
+    if (!presence.details || presence.details.trim() === "") delete presence.details;
     if (!presence.state || presence.state.trim() === "") delete presence.state;
     if (!presence.largeImageKey || presence.largeImageKey.trim() === "") delete presence.largeImageKey;
     if (!presence.largeImageText || presence.largeImageText.trim() === "") delete presence.largeImageText;
     if (!presence.smallImageKey || presence.smallImageKey.trim() === "") delete presence.smallImageKey;
     if (!presence.smallImageText || presence.smallImageText.trim() === "") delete presence.smallImageText;
-    if(!presence.buttons || presence.buttons.length === 0) delete presence.buttons;
+    if (!presence.buttons || presence.buttons.length === 0) delete presence.buttons;
 
     return presence;
 };
 
-export const getPresenceButtons = async (isIdling: boolean, isGitExcluded: boolean, status: CURRENT_STATUS, replaceAllText: (text: string) => Promise<string>): Promise<GatewayActivityButton[]> => {
+export const getPresenceButtons = async (
+    isIdling: boolean,
+    isGitExcluded: boolean,
+    status: CURRENT_STATUS,
+    replaceAllText: (text: string) => Promise<string>
+): Promise<GatewayActivityButton[]> => {
     const config = getConfig();
     let button1Enabled = config.get(CONFIG_KEYS.Status.Buttons.Button1.Enabled)!;
     let button2Enabled = config.get(CONFIG_KEYS.Status.Buttons.Button2.Enabled)!;
 
-    let tempPresenceButton = []
-    if(button1Enabled || button2Enabled) {
+    let tempPresenceButton = [];
+    if (button1Enabled || button2Enabled) {
         if (isIdling) {
-            if(config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Enabled) || config.get(CONFIG_KEYS.Status.Buttons.Button2.Idle.Enabled) ) {
+            if (
+                config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Enabled) ||
+                config.get(CONFIG_KEYS.Status.Buttons.Button2.Idle.Enabled)
+            ) {
                 let button1GitIdleEnabled = config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Enabled)! as boolean;
                 let button2GitIdleEnabled = config.get(CONFIG_KEYS.Status.Buttons.Button2.Idle.Enabled)! as boolean;
                 let gitIdleButton1 = button1GitIdleEnabled && dataClass.gitRemoteUrl && !isGitExcluded;
                 let gitIdleButton2 = button2GitIdleEnabled && dataClass.gitRemoteUrl && !isGitExcluded;
                 if (config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Enabled) && button1Enabled)
-                    tempPresenceButton.push(
-                        {
-                        label: await replaceAllText(gitIdleButton1 ? config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Idle.Label)! : config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Label)!),
-                        url: await replaceAllText(gitIdleButton1 ? config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Idle.Url)! : config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Url)!)
-                        }
-                    );
+                    tempPresenceButton.push({
+                        label: await replaceAllText(
+                            gitIdleButton1
+                                ? config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Idle.Label)!
+                                : config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Label)!
+                        ),
+                        url: await replaceAllText(
+                            gitIdleButton1
+                                ? config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Idle.Url)!
+                                : config.get(CONFIG_KEYS.Status.Buttons.Button1.Idle.Url)!
+                        )
+                    });
                 if (config.get(CONFIG_KEYS.Status.Buttons.Button2.Idle.Enabled) && button2Enabled)
-                    tempPresenceButton.push(
-                        {
-                            label: await replaceAllText(gitIdleButton2 ? config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Idle.Label)!: config.get(CONFIG_KEYS.Status.Buttons.Button2.Idle.Label)!),
-                            url: await replaceAllText(gitIdleButton2 ? config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Idle.Url)! : config.get(CONFIG_KEYS.Status.Buttons.Button2.Idle.Url)!)
-                        }
-                    );
+                    tempPresenceButton.push({
+                        label: await replaceAllText(
+                            gitIdleButton2
+                                ? config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Idle.Label)!
+                                : config.get(CONFIG_KEYS.Status.Buttons.Button2.Idle.Label)!
+                        ),
+                        url: await replaceAllText(
+                            gitIdleButton2
+                                ? config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Idle.Url)!
+                                : config.get(CONFIG_KEYS.Status.Buttons.Button2.Idle.Url)!
+                        )
+                    });
             }
-        } else if (!isGitExcluded && (dataClass.gitRemoteUrl) ) {
-            if(config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Active.Enabled) || config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Active.Enabled) ) {
+        } else if (!isGitExcluded && dataClass.gitRemoteUrl) {
+            if (
+                config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Active.Enabled) ||
+                config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Active.Enabled)
+            ) {
                 if (config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Active.Enabled) && button1Enabled)
-                    tempPresenceButton.push(
-                        {
-                            label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Active.Label)!),
-                            url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Active.Url)!)
-                        }
-                    );
+                    tempPresenceButton.push({
+                        label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Active.Label)!),
+                        url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Git.Active.Url)!)
+                    });
                 if (config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Active.Enabled) && button2Enabled)
-                    tempPresenceButton.push(
-                        {
-                            label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Active.Label)!),
-                            url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Active.Url)!)
-                        }
-                    );
+                    tempPresenceButton.push({
+                        label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Active.Label)!),
+                        url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Git.Active.Url)!)
+                    });
             }
         } else if (isGitExcluded) {
-            if(config.get(CONFIG_KEYS.Status.Buttons.Button1.Inactive.Enabled) || config.get(CONFIG_KEYS.Status.Buttons.Button2.Inactive.Enabled) ) {
+            if (
+                config.get(CONFIG_KEYS.Status.Buttons.Button1.Inactive.Enabled) ||
+                config.get(CONFIG_KEYS.Status.Buttons.Button2.Inactive.Enabled)
+            ) {
                 if (config.get(CONFIG_KEYS.Status.Buttons.Button1.Inactive.Enabled) && button1Enabled)
-                    tempPresenceButton.push(
-                        {
-                            label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Inactive.Label)!),
-                            url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Inactive.Url)!)
-                        }
-                    )
+                    tempPresenceButton.push({
+                        label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Inactive.Label)!),
+                        url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Inactive.Url)!)
+                    });
                 if (config.get(CONFIG_KEYS.Status.Buttons.Button2.Inactive.Enabled) && button2Enabled)
-                    tempPresenceButton.push(
-                        {
-                            label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Inactive.Label)!),
-                            url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Inactive.Url)!)
-                        }
-                    );
+                    tempPresenceButton.push({
+                        label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Inactive.Label)!),
+                        url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Inactive.Url)!)
+                    });
             }
-        } else if (status == CURRENT_STATUS.EDITING || status == CURRENT_STATUS.VIEWING || status == CURRENT_STATUS.NOT_IN_FILE ||  status == CURRENT_STATUS.NOT_IN_WORKSPACE) {
-            if(config.get(CONFIG_KEYS.Status.Buttons.Button1.Active.Enabled) || config.get(CONFIG_KEYS.Status.Buttons.Button2.Active.Enabled) ) {
+        } else if (
+            status == CURRENT_STATUS.EDITING ||
+            status == CURRENT_STATUS.VIEWING ||
+            status == CURRENT_STATUS.NOT_IN_FILE ||
+            status == CURRENT_STATUS.NOT_IN_WORKSPACE
+        ) {
+            if (
+                config.get(CONFIG_KEYS.Status.Buttons.Button1.Active.Enabled) ||
+                config.get(CONFIG_KEYS.Status.Buttons.Button2.Active.Enabled)
+            ) {
                 if (config.get(CONFIG_KEYS.Status.Buttons.Button1.Active.Enabled) && button1Enabled)
-                    tempPresenceButton.push(
-                        {
-                            label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Active.Label)!),
-                            url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Active.Url)!)
-                        }
-                    )
+                    tempPresenceButton.push({
+                        label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Active.Label)!),
+                        url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button1.Active.Url)!)
+                    });
                 if (config.get(CONFIG_KEYS.Status.Buttons.Button2.Active.Enabled) && button2Enabled)
-                    tempPresenceButton.push(
-                        {
-                            label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Active.Label)!),
-                            url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Active.Url)!)
-                        }
-                    );
+                    tempPresenceButton.push({
+                        label: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Active.Label)!),
+                        url: await replaceAllText(config.get(CONFIG_KEYS.Status.Buttons.Button2.Active.Url)!)
+                    });
             }
         }
     }
     return tempPresenceButton;
-}
+};
 
 export const replaceAppInfo = (text: string): string => {
     text = text.slice();
@@ -410,7 +431,11 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
         ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
         ["{git_repo}", (!excluded ? dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName : undefined) ?? FAKE_EMPTY],
         ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
-        ["{git_url}", (!excluded ? dataClass.gitRemoteUrl?.toString("https") : undefined) ?? FAKE_EMPTY]
+        [
+            "{git_url}",
+            (!excluded ? (dataClass.gitRemoteUrl?.toString("https") ?? "").replace(/\.git$/, "") : undefined) ??
+                FAKE_EMPTY
+        ]
     ]);
 
     for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
