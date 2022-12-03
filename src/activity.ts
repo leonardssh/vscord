@@ -1,7 +1,7 @@
 import { type Selection, type TextDocument, debug, DiagnosticSeverity, env, languages, workspace } from "vscode";
 import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
+import { type GatewayActivityButton } from "discord-api-types/v10";
 import { type SetActivity } from "@xhayper/discord-rpc";
-import { GatewayActivityButton } from "discord-api-types/v10";
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
