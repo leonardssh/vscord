@@ -998,6 +998,9 @@
         ".npmignore": {
             "image": "npm"
         },
+        ".nut": {
+            "image": "squirrel"
+        },
         "/\\.mm?$/i": {
             "image": "objective-c"
         },
