@@ -570,7 +570,10 @@
             "image": "csharp"
         },
         ".cshtml": {
-            "image": "cshtml"
+            "image": "razor"
+        },
+        ".csproj": {
+            "image": "csproj"
         },
         ".css": {
             "image": "css"
@@ -902,6 +905,9 @@
         ".json.eex": {
             "image": "manifest"
         },
+        ".pawn": {
+            "image": "pawn"
+        },
         ".proto": {
             "image": "manifest"
         },
@@ -997,6 +1003,9 @@
         },
         ".npmignore": {
             "image": "npm"
+        },
+        ".nut": {
+            "image": "squirrel"
         },
         "/\\.mm?$/i": {
             "image": "objective-c"
@@ -1154,6 +1163,9 @@
         "/\\.(r|Rprofile|rsx|rd)$/i": {
             "image": "r"
         },
+        ".razor": {
+            "image": "razor"
+        },
         "/\\.res?i?$/i": {
             "image": "reasonml"
         },
@@ -1261,6 +1273,9 @@
         },
         "/\\.(styl|stylus)$/i": {
             "image": "stylus"
+        },
+        ".sln": {
+            "image": "csproj"
         },
         ".svelte": {
             "image": "svelte"
@@ -1387,6 +1402,9 @@
         },
         ".xml": {
             "image": "xml"
+        },
+        ".xaml": {
+            "image": "xaml"
         },
         "/\\.ya?ml$/i": {
             "image": "yaml"

@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.0.13",
+    "version": "5.0.14",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -327,6 +327,11 @@
                         "type": "boolean",
                         "default": true,
                         "description": "Should state be shown?"
+                    },
+                    "vscord.status.state.idle.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Should state be shown when idling?"
                     },
                     "vscord.status.state.text.idle": {
                         "type": "string",
@@ -902,8 +907,8 @@
                     },
                     "rpc.buttonEnabled": {
                         "type": "boolean",
-                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.enabled#` instead.",
-                        "deprecationMessage": "Deprecated: Please use vscord.status.button.enabled instead."
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.buttons.button1.enabled#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.buttons.button1.enabled instead."
                     },
                     "rpc.buttonActiveLabel": {
                         "type": "string",

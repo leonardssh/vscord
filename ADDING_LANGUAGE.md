@@ -92,4 +92,4 @@ Example: `C++ (cpp.png) (https://en.wikipedia.org/wiki/C%2B%2B)`
 
 #### List:
 
-- None
+-   Squirrel (squirrel.png) (https://en.wikipedia.org/wiki/Squirrel_(programming_language)#Applications)

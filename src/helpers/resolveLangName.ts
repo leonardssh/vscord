@@ -6,9 +6,9 @@ import { basename } from "node:path";
 export const toLower = <S extends string>(str: S) => str.toLocaleLowerCase() as Lowercase<S>;
 export const toUpper = <S extends string>(str: S) => str.toLocaleUpperCase() as Uppercase<S>;
 export const toTitle = <S extends string>(str: S) =>
-    toLower(str).replace(/^\w/, (c) => toUpper(c)) as Capitalize<Lowercase<S>>;
+    toLower(str).replace(/^.{1}/, (c) => toUpper(c)) as Capitalize<Lowercase<S>>;
 
-export const resolveLangName = (document: TextDocument) => {
+export const resolveLangName = (document: TextDocument): string => {
     const ALL_KNOWN_KNOWN_EXTENSIONS = KNOWN_EXTENSIONS;
 
     for (const [key, value] of Object.entries(getConfig().get(CONFIG_KEYS.Behaviour.AdditionalFileMapping) ?? {}))

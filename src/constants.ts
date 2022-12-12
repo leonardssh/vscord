@@ -15,7 +15,7 @@ export const CONFIG_KEYS = {
         Name: "app.name" as const,
         WhitelistEnabled: "app.whitelistEnabled" as const,
         whitelistIsBlacklist: "app.whitelistIsBlacklist" as const,
-        Whitelist: "app.whitelist" as const,
+        Whitelist: "app.whitelist" as const
     } as const,
     Status: {
         Details: {
@@ -109,7 +109,6 @@ export const CONFIG_KEYS = {
                     Url: "status.buttons.button2.inactive.url" as const
                 } as const
             }
-
         } as const,
         Image: {
             Large: {
