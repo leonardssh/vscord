@@ -356,9 +356,9 @@
         "/^angular[^.]*\\.js$/i": {
             "image": "angular"
         },
-		".ng": {
-			"image": "angular"
-		},
+        ".ng": {
+            "image": "angular"
+        },
         ".applescript": {
             "image": "applescript"
         },
