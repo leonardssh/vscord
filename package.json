@@ -36,7 +36,13 @@
         "theme": "dark"
     },
     "activationEvents": [
-        "onStartupFinished"
+        "onStartupFinished",
+        "onCommand:vscord.enable",
+        "onCommand:vscord.disable",
+        "onCommand:vscord.workspace.enable",
+        "onCommand:vscord.workspace.disable",
+        "onCommand:vscord.reconnect",
+        "onCommand:vscord.disconnect"
     ],
     "scripts": {
         "vscode:prepublish": "yarn run package",
