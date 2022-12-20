@@ -28,12 +28,8 @@ jobs:
 
       - name: Build
         run: |
-          # TODO: Fix this some day
-          SHELL=bash pnpm setup
-          source /home/runner/.bashrc
-          # --------------------------
-          pnpm install -g vsce
-          vsce package --no-yarn
+          pnpm install -D vsce
+          pnpm dlx vsce package --no-yarn
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
