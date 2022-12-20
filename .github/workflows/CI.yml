@@ -21,11 +21,11 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: yarn install --immutable
+        run: yarnpnpm install --immutable
 
       - name: Build
         run: |
-          npm i -g vsce
+          pnpm install -g vsce
           vsce package --no-yarn
 
       - name: Upload Artifact
