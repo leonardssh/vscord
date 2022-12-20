@@ -7,10 +7,7 @@ on:
 
 jobs:
   check:
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Project
         uses: actions/checkout@v3
@@ -24,6 +21,7 @@ jobs:
         run: |
           npm i -g pnpm
           SHELL=bash pnpm setup
+          source /home/runner/.bashrc
 
       - name: Install Dependencies
         run: pnpm install
