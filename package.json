@@ -1032,5 +1032,5 @@
             }
         ]
     },
-    "packageManager": "yarn@3.3.1"
+    "packageManager": "pnpm@7.18.2"
 }
