@@ -21,7 +21,7 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
-        run: yarnpnpm install --immutable
+        run: pnpm install --immutable
 
       - name: Build
         run: |
