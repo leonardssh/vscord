@@ -88,9 +88,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:16.x":
-  version: 16.18.8
-  resolution: "@types/node@npm:16.18.8"
-  checksum: 149f6a6d010a0c8842800b4b7e0e9db842d3133b9461e48224c769cfc8e1960ecb2791596ad18295a7318b3189475c88d007dee122be0b77bf54db025465cf21
+  version: 16.18.10
+  resolution: "@types/node@npm:16.18.10"
+  checksum: 1b138616923e9a1c6d3806edf75714b605d2ec689357cdc675bc73816c508ff11b3c68df054b02a496c76654d8ed53add2e90816af39423431c73aa6eec06f29
   languageName: node
   linkType: hard
 
@@ -434,9 +434,9 @@ __metadata:
   linkType: hard
 
 "discord-api-types@npm:^0.37.14, discord-api-types@npm:^0.37.21":
-  version: 0.37.21
-  resolution: "discord-api-types@npm:0.37.21"
-  checksum: 63d64e7574bc15d39d42fda990a655ffe4f95e1918a4ecfb8630501e23266646356a30aeed4931e8606086f41eb3b177a0a16609d3b02b6bbeb99b3a15d11258
+  version: 0.37.24
+  resolution: "discord-api-types@npm:0.37.24"
+  checksum: 3949e623bb901c5073f55ff004f07ee4a3a6ea7e0c7c5177b19294b1c014fc8594b8e0c5532f9bb22f60dd5696f48d1f152de0735d3d6fd74114e84ada6c77c8
   languageName: node
   linkType: hard
 
@@ -727,9 +727,9 @@ __metadata:
   linkType: hard
 
 "filesize@npm:^10.0.5":
-  version: 10.0.5
-  resolution: "filesize@npm:10.0.5"
-  checksum: b373ebd877566a49566564709c221943741a6e264649ae1f5d6c87c31cd87e94c5e51dae8ee16abbe414fda3fdb6855d8fe4f0ed8d1e33327563d2b59176eaa1
+  version: 10.0.6
+  resolution: "filesize@npm:10.0.6"
+  checksum: ed420c3989581c4a56e4c86f49ef8d7f22d2c8e5b00892493c12589c23327b0b875936613782226b0a623f261560c8dff59730f5d08a6d8968533bd28d3dfbe5
   languageName: node
   linkType: hard
 
@@ -972,9 +972,9 @@ __metadata:
   linkType: hard
 
 "ignore@npm:^5.2.0":
-  version: 5.2.1
-  resolution: "ignore@npm:5.2.1"
-  checksum: 7251d00cba49fe88c4f3565fadeb4aa726ba38294a9a79ffed542edc47bafd989d4b2ccf65700c5b1b26a1e91dfc7218fb23017937c79216025d5caeec0ee9d5
+  version: 5.2.4
+  resolution: "ignore@npm:5.2.4"
+  checksum: 3d4c309c6006e2621659311783eaea7ebcd41fe4ca1d78c91c473157ad6666a57a2df790fe0d07a12300d9aac2888204d7be8d59f9aaf665b1c7fcdb432517ef
   languageName: node
   linkType: hard
 
@@ -1224,11 +1224,11 @@ __metadata:
   linkType: hard
 
 "minimatch@npm:^5.0.1":
-  version: 5.1.1
-  resolution: "minimatch@npm:5.1.1"
+  version: 5.1.2
+  resolution: "minimatch@npm:5.1.2"
   dependencies:
     brace-expansion: ^2.0.1
-  checksum: 215edd0978320a3354188f84a537d45841f2449af4df4379f79b9b777e71aa4f5722cc9d1717eabd2a70d38ef76ab7b708d24d83ea6a6c909dfd8833de98b437
+  checksum: 32ffda25b9fb8270a1c1beafdb7489dc0e411af553495136509a945691f63c9b6b000eeeaaf8bffe3efa609c1d6d3bc0f5a106f6c3443b5c05da649100ded964
   languageName: node
   linkType: hard
 
@@ -1353,8 +1353,8 @@ __metadata:
   linkType: hard
 
 "node-gyp@npm:latest":
-  version: 9.3.0
-  resolution: "node-gyp@npm:9.3.0"
+  version: 9.3.1
+  resolution: "node-gyp@npm:9.3.1"
   dependencies:
     env-paths: ^2.2.0
     glob: ^7.1.4
@@ -1368,7 +1368,7 @@ __metadata:
     which: ^2.0.2
   bin:
     node-gyp: bin/node-gyp.js
-  checksum: 589ddd3ed967724ef425f9624bfa47cf73022640ab3eba6d556e92cdc4ddef33b63fce3a467c93b995a3f61df92eafd3c3d1e8dbe4a2c00c383334487dea99c3
+  checksum: b860e9976fa645ca0789c69e25387401b4396b93c8375489b5151a6c55cf2640a3b6183c212b38625ef7c508994930b72198338e3d09b9d7ade5acc4aaf51ea7
   languageName: node
   linkType: hard
 
@@ -1614,8 +1614,8 @@ __metadata:
   linkType: hard
 
 "rollup@npm:^3.2.5":
-  version: 3.7.3
-  resolution: "rollup@npm:3.7.3"
+  version: 3.7.5
+  resolution: "rollup@npm:3.7.5"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -1623,7 +1623,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: b7703e806693919f1600fc937bccb5c0f39af38e1c9351c34ce4272bcc6f8742ddfc0f1d138d3ad3478b8048c51787f04b2464abb14b1f8655dd2b6a7102c43e
+  checksum: 772f85e9f12c83091cbe8ef31dc563198566cfe536dc8099dd6d4e372daa370f9d455cc42c7993d22b02521e25d53733df7e98d2a993e5a22bf11b2591de4e2d
   languageName: node
   linkType: hard
 
@@ -1928,11 +1928,11 @@ __metadata:
 
 "typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=d73830"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=ad5954"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
+  checksum: 1caaea6cb7f813e64345190fddc4e6c924d0b698ab81189b503763c4a18f7f5501c69362979d36e19c042d89d936443e768a78b0675690b35eb663d19e0eae71
   languageName: node
   linkType: hard
 
