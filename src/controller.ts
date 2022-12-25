@@ -43,9 +43,9 @@ export class RPCController {
 
                 if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
                     error?.message?.includes("ENOENT")
-                        ? void window.showErrorMessage("No Discord client detected")
+                        ? void window.showErrorMessage("VSCord\nNo Discord client detected")
                         : void window.showErrorMessage(
-                              `Couldn't connect to Discord via RPC:\n${error.stack ?? error.message}`
+                              `VSCord\nCouldn't connect to Discord via RPC:\n${error.stack ?? error.message}`
                           );
                 }
 

@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.0.16",
+    "version": "5.0.17",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -47,7 +47,7 @@
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
         "@types/vscode": "1.57.0",
-        "@xhayper/discord-rpc": "^1.0.14",
+        "@xhayper/discord-rpc": "^1.0.15",
         "discord-api-types": "^0.37.24",
         "filesize": "^10.0.6",
         "git-url-parse": "^13.1.0",
@@ -62,32 +62,32 @@
         "commands": [
             {
                 "command": "vscord.enable",
-                "title": "Enable Discord Presence.",
+                "title": "Enable Discord Presence",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.disable",
-                "title": "Disable Discord Presence.",
+                "title": "Disable Discord Presence",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.workspace.enable",
-                "title": "Enable Discord Presence in the current workspace.",
+                "title": "Enable Discord Presence in the current workspace",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.workspace.disable",
-                "title": "Disable Discord Presence in the current workspace.",
+                "title": "Disable Discord Presence in the current workspace",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.disconnect",
-                "title": "Disconnect from Discord Gateway.",
+                "title": "Disconnect from Discord Gateway",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.reconnect",
-                "title": "Reconnect to Discord Gateway.",
+                "title": "Reconnect to Discord Gateway",
                 "category": "VSCord"
             }
         ],
