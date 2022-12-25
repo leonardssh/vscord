@@ -47,7 +47,7 @@
         "@types/git-url-parse": "^9.0.1",
         "@types/node": "16.x",
         "@types/vscode": "1.57.0",
-        "@xhayper/discord-rpc": "^1.0.13",
+        "@xhayper/discord-rpc": "^1.0.14",
         "discord-api-types": "^0.37.24",
         "filesize": "^10.0.6",
         "git-url-parse": "^13.1.0",
@@ -1032,5 +1032,5 @@
             }
         ]
     },
-    "packageManager": "pnpm@7.18.2"
+    "packageManager": "pnpm@7.19.0"
 }

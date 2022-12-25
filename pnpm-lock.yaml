@@ -4,7 +4,7 @@ specifiers:
   '@types/git-url-parse': ^9.0.1
   '@types/node': 16.x
   '@types/vscode': 1.57.0
-  '@xhayper/discord-rpc': ^1.0.13
+  '@xhayper/discord-rpc': ^1.0.14
   discord-api-types: ^0.37.24
   filesize: ^10.0.6
   git-url-parse: ^13.1.0
@@ -16,7 +16,7 @@ devDependencies:
   '@types/git-url-parse': 9.0.1
   '@types/node': 16.18.10
   '@types/vscode': 1.57.0
-  '@xhayper/discord-rpc': 1.0.13
+  '@xhayper/discord-rpc': 1.0.14
   discord-api-types: 0.37.24
   filesize: 10.0.6
   git-url-parse: 13.1.0
@@ -77,8 +77,8 @@ packages:
     resolution: {integrity: sha512-FeznBFtIDCWRluojTsi9c3LLcCHOXP5etQfBK42+ixo1CoEAchkw39tuui9zomjZuKfUVL33KZUDIwHZ/xvOkQ==}
     dev: true
 
-  /@xhayper/discord-rpc/1.0.13:
-    resolution: {integrity: sha512-e4lHTxJanQCwWFSKSrn7HOlyP2beKsilUOPKLvYrVLQrrx+tmEU5FIWs2bUv+3RJuHHB94hzH7GHGTyYp3NJ5A==}
+  /@xhayper/discord-rpc/1.0.14:
+    resolution: {integrity: sha512-+Q5QiNA8+9VOLlU+O71H5YKlgPoZuizCZhMjdtESVQ+WQ1mcXQd8MxMLbVymXxRpDtsfN1ym/sQHCUXLTahOvw==}
     engines: {node: '>=14.18.0'}
     dependencies:
       axios: 1.2.1
