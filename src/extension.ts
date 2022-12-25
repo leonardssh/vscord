@@ -98,8 +98,10 @@ export const registerCommands = (ctx: ExtensionContext) => {
         controller.statusBarIcon.text = "$(search-refresh) Connecting to Discord Gateway...";
         controller.statusBarIcon.tooltip = "Connecting to Discord Gateway...";
 
-        await controller.login();
-        await controller.enable();
+        await controller
+            .login()
+            .then(async () => await controller.enable())
+            .catch(() => window.showErrorMessage("Failed to reconnect to Discord Gateway."));
     });
 
     const disconnectCommand = commands.registerCommand("vscord.disconnect", async () => {
