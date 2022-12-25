@@ -44,7 +44,7 @@ export class Data implements DisposableLike {
         this._debug = debug;
         this.editor = window.activeTextEditor;
         this.ext();
-        this.api(this.gitExt?.exports.enabled || false);
+        this.api(this.gitExt?.exports.enabled ?? false);
         this.rootListeners.push(
             // TODO: there's a small delay when switching file, it will fire a event where e will be null, then after a few ms, it will fire again with non-null e, figure out how to work around that
             window.onDidChangeActiveTextEditor((e) => {
@@ -202,24 +202,28 @@ export class Data implements DisposableLike {
         this._debug = getConfig().get(CONFIG_KEYS.Behaviour.Debug) ?? false;
 
         // Git extension
-        const ext = extensions.getExtension<GitExtension>("vscode.git");
-        this.debug(`ext(): ${ext ? "Extension" : "undefined"}`);
-        if (ext && !this.gitExt) {
-            this.debug("ext(): Changed to Extension");
-            this.gitExt = ext;
-            if (this.gitExt.isActive) {
-                this.debug("[data.ts] ext(): Git extension is active");
-                this.api(this.gitExt.exports.enabled);
-                this.gitExtListeners.push(this.gitExt.exports.onDidChangeEnablement((e) => this.api(e)));
-            } else {
-                this.debug("[data.ts] ext(): activate");
-                void ext.activate();
+        try {
+            const ext = extensions.getExtension<GitExtension>("vscode.git");
+            this.debug(`ext(): ${ext ? "Extension" : "undefined"}`);
+            if (ext && !this.gitExt) {
+                this.debug("ext(): Changed to Extension");
+                this.gitExt = ext;
+                if (this.gitExt.isActive) {
+                    this.debug("[data.ts] ext(): Git extension is active");
+                    this.api(this.gitExt.exports.enabled);
+                    this.gitExtListeners.push(this.gitExt.exports.onDidChangeEnablement((e) => this.api(e)));
+                } else {
+                    this.debug("[data.ts] ext(): activate");
+                    void ext.activate();
+                }
+            } else if (!ext && this.gitExt) {
+                this.debug("[data.ts] ext(): Changed to undefined");
+                this.gitExt = undefined;
+                this.api(false);
+                this.dispose(1);
             }
-        } else if (!ext && this.gitExt) {
-            this.debug("[data.ts] ext(): Changed to undefined");
-            this.gitExt = undefined;
-            this.api(false);
-            this.dispose(1);
+        } catch (e) {
+            this.debug(`ext(): Git extension not found: ${e}`);
         }
     }
 

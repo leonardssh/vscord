@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.0.15",
+    "version": "5.0.16",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -39,7 +39,7 @@
         "onStartupFinished"
     ],
     "scripts": {
-        "vscode:prepublish": "yarn run package",
+        "vscode:prepublish": "pnpm run package",
         "package": "tsup",
         "watch": "tsup --watch"
     },
