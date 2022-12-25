@@ -61,7 +61,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         logInfo("Enabled Discord Rich Presence.");
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
-            await window.showInformationMessage("VSCord\nEnabled Discord Rich Presence");
+            await window.showInformationMessage("Enabled Discord Rich Presence");
     });
 
     const disableCommand = commands.registerCommand("vscord.disable", async () => {
@@ -70,7 +70,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         logInfo("Disabled Discord Rich Presence");
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
-            await window.showInformationMessage("VSCord\nDisabled Discord Rich Presence");
+            await window.showInformationMessage("Disabled Discord Rich Presence");
     });
 
     const enableWorkspaceCommand = commands.registerCommand("vscord.workspace.enable", async () => {
@@ -80,7 +80,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         logInfo("Enabled Discord Rich Presence for this workspace");
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
-            await window.showInformationMessage("VSCord\nEnabled Discord Rich Presence for this workspace");
+            await window.showInformationMessage("Enabled Discord Rich Presence for this workspace");
     });
 
     const disableWorkspaceCommand = commands.registerCommand("vscord.workspace.disable", async () => {
@@ -89,7 +89,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         logInfo("Disabled Discord Rich Presence for this workspace.");
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
-            await window.showInformationMessage("VSCord\nDisabled Discord Rich Presence for this workspace");
+            await window.showInformationMessage("Disabled Discord Rich Presence for this workspace");
     });
 
     const reconnectCommand = commands.registerCommand("vscord.reconnect", async () => {

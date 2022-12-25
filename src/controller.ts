@@ -1,4 +1,3 @@
-import { type Disposable, type WindowState, debug, languages, StatusBarAlignment, window, workspace } from "vscode";
 import { type SetActivity, type SetActivityResponse, Client } from "@xhayper/discord-rpc";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
@@ -7,6 +6,16 @@ import { logError, logInfo } from "./logger";
 import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
+import {
+    type Disposable,
+    type WindowState,
+    debug,
+    languages,
+    StatusBarAlignment,
+    window,
+    workspace,
+    commands
+} from "vscode";
 
 export class RPCController {
     statusBarIcon = window.createStatusBarItem(StatusBarAlignment.Left);
@@ -42,11 +51,18 @@ export class RPCController {
                 logInfo("[002] Destroyed Discord RPC client");
 
                 if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
-                    error?.message?.includes("ENOENT")
-                        ? void window.showErrorMessage("VSCord\nNo Discord client detected")
-                        : void window.showErrorMessage(
-                              `VSCord\nCouldn't connect to Discord via RPC:\n${error.stack ?? error.message}`
-                          );
+                    (async () => {
+                        const result = await (error?.message?.includes("ENOENT")
+                            ? window.showErrorMessage("No Discord client detected")
+                            : window.showErrorMessage(
+                                  `Couldn't connect to Discord via RPC: ${error.name}`,
+                                  "Reconnect"
+                              ));
+
+                        if (result === "Reconnect") {
+                            commands.executeCommand("vscord.reconnect");
+                        }
+                    })();
                 }
 
                 this.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
