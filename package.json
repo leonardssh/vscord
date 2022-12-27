@@ -117,7 +117,7 @@
                     "vscord.app.id": {
                         "type": "string",
                         "default": "782685898163617802",
-                        "description": "Application id that will be used when `appName` is \"custom\" or when `appName` is invalid",
+                        "description": "Application id that will be used when `appName` is \"Custom\" or when `appName` is invalid",
                         "order": 2
                     },
                     "vscord.app.whitelistEnabled": {

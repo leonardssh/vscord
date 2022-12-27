@@ -6,13 +6,11 @@
     "files.exclude": {
         "out": false,
         "dist": false,
-        ".yarn": false,
-        "yarn.lock": false
+        "pnpm-lock.yaml": true
     },
     "search.exclude": {
         "out": true,
         "dist": true,
-        ".yarn": true,
-        "yarn.lock": true
+        "pnpm-lock.yaml": true
     }
 }

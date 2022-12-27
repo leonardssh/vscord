@@ -2,15 +2,14 @@ assets/icons/
 node_modules/
 .github/
 .vscode/
-.yarn/
 src/
 
 ADDING_LANGUAGE.md
 .gitattributes
 tsup.config.ts
 tsconfig.json
-.yarnrc.yml
+.vscodeignore
 .gitignore
-cliff.toml
 yarn.lock
 suckmyass
+.npmrc
