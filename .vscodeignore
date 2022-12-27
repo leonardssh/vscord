@@ -12,4 +12,3 @@ tsconfig.json
 .gitignore
 yarn.lock
 suckmyass
-.npmrc
