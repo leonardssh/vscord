@@ -410,6 +410,9 @@
         ".ko": {
             "image": "assembly"
         },
+        ".kv": {
+            "image": "kivy"
+        },
         ".lst": {
             "image": "assembly"
         },
@@ -1258,6 +1261,9 @@
         },
         ".hql": {
             "image": "sql"
+        },
+        ".rkt": {
+            "image": "racket"
         },
         ".viw": {
             "image": "sql"
