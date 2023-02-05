@@ -45,6 +45,10 @@
             "image": "css"
         },
         {
+            "language": "cython",
+            "image": "cython"
+        },
+        {
             "language": "diff",
             "image": "manifest"
         },
@@ -586,6 +590,9 @@
         },
         ".cu": {
             "image": "cuda"
+        },
+        ".pyx": {
+            "image": "cython"
         },
         "/\\.di?$/i": {
             "image": "d"
