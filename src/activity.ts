@@ -9,10 +9,10 @@ import { isObject } from "./helpers/isObject";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";
+import { logInfo } from "./logger";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",
-    NOT_IN_WORKSPACE = "notInWorkspace",
     NOT_IN_FILE = "notInFile",
     EDITING = "editing",
     DEBUGGING = "debugging",
@@ -111,7 +111,6 @@ export const activity = async (
             dataClass.workspaceName !== undefined &&
             isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName);
 
-    const isNotInWorkspace = !isWorkspaceExcluded && !dataClass.workspaceFolder;
     const isNotInFile = !isWorkspaceExcluded && !dataClass.editor;
 
     const isDebugging = !!debug.activeDebugSession;
@@ -120,7 +119,6 @@ export const activity = async (
     let status: CURRENT_STATUS;
     if (isIdling) status = CURRENT_STATUS.IDLE;
     else if (isNotInFile) status = CURRENT_STATUS.NOT_IN_FILE;
-    else if (isNotInWorkspace) status = CURRENT_STATUS.NOT_IN_WORKSPACE;
     else if (isDebugging) status = CURRENT_STATUS.DEBUGGING;
     else if (isViewing) status = CURRENT_STATUS.VIEWING;
     else status = CURRENT_STATUS.EDITING;
@@ -235,18 +233,6 @@ export const activity = async (
             smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Text)!);
             break;
         }
-        case CURRENT_STATUS.NOT_IN_WORKSPACE: {
-            if (detailsEnabled)
-                details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInWorkspace)!);
-            if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.NotInWorkspace)!);
-
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInWorkspace.Key)!);
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInWorkspace.Text)!);
-
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInWorkspace.Key)!);
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInWorkspace.Text)!);
-            break;
-        }
     }
     let buttons = await getPresenceButtons(isIdling, isGitExcluded, status, replaceAllText);
     //
@@ -353,8 +339,7 @@ export const getPresenceButtons = async (
         } else if (
             status == CURRENT_STATUS.EDITING ||
             status == CURRENT_STATUS.VIEWING ||
-            status == CURRENT_STATUS.NOT_IN_FILE ||
-            status == CURRENT_STATUS.NOT_IN_WORKSPACE
+            status == CURRENT_STATUS.NOT_IN_FILE
         ) {
             if (
                 config.get(CONFIG_KEYS.Status.Buttons.Button1.Active.Enabled) ||

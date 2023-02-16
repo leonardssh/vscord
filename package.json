@@ -301,14 +301,9 @@
                         "default": "Not in a file!",
                         "description": "The text to show when you are not in a file."
                     },
-                    "vscord.status.details.text.notInWorkspace": {
-                        "type": "string",
-                        "default": "Not in a workspace!",
-                        "description": "The text to show when you are not in a workspace."
-                    },
                     "vscord.status.details.text.noWorkSpaceText": {
                         "type": "string",
-                        "default": "No workspace",
+                        "default": "no workspace",
                         "description": "The text to show when you are not in a workspace and there is no workspace text."
                     }
                 }
@@ -351,11 +346,6 @@
                         "type": "string",
                         "default": "",
                         "description": "The text to show when you are not in a file."
-                    },
-                    "vscord.status.state.text.notInWorkspace": {
-                        "type": "string",
-                        "default": "",
-                        "description": "The text to show when you are not in a workspace."
                     },
                     "vscord.status.state.text.noWorkspaceFound": {
                         "type": "string",
@@ -418,16 +408,6 @@
                         "default": "",
                         "description": "The lage text to show when you are not in a file."
                     },
-                    "vscord.status.image.large.notInWorkspace.key": {
-                        "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
-                        "description": "The image url to use when you are not in a workspace."
-                    },
-                    "vscord.status.image.large.notInWorkspace.text": {
-                        "type": "string",
-                        "default": "",
-                        "description": "The lage text to show when you are not in a workspace."
-                    },
                     "vscord.status.image.small.idle.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
@@ -477,16 +457,6 @@
                         "type": "string",
                         "default": "Snoozin...",
                         "description": "The small text to show when you are not in a file."
-                    },
-                    "vscord.status.image.small.notInWorkspace.key": {
-                        "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
-                        "description": "The image url to use when you are not in a workspace."
-                    },
-                    "vscord.status.image.small.notInWorkspace.text": {
-                        "type": "string",
-                        "default": "Snoozin...",
-                        "description": "The small text to show when you are not in a workspace."
                     }
                 }
             },
