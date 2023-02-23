@@ -103,7 +103,10 @@ export const registerCommands = (ctx: ExtensionContext) => {
             .then(async () => await controller.enable())
             .catch(() => {
                 window.showErrorMessage("Failed to reconnect to Discord Gateway");
+                
                 controller.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
+                controller.statusBarIcon.command = "vscord.reconnect";
+                controller.statusBarIcon.show();
             });
     });
 
