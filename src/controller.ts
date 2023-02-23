@@ -58,10 +58,14 @@ export class RPCController {
                                   `Couldn't connect to Discord via RPC: ${error.name}`,
                                   "Reconnect"
                               ));
+                        this.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
+                        this.statusBarIcon.command = "vscord.reconnect";
+                        this.statusBarIcon.tooltip = "Reconnect to Discord Gateway";
 
                         if (result === "Reconnect") {
                             commands.executeCommand("vscord.reconnect");
                         }
+                        this.statusBarIcon.show();
                     })();
                 }
 
