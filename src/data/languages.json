@@ -97,6 +97,10 @@
             "image": "text"
         },
         {
+            "language": "html-eex",
+            "image": "heex"
+        },
+        {
             "language": "html",
             "image": "html"
         },
@@ -779,6 +783,9 @@
         },
         "/^procfile/i": {
             "image": "heroku"
+        },
+        ".heex": {
+            "image": "heex"
         },
         "heroku.yml": {
             "image": "heroku"
