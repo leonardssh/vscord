@@ -217,6 +217,10 @@
             "image": "r"
         },
         {
+            "language": "racket",
+            "image": "racket"
+        },
+        {
             "language": "razor",
             "image": "cshtml"
         },
