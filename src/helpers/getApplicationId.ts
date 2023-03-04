@@ -1,5 +1,5 @@
-import type { ExtensionConfiguration } from "../config";
 import { CONFIG_KEYS } from "../constants";
+import type { ExtensionConfiguration } from "../config";
 
 export const getApplicationId = (config: ExtensionConfiguration) => {
     const applicationIds = new Map([
