@@ -120,3 +120,6 @@ vscord-*.vsix
 
 # macOS
 .DS_Store
+
+# package.lock
+package-lock.json
