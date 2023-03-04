@@ -268,18 +268,23 @@ interface buttons {
 
 async function createButton(
     replaceAllText: (text: string) => Promise<string>,
-    state: "Idle" | "Active",
+    state: "Idle" | "Active" | "Inactive",
     isGit: false | gitUrlParse.GitUrl | undefined,
     currentButton: "Button1" | "Button2"
 ): Promise<GatewayActivityButton | undefined> {
     const config = getConfig();
     let currentState = CONFIG_KEYS.Status.Buttons[currentButton];
-    if (!config.get(isGit ? currentState.Git[state].Enabled : currentState[state].Enabled)) return undefined;
+    if (!config.get(isGit && state != "Inactive" ? currentState.Git[state].Enabled : currentState[state].Enabled))
+        return undefined;
     return {
         label: await replaceAllText(
-            config.get(isGit ? currentState.Git[state].Label : currentState[state].Label) as string
+            config.get(
+                isGit && state != "Inactive" ? currentState.Git[state].Label : currentState[state].Label
+            ) as string
         ),
-        url: await replaceAllText(config.get(isGit ? currentState.Git[state].Url : currentState[state].Url) as string)
+        url: await replaceAllText(
+            config.get(isGit && state != "Inactive" ? currentState.Git[state].Url : currentState[state].Url) as string
+        )
     };
 }
 
@@ -292,8 +297,10 @@ export const getPresenceButtons = async (
     const config = getConfig();
     let button1Enabled = config.get(CONFIG_KEYS.Status.Buttons.Button1.Enabled)!;
     let button2Enabled = config.get(CONFIG_KEYS.Status.Buttons.Button2.Enabled)!;
-    let state: "Idle" | "Active" | undefined = isIdling
+    let state: "Idle" | "Active" | "Inactive" | undefined = isIdling
         ? "Idle"
+        : isGitExcluded
+        ? "Inactive"
         : status == CURRENT_STATUS.EDITING || status == CURRENT_STATUS.VIEWING || status == CURRENT_STATUS.NOT_IN_FILE
         ? "Active"
         : undefined;
