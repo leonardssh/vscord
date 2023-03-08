@@ -350,6 +350,9 @@
         "/jest.config\\.(js|ts)/i": {
             "image": "jest"
         },
+        "/tailwind.config\\.(js|cjs)/i": {
+            "image": "tailwind"
+        },
         "/gatsby-(browser|node|ssr|config)\\.js/i": {
             "image": "gatsbyjs"
         },
