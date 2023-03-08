@@ -323,7 +323,7 @@
         "turbo.json": {
             "image": "turbo"
         },
-        "/(vercel|now).json/i": {
+        "/(vercel|now)\\.json/i": {
             "image": "vercel"
         },
         "/\\.prettier((rc)|(\\.(toml|yml|yaml|json|js))?$){2}/i": {
@@ -350,7 +350,7 @@
         "/jest.config\\.(js|ts)/i": {
             "image": "jest"
         },
-        "/tailwind.config\\.(js|cjs)/i": {
+        "/tailwind\\.config\\.(js|cjs)/i": {
             "image": "tailwind"
         },
         "/gatsby-(browser|node|ssr|config)\\.js/i": {
