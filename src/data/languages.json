@@ -323,11 +323,17 @@
         "turbo.json": {
             "image": "turbo"
         },
+        "/(vercel|now).json/i": {
+            "image": "vercel"
+        },
         "/\\.prettier((rc)|(\\.(toml|yml|yaml|json|js))?$){2}/i": {
             "image": "prettier"
         },
         "/\\.eslint((rc|ignore)|(\\.(json|js))?$){2}/i": {
             "image": "eslint"
+        },
+        "/\\.(now|vercel)ignore/i": {
+            "image": "vercel"
         },
         "/\\prettier.config.js/i": {
             "image": "prettier"
@@ -361,6 +367,9 @@
         },
         ".astro": {
             "image": "astro"
+        },
+        ".astro.config.mjs": {
+            "image": "astroconfig"
         },
         "androidmanifest.xml": {
             "image": "android"
