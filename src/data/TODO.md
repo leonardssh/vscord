@@ -1,3 +1,3 @@
 # TODO
 
--   move to regex for blazingly fast performance
+-   fix regex that have unescaped `.`
