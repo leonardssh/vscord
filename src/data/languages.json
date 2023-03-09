@@ -274,7 +274,7 @@
         },
         {
             "language": "systemverilog",
-            "image": "sv"
+            "image": "systemverilog"
         },
         {
             "language": "stylus",
@@ -1322,7 +1322,7 @@
             "image": "csproj"
         },
         "/\\.sv(h)?$/i": {
-            "image": "sv"
+            "image": "systemverilog"
         },
         ".svelte": {
             "image": "svelte"
