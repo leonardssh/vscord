@@ -273,6 +273,10 @@
             "image": "bazel"
         },
         {
+            "language": "systemverilog",
+            "image": "systemverilog"
+        },
+        {
             "language": "stylus",
             "image": "stylus"
         },
@@ -1316,6 +1320,9 @@
         },
         ".sln": {
             "image": "csproj"
+        },
+        "/\\.sv(h)?$/i": {
+            "image": "systemverilog"
         },
         ".svelte": {
             "image": "svelte"
