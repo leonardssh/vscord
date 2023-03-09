@@ -264,6 +264,10 @@
             "language": "sql",
             "image": "sql"
         },
+        {   
+            "language": "squirrel",
+            "image": "squirrel"
+        },
         {
             "language": "starlark",
             "image": "bazel"
