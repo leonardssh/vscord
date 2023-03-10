@@ -141,6 +141,10 @@
             "image": "jupyter"
         },
         {
+            "language": "kivy",
+            "image": "kivy"
+        },
+        {
             "language": "latex",
             "image": "text"
         },
@@ -274,7 +278,7 @@
         },
         {
             "language": "systemverilog",
-            "image": "systemverilog"
+            "image": "systemverilog"  
         },
         {
             "language": "stylus",
