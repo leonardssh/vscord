@@ -747,7 +747,7 @@
         "gradlew": {
             "image": "gradle"
         },
-        "^.(g(sh|sc)|csc)$/i": {
+        "/\\.(g|c)sc$/i": {
             "image": "gamescript"
         },
         ".gql": {
