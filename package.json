@@ -463,7 +463,7 @@
             {
                 "title": "Buttons",
                 "properties": {
-                    "vscord.buttons": {
+                    "vscord.status.buttons": {
                         "type": "object",
                         "markdownDescription": "The buttons to show in the rich presence. You can have to buttons 1 & 2. The valid config for the buttons are active, inactive, idle. Git has its own idle and active buttons **Example**: \n```js\n\"vscord.buttons\": {\n    \"button1\": {\n        \"enabled\": true,\n        \"active\": {\n            \"enabled\": true,\n            \"label\": \"Active Label Button 1\",\n            \"url\": \"\" // The url to open when the button is clicked.\n        },\n         \"git\": {\n            \"enabled\": true,\n            \"active\": {\n                \"enabled\": true,\n                \"label\": \"View Repository\",\n                \"url\": \"{git_url}\" // The url to open when the button is clicked.\n             }\n         }\n       }...cont\n```",
                         "default": {

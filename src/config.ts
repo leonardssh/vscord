@@ -51,7 +51,7 @@ export interface ExtensionConfigurationType {
     "status.state.text.debugging": string;
     "status.state.text.notInFile": string;
     "status.state.text.noWorkspaceFound": string;
-    buttons: buttons;
+    "status.buttons": buttons;
     "status.image.large.idle.key": string;
     "status.image.large.idle.text": string;
     "status.image.large.viewing.key": string;
