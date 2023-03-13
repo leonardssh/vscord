@@ -294,11 +294,9 @@ function buttonValidation(
     button: GatewayActivityButton | undefined;
     validationError: string;
 } {
-    let validationError = "";
     if (!button) return { button: undefined, validationError: "" };
+    let validationError = "";
     if (!button.label || !button.url) {
-        console.log("label", button.label);
-        console.log("url", button.url);
         validationError += `Invalid ${!button.label ? `Label` : ""} ${!button.label && !button.url ? "and " : ""}${
             !button.url ? "Url" : ""
         } for ${state}.`;
@@ -329,7 +327,6 @@ export const getPresenceButtons = async (
     let button2 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button2"), "Button2");
     if (button1.validationError || button2.validationError)
         window.showErrorMessage(button1.validationError + " " + button2.validationError);
-
     return [button1.button, button2.button].filter(Boolean) as GatewayActivityButton[];
 };
 
@@ -408,7 +405,6 @@ export const replaceFileInfo = async (
 ): Promise<string> => {
     const config = getConfig();
     text = text.slice();
-
     let workspaceFolderName =
         dataClass.workspaceFolder?.name ?? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!;
     let workspaceName = dataClass.workspaceName ?? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!;
