@@ -879,7 +879,7 @@
         ".ipynb": {
             "image": "jupyter"
         },
-        "/\\.kt[ms]$/i": {
+        "/\\.kt[ms]?$/i": {
             "image": "kotlin"
         },
         ".less": {
