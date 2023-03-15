@@ -25,7 +25,7 @@ jobs:
 
       - name: Build
         run: |
-          pnpm install -D vsce
+          pnpm install -D @vscode/vsce
           pnpm dlx vsce package --no-yarn
 
       - name: Upload Artifact
