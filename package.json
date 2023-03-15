@@ -469,7 +469,7 @@
                     },
                     "vscord.status.buttons.button1.active.enabled": {
                         "type": "boolean",
-                        "default": true
+                        "default": false
                     },
                     "vscord.status.buttons.button1.active.label": {
                         "type": "string",
