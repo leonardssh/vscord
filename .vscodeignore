@@ -5,10 +5,10 @@ node_modules/
 src/
 
 ADDING_LANGUAGE.md
+pnpm-lock.yaml
 .gitattributes
 tsup.config.ts
 tsconfig.json
 .vscodeignore
 .gitignore
-yarn.lock
 suckmyass

@@ -1,5 +1,4 @@
 import type { ExtensionConfiguration, FileSizeConfig, FileSizeStandard } from "../config";
-
 import { CONFIG_KEYS } from "../constants";
 import type { Data } from "../data";
 import { filesize } from "filesize";
