@@ -15,7 +15,7 @@ jobs:
       - name: Use Node.js 19
         uses: actions/setup-node@v3
         with:
-          node-version: 19
+          node-version: 19.7.0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -25,7 +25,7 @@ jobs:
 
       - name: Build
         run: |
-          pnpm install -D @vscode/vsce
+          pnpm add --global @vscode/vsce
           pnpm dlx vsce package --no-yarn
 
       - name: Upload Artifact
