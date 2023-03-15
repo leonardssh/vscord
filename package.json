@@ -860,8 +860,8 @@
                     },
                     "rpc.buttonActiveLabel": {
                         "type": "string",
-                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.active.label#` instead.",
-                        "deprecationMessage": "Deprecated: Please use vscord.status.button.active.label instead."
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.buttons.button1.active.label#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.buttons.button1.active.label instead."
                     },
                     "vscord.status.button.active.enabled": {
                         "type": "boolean",
@@ -910,18 +910,18 @@
                     },
                     "rpc.buttonActiveUrl": {
                         "type": "string",
-                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.active.url#` instead.",
-                        "deprecationMessage": "Deprecated: Please use vscord.status.button.active.url instead."
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.buttons.button1.active.url#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.buttons.button1.active.url instead."
                     },
                     "rpc.buttonInactiveLabel": {
                         "type": "string",
-                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.inactive.label#` instead.",
-                        "deprecationMessage": "Deprecated: Please use vscord.status.button.inactive.label instead."
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.buttons.button1.inactive.label#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.buttons.button1.inactive.label instead."
                     },
                     "rpc.buttonInactiveUrl": {
                         "type": "string",
-                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.button.inactive.url#` instead.",
-                        "deprecationMessage": "Deprecated: Please use vscord.status.button.inactive.url instead."
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.buttons.button1.inactive.url#` instead.",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.buttons.button1.inactive.url instead."
                     },
                     "rpc.ignoreRepositories": {
                         "type": "array",
