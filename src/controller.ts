@@ -180,9 +180,9 @@ export class RPCController {
 
     async login() {
         const { clientId } = getApplicationId(getConfig());
-        logInfo("[004] Debug:", 'Logging in with client ID "' + clientId + '"');
+        logInfo("[004] Debug:", `Logging in with client ID "${clientId}"`);
         logInfo("[004] Debug:", "Login - isConnected", this.client.isConnected, "isReady", this.client.clientId);
-        logInfo("[004] Debug:", `login - ${this.client}`);
+        logInfo("[004] Debug:", `Login - ${this.client}`);
 
         if (this.client.isConnected && this.client.clientId === clientId) return;
 
@@ -220,7 +220,7 @@ export class RPCController {
 
         await this.login();
         logInfo("[004] Debug:", "Client Should be logged in");
-        logInfo("[004] Debug:", `enable - ${this.client}`);
+        logInfo("[004] Debug:", `Enable - ${this.client}`);
 
         logInfo("[004] Debug:", "Enabled - isConnected", this.client.isConnected, "isReady", this.client.clientId);
         await this.sendActivity();

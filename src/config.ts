@@ -6,29 +6,6 @@ import { type filesize } from "filesize";
 export type FileSizeConfig = Parameters<typeof filesize>["1"];
 export type FileSizeStandard = "iec" | "jedec";
 
-interface buttonStatus {
-    enabled: boolean;
-    label: string;
-    url: string;
-}
-
-interface button {
-    enabled: boolean;
-    active: buttonStatus;
-    idle: buttonStatus;
-    inactive: buttonStatus;
-    git: {
-        active: buttonStatus;
-        idle: buttonStatus;
-        inactive: buttonStatus;
-    };
-}
-
-interface buttons {
-    button1: button;
-    button2: button;
-}
-
 export interface ExtensionConfigurationType {
     "app.id": string;
     "app.name": "Code" | "Visual Studio Code" | "VSCodium" | "Custom";
@@ -51,7 +28,44 @@ export interface ExtensionConfigurationType {
     "status.state.text.debugging": string;
     "status.state.text.notInFile": string;
     "status.state.text.noWorkspaceFound": string;
-    "status.buttons": buttons;
+    "status.buttons.button1.enabled": boolean;
+    "status.buttons.button1.active.enabled": boolean;
+    "status.buttons.button1.active.label": string;
+    "status.buttons.button1.active.url": string;
+    "status.buttons.button1.inactive.enabled": boolean;
+    "status.buttons.button1.inactive.label": string;
+    "status.buttons.button1.inactive.url": string;
+    "status.buttons.button1.idle.enabled": boolean;
+    "status.buttons.button1.idle.label": string;
+    "status.buttons.button1.idle.url": string;
+    "status.buttons.button1.git.active.enabled": boolean;
+    "status.buttons.button1.git.active.label": string;
+    "status.buttons.button1.git.active.url": string;
+    "status.buttons.button1.git.inactive.enabled": boolean;
+    "status.buttons.button1.git.inactive.label": string;
+    "status.buttons.button1.git.inactive.url": string;
+    "status.buttons.button1.git.idle.enabled": boolean;
+    "status.buttons.button1.git.idle.label": string;
+    "status.buttons.button1.git.idle.url": string;
+    "status.buttons.button2.enabled": boolean;
+    "status.buttons.button2.active.enabled": boolean;
+    "status.buttons.button2.active.label": string;
+    "status.buttons.button2.active.url": string;
+    "status.buttons.button2.inactive.enabled": boolean;
+    "status.buttons.button2.inactive.label": string;
+    "status.buttons.button2.inactive.url": string;
+    "status.buttons.button2.idle.enabled": boolean;
+    "status.buttons.button2.idle.label": string;
+    "status.buttons.button2.idle.url": string;
+    "status.buttons.button2.git.active.enabled": boolean;
+    "status.buttons.button2.git.active.label": string;
+    "status.buttons.button2.git.active.url": string;
+    "status.buttons.button2.git.inactive.enabled": boolean;
+    "status.buttons.button2.git.inactive.label": string;
+    "status.buttons.button2.git.inactive.url": string;
+    "status.buttons.button2.git.idle.enabled": boolean;
+    "status.buttons.button2.git.idle.label": string;
+    "status.buttons.button2.git.idle.url": string;
     "status.image.large.idle.key": string;
     "status.image.large.idle.text": string;
     "status.image.large.viewing.key": string;

@@ -1,3 +1,14 @@
+import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
+import { type GatewayActivityButton } from "discord-api-types/v10";
+import { type SetActivity } from "@xhayper/discord-rpc";
+import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
+import { getFileSize } from "./helpers/getFileSize";
+import { isExcluded } from "./helpers/isExcluded";
+import { isObject } from "./helpers/isObject";
+import gitUrlParse from "git-url-parse";
+import { getConfig } from "./config";
+import { dataClass } from "./data";
+import { sep } from "node:path";
 import {
     type Selection,
     type TextDocument,
@@ -8,17 +19,6 @@ import {
     workspace,
     window
 } from "vscode";
-import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
-import { type GatewayActivityButton } from "discord-api-types/v10";
-import { type SetActivity } from "@xhayper/discord-rpc";
-import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
-import { getFileSize } from "./helpers/getFileSize";
-import { isExcluded } from "./helpers/isExcluded";
-import { isObject } from "./helpers/isObject";
-import { getConfig } from "./config";
-import { dataClass } from "./data";
-import { sep } from "node:path";
-import gitUrlParse from "git-url-parse";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",
@@ -277,12 +277,10 @@ async function createButton(
 
     return {
         label: await replaceAllText(
-            config.get(
-                isGit && state != "Inactive" ? currentState.Git[state].Label : currentState[state].Label
-            ) as string
+            config.get(isGit && state != "Inactive" ? currentState.Git[state].Label : currentState[state].Label)!
         ),
         url: await replaceAllText(
-            config.get(isGit && state != "Inactive" ? currentState.Git[state].Url : currentState[state].Url) as string
+            config.get(isGit && state != "Inactive" ? currentState.Git[state].Url : currentState[state].Url)!
         )
     };
 }
