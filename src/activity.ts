@@ -294,12 +294,17 @@ function buttonValidation(
 } {
     if (!button) return { button: undefined, validationError: "" };
     let validationError = "";
-    if (!button.label || !button.url) {
-        validationError += `Invalid ${!button.label ? `Label` : ""} ${!button.label && !button.url ? "and " : ""}${
-            !button.url ? "Url" : ""
+
+    const trimmedLabel = button.label.trim();
+    const trimmedUrl = button.url.trim();
+
+    if (!trimmedLabel || !trimmedUrl) {
+        validationError += `Invalid ${!trimmedLabel ? `Label` : ""} ${!trimmedLabel && !trimmedUrl ? "and " : ""}${
+            !trimmedUrl ? "Url" : ""
         } for ${state}.`;
         button = undefined;
     }
+
     return { button, validationError };
 }
 
@@ -324,7 +329,7 @@ export const getPresenceButtons = async (
     let button1 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button1"), "Button1");
     let button2 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button2"), "Button2");
     if (button1.validationError || button2.validationError)
-        window.showErrorMessage(button1.validationError + " " + button2.validationError);
+        window.showErrorMessage(`${button1.validationError} ${button2.validationError}`);
     return [button1.button, button2.button].filter(Boolean) as GatewayActivityButton[];
 };
 
