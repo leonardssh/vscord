@@ -89,6 +89,10 @@
             "image": "groovy"
         },
         {
+            "language": "gamescript",
+            "image": "gamescript"
+        },
+        {
             "language": "handlebars",
             "image": "handlebars"
         },
@@ -139,6 +143,10 @@
         {
             "language": "jupyter",
             "image": "jupyter"
+        },
+        {
+            "language": "kivy",
+            "image": "kivy"
         },
         {
             "language": "latex",
@@ -738,6 +746,9 @@
         },
         "gradlew": {
             "image": "gradle"
+        },
+        "/\\.(g|c)sc$/i": {
+            "image": "gamescript"
         },
         ".gql": {
             "image": "graphql"
