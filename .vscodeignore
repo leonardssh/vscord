@@ -10,5 +10,6 @@ pnpm-lock.yaml
 tsup.config.ts
 tsconfig.json
 .vscodeignore
+.prettierrc
 .gitignore
 suckmyass
