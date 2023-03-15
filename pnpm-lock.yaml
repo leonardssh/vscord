@@ -5,7 +5,7 @@ specifiers:
   '@types/node': 16.x
   '@types/vscode': 1.57.0
   '@xhayper/discord-rpc': ^1.0.15
-  discord-api-types: ^0.37.34
+  discord-api-types: ^0.37.36
   filesize: ^10.0.6
   git-url-parse: ^13.1.0
   source-map-support: ^0.5.21
@@ -17,7 +17,7 @@ devDependencies:
   '@types/node': 16.18.10
   '@types/vscode': 1.57.0
   '@xhayper/discord-rpc': 1.0.15
-  discord-api-types: 0.37.34
+  discord-api-types: 0.37.36
   filesize: 10.0.6
   git-url-parse: 13.1.0
   source-map-support: 0.5.21
@@ -262,7 +262,7 @@ packages:
     engines: {node: '>=14.18.0'}
     dependencies:
       axios: 1.2.1
-      discord-api-types: 0.37.34
+      discord-api-types: 0.37.36
       ws: 8.11.0
     transitivePeerDependencies:
       - bufferutil
@@ -407,8 +407,8 @@ packages:
       path-type: 4.0.0
     dev: true
 
-  /discord-api-types/0.37.34:
-    resolution: {integrity: sha512-3sX2QMX2vLjT93n6+c1rN6lM6qWHycjYol6x/ls6U5hbZPdGH00dRMjg2csF58ISMf7DGV/6inDKgY1u5niWhA==}
+  /discord-api-types/0.37.36:
+    resolution: {integrity: sha512-Nlxmp10UpVr/utgZ9uODQvG2Or+5w7LFrvFMswyeKC9l/+UaqGT6H0OVgEFhu9GEO4U6K7NNO5W8Carv7irnCA==}
     dev: true
 
   /esbuild/0.17.6:
