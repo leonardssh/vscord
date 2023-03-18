@@ -321,7 +321,7 @@ export const getPresenceButtons = async (
         ? "Idle"
         : isGitExcluded
         ? "Inactive"
-        : status == CURRENT_STATUS.EDITING || status == CURRENT_STATUS.VIEWING || status == CURRENT_STATUS.NOT_IN_FILE
+        : status == CURRENT_STATUS.EDITING || status == CURRENT_STATUS.VIEWING || status == CURRENT_STATUS.NOT_IN_FILE || status == CURRENT_STATUS.DEBUGGING
         ? "Active"
         : undefined;
     if ((!button1Enabled && !button2Enabled) || !state) return [];
