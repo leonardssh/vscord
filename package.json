@@ -52,8 +52,8 @@
         "filesize": "^10.0.6",
         "git-url-parse": "^13.1.0",
         "source-map-support": "^0.5.21",
-        "tsup": "^6.6.3",
-        "typescript": "^4.9.5"
+        "tsup": "^6.7.0",
+        "typescript": "^5.0.2"
     },
     "engines": {
         "vscode": "^1.57.0"
@@ -986,5 +986,5 @@
             }
         ]
     },
-    "packageManager": "pnpm@7.29.3"
+    "packageManager": "pnpm@7.30.0"
 }
