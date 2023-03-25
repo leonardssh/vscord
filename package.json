@@ -491,8 +491,7 @@
                                                 "type": "string",
                                                 "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                                "minLength": 1,
-                                                "format": "uri"
+                                                "minLength": 1
                                             }
                                         }
                                     },
@@ -513,8 +512,7 @@
                                                 "type": "string",
                                                 "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                                "minLength": 1,
-                                                "format": "uri"
+                                                "minLength": 1
                                             }
                                         }
                                     },
@@ -535,8 +533,7 @@
                                                 "type": "string",
                                                 "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                                "minLength": 1,
-                                                "format": "uri"
+                                                "minLength": 1
                                             }
                                         }
                                     },
@@ -561,8 +558,7 @@
                                                         "type": "string",
                                                         "description": "The url to open when the button is clicked.",
                                                         "default": "{git_url}",
-                                                        "minLength": 1,
-                                                        "format": "uri"
+                                                        "minLength": 1
                                                     }
                                                 }
                                             },
@@ -582,8 +578,7 @@
                                                         "type": "string",
                                                         "description": "The url to open when the button is clicked.",
                                                         "default": "{git_url}",
-                                                        "minLength": 1,
-                                                        "format": "uri"
+                                                        "minLength": 1
                                                     }
                                                 }
                                             },
@@ -603,8 +598,7 @@
                                                         "type": "string",
                                                         "description": "The url to open when the button is clicked.",
                                                         "default": "{git_url}",
-                                                        "minLength": 1,
-                                                        "format": "uri"
+                                                        "minLength": 1
                                                     }
                                                 }
                                             }
@@ -636,8 +630,7 @@
                                                 "type": "string",
                                                 "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                                "minLength": 1,
-                                                "format": "uri"
+                                                "minLength": 1
                                             }
                                         }
                                     },
@@ -658,8 +651,7 @@
                                                 "type": "string",
                                                 "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                                "minLength": 1,
-                                                "format": "uri"
+                                                "minLength": 1
                                             }
                                         }
                                     },
@@ -680,8 +672,7 @@
                                                 "type": "string",
                                                 "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                                "minLength": 1,
-                                                "format": "uri"
+                                                "minLength": 1
                                             }
                                         }
                                     },
@@ -706,8 +697,7 @@
                                                         "type": "string",
                                                         "description": "The url to open when the button is clicked.",
                                                         "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                                        "minLength": 1,
-                                                        "format": "uri"
+                                                        "minLength": 1
                                                     }
                                                 }
                                             },
@@ -727,8 +717,7 @@
                                                         "type": "string",
                                                         "description": "The url to open when the button is clicked.",
                                                         "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                                        "minLength": 1,
-                                                        "format": "uri"
+                                                        "minLength": 1
                                                     }
                                                 }
                                             },
@@ -748,8 +737,7 @@
                                                         "type": "string",
                                                         "description": "The url to open when the button is clicked.",
                                                         "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                                                        "minLength": 1,
-                                                        "format": "uri"
+                                                        "minLength": 1
                                                     }
                                                 }
                                             }
