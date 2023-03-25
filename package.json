@@ -489,6 +489,7 @@
                                             },
                                             "url": {
                                                 "type": "string",
+                                                "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                                                 "minLength": 1,
                                                 "format": "uri"
@@ -510,6 +511,7 @@
                                             },
                                             "url": {
                                                 "type": "string",
+                                                "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                                                 "minLength": 1,
                                                 "format": "uri"
@@ -531,6 +533,7 @@
                                             },
                                             "url": {
                                                 "type": "string",
+                                                "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                                                 "minLength": 1,
                                                 "format": "uri"
@@ -556,6 +559,7 @@
                                                     },
                                                     "url": {
                                                         "type": "string",
+                                                        "description": "The url to open when the button is clicked.",
                                                         "default": "{git_url}",
                                                         "minLength": 1,
                                                         "format": "uri"
@@ -576,6 +580,7 @@
                                                     },
                                                     "url": {
                                                         "type": "string",
+                                                        "description": "The url to open when the button is clicked.",
                                                         "default": "{git_url}",
                                                         "minLength": 1,
                                                         "format": "uri"
@@ -596,6 +601,7 @@
                                                     },
                                                     "url": {
                                                         "type": "string",
+                                                        "description": "The url to open when the button is clicked.",
                                                         "default": "{git_url}",
                                                         "minLength": 1,
                                                         "format": "uri"
@@ -628,6 +634,7 @@
                                             },
                                             "url": {
                                                 "type": "string",
+                                                "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                                                 "minLength": 1,
                                                 "format": "uri"
@@ -649,6 +656,7 @@
                                             },
                                             "url": {
                                                 "type": "string",
+                                                "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                                                 "minLength": 1,
                                                 "format": "uri"
@@ -670,6 +678,7 @@
                                             },
                                             "url": {
                                                 "type": "string",
+                                                "description": "The url to open when the button is clicked.",
                                                 "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                                                 "minLength": 1,
                                                 "format": "uri"
@@ -695,6 +704,7 @@
                                                     },
                                                     "url": {
                                                         "type": "string",
+                                                        "description": "The url to open when the button is clicked.",
                                                         "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                                                         "minLength": 1,
                                                         "format": "uri"
@@ -715,6 +725,7 @@
                                                     },
                                                     "url": {
                                                         "type": "string",
+                                                        "description": "The url to open when the button is clicked.",
                                                         "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                                                         "minLength": 1,
                                                         "format": "uri"
@@ -735,6 +746,7 @@
                                                     },
                                                     "url": {
                                                         "type": "string",
+                                                        "description": "The url to open when the button is clicked.",
                                                         "default": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                                                         "minLength": 1,
                                                         "format": "uri"
@@ -746,7 +758,7 @@
                                 }
                             }
                         },
-                        "markdownDescription": "The buttons to show in the rich presence. You can have to buttons 1 & 2. The valid config for the buttons are active, inactive, idle. Git has its own idle and active buttons **Example**: \n```js\n\"vscord.buttons\": {\n \"button1\": {\n \"enabled\": true,\n \"active\": {\n \"enabled\": true,\n \"label\": \"Active Label Button 1\",\n \"url\": \"\" // The url to open when the button is clicked.\n },\n \"git\": {\n \"enabled\": true,\n \"active\": {\n \"enabled\": true,\n \"label\": \"View Repository\",\n \"url\": \"{git_url}\" // The url to open when the button is clicked.\n }\n }\n }...cont\n```",
+                        "markdownDescription": "The buttons to show in the rich presence. You can set the first and second button (1 & 2).  \nThe valid config for the buttons are active, inactive, idle. Git has its own idle and active buttons.",
                         "default": {
                             "button1": {
                                 "enabled": true,
