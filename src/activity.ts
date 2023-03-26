@@ -320,10 +320,10 @@ export const getPresenceButtons = async (
     let state: "Idle" | "Active" | "Inactive" | undefined = isIdling
         ? "Idle"
         : isGitExcluded
-        ? "Inactive"
+        ? undefined
         : status == CURRENT_STATUS.EDITING || status == CURRENT_STATUS.VIEWING || status == CURRENT_STATUS.NOT_IN_FILE || status == CURRENT_STATUS.DEBUGGING
         ? "Active"
-        : undefined;
+        : "Inactive";
     if ((!button1Enabled && !button2Enabled) || !state) return [];
     let isGit = !isGitExcluded && dataClass.gitRemoteUrl;
     let button1 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button1"), "Button1");
