@@ -23,6 +23,7 @@ import {
 export enum CURRENT_STATUS {
     IDLE = "idle",
     NOT_IN_FILE = "notInFile",
+    NOT_IN_FILE_IDLE = "notInFileIdle",
     EDITING = "editing",
     DEBUGGING = "debugging",
     VIEWING = "viewing"
@@ -126,7 +127,8 @@ export const activity = async (
     isViewing = !isDebugging && isViewing;
 
     let status: CURRENT_STATUS;
-    if (isIdling) status = CURRENT_STATUS.IDLE;
+    if (isNotInFile && isIdling) status = CURRENT_STATUS.NOT_IN_FILE_IDLE;
+    else if (isIdling) status = CURRENT_STATUS.IDLE;
     else if (isNotInFile) status = CURRENT_STATUS.NOT_IN_FILE;
     else if (isDebugging) status = CURRENT_STATUS.DEBUGGING;
     else if (isViewing) status = CURRENT_STATUS.VIEWING;
@@ -239,6 +241,17 @@ export const activity = async (
 
             smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Key)!);
             smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Text)!);
+            break;
+        }
+        case CURRENT_STATUS.NOT_IN_FILE_IDLE: {
+            if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInFileIdle)!);
+            if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.NotInFileIdle)!);
+
+            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFileIdle.Key)!);
+            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFileIdle.Text)!);
+
+            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFileIdle.Key)!);
+            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFileIdle.Text)!);
             break;
         }
     }

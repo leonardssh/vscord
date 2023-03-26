@@ -301,6 +301,11 @@
                         "default": "Not in a file!",
                         "description": "The text to show when you are not in a file."
                     },
+                    "vscord.status.details.text.notInFileIdle": {
+                        "type": "string",
+                        "default": "Idling",
+                        "description": "The text to show when you are not in a file and also idle."
+                    },
                     "vscord.status.details.text.noWorkSpaceText": {
                         "type": "string",
                         "default": "no workspace",
@@ -346,6 +351,11 @@
                         "type": "string",
                         "default": "",
                         "description": "The text to show when you are not in a file."
+                    },
+                    "vscord.status.state.text.notInFileIdle": {
+                        "type": "string",
+                        "default": "",
+                        "description": "The text to show when you are not in a file and also idle."
                     },
                     "vscord.status.state.text.noWorkspaceFound": {
                         "type": "string",
@@ -408,6 +418,16 @@
                         "default": "",
                         "description": "The lage text to show when you are not in a file."
                     },
+                    "vscord.status.image.large.notInFileIdle.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
+                        "description": "The image url to use when you are not in a file and also idle."
+                    },
+                    "vscord.status.image.large.notInFileIdle.text": {
+                        "type": "string",
+                        "default": "Idling",
+                        "description": "The lage text to show when you are not in a file and also idle."
+                    },
                     "vscord.status.image.small.idle.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
@@ -457,6 +477,16 @@
                         "type": "string",
                         "default": "Snoozin...",
                         "description": "The small text to show when you are not in a file."
+                    },
+                    "vscord.status.image.small.notInFileIdle.key": {
+                        "type": "string",
+                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
+                        "description": "The image url to use when you are not in a file and also idle."
+                    },
+                    "vscord.status.image.small.notInFileIdle.text": {
+                        "type": "string",
+                        "default": "zZz",
+                        "description": "The small text to show when you are not in a file and also idle."
                     }
                 }
             },
