@@ -15,7 +15,7 @@ import {
     workspace
 } from "vscode";
 
-const ALLOWED_SCHEME = ["file", "vscode-remote", "untitled"];
+const ALLOWED_SCHEME = ["file", "vscode-remote", "untitled", "vsls"];
 
 interface DisposableLike {
     dispose: () => unknown;
@@ -54,6 +54,9 @@ export class Data implements DisposableLike {
                     return this.debug(
                         `root(): window.onDidChangeActiveTextEditor: got unallowed scheme, got '${e.document.uri.scheme}'`
                     );
+
+                if (e)
+                    this.debug(`root(): window.onDidChangeActiveTextEditor: got URI '${e.document.uri.scheme}'`)
 
                 this.editor = e;
             }),
