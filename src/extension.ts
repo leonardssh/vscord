@@ -56,7 +56,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
     const togglePrivacyMode = async (activate = true) => {
         try {
-            await config.update(CONFIG_KEYS.PrivacyMode, activate);
+            await config.update(CONFIG_KEYS.App.PrivacyMode, activate);
         } catch {}
     };
 
