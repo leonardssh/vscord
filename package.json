@@ -130,23 +130,23 @@
                         "description": "Application id that will be used when `appName` is \"Custom\" or when `appName` is invalid",
                         "order": 3
                     },
-                    "vscode.app.privacyMode.enable": {
+                    "vscord.app.privacyMode.enable": {
                         "type": "boolean",
                         "default": false,
                         "description": "Should we hide the github repository, the file name and the workspace name?",
-                        "order": 1
+                        "order": 4
                     },
                     "vscord.app.whitelistEnabled": {
                         "type": "boolean",
                         "default": false,
                         "description": "Is the whitelist enabled?",
-                        "order": 4
+                        "order": 5
                     },
                     "vscord.app.whitelistIsBlacklist": {
                         "type": "boolean",
                         "default": false,
                         "description": "Switches the whitelist to a blacklist.",
-                        "order": 5
+                        "order": 6
                     },
                     "vscord.app.whitelist": {
                         "type": "array",
@@ -156,7 +156,7 @@
                             "type": "string"
                         },
                         "description": "List of discord user ids that will be able to use the extension.",
-                        "order": 6
+                        "order": 7
                     }
                 }
             },
