@@ -89,6 +89,16 @@
                 "command": "vscord.reconnect",
                 "title": "Reconnect to Discord Gateway",
                 "category": "VSCord"
+            },
+            {
+                "command": "vscord.enablePrivacyMode",
+                "title": "Enable Privacy Mode",
+                "category": "VSCord"
+            },
+            {
+                "command": "vscord.disablePrivacyMode",
+                "title": "Disable Privacy Mode",
+                "category": "VSCord"
             }
         ],
         "configuration": [
