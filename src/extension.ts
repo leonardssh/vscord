@@ -6,6 +6,7 @@ import { CONFIG_KEYS } from "./constants";
 import { RPCController } from "./controller";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { logInfo } from "./logger";
+import { dataClass } from "./data";
 
 const controller = new RPCController(
     getApplicationId(getConfig()).clientId,
@@ -58,6 +59,8 @@ export const registerCommands = (ctx: ExtensionContext) => {
         try {
             await config.update(CONFIG_KEYS.App.PrivacyMode, activate);
         } catch {}
+
+        await controller.sendActivity(dataClass.editor != null);
     };
 
     const enableCommand = commands.registerCommand("vscord.enable", async () => {
@@ -71,28 +74,28 @@ export const registerCommands = (ctx: ExtensionContext) => {
     });
 
     const disableCommand = commands.registerCommand("vscord.disable", async () => {
-        await disable(false);
-
         logInfo("Disabled Discord Rich Presence");
+
+        await disable(false);
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
             await window.showInformationMessage("Disabled Discord Rich Presence");
     });
 
     const enableWorkspaceCommand = commands.registerCommand("vscord.workspace.enable", async () => {
+        logInfo("Enabled Discord Rich Presence");
+
         await disable();
         await enable();
-
-        logInfo("Enabled Discord Rich Presence for this workspace");
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
             await window.showInformationMessage("Enabled Discord Rich Presence for this workspace");
     });
 
     const disableWorkspaceCommand = commands.registerCommand("vscord.workspace.disable", async () => {
-        await disable();
+        logInfo("Disabled Discord Rich Presence");
 
-        logInfo("Disabled Discord Rich Presence for this workspace.");
+        await disable();
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
             await window.showInformationMessage("Disabled Discord Rich Presence for this workspace");
@@ -128,6 +131,8 @@ export const registerCommands = (ctx: ExtensionContext) => {
     });
 
     const enablePrivacyModeCommand = commands.registerCommand("vscord.enablePrivacyMode", async () => {
+        logInfo("Enabling Privacy Mode...");
+
         await togglePrivacyMode();
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
@@ -135,6 +140,8 @@ export const registerCommands = (ctx: ExtensionContext) => {
     });
 
     const disablePrivacyModeCommand = commands.registerCommand("vscord.disablePrivacyMode", async () => {
+        logInfo("Disabling Privacy Mode...");
+
         await togglePrivacyMode(false);
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
