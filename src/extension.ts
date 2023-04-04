@@ -127,33 +127,13 @@ export const registerCommands = (ctx: ExtensionContext) => {
         controller.statusBarIcon.show();
     });
 
-    const enablePrivacyModeCommand = commands.registerCommand("vscord.enablePrivacyMode", async () => {
-        await togglePrivacyMode();
-
-        logInfo("Enabled Privacy Mode.");
-
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
-            await window.showInformationMessage("Enabled Privacy Mode.");
-    });
-
-    const disablePrivacyModeCommand = commands.registerCommand("vscord.disablePrivacyMode", async () => {
-        await togglePrivacyMode(false);
-
-        logInfo("Disabled Privacy Mode.");
-
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
-            await window.showInformationMessage("Disabled Privacy Mode.");
-    });
-
     ctx.subscriptions.push(
         enableCommand,
         disableCommand,
         enableWorkspaceCommand,
         disableWorkspaceCommand,
         reconnectCommand,
-        disconnectCommand,
-        enablePrivacyModeCommand,
-        disablePrivacyModeCommand
+        disconnectCommand
     );
 
     logInfo("Registered Discord Rich Presence commands");

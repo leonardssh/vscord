@@ -89,16 +89,6 @@
                 "command": "vscord.reconnect",
                 "title": "Reconnect to Discord Gateway",
                 "category": "VSCord"
-            },
-            {
-                "command": "vscord.enablePrivacyMode",
-                "title": "Enable Privacy Mode",
-                "category": "VSCord"
-            },
-            {
-                "command": "vscord.disablePrivacyMode",
-                "title": "Disable Privacy Mode",
-                "category": "VSCord"
             }
         ],
         "configuration": [
@@ -111,12 +101,6 @@
                         "default": true,
                         "description": "Is the extension enabled?",
                         "order": 0
-                    },
-                    "vscord.privacyMode": {
-                        "type": "boolean",
-                        "default": false,
-                        "description": "Should we hide the github repository, the file name and the project name?",
-                        "order": 1
                     },
                     "vscord.app.name": {
                         "type": "string",
@@ -135,6 +119,12 @@
                         "default": "782685898163617802",
                         "description": "Application id that will be used when `appName` is \"Custom\" or when `appName` is invalid",
                         "order": 3
+                    },
+                    "vscode.app.privacyMode.enable": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Should we hide the github repository, the file name and the workspace name?",
+                        "order": 1
                     },
                     "vscord.app.whitelistEnabled": {
                         "type": "boolean",
