@@ -49,11 +49,11 @@
         "@types/vscode": "1.57.0",
         "@xhayper/discord-rpc": "^1.0.15",
         "discord-api-types": "^0.37.37",
-        "filesize": "^10.0.6",
+        "filesize": "^10.0.7",
         "git-url-parse": "^13.1.0",
         "source-map-support": "^0.5.21",
         "tsup": "^6.7.0",
-        "typescript": "^5.0.2"
+        "typescript": "^5.0.3"
     },
     "engines": {
         "vscode": "^1.57.0"
@@ -1002,5 +1002,5 @@
             }
         ]
     },
-    "packageManager": "pnpm@8.0.0"
+    "packageManager": "pnpm@8.1.1"
 }

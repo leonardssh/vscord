@@ -1,6 +1,13 @@
-import { type SetActivity } from "@xhayper/discord-rpc";
+import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 import { type GatewayActivityButton } from "discord-api-types/v10";
+import { type SetActivity } from "@xhayper/discord-rpc";
+import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
+import { getFileSize } from "./helpers/getFileSize";
+import { isExcluded } from "./helpers/isExcluded";
+import { isObject } from "./helpers/isObject";
 import gitUrlParse from "git-url-parse";
+import { getConfig } from "./config";
+import { dataClass } from "./data";
 import { sep } from "node:path";
 import {
     DiagnosticSeverity,
@@ -12,13 +19,6 @@ import {
     type Selection,
     type TextDocument
 } from "vscode";
-import { getConfig } from "./config";
-import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
-import { dataClass } from "./data";
-import { getFileSize } from "./helpers/getFileSize";
-import { isExcluded } from "./helpers/isExcluded";
-import { isObject } from "./helpers/isObject";
-import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",

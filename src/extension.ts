@@ -1,10 +1,10 @@
 import "source-map-support/register";
 
 import { commands, window, workspace, type ExtensionContext } from "vscode";
-import { getConfig } from "./config";
-import { CONFIG_KEYS } from "./constants";
-import { RPCController } from "./controller";
 import { getApplicationId } from "./helpers/getApplicationId";
+import { RPCController } from "./controller";
+import { CONFIG_KEYS } from "./constants";
+import { getConfig } from "./config";
 import { logInfo } from "./logger";
 import { dataClass } from "./data";
 
@@ -55,7 +55,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         controller.statusBarIcon.hide();
     };
 
-    const togglePrivacyMode = async (activate = true) => {
+    const togglePrivacyMode = async (activate: boolean) => {
         try {
             await config.update(CONFIG_KEYS.App.PrivacyMode, activate);
         } catch {}
@@ -131,16 +131,16 @@ export const registerCommands = (ctx: ExtensionContext) => {
     });
 
     const enablePrivacyModeCommand = commands.registerCommand("vscord.enablePrivacyMode", async () => {
-        logInfo("Enabling Privacy Mode...");
+        logInfo("Enabled Privacy Mode");
 
-        await togglePrivacyMode();
+        await togglePrivacyMode(true);
 
         if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
             await window.showInformationMessage("Enabled Privacy Mode.");
     });
 
     const disablePrivacyModeCommand = commands.registerCommand("vscord.disablePrivacyMode", async () => {
-        logInfo("Disabling Privacy Mode...");
+        logInfo("Disabled Privacy Mode");
 
         await togglePrivacyMode(false);
 

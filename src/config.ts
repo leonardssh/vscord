@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { type filesize } from "filesize";
 import { workspace, type ConfigurationTarget, type WorkspaceConfiguration } from "vscode";
 import { type PROBLEM_LEVEL } from "./activity";
+import { type filesize } from "filesize";
 
 export type FileSizeConfig = Parameters<typeof filesize>["1"];
 export type FileSizeStandard = "iec" | "jedec";
