@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { type ConfigurationTarget, type WorkspaceConfiguration, workspace } from "vscode";
-import { type PROBLEM_LEVEL } from "./activity";
 import { type filesize } from "filesize";
+import { workspace, type ConfigurationTarget, type WorkspaceConfiguration } from "vscode";
+import { type PROBLEM_LEVEL } from "./activity";
 
 export type FileSizeConfig = Parameters<typeof filesize>["1"];
 export type FileSizeStandard = "iec" | "jedec";
@@ -9,6 +9,7 @@ export type FileSizeStandard = "iec" | "jedec";
 export interface ExtensionConfigurationType {
     "app.id": string;
     "app.name": "Code" | "Visual Studio Code" | "VSCodium" | "Custom";
+    "app.privacyMode.enable": boolean;
     "app.whitelistEnabled": boolean;
     "app.whitelistIsBlacklist": boolean;
     "app.whitelist": string[];
