@@ -89,6 +89,16 @@
                 "command": "vscord.reconnect",
                 "title": "Reconnect to Discord Gateway",
                 "category": "VSCord"
+            },
+            {
+                "command": "vscord.enablePrivacyMode",
+                "title": "Enable Privacy Mode",
+                "category": "VSCord"
+            },
+            {
+                "command": "vscord.disablePrivacyMode",
+                "title": "Disable Privacy Mode",
+                "category": "VSCord"
             }
         ],
         "configuration": [
@@ -102,6 +112,12 @@
                         "description": "Is the extension enabled?",
                         "order": 0
                     },
+                    "vscord.privacyMode": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Should we hide the github repository, the file name and the project name?",
+                        "order": 1
+                    },
                     "vscord.app.name": {
                         "type": "string",
                         "enum": [
@@ -112,25 +128,25 @@
                         ],
                         "default": "Code",
                         "description": "Choose the name you want the application to use.\nChoosing \"Custom\" will make it so it use the \"rpc.id\" as application id",
-                        "order": 1
+                        "order": 2
                     },
                     "vscord.app.id": {
                         "type": "string",
                         "default": "782685898163617802",
                         "description": "Application id that will be used when `appName` is \"Custom\" or when `appName` is invalid",
-                        "order": 2
+                        "order": 3
                     },
                     "vscord.app.whitelistEnabled": {
                         "type": "boolean",
                         "default": false,
                         "description": "Is the whitelist enabled?",
-                        "order": 3
+                        "order": 4
                     },
                     "vscord.app.whitelistIsBlacklist": {
                         "type": "boolean",
                         "default": false,
                         "description": "Switches the whitelist to a blacklist.",
-                        "order": 4
+                        "order": 5
                     },
                     "vscord.app.whitelist": {
                         "type": "array",
@@ -140,7 +156,7 @@
                             "type": "string"
                         },
                         "description": "List of discord user ids that will be able to use the extension.",
-                        "order": 5
+                        "order": 6
                     }
                 }
             },

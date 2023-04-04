@@ -1,24 +1,24 @@
-import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
-import { type GatewayActivityButton } from "discord-api-types/v10";
 import { type SetActivity } from "@xhayper/discord-rpc";
+import { type GatewayActivityButton } from "discord-api-types/v10";
+import gitUrlParse from "git-url-parse";
+import { sep } from "node:path";
+import {
+    DiagnosticSeverity,
+    debug,
+    env,
+    languages,
+    window,
+    workspace,
+    type Selection,
+    type TextDocument
+} from "vscode";
+import { getConfig } from "./config";
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
+import { dataClass } from "./data";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
 import { isObject } from "./helpers/isObject";
-import gitUrlParse from "git-url-parse";
-import { getConfig } from "./config";
-import { dataClass } from "./data";
-import { sep } from "node:path";
-import {
-    type Selection,
-    type TextDocument,
-    debug,
-    DiagnosticSeverity,
-    env,
-    languages,
-    workspace,
-    window
-} from "vscode";
+import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",
@@ -101,6 +101,7 @@ export const activity = async (
     const detailsIdleEnabled = config.get(CONFIG_KEYS.Status.Details.Idle.Enabled);
     const stateEnabled = config.get(CONFIG_KEYS.Status.State.Enabled);
     const stateIdleEnabled = config.get(CONFIG_KEYS.Status.State.Idle.Enabled);
+    const privacyModeEnabled = config.get(CONFIG_KEYS.PrivacyMode) as boolean;
 
     const gitRepo = dataClass.gitRemoteUrl?.toString("https").replace(/\.git$/, "");
     const gitOrg = dataClass.gitRemoteUrl?.organization ?? dataClass.gitRemoteUrl?.owner;
@@ -109,7 +110,7 @@ export const activity = async (
     const isRepositoryExcluded = !!gitRepo && isExcluded(config.get(CONFIG_KEYS.Ignore.Repositories)!, gitRepo);
     const isOrganizationExcluded = !!gitOrg && isExcluded(config.get(CONFIG_KEYS.Ignore.Organizations)!, gitOrg);
     const isGitHostExcluded = !!gitHost && isExcluded(config.get(CONFIG_KEYS.Ignore.GitHosts)!, gitHost);
-    const isGitExcluded = isRepositoryExcluded || isOrganizationExcluded || isGitHostExcluded;
+    const isGitExcluded = isRepositoryExcluded || isOrganizationExcluded || isGitHostExcluded || privacyModeEnabled;
 
     let isWorkspaceExcluded =
         dataClass.workspaceFolder !== undefined &&
@@ -141,15 +142,34 @@ export const activity = async (
           )
         : FAKE_EMPTY;
 
-    const replaceAllText = async (text: string) =>
-        (
-            await replaceFileInfo(
-                replaceGitInfo(replaceAppInfo(text), isGitExcluded),
-                isWorkspaceExcluded,
-                dataClass.editor?.document,
-                dataClass.editor?.selection
-            )
-        ).replaceAll("{problems}", PROBLEMS);
+    const replaceAllText = async (text: string) => {
+        let replaced: string = text;
+        if (privacyModeEnabled) {
+            replaced = await replaceForPrivacyMode(replaced);
+        }
+        replaced = replaceAppInfo(replaced);
+        replaced = replaceGitInfo(replaced, isGitExcluded);
+        replaced = await replaceFileInfo(
+            replaced,
+            isWorkspaceExcluded,
+            dataClass.editor?.document,
+            dataClass.editor?.selection
+        );
+        return replaced.replaceAll("{problems}", PROBLEMS);
+    };
+
+    const replaceForPrivacyMode = async (text: string) => {
+        let replaced: string = text;
+        replaced = replaced.replaceAll("{file_name}", "a file");
+        replaced = replaced.replaceAll("{folder_and_file}", "a file in a folder");
+        replaced = replaced.replaceAll("{directory_name}", "a folder");
+        replaced = replaced.replaceAll("{full_directory_name}", "a folder");
+        replaced = replaced.replaceAll("{workspace}", "a workspace");
+        replaced = replaced.replaceAll("{workspace_folder}", "a workspace");
+        replaced = replaced.replaceAll("{workspace_and_folder}", "a workspace");
+
+        return replaced;
+    };
 
     let workspaceExcludedText = "No workspace ignore text provided.";
     const ignoreWorkspacesText = config.get(CONFIG_KEYS.Ignore.WorkspacesText)!;
@@ -321,7 +341,10 @@ export const getPresenceButtons = async (
         ? "Idle"
         : isGitExcluded
         ? undefined
-        : status == CURRENT_STATUS.EDITING || status == CURRENT_STATUS.VIEWING || status == CURRENT_STATUS.NOT_IN_FILE || status == CURRENT_STATUS.DEBUGGING
+        : status == CURRENT_STATUS.EDITING ||
+          status == CURRENT_STATUS.VIEWING ||
+          status == CURRENT_STATUS.NOT_IN_FILE ||
+          status == CURRENT_STATUS.DEBUGGING
         ? "Active"
         : "Inactive";
     if ((!button1Enabled && !button2Enabled) || !state) return [];

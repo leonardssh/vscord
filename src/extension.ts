@@ -1,10 +1,10 @@
 import "source-map-support/register";
 
-import { type ExtensionContext, commands, window, workspace } from "vscode";
-import { getApplicationId } from "./helpers/getApplicationId";
-import { RPCController } from "./controller";
-import { CONFIG_KEYS } from "./constants";
+import { commands, window, workspace, type ExtensionContext } from "vscode";
 import { getConfig } from "./config";
+import { CONFIG_KEYS } from "./constants";
+import { RPCController } from "./controller";
+import { getApplicationId } from "./helpers/getApplicationId";
 import { logInfo } from "./logger";
 
 const controller = new RPCController(
@@ -52,6 +52,12 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         logInfo("[003] Destroyed Discord RPC client");
         controller.statusBarIcon.hide();
+    };
+
+    const togglePrivacyMode = async (activate = true) => {
+        try {
+            await config.update(CONFIG_KEYS.PrivacyMode, activate);
+        } catch {}
     };
 
     const enableCommand = commands.registerCommand("vscord.enable", async () => {
@@ -121,13 +127,33 @@ export const registerCommands = (ctx: ExtensionContext) => {
         controller.statusBarIcon.show();
     });
 
+    const enablePrivacyModeCommand = commands.registerCommand("vscord.enablePrivacyMode", async () => {
+        await togglePrivacyMode();
+
+        logInfo("Enabled Privacy Mode.");
+
+        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+            await window.showInformationMessage("Enabled Privacy Mode.");
+    });
+
+    const disablePrivacyModeCommand = commands.registerCommand("vscord.disablePrivacyMode", async () => {
+        await togglePrivacyMode(false);
+
+        logInfo("Disabled Privacy Mode.");
+
+        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+            await window.showInformationMessage("Disabled Privacy Mode.");
+    });
+
     ctx.subscriptions.push(
         enableCommand,
         disableCommand,
         enableWorkspaceCommand,
         disableWorkspaceCommand,
         reconnectCommand,
-        disconnectCommand
+        disconnectCommand,
+        enablePrivacyModeCommand,
+        disablePrivacyModeCommand
     );
 
     logInfo("Registered Discord Rich Presence commands");
