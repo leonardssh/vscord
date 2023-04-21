@@ -1,6 +1,6 @@
 import { URL } from "node:url";
 
-export default function (uri: string): string {
+export const stripCredential = (uri: string): string => {
     try {
         const url = new URL(uri);
         url.username = "";
@@ -9,4 +9,4 @@ export default function (uri: string): string {
     } catch (ignored) {
         return uri;
     }
-}
+};

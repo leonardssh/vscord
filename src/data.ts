@@ -1,5 +1,5 @@
 import type { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
-import stripCredential from "./helpers/stripCredential";
+import { stripCredential } from "./helpers/stripCredential";
 import { basename, parse, sep } from "node:path";
 import { CONFIG_KEYS } from "./constants";
 import gitUrlParse from "git-url-parse";
