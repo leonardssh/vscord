@@ -1,4 +1,5 @@
 import type { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
+import stripCredential from "./helpers/stripCredential";
 import { basename, parse, sep } from "node:path";
 import { CONFIG_KEYS } from "./constants";
 import gitUrlParse from "git-url-parse";
@@ -55,8 +56,7 @@ export class Data implements DisposableLike {
                         `root(): window.onDidChangeActiveTextEditor: got unallowed scheme, got '${e.document.uri.scheme}'`
                     );
 
-                if (e)
-                    this.debug(`root(): window.onDidChangeActiveTextEditor: got URI '${e.document.uri.scheme}'`)
+                if (e) this.debug(`root(): window.onDidChangeActiveTextEditor: got URI '${e.document.uri.scheme}'`);
 
                 this.editor = e;
             }),
@@ -161,7 +161,7 @@ export class Data implements DisposableLike {
     }
 
     public get gitRemoteUrl(): gitUrlParse.GitUrl | undefined {
-        const v = this._remote?.fetchUrl ?? this._remote?.pushUrl;
+        const v = stripCredential(this._remote?.fetchUrl ?? this._remote?.pushUrl ?? "");
         this.debug(`gitRemoteUrl(): Url: ${v ?? ""}`);
         if (!v) return;
 

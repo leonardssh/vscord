@@ -6,7 +6,8 @@ export const throttle = <F extends (...args: any[]) => any>(func: F, delay: numb
     return {
         callable: (...args: Parameters<F>): ReturnType<F> | undefined => {
             const run = () => {
-                clearTimeout(timeout);
+                if (timeout) clearTimeout(timeout);
+
                 lastCalled = new Date().getTime();
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return func(...args);
@@ -16,7 +17,8 @@ export const throttle = <F extends (...args: any[]) => any>(func: F, delay: numb
             if (now - lastCalled < delay) {
                 if (!runAfterThrottleEnd) return;
 
-                clearTimeout(timeout);
+                if (timeout) clearTimeout(timeout);
+
                 timeout = setTimeout(run, delay - (now - lastCalled));
             } else {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -25,7 +27,8 @@ export const throttle = <F extends (...args: any[]) => any>(func: F, delay: numb
         },
         reset: (setLastCalled = false) => {
             if (setLastCalled) lastCalled = new Date().getTime();
-            clearTimeout(timeout);
+
+            if (timeout) clearTimeout(timeout);
         }
     };
 };
