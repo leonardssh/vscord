@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.1.9",
+    "version": "5.1.10",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -48,7 +48,7 @@
         "@types/node": "16.x",
         "@types/vscode": "1.57.0",
         "@xhayper/discord-rpc": "^1.0.17",
-        "discord-api-types": "^0.37.42",
+        "discord-api-types": "^0.37.43",
         "filesize": "^10.0.7",
         "git-url-parse": "^13.1.0",
         "source-map-support": "^0.5.21",
@@ -1002,5 +1002,5 @@
             }
         ]
     },
-    "packageManager": "pnpm@8.3.1"
+    "packageManager": "pnpm@8.6.0"
 }
