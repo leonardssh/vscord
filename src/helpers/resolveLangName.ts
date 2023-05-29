@@ -14,8 +14,7 @@ export const fileExtensionEquals = (filename: string, key: string) => {
     const match = /^\/(.*)\/([mgiy]+)$/.exec(key);
     if (!match) return false;
 
-    const regex = new RegExp(match[1], match[2]);
-    return regex.test(filename);
+    return new RegExp(match[1], match[2]).test(filename);
 };
 
 export const resolveLangName = (document: TextDocument): string => {
