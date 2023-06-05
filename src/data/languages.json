@@ -33,6 +33,10 @@
             "image": "c"
         },
         {
+            "language": "cosmo",
+            "image": "cosmo"
+        },
+        {
             "language": "cpp",
             "image": "cpp"
         },
