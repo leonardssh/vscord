@@ -577,6 +577,12 @@
         ".iced": {
             "image": "coffee"
         },
+        ".cos": {
+            "image": "cosmo"
+        },
+        ".⭐": {
+            "image": "cosmo"
+        },
         "/\\.c[+px]{2}$|\\.cc$/i": {
             "image": "cpp"
         },
