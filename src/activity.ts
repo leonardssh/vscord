@@ -90,9 +90,20 @@ export const activity = async (
     if (isIdling && !config.get(CONFIG_KEYS.Status.Idle.Enabled)) return {};
 
     if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
+
+        const getStartFromTime = config.get(CONFIG_KEYS.Status.StartFromTime) as number;
+
         presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
             ? Date.now()
             : previous.startTimestamp ?? Date.now();
+
+        if (getStartFromTime > 0) {
+            if (typeof presence.startTimestamp === 'number') {
+                presence.startTimestamp -= getStartFromTime * 1000;
+            } else if (presence.startTimestamp instanceof Date) {
+                presence.startTimestamp = presence.startTimestamp.getTime() - getStartFromTime * 1000;
+            }
+        }
     } else {
         delete presence.startTimestamp;
     }
@@ -135,11 +146,11 @@ export const activity = async (
 
     const PROBLEMS = config.get(CONFIG_KEYS.Status.Problems.Enabled)
         ? await replaceFileInfo(
-              replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)!), isGitExcluded),
-              isWorkspaceExcluded,
-              dataClass.editor?.document,
-              dataClass.editor?.selection
-          )
+            replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)!), isGitExcluded),
+            isWorkspaceExcluded,
+            dataClass.editor?.document,
+            dataClass.editor?.selection
+        )
         : FAKE_EMPTY;
 
     const replaceAllText = async (text: string) => {
@@ -319,9 +330,8 @@ function buttonValidation(
     const trimmedUrl = button.url.trim();
 
     if (!trimmedLabel || !trimmedUrl) {
-        validationError += `Invalid ${!trimmedLabel ? `Label` : ""} ${!trimmedLabel && !trimmedUrl ? "and " : ""}${
-            !trimmedUrl ? "Url" : ""
-        } for ${state}.`;
+        validationError += `Invalid ${!trimmedLabel ? `Label` : ""} ${!trimmedLabel && !trimmedUrl ? "and " : ""}${!trimmedUrl ? "Url" : ""
+            } for ${state}.`;
         button = undefined;
     }
 
@@ -340,13 +350,13 @@ export const getPresenceButtons = async (
     let state: "Idle" | "Active" | "Inactive" | undefined = isIdling
         ? "Idle"
         : isGitExcluded
-        ? undefined
-        : status == CURRENT_STATUS.EDITING ||
-          status == CURRENT_STATUS.VIEWING ||
-          status == CURRENT_STATUS.NOT_IN_FILE ||
-          status == CURRENT_STATUS.DEBUGGING
-        ? "Active"
-        : "Inactive";
+            ? undefined
+            : status == CURRENT_STATUS.EDITING ||
+                status == CURRENT_STATUS.VIEWING ||
+                status == CURRENT_STATUS.NOT_IN_FILE ||
+                status == CURRENT_STATUS.DEBUGGING
+                ? "Active"
+                : "Inactive";
     if ((!button1Enabled && !button2Enabled) || !state) return [];
     let isGit = !isGitExcluded && dataClass.gitRemoteUrl;
     let button1 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button1"), "Button1");
@@ -414,7 +424,7 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
         [
             "{git_url}",
             (!excluded ? (dataClass.gitRemoteUrl?.toString("https") ?? "").replace(/\.git$/, "") : undefined) ??
-                FAKE_EMPTY
+            FAKE_EMPTY
         ]
     ]);
 

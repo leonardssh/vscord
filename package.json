@@ -169,6 +169,11 @@
                         "default": true,
                         "description": "Should elapsed time be shown?"
                     },
+                    "vscord.status.startFromTime": {
+                        "type": "number",
+                        "default": 0,
+                        "description": "How many seconds should be added to the elapsed time?"
+                    },
                     "vscord.status.resetElapsedTimePerFile": {
                         "type": "boolean",
                         "default": false,
