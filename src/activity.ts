@@ -91,19 +91,14 @@ export const activity = async (
 
     if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
 
-        const getStartFromTime = config.get(CONFIG_KEYS.Status.StartFromTime) as number;
+        let getStartFromTime = config.get(CONFIG_KEYS.Status.StartFromTime) as number;
 
-        if (getStartFromTime > 0 && typeof previous.startTimestamp === 'undefined') {
-            presence.startTimestamp = -(getStartFromTime * 1000);
-        }
+        if (getStartFromTime < 1) getStartFromTime = 0;
 
-        if (config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)) {
-            presence.startTimestamp = new Date(presence.startTimestamp as Date).getTime() + Date.now();
+        if (config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile) || typeof previous.startTimestamp === 'undefined') {
+            presence.startTimestamp = -(getStartFromTime * 1000) + Date.now();
         } else {
-            const previousStartTimestamp = previous.startTimestamp instanceof Date
-                ? previous.startTimestamp.getTime()
-                : Date.now();
-            presence.startTimestamp = new Date(presence.startTimestamp as Date).getTime() + previousStartTimestamp;
+            presence.startTimestamp = previous.startTimestamp;
         }
 
     } else {
