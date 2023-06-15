@@ -5,6 +5,10 @@
             "image": "text"
         },
         {
+            "language": "azura",
+            "image": "azura"
+        },
+        {
             "language": "ansible",
             "image": "ansible"
         },
