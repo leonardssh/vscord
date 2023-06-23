@@ -1486,6 +1486,9 @@
         ".zig": {
             "image": "zig"
         },
+        ".mael": {
+            "image": "mael"
+        },
         "/\\.(tfvars|tf)$/i": {
             "image": "terraform"
         }
