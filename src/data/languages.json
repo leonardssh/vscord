@@ -313,6 +313,10 @@
             "image": "vb"
         },
         {
+            "language": "verse",
+            "image": "verse"
+        },
+        {
             "language": "vue",
             "image": "vue"
         },
@@ -1452,6 +1456,9 @@
         },
         ".vcxproj": {
             "image": "vcxproj"
+        },
+        ".verse": {
+            "image": "verse"
         },
         ".vscodeignore": {
             "image": "vscodeignore"
