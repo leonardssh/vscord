@@ -5,10 +5,6 @@
             "image": "text"
         },
         {
-            "language": "azura",
-            "image": "azura"
-        },
-        {
             "language": "ansible",
             "image": "ansible"
         },
@@ -327,6 +323,10 @@
         {
             "language": "vue-html",
             "image": "vue"
+        },
+        {
+            "language": "zura",
+            "image": "zura"
         },
         {
             "language": "xml",
@@ -1469,6 +1469,9 @@
         },
         ".vue": {
             "image": "vue"
+        },
+        ".zu": {
+            "image": "zura"
         },
         ".wat": {
             "image": "wasm"
