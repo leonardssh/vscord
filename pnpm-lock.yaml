@@ -15,8 +15,8 @@ devDependencies:
     specifier: 1.57.0
     version: 1.57.0
   '@xhayper/discord-rpc':
-    specifier: ^1.0.20
-    version: 1.0.20
+    specifier: ^1.0.21
+    version: 1.0.21
   discord-api-types:
     specifier: ^0.37.48
     version: 0.37.48
@@ -269,8 +269,8 @@ packages:
     resolution: {integrity: sha512-FeznBFtIDCWRluojTsi9c3LLcCHOXP5etQfBK42+ixo1CoEAchkw39tuui9zomjZuKfUVL33KZUDIwHZ/xvOkQ==}
     dev: true
 
-  /@xhayper/discord-rpc@1.0.20:
-    resolution: {integrity: sha512-sNZN46RxsuCYmx3FFZN1CQSnknHi7cji7kaWfBKIqfswCpzD+cj6B6NAYzLjiscFT5nuqo/KMPRt+abPSTK9kg==}
+  /@xhayper/discord-rpc@1.0.21:
+    resolution: {integrity: sha512-Dt6LaZOh3HBL8jWkN/2YYXHt1/d6tEwEs2ca76Sx9k4AUBsc9+FYOkKNyqxZIIAdSvBGuVx3MoNDGQM69NTIug==}
     engines: {node: '>=14.18.0'}
     dependencies:
       axios: 1.4.0
