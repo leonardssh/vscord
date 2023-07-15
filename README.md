@@ -55,6 +55,10 @@ Highly customizable [Discord Rich Presence](https://discord.com/rich-presence) e
 
 > Remember to 🌟 this GitHub if you 💖 it.
 
+## Disclaimer
+
+This extension does not work with snapstore / flatpak version of VSCode, please use the official version from the VSCode website!
+
 ## 📌 Features
 
 -   Shows what you're working on!
