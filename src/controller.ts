@@ -153,7 +153,7 @@ export class RPCController {
         const config = getConfig();
 
         if (config.get(CONFIG_KEYS.Status.Idle.Timeout) !== 0) {
-            if (windowState.focused) {
+            if (windowState.focused && this.idleTimeout) {
                 clearTimeout(this.idleTimeout);
                 await this.sendActivity();
             } else if (config.get(CONFIG_KEYS.Status.Idle.Check)) {
