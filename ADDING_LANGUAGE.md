@@ -16,7 +16,8 @@ If possible, please also sort the key by alphabetical order!
 
 ### KNOWN_LANGUAGES
 
-`KNOWN_LANGUAGES` is a [record](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type) of Language ID and icon.It's usually specified by extension developer who add support for that specific language.
+`KNOWN_LANGUAGES` is a [record](https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type) of Language ID and icon.
+It's usually specified by extension developer who add support for that specific language.
 
 #### Finding Language ID
 
