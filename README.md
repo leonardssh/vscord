@@ -55,6 +55,10 @@ Highly customizable [Discord Rich Presence](https://discord.com/rich-presence) e
 
 > Remember to 🌟 this GitHub if you 💖 it.
 
+## Disclaimer
+
+This extension does not work with snapstore / flatpak version of VSCode, please use the official version from the VSCode website!
+
 ## 📌 Features
 
 -   Shows what you're working on!
@@ -130,7 +134,7 @@ To contribute to this repository, feel free to create a new fork of the reposito
 1. Fork / Clone the `main` branch.
 2. Create a new branch in your fork.
 3. Make your changes.
-4. Commit your changes, and push them.
+4. Commit your changes and push them.
 5. Submit a Pull Request [here](https://github.com/LeonardSSH/vscord/pulls)!
 
 ## 👨‍💻 Adding a new language
