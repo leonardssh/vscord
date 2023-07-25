@@ -1473,6 +1473,9 @@
         ".zu": {
             "image": "zura"
         },
+        ".zura": {
+            "image": "zura"
+        },
         ".wat": {
             "image": "wasm"
         },
