@@ -325,6 +325,10 @@
             "image": "vue"
         },
         {
+            "language": "zura",
+            "image": "zura"
+        },
+        {
             "language": "xml",
             "image": "xml"
         },
@@ -1465,6 +1469,12 @@
         },
         ".vue": {
             "image": "vue"
+        },
+        ".zu": {
+            "image": "zura"
+        },
+        ".zura": {
+            "image": "zura"
         },
         ".wat": {
             "image": "wasm"
