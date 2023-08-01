@@ -346,7 +346,7 @@
                     "vscord.status.state.text.editing": {
                         "type": "string",
                         "default": "Working on {file_name}{file_extension}:{current_line}:{current_column}",
-                        "description": "The text to show when editting a file."
+                        "description": "The text to show when editing a file."
                     },
                     "vscord.status.state.text.debugging": {
                         "type": "string",
@@ -447,12 +447,12 @@
                     "vscord.status.image.small.editing.key": {
                         "type": "string",
                         "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png",
-                        "description": "The image url to use when editting a file."
+                        "description": "The image url to use when editing a file."
                     },
                     "vscord.status.image.small.editing.text": {
                         "type": "string",
                         "default": "{app_name}",
-                        "description": "The small text to show when editting a file."
+                        "description": "The small text to show when editing a file."
                     },
                     "vscord.status.image.small.debugging.key": {
                         "type": "string",
