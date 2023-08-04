@@ -25,6 +25,10 @@
             "image": "clojure"
         },
         {
+            "language": "citrinescript",
+            "image": "citrinescript"
+        },
+        {
             "language": "coffeescript",
             "image": "coffee"
         },
@@ -566,6 +570,9 @@
         },
         "/\\.codeclimate\\.(yml|json)/i": {
             "image": "codeclimate"
+        },
+        ".ces": {
+            "image": "citrinescript"
         },
         ".coffee": {
             "image": "coffee"
