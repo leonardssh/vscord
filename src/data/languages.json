@@ -133,6 +133,10 @@
             "image": "jsx"
         },
         {
+            "language": "jinja",
+            "image": "jinja"
+        },
+        {
             "language": "jsx",
             "image": "jsx"
         },
