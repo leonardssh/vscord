@@ -157,6 +157,14 @@
             "image": "kivy"
         },
         {
+            "language": "kag-script",
+            "image": "kag-script"
+        },
+        {
+            "language": "kirikiri-tpv-javascript",
+            "image": "kirikiri-tpv-javascript"
+        },
+        {
             "language": "latex",
             "image": "text"
         },
@@ -468,6 +476,12 @@
         },
         ".kv": {
             "image": "kivy"
+        },
+        ".ks": {
+            "image": "kag-script"
+        },
+        ".tjs": {
+            "image": "kirikiri-tpv-javascript"
         },
         ".lst": {
             "image": "assembly"
