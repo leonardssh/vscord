@@ -422,7 +422,7 @@
                     "vscord.status.image.large.notInFile.text": {
                         "type": "string",
                         "default": "",
-                        "description": "The lage text to show when you are not in a file."
+                        "description": "The large text to show when you are not in a file."
                     },
                     "vscord.status.image.small.idle.key": {
                         "type": "string",
