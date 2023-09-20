@@ -253,6 +253,10 @@
             "image": "reasonml"
         },
         {
+            "language": "rst",
+            "image": "restructuredtext"
+        },
+        {
             "language": "ruby",
             "image": "ruby"
         },
@@ -1256,6 +1260,9 @@
         },
         "/\\.res?i?$/i": {
             "image": "reasonml"
+        },
+        ".rst": {
+            "image": "restructuredtext"
         },
         "/\\.(rb|ru|ruby|erb|gemspec|god|mspec|pluginspec|podspec|rabl|rake|opal)$/i": {
             "image": "ruby"
