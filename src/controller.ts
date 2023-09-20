@@ -39,6 +39,7 @@ export class RPCController {
         this.debug = debug;
 
         this.statusBarIcon.text = "$(pulse) Connecting to Discord Gateway...";
+        this.statusBarIcon.command = undefined;
 
         void this.client.login().catch(async (error: Error) => {
             const config = getConfig();
@@ -83,11 +84,11 @@ export class RPCController {
         logInfo("Successfully connected to Discord");
         this.cleanUp();
 
-        this.statusBarIcon.text = "$(globe) Connected to Discord";
-        this.statusBarIcon.tooltip = "Connected to Discord";
-        this.statusBarIcon.show();
-
         if (this.enabled) void this.enable();
+        this.statusBarIcon.text = "$(globe) Connected to Discord";
+        this.statusBarIcon.tooltip = "Click to disconnect from Discord Gateway";
+        this.statusBarIcon.command = "vscord.disconnect";
+        this.statusBarIcon.show();
     }
 
     private onDisconnected() {
@@ -205,6 +206,7 @@ export class RPCController {
         if (this.iconTimeout) clearTimeout(this.iconTimeout);
 
         await this.client.user?.clearActivity(process.pid);
+        console.log("done");
     }
 
     async enable() {
@@ -241,5 +243,6 @@ export class RPCController {
     async destroy() {
         await this.disable();
         await this.client.destroy();
+        console.log("desto");
     }
 }
