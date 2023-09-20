@@ -149,6 +149,10 @@
             "image": "json"
         },
         {
+            "language": "jule",
+            "image": "jule"
+        },
+        {
             "language": "jupyter",
             "image": "jupyter"
         },
@@ -912,6 +916,9 @@
         },
         ".jsx": {
             "image": "jsx"
+        },
+        ".jule": {
+            "image": "jule"
         },
         "/\\.(jil|jl)/i": {
             "image": "julia"
