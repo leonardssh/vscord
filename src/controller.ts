@@ -206,7 +206,6 @@ export class RPCController {
         if (this.iconTimeout) clearTimeout(this.iconTimeout);
 
         await this.client.user?.clearActivity(process.pid);
-        console.log("done");
     }
 
     async enable() {
@@ -243,6 +242,5 @@ export class RPCController {
     async destroy() {
         await this.disable();
         await this.client.destroy();
-        console.log("desto");
     }
 }
