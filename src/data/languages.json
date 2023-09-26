@@ -193,6 +193,10 @@
             "image": "moonscript"
         },
         {
+            "language": "mojo",
+            "image": "mojo"
+        },
+        {
             "language": "objective-c",
             "image": "objective-c"
         },
@@ -1540,6 +1544,12 @@
         },
         "/\\.(tfvars|tf)$/i": {
             "image": "terraform"
+        },
+        "/\\.mojo$/i": {
+            "image": "mojo"
+        },
+        ".🔥": {
+            "image": "mojo"
         }
     }
 }
