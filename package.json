@@ -104,7 +104,6 @@
         "configuration": [
             {
                 "title": "VSCord",
-                "type": "object",
                 "properties": {
                     "vscord.enabled": {
                         "type": "boolean",
