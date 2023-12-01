@@ -103,8 +103,7 @@
         ],
         "configuration": [
             {
-                "title": "Extension",
-                "type": "object",
+                "title": "VSCord",
                 "properties": {
                     "vscord.app.name": {
                         "type": "string",
