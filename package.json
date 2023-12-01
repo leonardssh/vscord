@@ -106,12 +106,6 @@
                 "title": "Extension",
                 "type": "object",
                 "properties": {
-                    "vscord.enabled": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Is the extension enabled?",
-                        "order": 0
-                    },
                     "vscord.app.name": {
                         "type": "string",
                         "enum": [
@@ -721,6 +715,13 @@
                 "title": "@Deprecated",
                 "type": "object",
                 "properties": {
+                    "vscord.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Is the extension enabled?",
+                        "order": 0,
+                        "markdownDeprecationMessage": "Use the [built-in setting](https://code.visualstudio.com/docs/editor/extension-marketplace#_disable-an-extension)"
+                    },
                     "rpc.id": {
                         "type": "string",
                         "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.app.id#` instead.",
