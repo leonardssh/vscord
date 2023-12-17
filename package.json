@@ -39,21 +39,24 @@
         "onStartupFinished"
     ],
     "scripts": {
-        "vscode:prepublish": "pnpm run package",
-        "package": "tsup",
-        "watch": "tsup --watch"
+        "vscode:prepublish": "pnpm tsup",
+        "package": "pnpm vsce package --no-yarn",
+        "watch": "pnpm tsup --watch",
+        "lint": "pnpm prettier . --check",
+        "lint:fix": "pnpm prettier . --write"
     },
     "devDependencies": {
-        "@types/git-url-parse": "^9.0.1",
+        "@types/git-url-parse": "^9.0.3",
         "@types/node": "16.x",
         "@types/vscode": "1.57.0",
-        "@xhayper/discord-rpc": "^1.0.21",
-        "discord-api-types": "^0.37.48",
-        "filesize": "^10.0.7",
-        "git-url-parse": "^13.1.0",
+        "@vscode/vsce": "^2.22.0",
+        "@xhayper/discord-rpc": "^1.1.1",
+        "discord-api-types": "^0.37.66",
+        "filesize": "^10.1.0",
+        "git-url-parse": "^13.1.1",
         "source-map-support": "^0.5.21",
-        "tsup": "^7.1.0",
-        "typescript": "^5.1.6"
+        "tsup": "^8.0.1",
+        "typescript": "^5.3.3"
     },
     "engines": {
         "vscode": "^1.57.0"
@@ -678,7 +681,7 @@
                         "default": false,
                         "description": "Suppresses all notifications from the extension."
                     },
-                    "vscord.behavoiur.prioritizeLanguagesOverExtensions": {
+                    "vscord.behaviour.prioritizeLanguagesOverExtensions": {
                         "type": "boolean",
                         "default": false,
                         "description": "Prioritize language defined by editor over file extension when determining the language for the file."
