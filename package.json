@@ -686,6 +686,15 @@
                         "default": false,
                         "description": "Prioritize language defined by editor over file extension when determining the language for the file."
                     },
+                    "vscord.behaviour.statusBarAlignment": {
+                        "type": "string",
+                        "enum": [
+                            "Right",
+                            "Left"
+                        ],
+                        "default": "Left",
+                        "description": "Changing the alignment of the status bar."
+                    },
                     "vscord.file.size.humanReadable": {
                         "type": "boolean",
                         "default": true,

@@ -92,4 +92,5 @@ Use the following format `(Language Name) ((Language Icon.png)) ([Link to langua
 Example: `C++ (cpp.png) (https://en.wikipedia.org/wiki/C%2B%2B)`
 
 #### List:
-- Mojo ([mojo.png](https://modular-mojotools.gallerycdn.vsassets.io/extensions/modular-mojotools/vscode-mojo/0.2.1/1694073556578/Microsoft.VisualStudio.Services.Icons.Default)) [Website](https://www.modular.com/mojo)
+
+-   Mojo ([mojo.png](https://modular-mojotools.gallerycdn.vsassets.io/extensions/modular-mojotools/vscode-mojo/0.2.1/1694073556578/Microsoft.VisualStudio.Services.Icons.Default)) [Website](https://www.modular.com/mojo)

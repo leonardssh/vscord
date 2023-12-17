@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { workspace, type ConfigurationTarget, type WorkspaceConfiguration } from "vscode";
 import { type PROBLEM_LEVEL } from "./activity";
-import { type filesize } from "filesize";
 
-export type FileSizeConfig = Parameters<typeof filesize>["1"];
+
 export type FileSizeStandard = "iec" | "jedec";
 
 export interface ExtensionConfigurationType {
@@ -111,6 +110,7 @@ export interface ExtensionConfigurationType {
     "behaviour.additionalFileMapping": Record<string, string>;
     "behaviour.suppressNotifications": boolean;
     "behaviour.prioritizeLanguagesOverExtensions": boolean;
+    "behaviour.statusBarAlignment": "Left" | "Right";
     "behaviour.debug": boolean;
 }
 

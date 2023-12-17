@@ -7,6 +7,7 @@ import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { logInfo } from "./logger";
 import { dataClass } from "./data";
+import { editor } from "./editor";
 
 const controller = new RPCController(
     getApplicationId(getConfig()).clientId,
@@ -20,6 +21,7 @@ export const registerListeners = (ctx: ExtensionContext) => {
         const isEnabled = config.get(CONFIG_KEYS.Enabled);
 
         controller.debug = config.get(CONFIG_KEYS.Behaviour.Debug) ?? false;
+        editor.updateStatusBarFromConfig();
 
         if (controller.client.clientId !== clientId) {
             if (!isEnabled) await controller.disable();
@@ -52,7 +54,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         await controller.disable();
 
         logInfo("[003] Destroyed Discord RPC client");
-        controller.statusBarIcon.hide();
+        editor.statusBarItem.hide();
     };
 
     const togglePrivacyMode = async (activate: boolean) => {
@@ -104,18 +106,20 @@ export const registerCommands = (ctx: ExtensionContext) => {
     const reconnectCommand = commands.registerCommand("vscord.reconnect", async () => {
         logInfo("Reconnecting to Discord Gateway...");
 
-        controller.statusBarIcon.text = "$(search-refresh) Connecting to Discord Gateway...";
-        controller.statusBarIcon.tooltip = "Connecting to Discord Gateway...";
+        editor.statusBarItem.text = "$(search-refresh) Connecting to Discord Gateway...";
+        editor.statusBarItem.tooltip = "Connecting to Discord Gateway...";
 
         await controller
             .login()
             .then(async () => await controller.enable())
             .catch(() => {
-                window.showErrorMessage("Failed to reconnect to Discord Gateway");
+                if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+                    window.showErrorMessage("Failed to reconnect to Discord Gateway");
 
-                controller.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
-                controller.statusBarIcon.command = "vscord.reconnect";
-                controller.statusBarIcon.show();
+                editor.statusBarItem.text = "$(search-refresh) Reconnect to Discord Gateway";
+                editor.statusBarItem.command = "vscord.reconnect";
+                editor.statusBarItem.tooltip = "Reconnect to Discord Gateway";
+                editor.statusBarItem.show();
             });
     });
 
@@ -124,10 +128,10 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         await controller.destroy();
 
-        controller.statusBarIcon.text = "$(search-refresh) Reconnect to Discord Gateway";
-        controller.statusBarIcon.command = "vscord.reconnect";
-        controller.statusBarIcon.tooltip = "Reconnect to Discord Gateway";
-        controller.statusBarIcon.show();
+        editor.statusBarItem.text = "$(search-refresh) Reconnect to Discord Gateway";
+        editor.statusBarItem.command = "vscord.reconnect";
+        editor.statusBarItem.tooltip = "Reconnect to Discord Gateway";
+        editor.statusBarItem.show();
     });
 
     const enablePrivacyModeCommand = commands.registerCommand("vscord.enablePrivacyMode", async () => {

@@ -199,6 +199,7 @@ export const CONFIG_KEYS = {
         AdditionalFileMapping: "behaviour.additionalFileMapping" as const,
         SuppressNotifications: "behaviour.suppressNotifications" as const,
         PrioritizeLanguagesOverExtensions: "behaviour.prioritizeLanguagesOverExtensions" as const,
+        StatusBarAlignment: "behaviour.statusBarAlignment" as const,
         Debug: "behaviour.debug" as const
     } as const
 } as const;
