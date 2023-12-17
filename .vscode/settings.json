@@ -3,6 +3,7 @@
     "typescript.tsdk": "./node_modules/typescript/lib",
     "typescript.tsc.autoDetect": "off",
     "prettier.enable": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "search.exclude": {
         "out": true,
         "dist": true,
