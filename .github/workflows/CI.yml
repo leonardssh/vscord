@@ -25,8 +25,7 @@ jobs:
 
       - name: Build
         run: |
-          pnpm add --global @vscode/vsce
-          pnpm dlx vsce package --no-yarn
+          pnpm package
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3

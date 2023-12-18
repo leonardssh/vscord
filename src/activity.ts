@@ -19,6 +19,7 @@ import {
     type Selection,
     type TextDocument
 } from "vscode";
+import { editor } from "./editor";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",
@@ -351,7 +352,10 @@ export const getPresenceButtons = async (
     let isGit = !isGitExcluded && dataClass.gitRemoteUrl;
     let button1 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button1"), "Button1");
     let button2 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button2"), "Button2");
-    if (button1.validationError || button2.validationError)
+    if (
+        (button1.validationError || button2.validationError) &&
+        !config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)
+    )
         window.showErrorMessage(`${button1.validationError} ${button2.validationError}`);
     return [button1.button, button2.button].filter(Boolean) as GatewayActivityButton[];
 };

@@ -1,7 +1,7 @@
-import type { ExtensionConfiguration, FileSizeConfig, FileSizeStandard } from "../config";
+import type { ExtensionConfiguration, FileSizeStandard } from "../config";
 import { CONFIG_KEYS } from "../constants";
 import type { Data } from "../data";
-import { filesize } from "filesize";
+import { FileSizeOptionsBase, filesize } from "filesize";
 
 export const getFileSize = async (config: ExtensionConfiguration, dataClass: Data) => {
     if (!(await dataClass.fileSize)) return;
@@ -15,11 +15,11 @@ export const getFileSize = async (config: ExtensionConfiguration, dataClass: Dat
         spacer = config.get(CONFIG_KEYS.File.Size.Spacer)!;
 
     const fileSizeStandard: FileSizeStandard = config.get(CONFIG_KEYS.File.Size.Standard) ?? "iec";
-    const fileSizeConfig: FileSizeConfig = {
+    const fileSizeConfig: FileSizeOptionsBase = {
         round,
         spacer,
         standard: fileSizeStandard
-    };
+    } as const;
 
     const fileSize = config.get(CONFIG_KEYS.File.Size.HumanReadable)
         ? filesize((await dataClass.fileSize) ?? 0, fileSizeConfig).toLocaleString()
