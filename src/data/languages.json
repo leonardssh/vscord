@@ -209,6 +209,18 @@
             "image": "odin"
         },
         {
+            "language": "opengoal",
+            "image": "opengoal"
+        },
+        {
+            "language": "opengoal-goos",
+            "image": "opengoal-goos"
+        },
+        {
+            "language": "opengoal-ir",
+            "image": "opengoal-ir"
+        },
+        {
             "language": "perl",
             "image": "perl"
         },
