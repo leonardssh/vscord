@@ -28,14 +28,18 @@ class EditorController {
         const statusBarNewParams = (
             {
                 [StatusBarMode.Failed]: [
-                    "$(refresh) Reconnect to Discord RPC",
-                    "Failed to connect to Discord RPC",
+                    "$(refresh) Failed to connect to Discord Gateway",
+                    "Click to reconnect to Discord Gateway",
                     "vscord.reconnect"
                 ],
-                [StatusBarMode.Pending]: ["$(pulse) Connecting to Discord RPC...", "Please, wait...", undefined],
+                [StatusBarMode.Pending]: [
+                    "$(pulse) Connecting to Discord Gateway...",
+                    "Please, wait...",
+                    undefined
+                ],
                 [StatusBarMode.Succeeded]: [
-                    "$(smiley) Discord RPC",
-                    "Click to disconnect from Discord RPC",
+                    "$(smiley) Connected to Discord",
+                    "Click to disconnect from Discord Gateway",
                     "vscord.disconnect"
                 ]
             } as Exclude<Record<StatusBarMode, ArrMode>, StatusBarMode.Disabled>
