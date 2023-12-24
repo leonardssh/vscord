@@ -2,7 +2,6 @@
 import { workspace, type ConfigurationTarget, type WorkspaceConfiguration } from "vscode";
 import { type PROBLEM_LEVEL } from "./activity";
 
-
 export type FileSizeStandard = "iec" | "jedec";
 
 export interface ExtensionConfigurationType {
