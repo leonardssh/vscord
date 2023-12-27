@@ -257,6 +257,10 @@
             "image": "python"
         },
         {
+            "language": "qml",
+            "image": "qml"
+        },
+        {
             "language": "r",
             "image": "r"
         },
