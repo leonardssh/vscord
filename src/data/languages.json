@@ -181,6 +181,10 @@
             "image": "lua"
         },
         {
+            "language": "luau",
+            "image": "luau"
+        },
+        {
             "language": "makefile",
             "image": "makefile"
         },
@@ -969,8 +973,17 @@
         "/\\.([w]|(pd_))?lua$/i": {
             "image": "lua"
         },
+        "/\\.luau$/i": {
+            "image": "luau"
+        },
         ".rbxs": {
-            "image": "lua"
+            "image": "luau"
+        },
+        ".rbxl": {
+            "image": "luau"
+        },
+        ".rbxlx": {
+            "image": "luau"
         },
         "/^Makefile/": {
             "image": "makefile"
