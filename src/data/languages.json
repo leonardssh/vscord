@@ -976,13 +976,7 @@
         "/\\.luau$/i": {
             "image": "luau"
         },
-        ".rbxs": {
-            "image": "luau"
-        },
-        ".rbxl": {
-            "image": "luau"
-        },
-        ".rbxlx": {
+        "/\\.rbx(?:lx|s)?$/i": {
             "image": "luau"
         },
         "/^Makefile/": {
