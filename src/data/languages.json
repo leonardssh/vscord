@@ -976,7 +976,7 @@
         "/\\.luau$/i": {
             "image": "luau"
         },
-        "/\\.rbx(?:lx|s)?$/i": {
+        "/\\.rbx(?:lx|l|m|s)?$/i": {
             "image": "luau"
         },
         "/^Makefile/": {
