@@ -457,7 +457,7 @@ export const replaceFileInfo = async (
 
         relativePath.splice(-1, 1);
         fullDirectoryName = `${name}${sep}${relativePath.join(sep)}`;
-        relativeFilepath = [relativePath, `${dataClass.fileName}.${dataClass.fileExtension}`].join(sep);
+        relativeFilepath = [...relativePath, `${dataClass.fileName}.${dataClass.fileExtension}`].join(sep);
     }
 
     if (excluded) {
