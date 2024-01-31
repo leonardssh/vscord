@@ -449,6 +449,7 @@ export const replaceFileInfo = async (
     let fullDirectoryName: string = FAKE_EMPTY;
     const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
     const fileSize = await getFileSize(config, dataClass);
+    let relativeFilepath: string = FAKE_EMPTY;
 
     if (dataClass.editor && dataClass.workspaceName && !excluded) {
         const name = dataClass.workspaceName;
@@ -456,6 +457,7 @@ export const replaceFileInfo = async (
 
         relativePath.splice(-1, 1);
         fullDirectoryName = `${name}${sep}${relativePath.join(sep)}`;
+        relativeFilepath = relativePath.join(sep);
     }
 
     if (excluded) {
@@ -463,6 +465,7 @@ export const replaceFileInfo = async (
         workspaceName = FAKE_EMPTY;
         workspaceAndFolder = FAKE_EMPTY;
         fullDirectoryName = FAKE_EMPTY;
+        relativeFilepath = FAKE_EMPTY;
     }
 
     const replaceMap = new Map([
@@ -470,6 +473,7 @@ export const replaceFileInfo = async (
         ["{file_extension}", dataClass.fileExtension ?? FAKE_EMPTY],
         ["{file_size}", fileSize?.toLocaleString() ?? FAKE_EMPTY],
         ["{folder_and_file}", dataClass.folderAndFile ?? FAKE_EMPTY],
+        ["{relative_filepath}", relativeFilepath],
         ["{directory_name}", dataClass.dirName ?? FAKE_EMPTY],
         ["{full_directory_name}", fullDirectoryName],
         ["{workspace}", workspaceName],
