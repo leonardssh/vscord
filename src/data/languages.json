@@ -25,6 +25,10 @@
             "image": "clojure"
         },
         {
+            "language" "COBOL",
+            "image": "cobol"
+        },
+        {
             "language": "coffeescript",
             "image": "coffee"
         },
