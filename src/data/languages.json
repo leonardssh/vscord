@@ -829,7 +829,7 @@
         ".gsh": {
             "image": "groovy"
         },
-        "/gruntfile\\.(js|coffee)/i": {
+        "/[Gg]runtfile\\.(js|coffee)/i": {
             "image": "gruntfile"
         },
         "gulpfile.js": {
