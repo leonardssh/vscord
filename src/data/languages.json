@@ -81,6 +81,10 @@
             "image": "glsl"
         },
         {
+            "language": "gml",
+            "image": "gml"
+        },
+        {
             "language": "go",
             "image": "go"
         },
@@ -795,6 +799,9 @@
         },
         "/^\\.git|^\\.keep$|\\.mailmap$/i": {
             "image": "git"
+        },
+        ".gml": {
+            "image": "gml"
         },
         ".go": {
             "image": "go"
