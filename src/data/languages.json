@@ -379,6 +379,10 @@
         {
             "language": "yaml",
             "image": "yaml"
+        },
+        {
+            "language": "zenscript",
+            "image": "zs"
         }
     ],
     "KNOWN_EXTENSIONS": {
@@ -1569,6 +1573,9 @@
         },
         ".🔥": {
             "image": "mojo"
+        },
+        ".zs": {
+            "image": "zs"
         }
     }
 }
