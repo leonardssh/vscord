@@ -1,3 +1,5 @@
 {
-    "recommendations": ["esbenp.prettier-vscode", "segevfiner.tsup-problem-matcher"]
+  // See http://go.microsoft.com/fwlink/?LinkId=827846
+  // for the documentation about the extensions.json format
+  "recommendations": ["segevfiner.tsup-problem-matcher", "ms-vscode.extension-test-runner"]
 }

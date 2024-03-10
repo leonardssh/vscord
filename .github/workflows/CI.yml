@@ -36,9 +36,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Build
+      - name: Package
         run: |
-          pnpm package
+          pnpm dlx @vscode/vsce package --no-yarn --no-dependencies
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

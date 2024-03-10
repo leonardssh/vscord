@@ -3,7 +3,7 @@ name: Continuous Delivery
 on:
   push:
     tags:
-      - "*"
+      - '*'
 
 jobs:
   deploy:
@@ -35,6 +35,10 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - run: pnpm install --frozen-lockfile
+
+      - name: Package
+        run: |
+          pnpm dlx @vscode/vsce package --no-yarn --no-dependencies
 
       - name: Publish to Open VSX Registry
         uses: HaaLeo/publish-vscode-extension@v1

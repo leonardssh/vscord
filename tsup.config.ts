@@ -1,11 +1,15 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup';
+
+const { NODE_ENV } = process.env;
+
+const isProduction = NODE_ENV === 'production';
 
 export default defineConfig({
-    platform: "node",
-    target: ["node16", "chrome102"],
-    format: "cjs",
-    entry: ["src/extension.ts"],
-    external: ["vscode"],
-    sourcemap: true,
-    minify: true
+  entry: ['src/extension.ts'],
+  external: ['vscode'],
+  format: 'cjs',
+  target: 'node18',
+  sourcemap: !isProduction ? 'inline' : false,
+  minify: isProduction,
+  clean: true
 });

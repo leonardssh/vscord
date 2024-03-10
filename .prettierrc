@@ -1,17 +1,9 @@
 {
-    "$schema": "http://json.schemastore.org/prettierrc",
-    "semi": true,
-    "tabWidth": 4,
-    "trailingComma": "none",
-    "endOfLine": "auto",
-    "printWidth": 120,
-    "overrides": [
-        {
-            "files": "*.yml",
-            "options": {
-                "tabWidth": 2,
-                "useTabs": false
-            }
-        }
-    ]
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "useTabs": false,
+  "trailingComma": "none",
+  "printWidth": 120,
+  "endOfLine": "auto"
 }
