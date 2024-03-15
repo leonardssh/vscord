@@ -81,6 +81,10 @@
             "image": "glsl"
         },
         {
+            "language": "gleam",
+            "image": "gleam"
+        },
+        {
             "language": "go",
             "image": "go"
         },
@@ -798,6 +802,9 @@
         },
         "/^\\.git|^\\.keep$|\\.mailmap$/i": {
             "image": "git"
+        },
+        ".gleam": {
+            "image": "gleam"
         },
         ".go": {
             "image": "go"
