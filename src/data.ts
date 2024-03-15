@@ -127,7 +127,7 @@ export class Data implements DisposableLike {
         let v = workspace.name;
 
         // TODO: Find a better way to handle this
-        if (this.editor?.document.uri.scheme === "vscode-remote") v = v?.replaceAll(/\[SSH:.*\]$/gm, "");
+        if (this.editor?.document.uri.scheme === "vscode-remote") v = v?.replaceAll(/\[(SSH|WSL):.*\]$/gm, "");
 
         this.debug(`workspaceName(): ${v ?? ""}`);
         return v;

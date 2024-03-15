@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.1.18",
+    "version": "5.2.1",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -49,13 +49,13 @@
         "@types/git-url-parse": "^9.0.3",
         "@types/node": "16.x",
         "@types/vscode": "1.57.0",
-        "@vscode/vsce": "^2.22.0",
-        "@xhayper/discord-rpc": "^1.1.1",
-        "discord-api-types": "^0.37.66",
+        "@vscode/vsce": "^2.24.0",
+        "@xhayper/discord-rpc": "^1.1.2",
+        "discord-api-types": "^0.37.71",
         "filesize": "^10.1.0",
-        "git-url-parse": "^13.1.1",
+        "git-url-parse": "^14.0.0",
         "source-map-support": "^0.5.21",
-        "tsup": "^8.0.1",
+        "tsup": "^8.0.2",
         "typescript": "^5.3.3"
     },
     "engines": {
@@ -1020,5 +1020,5 @@
             "description": "Cannot access local Discord RPC when running in virtual workspace"
         }
     },
-    "packageManager": "pnpm@8.6.0"
+    "packageManager": "pnpm@8.15.4"
 }

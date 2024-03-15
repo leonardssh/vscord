@@ -84,6 +84,9 @@
             "language": "gml",
             "image": "gml"
         },
+            "language": "gleam",
+            "image": "gleam"
+        },
         {
             "language": "go",
             "image": "go"
@@ -195,6 +198,10 @@
         {
             "language": "markdown",
             "image": "markdown"
+        },
+        {
+            "language": "MATLAB",
+            "image": "matlab"
         },
         {
             "language": "moonscript",
@@ -626,6 +633,9 @@
         ".coffee.ecr": {
             "image": "coffee"
         },
+        "/contenthook\\.config\\.(ts|cjs|mjs|js)$/i": {
+            "image": "contenthook"
+        },
         ".coffee.erb": {
             "image": "coffee"
         },
@@ -802,6 +812,9 @@
         },
         ".gml": {
             "image": "gml"
+        },
+        ".gleam": {
+            "image": "gleam"
         },
         ".go": {
             "image": "go"
@@ -1114,6 +1127,9 @@
         },
         ".marko": {
             "image": "marko"
+        },
+        "/\\.m$/i": {
+            "image": "matlab"
         },
         ".nim": {
             "image": "nim"
