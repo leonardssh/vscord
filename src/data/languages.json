@@ -84,6 +84,7 @@
             "language": "gml",
             "image": "gml"
         },
+        {
             "language": "gleam",
             "image": "gleam"
         },
