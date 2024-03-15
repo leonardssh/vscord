@@ -81,6 +81,10 @@
             "image": "glsl"
         },
         {
+            "language": "gml",
+            "image": "gml"
+        },
+        {
             "language": "gleam",
             "image": "gleam"
         },
@@ -806,6 +810,9 @@
         },
         "/^\\.git|^\\.keep$|\\.mailmap$/i": {
             "image": "git"
+        },
+        ".gml": {
+            "image": "gml"
         },
         ".gleam": {
             "image": "gleam"
