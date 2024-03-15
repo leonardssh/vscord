@@ -622,6 +622,9 @@
         ".coffee.ecr": {
             "image": "coffee"
         },
+        "/contenthook\\.config\\.(ts|cjs|mjs|js)$/i": {
+            "image": "contenthook"
+        },
         ".coffee.erb": {
             "image": "coffee"
         },
