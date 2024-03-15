@@ -197,6 +197,10 @@
             "image": "markdown"
         },
         {
+            "language": "MATLAB",
+            "image": "matlab"
+        },
+        {
             "language": "moonscript",
             "image": "moonscript"
         },
@@ -1117,6 +1121,9 @@
         },
         ".marko": {
             "image": "marko"
+        },
+        "/\\.m$/i": {
+            "image": "matlab"
         },
         ".nim": {
             "image": "nim"
