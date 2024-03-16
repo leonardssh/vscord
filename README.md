@@ -105,6 +105,7 @@ The following variables will be replaced with the respective value in custom str
 | `{file_extension}`               | extension of the file                                             |
 | `{file_size}`                    | size of the file                                                  |
 | `{folder_and_file}`              | folder and file name                                              |
+| `{relative_file_path}`           | filepath relative to the workspace folder                         |
 | `{directory_name}`               | directory name                                                    |
 | `{full_directory_name}`          | full directory name                                               |
 | `{workspace}`                    | name of the workspace                                             |
