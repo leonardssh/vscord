@@ -225,6 +225,10 @@
             "image": "odin"
         },
         {
+            "language": "onyx",
+            "image": "onyx"
+        },
+        {
             "language": "opengoal",
             "image": "opengoal"
         },
@@ -1173,6 +1177,9 @@
         },
         ".odin": {
             "image": "odin"
+        },
+        ".onyx": {
+            "image": "onyx"
         },
         "/\\.pas(cal)?$/i": {
             "image": "pascal"
