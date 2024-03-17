@@ -43,7 +43,7 @@ export class RPCController {
         void this.client.login().catch(async (error: Error) => {
             const config = getConfig();
 
-            l   ogError("Encountered following error while trying to login:", error);
+            logError("Encountered following error while trying to login:", error);
 
             await this.client?.destroy();
             logInfo("[002] Destroyed Discord RPC client");

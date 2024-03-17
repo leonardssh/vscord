@@ -1,11 +1,10 @@
 {
-    "name": "codiumcord",
+    "name": "vscord",
     "displayName": "Discord Rich Presence",
     "version": "5.2.4",
-    "description": "Highly customizable Discord Rich Presence extension for VSCodium",
-    "main": "dist/extension.js",
-    "repository": "github:tr1xem/vscord",
-    "publisher": "tr1x_em",
+    "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",    "main": "dist/extension.js",
+    "repository": "github:LeonardSSH/vscord",
+    "publisher": "LeonardSSH",
     "contributors": [
         "xhayper <hayper1919@gmail.com>"
     ],
@@ -116,7 +115,7 @@
                             "VSCodium",
                             "Custom"
                         ],
-                        "default": "VSCodium",
+                        "default": "code",
                         "description": "Choose the name you want the application to use.\nChoosing \"Custom\" will make it so it use the \"rpc.id\" as application id",
                         "order": 2
                     },
