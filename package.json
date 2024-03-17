@@ -4,7 +4,7 @@
     "version": "5.2.4",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
-    "repository": "github:LeonardSSH/vscord",
+    "repository": "github:tr1xem/vscord",
     "publisher": "LeonardSSH",
     "contributors": [
         "xhayper <hayper1919@gmail.com>"
@@ -36,7 +36,7 @@
         "theme": "dark"
     },
     "activationEvents": [
-        "onStartupFinished"
+        "*"
     ],
     "scripts": {
         "vscode:prepublish": "pnpm tsup",
