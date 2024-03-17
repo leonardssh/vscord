@@ -43,7 +43,7 @@ export class RPCController {
         void this.client.login().catch(async (error: Error) => {
             const config = getConfig();
 
-            logError("Encountered following error while trying to login:", error);
+            l   ogError("Encountered following error while trying to login:", error);
 
             await this.client?.destroy();
             logInfo("[002] Destroyed Discord RPC client");
@@ -79,7 +79,7 @@ export class RPCController {
     }
 
     private onReady() {
-        logInfo("Successfully connected to Discord");
+        logInfo("Successfully connected to Discord");   
         this.cleanUp();
 
         if (this.enabled) void this.enable();
@@ -178,16 +178,26 @@ export class RPCController {
         logInfo("[004] Debug:", `Logging in with client ID "${clientId}"`);
         logInfo("[004] Debug:", "Login - isConnected", this.client.isConnected, "isReady", this.client.clientId);
         logInfo("[004] Debug:", `Login - ${this.client}`);
-
+    
         if (this.client.isConnected && this.client.clientId === clientId) return;
-
+    
         editor.statusBarItem.text = "$(search-refresh) Connecting to Discord Gateway...";
         editor.statusBarItem.tooltip = "Connecting to Discord Gateway...";
-
+    
         if (this.client.clientId !== clientId) await this.updateClientId(clientId);
-        else if (!this.client.isConnected) await this.client.login();
+        
+        if (!this.client.isConnected) {
+            try {
+                await this.client.login();
+            } catch (error) {
+                // Handle login error
+                //console.error("Failed to login:", error);
+                editor.statusBarItem.text = "$(error) Failed to connect to Discord Gateway";
+                editor.statusBarItem.tooltip = "Failed to connect to Discord Gateway";
+            }
+        }
     }
-
+    
     async sendActivity(isViewing = false, isIdling = false): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
         this.checkCanSend();
