@@ -36,7 +36,7 @@
         "theme": "dark"
     },
     "activationEvents": [
-        "*"
+        "onStartupFinished"
     ],
     "scripts": {
         "vscode:prepublish": "pnpm tsup",
