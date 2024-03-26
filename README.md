@@ -121,6 +121,7 @@ The following variables will be replaced with the respective value in custom str
 | `{current_line}`                 | current line                                                      |
 | `{current_column}`               | current column                                                    |
 | `{git_url}`                      | link to current git repository                                    |
+| `{git_urlname}`                  | link to current git repository, without the http(s):// in front   |
 | `{git_owner}`                    | current git repository owner                                      |
 | `{git_provider}`                 | domain (including .com) to the provider of current git repository |
 | `{git_repo}`                     | repository name for current repository                            |
