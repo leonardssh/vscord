@@ -461,6 +461,9 @@
         "androidmanifest.xml": {
             "image": "android"
         },
+        ".bp": {
+            "image": "android"
+        },
         "/^angular[^.]*\\.js$/i": {
             "image": "angular"
         },
