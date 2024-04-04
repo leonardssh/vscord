@@ -136,11 +136,11 @@ export const activity = async (
 
     const PROBLEMS = config.get(CONFIG_KEYS.Status.Problems.Enabled)
         ? await replaceFileInfo(
-            replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)!), isGitExcluded),
-            isWorkspaceExcluded,
-            dataClass.editor?.document,
-            dataClass.editor?.selection
-        )
+              replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)!), isGitExcluded),
+              isWorkspaceExcluded,
+              dataClass.editor?.document,
+              dataClass.editor?.selection
+          )
         : FAKE_EMPTY;
 
     const replaceAllText = async (text: string) => {
@@ -320,8 +320,9 @@ function buttonValidation(
     const trimmedUrl = button.url.trim();
 
     if (!trimmedLabel || !trimmedUrl) {
-        validationError += `Invalid ${!trimmedLabel ? `Label` : ""} ${!trimmedLabel && !trimmedUrl ? "and " : ""}${!trimmedUrl ? "Url" : ""
-            } for ${state}.`;
+        validationError += `Invalid ${!trimmedLabel ? `Label` : ""} ${!trimmedLabel && !trimmedUrl ? "and " : ""}${
+            !trimmedUrl ? "Url" : ""
+        } for ${state}.`;
         button = undefined;
     }
 
@@ -340,13 +341,13 @@ export const getPresenceButtons = async (
     let state: "Idle" | "Active" | "Inactive" | undefined = isIdling
         ? "Idle"
         : isGitExcluded
-            ? undefined
-            : status == CURRENT_STATUS.EDITING ||
-                status == CURRENT_STATUS.VIEWING ||
-                status == CURRENT_STATUS.NOT_IN_FILE ||
-                status == CURRENT_STATUS.DEBUGGING
-                ? "Active"
-                : "Inactive";
+        ? undefined
+        : status == CURRENT_STATUS.EDITING ||
+          status == CURRENT_STATUS.VIEWING ||
+          status == CURRENT_STATUS.NOT_IN_FILE ||
+          status == CURRENT_STATUS.DEBUGGING
+        ? "Active"
+        : "Inactive";
     if ((!button1Enabled && !button2Enabled) || !state) return [];
     let isGit = !isGitExcluded && dataClass.gitRemoteUrl;
     let button1 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button1"), "Button1");
@@ -408,18 +409,16 @@ export const getTotalProblems = (countedSeverities: PROBLEM_LEVEL[]): number => 
 
 export const replaceGitInfo = (text: string, excluded = false): string => {
     text = text.slice();
-    const url = (dataClass.gitRemoteUrl?.toString("https") ?? "").replace(/\.git$/, "")
 
     const replaceMap = new Map([
         ["{git_owner}", (!excluded ? dataClass.gitRemoteUrl?.owner : undefined) ?? FAKE_EMPTY],
         ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
-        ["{git_urlname}", (!excluded ? url.replace(new URL(url).protocol + "//", "") : FAKE_EMPTY)],
         ["{git_repo}", (!excluded ? dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName : undefined) ?? FAKE_EMPTY],
         ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
         [
             "{git_url}",
-            (!excluded ? url : undefined) ??
-            FAKE_EMPTY
+            (!excluded ? (dataClass.gitRemoteUrl?.toString("https") ?? "").replace(/\.git$/, "") : undefined) ??
+                FAKE_EMPTY
         ]
     ]);
 
