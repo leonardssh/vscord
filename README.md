@@ -1,53 +1,26 @@
-<p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord" target="_blank" rel="noopener noreferrer">
-    <img width="256" src="https://i.imgur.com/n7ieZfW.png" alt="VSCord Logo">
-  </a>
-</p>
+<div align="center">
 
-<br>
+[<img width="256" alt="VSCord Logo" src="https://i.imgur.com/n7ieZfW.png" />][vsmp-link]
 
-<p>
-    <p align="center">
-        <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-            <img alt="Visual Studio Marketplace Version" src="https://img.shields.io/visual-studio-marketplace/v/LeonardSSH.vscord?label=Visual%20Studio%20Marketplace" />
-        </a>
-        <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-            <img alt="Visual Studio Marketplace Downloads" src="https://img.shields.io/visual-studio-marketplace/d/LeonardSSH.vscord" />
-        </a>
-        <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-            <img alt="Visual Studio Marketplace Installs" src="https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord" />
-        </a>
-        <a href="https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord">
-            <img alt="Visual Studio Marketplace Rating" src="https://img.shields.io/visual-studio-marketplace/r/LeonardSSH.vscord">
-        </a>
-    </p>
-    <p align="center">
-		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
-			<img alt="Open VSX Version" src="https://img.shields.io/open-vsx/v/LeonardSSH/vscord?label=OpenVSX%20Marketplace">
-		</a>
-		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
-			<img alt="Open VSX Downloads" src="https://img.shields.io/open-vsx/dt/LeonardSSH/vscord">
-		</a>
-		<a href="https://open-vsx.org/extension/LeonardSSH/vscord">
-			<img alt="Open VSX Rating" src="https://img.shields.io/open-vsx/rating/LeonardSSH/vscord">
-		</a>
-	</p>
-    <p align="center">
-        <a href="https://github.com/leonardssh/vscord/actions/workflows/CI.yml">
-            <img alt="Continuous Integration" src="https://github.com/leonardssh/vscord/actions/workflows/CI.yml/badge.svg" />
-        </a>
-        <a href="https://gitter.im/LeonardSSH/vscord-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge">
-            <img alt="Gitter" src="https://img.shields.io/badge/gitter-support chat-green?color=40aa8b" />
-        </a>
-    </p>
-    <p align="center">
-        <a href="https://github.com/leonardssh/vscord/actions/workflows/CD.yml">
-            <img alt="Continuous Delivery" src="https://github.com/leonardssh/vscord/actions/workflows/CD.yml/badge.svg" />
-        </a>
-    </p>
-</p>
+<br />
 
-<br>
+[![Visual Studio Marketplace Version][shield-vsmp-version]][vsmp-link]
+[![Visual Studio Marketplace Downloads][shield-vsmp-downloads]][vsmp-link]
+[![Visual Studio Marketplace Installs][shield-vsmp-installs]][vsmp-link]
+[![Visual Studio Marketplace Rating][shield-vsmp-rating]][vsmp-link]
+
+[![Open VSX Version][shield-ovsx-version]][ovsx-link]
+[![Open VSX Downloads][shield-ovsx-downloads]][ovsx-link]
+[![Open VSX Rating][shield-ovsx-rating]][ovsx-link]
+
+[![Continuous Integration][shield-workflows-ci]][github-workflows-ci]
+[![Gitter Support Chat][shield-gitter-support]][gitter-vscord-support]
+
+[![Continuous Delivery][shield-workflows-cd]][github-workflows-cd]
+
+</div>
+
+<br />
 
 # VSCord
 
@@ -140,7 +113,7 @@ To contribute to this repository, feel free to create a new fork of the reposito
 
 ## 👨‍💻 Adding a new language
 
-We have a guide for adding a new language [here](/ADDING_LANGUAGE.md)!
+We have a guide for adding a new language [here](ADDING_LANGUAGE.md)!
 
 ## 🎉 Thanks
 
@@ -153,3 +126,25 @@ _Much of the code in this repository is based on [iCrawl/discord-vscode](https:/
 ## 📋 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+[vsmp-link]:                https://marketplace.visualstudio.com/items?itemName=LeonardSSH.vscord
+[ovsx-link]:                https://open-vsx.org/extension/LeonardSSH/vscord
+
+[shield-vsmp-version]:      https://img.shields.io/visual-studio-marketplace/v/LeonardSSH.vscord?label=Visual%20Studio%20Marketplace
+[shield-vsmp-downloads]:    https://img.shields.io/visual-studio-marketplace/d/LeonardSSH.vscord
+[shield-vsmp-installs]:     https://img.shields.io/visual-studio-marketplace/i/LeonardSSH.vscord
+[shield-vsmp-rating]:       https://img.shields.io/visual-studio-marketplace/r/LeonardSSH.vscord
+
+[shield-ovsx-version]:      https://img.shields.io/open-vsx/v/LeonardSSH/vscord?label=OpenVSX%20Marketplace
+[shield-ovsx-downloads]:    https://img.shields.io/open-vsx/dt/LeonardSSH/vscord
+[shield-ovsx-rating]:       https://img.shields.io/open-vsx/rating/LeonardSSH/vscord
+
+[github-workflows-ci]:      https://github.com/leonardssh/vscord/actions/workflows/CI.yml
+[shield-workflows-ci]:      https://github.com/leonardssh/vscord/actions/workflows/CI.yml/badge.svg
+
+[github-workflows-cd]:      https://github.com/leonardssh/vscord/actions/workflows/CD.yml
+[shield-workflows-cd]:      https://github.com/leonardssh/vscord/actions/workflows/CD.yml/badge.svg
+
+[gitter-vscord-support]:    https://gitter.im/LeonardSSH/vscord-support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+[shield-gitter-support]:    https://img.shields.io/badge/gitter-support%20chat-green?color=40aa8b
