@@ -277,6 +277,10 @@
             "image": "python"
         },
         {
+            "language": "qml",
+            "image": "qml"
+        },
+        {
             "language": "r",
             "image": "r"
         },
@@ -395,6 +399,10 @@
         {
             "language": "yaml",
             "image": "yaml"
+        },
+        {
+            "language": "zenscript",
+            "image": "zs"
         }
     ],
     "KNOWN_EXTENSIONS": {
@@ -459,6 +467,9 @@
             "image": "astroconfig"
         },
         "androidmanifest.xml": {
+            "image": "android"
+        },
+        ".bp": {
             "image": "android"
         },
         "/^angular[^.]*\\.js$/i": {
@@ -1600,6 +1611,9 @@
         },
         ".🔥": {
             "image": "mojo"
+        },
+        ".zs": {
+            "image": "zs"
         }
     }
 }
