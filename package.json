@@ -47,16 +47,16 @@
     },
     "devDependencies": {
         "@types/git-url-parse": "^9.0.3",
-        "@types/node": "16.x",
+        "@types/node": "~16.18.95",
         "@types/vscode": "1.57.0",
         "@vscode/vsce": "^2.24.0",
         "@xhayper/discord-rpc": "^1.1.2",
-        "discord-api-types": "^0.37.71",
-        "filesize": "^10.1.0",
+        "discord-api-types": "^0.37.79",
+        "filesize": "^10.1.1",
         "git-url-parse": "^14.0.0",
         "source-map-support": "^0.5.21",
         "tsup": "^8.0.2",
-        "typescript": "^5.3.3"
+        "typescript": "^5.4.4"
     },
     "engines": {
         "vscode": "^1.57.0"
