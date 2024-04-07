@@ -113,6 +113,10 @@
             "image": "text"
         },
         {
+            "language": "holyc",
+            "image": "holyc"
+        },
+        {
             "language": "html-eex",
             "image": "heex"
         },
@@ -927,6 +931,9 @@
         },
         ".hjson": {
             "image": "hjson"
+        },
+        ".hc": {
+            "image": "holyc"
         },
         "/\\.x?html?$/i": {
             "image": "html"
