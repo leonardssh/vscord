@@ -25,6 +25,10 @@
             "image": "clojure"
         },
         {
+            "language": "cobol",
+            "image": "cobol"
+        },
+        {
             "language": "coffeescript",
             "image": "coffee"
         },
@@ -643,6 +647,12 @@
         },
         "/\\.codeclimate\\.(yml|json)/i": {
             "image": "codeclimate"
+        },
+        ".cbl": {
+            "image": "cobol"
+        },
+        ".cob": {
+            "image": "cobol"
         },
         ".coffee": {
             "image": "coffee"
