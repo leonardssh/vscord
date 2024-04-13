@@ -83,7 +83,7 @@ When adding an icon for a language, please read the information below before doi
 
 ### Note
 
-If you can't make an icon, then that's fine! Just add the language name to the list in next section! future contributor might be able to work on it!
+If you can't make an icon, then that's fine. Just add the language name to the list in next section. A future contributor might be able to work on it!
 
 ### Missing Icon List
 
