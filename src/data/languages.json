@@ -21,6 +21,10 @@
             "image": "text"
         },
         {
+            "language": "citrinescript",
+            "image": "citrinescript"
+        },
+        {
             "language": "clojure",
             "image": "clojure"
         },
@@ -611,6 +615,9 @@
         },
         ".cas": {
             "image": "casc"
+        },
+        ".ces": {
+            "image": "citrinescript"
         },
         ".cfc": {
             "image": "coldfusion"
