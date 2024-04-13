@@ -453,7 +453,7 @@ export const replaceFileInfo = async (
 
     if (dataClass.editor && dataClass.workspaceName && !excluded) {
         const name = dataClass.workspaceName;
-        relativeFilepath = workspace.asRelativePath(dataClass.editor.document.fileName)
+        relativeFilepath = workspace.asRelativePath(dataClass.editor.document.fileName);
         const relativePath = workspace.asRelativePath(dataClass.editor.document.fileName).split(sep);
 
         relativePath.splice(-1, 1);
