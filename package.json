@@ -329,6 +329,11 @@
                         "default": true,
                         "description": "Should state be shown?"
                     },
+                    "vscord.status.state.debugging.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Should state be shown when debugging? If disabled, it will be shown when editing/viewing a file."
+                    },
                     "vscord.status.state.idle.enabled": {
                         "type": "boolean",
                         "default": true,

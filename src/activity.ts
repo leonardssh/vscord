@@ -124,7 +124,7 @@ export const activity = async (
 
     const isNotInFile = !isWorkspaceExcluded && !dataClass.editor;
 
-    const isDebugging = !!debug.activeDebugSession;
+    const isDebugging = config.get(CONFIG_KEYS.Status.State.Debugging.Enabled) && !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
 
     let status: CURRENT_STATUS;
