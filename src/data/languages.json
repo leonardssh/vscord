@@ -381,6 +381,10 @@
             "image": "tex"
         },
         {
+            "language": "umjunsik",
+            "image": "umm"
+        },
+        {
             "language": "vb",
             "image": "vb"
         },
@@ -1551,6 +1555,9 @@
         },
         ".twig": {
             "image": "twig"
+        },
+        ".umm": {
+            "image": "umm"
         },
         ".v": {
             "image": "v"
