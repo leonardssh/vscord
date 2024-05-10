@@ -120,16 +120,20 @@ export class RPCController {
         const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
         const gitListener = dataClass.onUpdate(() => this.activityThrottle.callable());
 
+        // fire checkIdle at least once after loading
+        this.checkIdle(window.state);
+
         if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
 
         this.listeners.push(fileSwitch, fileEdit, fileSelectionChanged, debugStart, debugEnd, gitListener);
     }
 
-    private checkCanSend(): boolean {
+    private checkCanSend(isIdling: boolean): boolean {
         const config = getConfig();
         let userId = this.client.user?.id;
         if (!userId) return false;
+        if (isIdling && config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle)) return (this.canSendActivity = false);
         let whitelistEnabled = config.get(CONFIG_KEYS.App.WhitelistEnabled);
         if (whitelistEnabled) {
             let whitelist = config.get(CONFIG_KEYS.App.Whitelist);
@@ -155,11 +159,11 @@ export class RPCController {
                     async () => {
                         if (!config.get(CONFIG_KEYS.Status.Idle.Check)) return;
 
-                        if (config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle)) {
-                            await this.disable();
-                            if (config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime))
-                                this.state.startTimestamp = undefined;
-                            return;
+                        if (
+                            config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle) &&
+                            config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime)
+                        ) {
+                            delete this.state.startTimestamp;
                         }
 
                         if (!this.enabled) return;
@@ -190,7 +194,7 @@ export class RPCController {
 
     async sendActivity(isViewing = false, isIdling = false): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
-        this.checkCanSend();
+        this.checkCanSend(isIdling);
         this.state = await activity(this.state, isViewing, isIdling);
         this.state.instance = true;
         if (!this.state || Object.keys(this.state).length === 0 || !this.canSendActivity)
