@@ -38,6 +38,9 @@
     "activationEvents": [
         "onStartupFinished"
     ],
+    "extensionDependencies": [
+        "vscode.git"
+    ],
     "scripts": {
         "vscode:prepublish": "pnpm tsup",
         "package": "pnpm vsce package --no-yarn",
