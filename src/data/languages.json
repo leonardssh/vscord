@@ -377,6 +377,10 @@
             "image": "tsx"
         },
         {
+            "language": "templ",
+            "image": "templ"
+        },
+        {
             "language": "tex",
             "image": "tex"
         },
@@ -1534,6 +1538,9 @@
         },
         "/\\.(utxt|utf8)$/i": {
             "image": "text"
+        },
+        ".templ": {
+            "image": "templ"
         },
         ".toml": {
             "image": "toml"
