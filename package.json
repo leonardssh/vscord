@@ -36,7 +36,7 @@
         "theme": "dark"
     },
     "activationEvents": [
-        "onStartupFinished"
+        "onDidChangeConfiguration"
     ],
     "scripts": {
         "vscode:prepublish": "pnpm tsup",
@@ -116,7 +116,7 @@
                             "VSCodium",
                             "Custom"
                         ],
-                        "default": "Code",
+                        "default": "code",
                         "description": "Choose the name you want the application to use.\nChoosing \"Custom\" will make it so it use the \"rpc.id\" as application id",
                         "order": 2
                     },
