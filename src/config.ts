@@ -4,6 +4,29 @@ import { type PROBLEM_LEVEL } from "./activity";
 
 export type FileSizeStandard = "iec" | "jedec";
 
+interface ButtonStatus {
+    enabled: boolean;
+    label: string;
+    url: string;
+}
+
+interface Button {
+    enabled: boolean;
+    active: ButtonStatus;
+    idle: ButtonStatus;
+    inactive: ButtonStatus;
+    git: {
+        active: ButtonStatus;
+        idle: ButtonStatus;
+        inactive: ButtonStatus;
+    };
+}
+
+interface Buttons {
+    button1: Button;
+    button2: Button;
+}
+
 export interface ExtensionConfigurationType {
     "app.id": string;
     "app.name": "Code" | "Visual Studio Code" | "VSCodium" | "Custom";
@@ -28,6 +51,7 @@ export interface ExtensionConfigurationType {
     "status.state.text.debugging": string;
     "status.state.text.notInFile": string;
     "status.state.text.noWorkspaceFound": string;
+    "status.buttons": Buttons;
     "status.buttons.button1.enabled": boolean;
     "status.buttons.button1.active.enabled": boolean;
     "status.buttons.button1.active.label": string;
