@@ -114,7 +114,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
             .catch(() => {
                 if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
                     window.showErrorMessage("Failed to reconnect to Discord Gateway");
-                editor.setStatusBarItem(StatusBarMode.Failed);
+                editor.setStatusBarItem(StatusBarMode.Disconnected);
             });
     });
 
@@ -123,7 +123,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         await controller.destroy();
 
-        editor.setStatusBarItem(StatusBarMode.Failed);
+        editor.setStatusBarItem(StatusBarMode.Disconnected);
     });
 
     const enablePrivacyModeCommand = commands.registerCommand("vscord.enablePrivacyMode", async () => {

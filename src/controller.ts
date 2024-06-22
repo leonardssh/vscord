@@ -35,7 +35,7 @@ export class RPCController {
             const config = getConfig();
 
             logError("Encountered following error while trying to login:", error);
-            editor.setStatusBarItem(StatusBarMode.Failed);
+            editor.setStatusBarItem(StatusBarMode.Disconnected);
             if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
                 window.showErrorMessage("Failed to connect to Discord Gateway");
             await this.client?.destroy();
@@ -61,7 +61,7 @@ export class RPCController {
 
     private onDisconnected() {
         this.cleanUp();
-        editor.setStatusBarItem(StatusBarMode.Failed);
+        editor.setStatusBarItem(StatusBarMode.Disconnected);
     }
 
     private listen() {
