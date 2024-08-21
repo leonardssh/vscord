@@ -9,6 +9,10 @@
             "image": "ansible"
         },
         {
+            "language": "asciidoc",
+            "image": "asciidoc"
+        },
+        {
             "language": "bat",
             "image": "bat"
         },
@@ -475,6 +479,12 @@
         },
         ".ahkl": {
             "image": "ahk"
+        },
+        ".adoc": {
+            "image": "asciidoc"
+        },
+        ".asciidoc": {
+            "image": "asciidoc"
         },
         ".astro": {
             "image": "astro"
