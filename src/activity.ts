@@ -162,6 +162,7 @@ export const activity = async (
     const replaceForPrivacyMode = async (text: string) => {
         let replaced: string = text;
         replaced = replaced.replaceAll("{file_name}", "a file");
+        replaced = replaced.replaceAll("{file_extension}", "");
         replaced = replaced.replaceAll("{folder_and_file}", "a file in a folder");
         replaced = replaced.replaceAll("{directory_name}", "a folder");
         replaced = replaced.replaceAll("{full_directory_name}", "a folder");
