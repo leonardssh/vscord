@@ -88,6 +88,15 @@ export const activity = async (
     const config = getConfig();
     const presence = previous;
 
+    if (
+        isIdling &&
+        config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle) &&
+        config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime)
+    ) {
+        delete presence.startTimestamp;
+        return {};
+    }
+
     if (isIdling && !config.get(CONFIG_KEYS.Status.Idle.Enabled)) return {};
 
     if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
