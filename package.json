@@ -21,7 +21,8 @@
         "rich",
         "presence",
         "rich presence",
-        "rpc"
+        "rpc",
+        "cursor"
     ],
     "categories": [
         "Visualization",
@@ -112,6 +113,7 @@
                         "type": "string",
                         "enum": [
                             "Code",
+                            "Cursor",
                             "Visual Studio Code",
                             "VSCodium",
                             "Custom"
