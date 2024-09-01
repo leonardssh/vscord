@@ -21,7 +21,8 @@
         "rich",
         "presence",
         "rich presence",
-        "rpc"
+        "rpc",
+        "cursor"
     ],
     "categories": [
         "Visualization",
