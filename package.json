@@ -105,12 +105,12 @@
             },
             {
                 "command": "vscord.startIdling",
-                "title": "Start Idling",
+                "title": "Start Idle",
                 "category": "VSCord"
             },
             {
                 "command": "vscord.stopIdling",
-                "title": "Stop Idling",
+                "title": "Stop Idle",
                 "category": "VSCord"
             }
         ],
