@@ -389,6 +389,10 @@
             "image": "tex"
         },
         {
+            "language": "typst",
+            "image": "typst"
+        },
+        {
             "language": "umjunsik",
             "image": "umm"
         },
@@ -1140,6 +1144,9 @@
         },
         ".ttl": {
             "image": "manifest"
+        },
+        ".typ": {
+            "image": "typst"
         },
         ".rviz": {
             "image": "manifest"
