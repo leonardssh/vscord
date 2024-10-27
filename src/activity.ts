@@ -112,6 +112,7 @@ export const activity = async (
     const stateEnabled = config.get(CONFIG_KEYS.Status.State.Enabled);
     const stateIdleEnabled = config.get(CONFIG_KEYS.Status.State.Idle.Enabled);
     const privacyModeEnabled = config.get(CONFIG_KEYS.App.PrivacyMode) as boolean;
+    const workspacePrivacy = config.get(CONFIG_KEYS.App.WorkspacePrivacy) as boolean;
 
     const gitRepo = dataClass.gitRemoteUrl?.toString("https").replace(/\.git$/, "");
     const gitOrg = dataClass.gitRemoteUrl?.organization ?? dataClass.gitRemoteUrl?.owner;
@@ -157,6 +158,9 @@ export const activity = async (
         if (privacyModeEnabled) {
             replaced = await replaceForPrivacyMode(replaced);
         }
+        if (workspacePrivacy) {
+            replaced = await workspacePrivacyReplace(replaced);
+        }
         replaced = replaceAppInfo(replaced);
         replaced = replaceGitInfo(replaced, isGitExcluded);
         replaced = await replaceFileInfo(
@@ -175,6 +179,15 @@ export const activity = async (
         replaced = replaced.replaceAll("{folder_and_file}", "a file in a folder");
         replaced = replaced.replaceAll("{directory_name}", "a folder");
         replaced = replaced.replaceAll("{full_directory_name}", "a folder");
+        replaced = replaced.replaceAll("{workspace}", "a workspace");
+        replaced = replaced.replaceAll("{workspace_folder}", "a workspace");
+        replaced = replaced.replaceAll("{workspace_and_folder}", "a workspace");
+
+        return replaced;
+    };
+
+    const workspacePrivacyReplace = async (text: string) => {
+        let replaced: string = text;
         replaced = replaced.replaceAll("{workspace}", "a workspace");
         replaced = replaced.replaceAll("{workspace_folder}", "a workspace");
         replaced = replaced.replaceAll("{workspace_and_folder}", "a workspace");
