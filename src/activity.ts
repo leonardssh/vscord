@@ -112,7 +112,7 @@ export const activity = async (
     const stateEnabled = config.get(CONFIG_KEYS.Status.State.Enabled);
     const stateIdleEnabled = config.get(CONFIG_KEYS.Status.State.Idle.Enabled);
     const privacyModeEnabled = config.get(CONFIG_KEYS.App.PrivacyMode) as boolean;
-    const workspacePrivacy = config.get(CONFIG_KEYS.App.WorkspacePrivacy) as boolean;
+    const workspacePrivacy = config.get(CONFIG_KEYS.App.WorkspacePrivacyMode) as boolean;
 
     const gitRepo = dataClass.gitRemoteUrl?.toString("https").replace(/\.git$/, "");
     const gitOrg = dataClass.gitRemoteUrl?.organization ?? dataClass.gitRemoteUrl?.owner;
