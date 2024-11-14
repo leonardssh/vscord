@@ -44,3 +44,8 @@ export const resolveLangName = (document: TextDocument): string => {
 
     return typeof fileIcon === "string" ? fileIcon : fileIcon?.image ?? "text";
 };
+
+export const getArticle = (word: string): string => {
+    const vowels = ['a', 'e', 'i', 'o', 'u'];
+    return vowels.includes(word.charAt(0).toLowerCase()) ? 'an' : 'a';
+};
