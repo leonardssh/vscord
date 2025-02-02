@@ -36,8 +36,11 @@ export class RPCController {
 
             logError("Encountered following error while trying to login:", error);
             editor.setStatusBarItem(StatusBarMode.Disconnected);
-            if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+            if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications) &&
+                (error.name !== "RPC_COULD_NOT_CONNECT" || !config.get(CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect))
+            ) {
                 window.showErrorMessage("Failed to connect to Discord Gateway");
+            }
             await this.client?.destroy();
             logInfo("[002] Destroyed Discord RPC client");
         });

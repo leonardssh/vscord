@@ -201,6 +201,7 @@ export const CONFIG_KEYS = {
     Behaviour: {
         AdditionalFileMapping: "behaviour.additionalFileMapping" as const,
         SuppressNotifications: "behaviour.suppressNotifications" as const,
+        SuppressRpcCouldNotConnect: "behaviour.supressRpcCouldNotConnect" as const,
         PrioritizeLanguagesOverExtensions: "behaviour.prioritizeLanguagesOverExtensions" as const,
         StatusBarAlignment: "behaviour.statusBarAlignment" as const,
         Debug: "behaviour.debug" as const
