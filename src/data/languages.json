@@ -313,6 +313,10 @@
             "image": "reasonml"
         },
         {
+            "language": "renpy",
+            "image": "renpy"
+        },
+        {
             "language": "rst",
             "image": "restructuredtext"
         },
@@ -1351,8 +1355,8 @@
         ".xpy": {
             "image": "python"
         },
-        ".rpy": {
-            "image": "python"
+        "/\\.rpy(?:m|mc|c|b)?$/i": {
+            "image": "renpy"
         },
         "/\\.?(pypirc|pythonrc|python-venv)$/i": {
             "image": "python"

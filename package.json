@@ -4,18 +4,19 @@
     "version": "5.2.13",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
-    "repository": "github:LeonardSSH/vscord",
-    "publisher": "LeonardSSH",
+    "repository": "github:ZStrikeGit/vscord",
+    "publisher": "ZStrikeGit",
     "contributors": [
-        "xhayper <hayper1919@gmail.com>"
+        "xhayper <hayper1919@gmail.com>",
+        "ZStrikeGit <zstrike@git.zstrike.dev>"
     ],
     "license": "MIT",
     "private": true,
     "icon": "assets/icon.png",
     "bugs": {
-        "url": "https://github.com/LeonardSSH/vscord/issues"
+        "url": "https://github.com/ZStrikeGit/vscord/issues"
     },
-    "homepage": "https://github.com/LeonardSSH/vscord#readme",
+    "homepage": "https://github.com/ZStrikeGit/vscord#readme",
     "keywords": [
         "discord",
         "rich",
@@ -40,7 +41,7 @@
     ],
     "scripts": {
         "vscode:prepublish": "pnpm tsup",
-        "package": "pnpm vsce package --no-yarn",
+        "package": "pnpm vsce package --no-yarn --no-dependencies",
         "watch": "pnpm tsup --watch",
         "lint": "pnpm prettier . --check",
         "lint:fix": "pnpm prettier . --write"
@@ -382,7 +383,7 @@
                 "properties": {
                     "vscord.status.image.large.idle.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/idle-{app_id}.png",
                         "description": "The image url to use when idling"
                     },
                     "vscord.status.image.large.idle.text": {
@@ -392,7 +393,7 @@
                     },
                     "vscord.status.image.large.viewing.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/{lang}.png",
                         "description": "The image url to use when viewing a file."
                     },
                     "vscord.status.image.large.viewing.text": {
@@ -402,7 +403,7 @@
                     },
                     "vscord.status.image.large.editing.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{lang}.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/{lang}.png",
                         "description": "The image url to use when editing a file."
                     },
                     "vscord.status.image.large.editing.text": {
@@ -412,7 +413,7 @@
                     },
                     "vscord.status.image.large.debugging.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/debugging.png",
                         "description": "The image url to use when debugging."
                     },
                     "vscord.status.image.large.debugging.text": {
@@ -422,7 +423,7 @@
                     },
                     "vscord.status.image.large.notInFile.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle-{app_id}.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/idle-{app_id}.png",
                         "description": "The image url to use when you are not in a file."
                     },
                     "vscord.status.image.large.notInFile.text": {
@@ -432,7 +433,7 @@
                     },
                     "vscord.status.image.small.idle.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/idle.png",
                         "description": "The image url to use when idling."
                     },
                     "vscord.status.image.small.idle.text": {
@@ -442,7 +443,7 @@
                     },
                     "vscord.status.image.small.viewing.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/{app_id}.png",
                         "description": "The image url to use when viewing a file."
                     },
                     "vscord.status.image.small.viewing.text": {
@@ -452,7 +453,7 @@
                     },
                     "vscord.status.image.small.editing.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/{app_id}.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/{app_id}.png",
                         "description": "The image url to use when editing a file."
                     },
                     "vscord.status.image.small.editing.text": {
@@ -462,7 +463,7 @@
                     },
                     "vscord.status.image.small.debugging.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/debugging.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/debugging.png",
                         "description": "The image url to use when debugging."
                     },
                     "vscord.status.image.small.debugging.text": {
@@ -472,7 +473,7 @@
                     },
                     "vscord.status.image.small.notInFile.key": {
                         "type": "string",
-                        "default": "https://raw.githubusercontent.com/LeonardSSH/vscord/main/assets/icons/idle.png",
+                        "default": "https://raw.githubusercontent.com/ZStrikeGit/vscord/main/assets/icons/idle.png",
                         "description": "The image url to use when you are not in a file."
                     },
                     "vscord.status.image.small.notInFile.text": {
@@ -1030,5 +1031,8 @@
             "description": "Cannot access local Discord RPC when running in virtual workspace"
         }
     },
-    "packageManager": "pnpm@8.15.4"
+    "packageManager": "pnpm@8.15.4",
+    "dependencies": {
+        "vscord": "file:"
+    }
 }
