@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  vscord:
+    specifier: 'file:'
+    version: 'file:'
+
 devDependencies:
   '@types/git-url-parse':
     specifier: ^9.0.3
@@ -2148,3 +2153,9 @@ packages:
     dependencies:
       buffer-crc32: 0.2.13
     dev: true
+
+  'file:':
+    resolution: {directory: '', type: directory}
+    name: vscord
+    engines: {vscode: ^1.57.0}
+    dev: false
