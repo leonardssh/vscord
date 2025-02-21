@@ -41,7 +41,7 @@
     ],
     "scripts": {
         "vscode:prepublish": "pnpm tsup",
-        "package": "pnpm vsce package --no-yarn",
+        "package": "pnpm vsce package --no-yarn --no-dependencies",
         "watch": "pnpm tsup --watch",
         "lint": "pnpm prettier . --check",
         "lint:fix": "pnpm prettier . --write"
