@@ -542,7 +542,7 @@
                     },
                     "vscord.status.buttons.button1.git.active.url": {
                         "type": "string",
-                        "default": "{git_url}",
+                        "default": "{git_href}",
                         "minLength": 1
                     },
                     "vscord.status.buttons.button1.git.inactive.enabled": {
@@ -556,7 +556,7 @@
                     },
                     "vscord.status.buttons.button1.git.inactive.url": {
                         "type": "string",
-                        "default": "{git_url}",
+                        "default": "{git_href}",
                         "minLength": 1
                     },
                     "vscord.status.buttons.button1.git.idle.enabled": {
@@ -571,7 +571,7 @@
                     },
                     "vscord.status.buttons.button1.git.idle.url": {
                         "type": "string",
-                        "default": "{git_url}",
+                        "default": "{git_href}",
                         "minLength": 1
                     },
                     "vscord.status.buttons.button2.enabled": {

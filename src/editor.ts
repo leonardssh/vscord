@@ -61,13 +61,13 @@ class EditorController {
     updateStatusBarFromConfig() {
         const config = getConfig();
         const alignment = this.#getAlignmentFromConfig(config);
-        const priority = undefined
+        const priority = undefined;
         const old = editor.statusBarItem;
 
         if (editor.statusBarItem.alignment === alignment) {
             return;
         }
-        
+
         // Change unchangable: alignment/priority
         editor.statusBarItem = window.createStatusBarItem(alignment, priority);
         //#region copy

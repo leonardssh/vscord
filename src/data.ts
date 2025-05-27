@@ -165,6 +165,8 @@ export class Data implements DisposableLike {
         this.debug(`gitRemoteUrl(): Url: ${v ?? ""}`);
         if (!v) return;
 
+        logInfo(`gitRemoteUrl(): Parsed: ${JSON.stringify(gitUrlParse(v), null, 2)}`);
+
         return gitUrlParse(v);
     }
 

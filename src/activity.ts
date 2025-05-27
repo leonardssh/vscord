@@ -430,14 +430,14 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
 
     const replaceMap = new Map([
         ["{git_owner}", (!excluded ? dataClass.gitRemoteUrl?.owner : undefined) ?? FAKE_EMPTY],
-        ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
         ["{git_repo}", (!excluded ? (dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName) : undefined) ?? FAKE_EMPTY],
         ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
-        [
-            "{git_url}",
-            (!excluded ? (dataClass.gitRemoteUrl?.toString("https") ?? "").replace(/\.git$/, "") : undefined) ??
-                FAKE_EMPTY
-        ]
+
+        //  http, https, ssh, git
+        ["{git_protocol}", (!excluded ? dataClass.gitRemoteUrl?.protocol : undefined) ?? FAKE_EMPTY],
+        // github.com, gitlab.com, bitbucket.org, etc. (include port)
+        ["{git_host}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
+        ["{git_href}", (!excluded ? dataClass.gitRemoteUrl?.href : undefined) ?? FAKE_EMPTY]
     ]);
 
     for (const [key, value] of replaceMap) text = text.replaceAll(key, value);
