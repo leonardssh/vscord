@@ -435,8 +435,11 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
 
         //  http, https, ssh, git
         ["{git_protocol}", (!excluded ? dataClass.gitRemoteUrl?.protocol : undefined) ?? FAKE_EMPTY],
+        // github.com, gitlab.com, bitbucket.org, etc. (excluding port)
+        ["{git_resource}", (!excluded ? dataClass.gitRemoteUrl?.resource : undefined) ?? FAKE_EMPTY],
         // github.com, gitlab.com, bitbucket.org, etc. (include port)
         ["{git_host}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
+        ["{git_port}", (!excluded ? dataClass.gitRemoteUrl?.port?.toString() : undefined) ?? FAKE_EMPTY],
         ["{git_href}", (!excluded ? dataClass.gitRemoteUrl?.href : undefined) ?? FAKE_EMPTY]
     ]);
 
