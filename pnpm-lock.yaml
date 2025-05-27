@@ -12,7 +12,7 @@ importers:
         specifier: ~22.15.21
         version: 22.15.21
       '@types/vscode':
-        specifier: ^1.100.0
+        specifier: ^1.78.0
         version: 1.100.0
       '@vscode/vsce':
         specifier: ^3.4.2
