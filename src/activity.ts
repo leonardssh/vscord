@@ -192,7 +192,7 @@ export const activity = async (
                 : undefined) ?? workspaceExcludedText;
     } else {
         const text = await replaceAllText(ignoreWorkspacesText);
-        workspaceExcludedText = text !== "" ? text : (undefined ?? workspaceExcludedText);
+        workspaceExcludedText = text !== "" ? text : workspaceExcludedText;
     }
 
     let details = isWorkspaceExcluded ? workspaceExcludedText : undefined;
@@ -376,9 +376,18 @@ export const replaceAppInfo = (text: string): string => {
 
     const isInsider = appName.includes("Insiders");
     const isCodium = appName.startsWith("VSCodium") || appName.startsWith("codium");
+    const isCursor = appName.startsWith("Cursor");
 
     const insiderAppName = isCodium ? "vscodium-insiders" : "vscode-insiders";
-    const normalAppName = isCodium ? "vscodium" : "vscode";
+    let normalAppName;
+
+    if (isCursor) {
+        normalAppName = "cursor";
+    } else if (isCodium) {
+        normalAppName = "vscodium";
+    } else {
+        normalAppName = "vscode";
+    }
 
     const replaceMap = new Map([
         ["{app_name}", appName],

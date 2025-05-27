@@ -35,7 +35,7 @@ This extension does not work with snapstore / flatpak version of VSCode, please 
 ## 📌 Features
 
 - Shows what you're working on!
-- Switch between 3 IDE names (`Code`, `Visual Studio Code` and `VSCodium`) or a custom one if you wish!
+- Switch between 4 IDE names (`Code`, `Visual Studio Code`, `VSCodium`, and `Cursor`) or a custom one if you wish!
 - Packed with 60+ extension settings!
 - Tons of variable to use!
 - Support for over 130+ of the most popular languages!
