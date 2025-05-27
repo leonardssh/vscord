@@ -46,17 +46,16 @@
         "lint:fix": "pnpm prettier . --write"
     },
     "devDependencies": {
-        "@types/git-url-parse": "^9.0.3",
-        "@types/node": "~16.18.95",
-        "@types/vscode": "1.57.0",
-        "@vscode/vsce": "^2.24.0",
-        "@xhayper/discord-rpc": "^1.1.2",
-        "discord-api-types": "^0.37.79",
-        "filesize": "^10.1.1",
-        "git-url-parse": "^14.0.0",
+        "@types/node": "~22.15.21",
+        "@types/vscode": "^1.100.0",
+        "@vscode/vsce": "^3.4.2",
+        "@xhayper/discord-rpc": "^1.2.2",
+        "discord-api-types": "^0.38.8",
+        "filesize": "^10.1.6",
+        "git-url-parse": "^16.1.0",
         "source-map-support": "^0.5.21",
-        "tsup": "^8.0.2",
-        "typescript": "^5.4.4"
+        "tsup": "^8.5.0",
+        "typescript": "^5.8.3"
     },
     "engines": {
         "vscode": "^1.57.0"

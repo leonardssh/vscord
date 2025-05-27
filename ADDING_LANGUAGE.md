@@ -92,9 +92,9 @@ How to create background color:
 
 Here are some examples:
 
-|![Rust](./assets/icons/rust.png) | ![Holy C](./assets/icons/holyc.png) | ![QML](./assets/icons/qml.png) | ![JSX](./assets/icons/jsx.png) | ![Yarn](./assets/icons/yarn.png) |
-| :---: | :---: | :---: | :---: | :---: |
-| Rust | Holy C | QML | JSX | Yarn |
+| ![Rust](./assets/icons/rust.png) | ![Holy C](./assets/icons/holyc.png) | ![QML](./assets/icons/qml.png) | ![JSX](./assets/icons/jsx.png) | ![Yarn](./assets/icons/yarn.png) |
+| :------------------------------: | :---------------------------------: | :----------------------------: | :----------------------------: | :------------------------------: |
+|               Rust               |               Holy C                |              QML               |              JSX               |               Yarn               |
 
 #### Logo
 

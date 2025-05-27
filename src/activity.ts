@@ -102,7 +102,7 @@ export const activity = async (
     if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
         presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
             ? Date.now()
-            : previous.startTimestamp ?? Date.now();
+            : (previous.startTimestamp ?? Date.now());
     } else {
         delete presence.startTimestamp;
     }
@@ -192,7 +192,7 @@ export const activity = async (
                 : undefined) ?? workspaceExcludedText;
     } else {
         const text = await replaceAllText(ignoreWorkspacesText);
-        workspaceExcludedText = text !== "" ? text : undefined ?? workspaceExcludedText;
+        workspaceExcludedText = text !== "" ? text : (undefined ?? workspaceExcludedText);
     }
 
     let details = isWorkspaceExcluded ? workspaceExcludedText : undefined;
@@ -351,13 +351,13 @@ export const getPresenceButtons = async (
     let state: "Idle" | "Active" | "Inactive" | undefined = isIdling
         ? "Idle"
         : isGitExcluded
-        ? undefined
-        : status == CURRENT_STATUS.EDITING ||
-          status == CURRENT_STATUS.VIEWING ||
-          status == CURRENT_STATUS.NOT_IN_FILE ||
-          status == CURRENT_STATUS.DEBUGGING
-        ? "Active"
-        : "Inactive";
+          ? undefined
+          : status == CURRENT_STATUS.EDITING ||
+              status == CURRENT_STATUS.VIEWING ||
+              status == CURRENT_STATUS.NOT_IN_FILE ||
+              status == CURRENT_STATUS.DEBUGGING
+            ? "Active"
+            : "Inactive";
     if ((!button1Enabled && !button2Enabled) || !state) return [];
     let isGit = !isGitExcluded && dataClass.gitRemoteUrl;
     let button1 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button1"), "Button1");
@@ -423,7 +423,7 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
     const replaceMap = new Map([
         ["{git_owner}", (!excluded ? dataClass.gitRemoteUrl?.owner : undefined) ?? FAKE_EMPTY],
         ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
-        ["{git_repo}", (!excluded ? dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName : undefined) ?? FAKE_EMPTY],
+        ["{git_repo}", (!excluded ? (dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName) : undefined) ?? FAKE_EMPTY],
         ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
         [
             "{git_url}",

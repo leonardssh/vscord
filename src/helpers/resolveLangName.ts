@@ -36,11 +36,11 @@ export const resolveLangName = (document: TextDocument): string => {
     const findKnownLanguage = KNOWN_LANGUAGES.find((key) => key.language === document.languageId);
 
     const knownExtension = findKnownExtension
-        ? ADDITIONAL_FILE_MAPPING[findKnownExtension] ?? KNOWN_EXTENSIONS[findKnownExtension]
+        ? (ADDITIONAL_FILE_MAPPING[findKnownExtension] ?? KNOWN_EXTENSIONS[findKnownExtension])
         : findKnownLanguage?.image;
 
     const knownLanguage = findKnownLanguage ? findKnownLanguage.image : knownExtension;
     const fileIcon = areLanguagesPrioritized ? knownLanguage : knownExtension;
 
-    return typeof fileIcon === "string" ? fileIcon : fileIcon?.image ?? "text";
+    return typeof fileIcon === "string" ? fileIcon : (fileIcon?.image ?? "text");
 };
