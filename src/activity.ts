@@ -19,7 +19,6 @@ import {
     type Selection,
     type TextDocument
 } from "vscode";
-import { editor } from "./editor";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",

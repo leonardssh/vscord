@@ -5,10 +5,12 @@
         /* Language and Environment */
         "target": "ES2022" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
         "moduleDetection": "legacy" /* Control what method is used to detect module-format JS files. */,
+        // "resolveJsonModule": true,                        /* Enable importing .json files. */
 
         /* Modules */
         "module": "NodeNext" /* Specify what module code is generated. */,
         "moduleResolution": "nodenext" /* Specify how TypeScript looks up a file from a given module specifier. */,
+        "resolveJsonModule": true /* Enable importing .json files. */,
 
         /* Emit */
         "sourceMap": true /* Create source map files for emitted JavaScript files. */,

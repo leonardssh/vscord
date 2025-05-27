@@ -1,7 +1,7 @@
 import type { ExtensionConfiguration, FileSizeStandard } from "../config";
+import { FileSizeOptionsBase, filesize } from "filesize";
 import { CONFIG_KEYS } from "../constants";
 import type { Data } from "../data";
-import { FileSizeOptionsBase, filesize } from "filesize";
 
 export const getFileSize = async (config: ExtensionConfiguration, dataClass: Data) => {
     if (!(await dataClass.fileSize)) return;

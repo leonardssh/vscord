@@ -46,6 +46,6 @@ export const resolveLangName = (document: TextDocument): string => {
 };
 
 export const getArticle = (word: string): string => {
-    const vowels = ['a', 'e', 'i', 'o', 'u'];
-    return vowels.includes(word.charAt(0).toLowerCase()) ? 'an' : 'a';
+    const vowels = ["a", "e", "i", "o", "u"];
+    return vowels.includes(word.charAt(0).toLowerCase()) ? "an" : "a";
 };

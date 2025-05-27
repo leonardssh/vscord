@@ -1,4 +1,4 @@
 onlyBuiltDependencies:
-  - '@vscode/vsce-sign'
-  - esbuild
-  - keytar
+    - "@vscode/vsce-sign"
+    - esbuild
+    - keytar

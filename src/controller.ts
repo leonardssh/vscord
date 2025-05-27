@@ -1,3 +1,4 @@
+import { type Disposable, type WindowState, debug, languages, window, workspace, commands } from "vscode";
 import { type SetActivity, type SetActivityResponse, Client } from "@xhayper/discord-rpc";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
@@ -6,7 +7,6 @@ import { logError, logInfo } from "./logger";
 import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
-import { type Disposable, type WindowState, debug, languages, window, workspace, commands } from "vscode";
 import { editor } from "./editor";
 
 export class RPCController {

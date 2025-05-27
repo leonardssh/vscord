@@ -4,7 +4,9 @@ node_modules/
 .vscode/
 src/
 
+pnpm-workspace.yaml
 ADDING_LANGUAGE.md
+.prettierignore
 pnpm-lock.yaml
 .gitattributes
 tsup.config.ts
