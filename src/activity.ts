@@ -1,4 +1,4 @@
-import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
+import { resolveLangName, toLower, toTitle, toUpper, getArticle } from "./helpers/resolveLangName";
 import { type GatewayActivityButton } from "discord-api-types/v10";
 import { type SetActivity } from "@xhayper/discord-rpc";
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
@@ -19,7 +19,6 @@ import {
     type Selection,
     type TextDocument
 } from "vscode";
-import { editor } from "./editor";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",
@@ -88,12 +87,21 @@ export const activity = async (
     const config = getConfig();
     const presence = previous;
 
+    if (
+        isIdling &&
+        config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle) &&
+        config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime)
+    ) {
+        delete presence.startTimestamp;
+        return {};
+    }
+
     if (isIdling && !config.get(CONFIG_KEYS.Status.Idle.Enabled)) return {};
 
     if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
         presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
             ? Date.now()
-            : previous.startTimestamp ?? Date.now();
+            : (previous.startTimestamp ?? Date.now());
     } else {
         delete presence.startTimestamp;
     }
@@ -124,7 +132,7 @@ export const activity = async (
 
     const isNotInFile = !isWorkspaceExcluded && !dataClass.editor;
 
-    const isDebugging = !!debug.activeDebugSession;
+    const isDebugging = config.get(CONFIG_KEYS.Status.State.Debugging.Enabled) && !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
 
     let status: CURRENT_STATUS;
@@ -162,6 +170,7 @@ export const activity = async (
     const replaceForPrivacyMode = async (text: string) => {
         let replaced: string = text;
         replaced = replaced.replaceAll("{file_name}", "a file");
+        replaced = replaced.replaceAll("{file_extension}", "");
         replaced = replaced.replaceAll("{folder_and_file}", "a file in a folder");
         replaced = replaced.replaceAll("{directory_name}", "a folder");
         replaced = replaced.replaceAll("{full_directory_name}", "a folder");
@@ -182,7 +191,7 @@ export const activity = async (
                 : undefined) ?? workspaceExcludedText;
     } else {
         const text = await replaceAllText(ignoreWorkspacesText);
-        workspaceExcludedText = text !== "" ? text : undefined ?? workspaceExcludedText;
+        workspaceExcludedText = text !== "" ? text : workspaceExcludedText;
     }
 
     let details = isWorkspaceExcluded ? workspaceExcludedText : undefined;
@@ -341,13 +350,13 @@ export const getPresenceButtons = async (
     let state: "Idle" | "Active" | "Inactive" | undefined = isIdling
         ? "Idle"
         : isGitExcluded
-        ? undefined
-        : status == CURRENT_STATUS.EDITING ||
-          status == CURRENT_STATUS.VIEWING ||
-          status == CURRENT_STATUS.NOT_IN_FILE ||
-          status == CURRENT_STATUS.DEBUGGING
-        ? "Active"
-        : "Inactive";
+          ? undefined
+          : status == CURRENT_STATUS.EDITING ||
+              status == CURRENT_STATUS.VIEWING ||
+              status == CURRENT_STATUS.NOT_IN_FILE ||
+              status == CURRENT_STATUS.DEBUGGING
+            ? "Active"
+            : "Inactive";
     if ((!button1Enabled && !button2Enabled) || !state) return [];
     let isGit = !isGitExcluded && dataClass.gitRemoteUrl;
     let button1 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button1"), "Button1");
@@ -366,9 +375,18 @@ export const replaceAppInfo = (text: string): string => {
 
     const isInsider = appName.includes("Insiders");
     const isCodium = appName.startsWith("VSCodium") || appName.startsWith("codium");
+    const isCursor = appName.startsWith("Cursor");
 
     const insiderAppName = isCodium ? "vscodium-insiders" : "vscode-insiders";
-    const normalAppName = isCodium ? "vscodium" : "vscode";
+    let normalAppName;
+
+    if (isCursor) {
+        normalAppName = "cursor";
+    } else if (isCodium) {
+        normalAppName = "vscodium";
+    } else {
+        normalAppName = "vscode";
+    }
 
     const replaceMap = new Map([
         ["{app_name}", appName],
@@ -413,7 +431,7 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
     const replaceMap = new Map([
         ["{git_owner}", (!excluded ? dataClass.gitRemoteUrl?.owner : undefined) ?? FAKE_EMPTY],
         ["{git_provider}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
-        ["{git_repo}", (!excluded ? dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName : undefined) ?? FAKE_EMPTY],
+        ["{git_repo}", (!excluded ? (dataClass.gitRemoteUrl?.name ?? dataClass.gitRepoName) : undefined) ?? FAKE_EMPTY],
         ["{git_branch}", (!excluded ? dataClass.gitBranchName : undefined) ?? FAKE_EMPTY],
         [
             "{git_url}",
@@ -449,9 +467,11 @@ export const replaceFileInfo = async (
     let fullDirectoryName: string = FAKE_EMPTY;
     const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
     const fileSize = await getFileSize(config, dataClass);
+    let relativeFilepath: string = FAKE_EMPTY;
 
     if (dataClass.editor && dataClass.workspaceName && !excluded) {
         const name = dataClass.workspaceName;
+        relativeFilepath = workspace.asRelativePath(dataClass.editor.document.fileName);
         const relativePath = workspace.asRelativePath(dataClass.editor.document.fileName).split(sep);
 
         relativePath.splice(-1, 1);
@@ -463,6 +483,7 @@ export const replaceFileInfo = async (
         workspaceName = FAKE_EMPTY;
         workspaceAndFolder = FAKE_EMPTY;
         fullDirectoryName = FAKE_EMPTY;
+        relativeFilepath = FAKE_EMPTY;
     }
 
     const replaceMap = new Map([
@@ -470,6 +491,7 @@ export const replaceFileInfo = async (
         ["{file_extension}", dataClass.fileExtension ?? FAKE_EMPTY],
         ["{file_size}", fileSize?.toLocaleString() ?? FAKE_EMPTY],
         ["{folder_and_file}", dataClass.folderAndFile ?? FAKE_EMPTY],
+        ["{relative_file_path}", relativeFilepath],
         ["{directory_name}", dataClass.dirName ?? FAKE_EMPTY],
         ["{full_directory_name}", fullDirectoryName],
         ["{workspace}", workspaceName],
@@ -478,6 +500,9 @@ export const replaceFileInfo = async (
         ["{lang}", toLower(fileIcon)],
         ["{Lang}", toTitle(fileIcon)],
         ["{LANG}", toUpper(fileIcon)],
+        ["{a_lang}", `${getArticle(toLower(fileIcon))} ${toLower(fileIcon)}`],
+        ["{a_Lang}", `${getArticle(toTitle(fileIcon))} ${toTitle(fileIcon)}`],
+        ["{a_LANG}", `${getArticle(toUpper(fileIcon))} ${toUpper(fileIcon)}`],
         [
             "{problems_count}",
             config.get(CONFIG_KEYS.Status.Problems.Enabled)

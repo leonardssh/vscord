@@ -1,3 +1,3 @@
 # TODO
 
--   fix regex that have unescaped `.`
+- fix regex that have unescaped `.`

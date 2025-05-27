@@ -6,7 +6,7 @@ export type FileSizeStandard = "iec" | "jedec";
 
 export interface ExtensionConfigurationType {
     "app.id": string;
-    "app.name": "Code" | "Visual Studio Code" | "VSCodium" | "Custom";
+    "app.name": "Code" | "Visual Studio Code" | "VSCodium" | "Cursor" | "Custom";
     "app.privacyMode.enable": boolean;
     "app.whitelistEnabled": boolean;
     "app.whitelistIsBlacklist": boolean;
@@ -20,6 +20,7 @@ export interface ExtensionConfigurationType {
     "status.details.text.notInFile": string;
     "status.details.text.noWorkSpaceText": string;
     "status.state.enabled": boolean;
+    "status.state.debugging.enabled": boolean;
     "status.state.idle.enabled": boolean;
     "status.state.text.idle": string;
     "status.state.text.viewing": string;

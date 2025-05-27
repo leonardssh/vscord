@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.1.18",
+    "version": "5.3.0",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -46,20 +46,19 @@
         "lint:fix": "pnpm prettier . --write"
     },
     "devDependencies": {
-        "@types/git-url-parse": "^9.0.3",
-        "@types/node": "16.x",
-        "@types/vscode": "1.57.0",
-        "@vscode/vsce": "^2.22.0",
-        "@xhayper/discord-rpc": "^1.1.1",
-        "discord-api-types": "^0.37.66",
-        "filesize": "^10.1.0",
-        "git-url-parse": "^13.1.1",
+        "@types/node": "~22.15.21",
+        "@types/vscode": "^1.78.0",
+        "@vscode/vsce": "^3.4.2",
+        "@xhayper/discord-rpc": "^1.2.2",
+        "discord-api-types": "^0.38.8",
+        "filesize": "^10.1.6",
+        "git-url-parse": "^16.1.0",
         "source-map-support": "^0.5.21",
-        "tsup": "^8.0.1",
-        "typescript": "^5.3.3"
+        "tsup": "^8.5.0",
+        "typescript": "^5.8.3"
     },
     "engines": {
-        "vscode": "^1.57.0"
+        "vscode": "^1.78.0"
     },
     "contributes": {
         "commands": [
@@ -114,6 +113,7 @@
                             "Code",
                             "Visual Studio Code",
                             "VSCodium",
+                            "Cursor",
                             "Custom"
                         ],
                         "default": "Code",
@@ -198,30 +198,35 @@
                         ],
                         "description": "List of problem level to count for `problems_count`."
                     },
-                    "vscord.status.idle.enabled": {
-                        "type": "boolean",
-                        "default": true,
-                        "description": "Should we enable the idle status?"
-                    },
                     "vscord.status.idle.check": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Should we check when you are idling?"
+                        "description": "Should we check when you are idling?",
+                        "order": 1
+                    },
+                    "vscord.status.idle.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Should we enable the idle status? \nIf disabled, the extension will only show a plain card with VS Code logo when idling.",
+                        "order": 2
                     },
                     "vscord.status.idle.disconnectOnIdle": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Should going idle disconnect you from discord gateway?."
+                        "description": "Should going idle disconnect you from Discord gateway? \nIf enabled, VS Code activity card will disappear from Discord at all when idling.",
+                        "order": 3
                     },
                     "vscord.status.idle.resetElapsedTime": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Should going idle reset the elapsed time?."
+                        "description": "Should going idle reset the elapsed time on the last active file? Only applies if \"Disconnect on Idle\" is enabled.",
+                        "order": 4
                     },
                     "vscord.status.idle.timeout": {
                         "type": "number",
                         "default": 300,
-                        "description": "Time in seconds before the user is considered idle."
+                        "description": "Time in seconds before the user is considered idle.",
+                        "order": 5
                     }
                 }
             },
@@ -328,6 +333,11 @@
                         "type": "boolean",
                         "default": true,
                         "description": "Should state be shown?"
+                    },
+                    "vscord.status.state.debugging.enabled": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Should state be shown when debugging? If disabled, it will be shown when editing/viewing a file."
                     },
                     "vscord.status.state.idle.enabled": {
                         "type": "boolean",
@@ -1020,5 +1030,5 @@
             "description": "Cannot access local Discord RPC when running in virtual workspace"
         }
     },
-    "packageManager": "pnpm@8.6.0"
+    "packageManager": "pnpm@10.11.0"
 }

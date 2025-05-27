@@ -35,6 +35,9 @@ export const CONFIG_KEYS = {
         } as const,
         State: {
             Enabled: "status.state.enabled" as const,
+            Debugging: {
+                Enabled: "status.state.debugging.enabled" as const
+            } as const,
             Idle: {
                 Enabled: "status.state.idle.enabled" as const
             } as const,

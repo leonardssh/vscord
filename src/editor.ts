@@ -52,7 +52,7 @@ class EditorController {
     toggleStatusBarAlignment(onLeft?: boolean) {
         const config = getConfig();
         const cfgKey = CONFIG_KEYS.Behaviour.StatusBarAlignment;
-        const alignment = onLeft ?? config.get(cfgKey) === "Right" ? "Left" : "Right";
+        const alignment = (onLeft ?? config.get(cfgKey) === "Right") ? "Left" : "Right";
 
         config.update(cfgKey, alignment satisfies ExtensionConfigurationType[typeof cfgKey]);
         return alignment;

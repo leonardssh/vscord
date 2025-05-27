@@ -23,10 +23,10 @@ It's usually specified by extension developer who add support for that specific 
 
 You can find the ID by doing the following.
 
--   CTRL + SHIFT + P
--   Change Language Mode
--   Search for the language
--   Next to the language mode, in the bracket is the id for the language
+- CTRL + SHIFT + P
+- Change Language Mode
+- Search for the language
+- Next to the language mode, in the bracket is the id for the language
 
 For example, in the Language Mode menu, when selecting `C++` it shows `C++ (cpp)`, that mean that `cpp` is the language id
 
@@ -74,23 +74,43 @@ When adding an icon for a language, please read the information below before doi
 
 ### Requirements
 
--   It should have a size of 1024x1024.
--   Please use PNG file format.
--   Recommend logo size is 512x512, if it's too small you can make it bigger.
--   We recommend using HSV instead of RGB when working with the background color, and please don't use plain color as background.
--   You should use the official logo of the language UNLESS it's necessary to use other icon (logo not minimal, can't find transparent version)
--   The icon should be minimalist.
+#### Sizing
+
+- The icon should be 1024px x 1024px.
+- Please use PNG file format. Note that this does **NOT** mean that the icon should have a transparent background.
+- Recommend logo size is 512px x 512px.
+
+#### Color
+
+> [!TIP]
+> It is recommended to use HSL instead of RGB.
+
+How to create background color:
+
+1. Use the hue of the primary logo color
+2. In the HSL color picker, change the saturation to about 20-30% and the lightness to about 15-20%
+
+Here are some examples:
+
+| ![Rust](./assets/icons/rust.png) | ![Holy C](./assets/icons/holyc.png) | ![QML](./assets/icons/qml.png) | ![JSX](./assets/icons/jsx.png) | ![Yarn](./assets/icons/yarn.png) |
+| :------------------------------: | :---------------------------------: | :----------------------------: | :----------------------------: | :------------------------------: |
+|               Rust               |               Holy C                |              QML               |              JSX               |               Yarn               |
+
+#### Logo
+
+- You should use the official logo of the language UNLESS it's necessary to use other icon (e.g. the logo is too complex)
+- The icon should be minimalistic.
 
 ### Note
 
-If you can't make an icon, then that's fine! Just add the language name to the list in next section! future contributor might be able to work on it!
+If you can't make an icon, then that's fine. Just add the language name to the list in next section. A future contributor might be able to work on it!
 
 ### Missing Icon List
 
-Use the following format `(Language Name) ((Language Icon.png)) ([Link to language website / information about the language])` where `()` is required, `[]` is optional
+Use the following format `<Language Name> (<Language Icon.png>) ([Link to language website / information about the language])` where `<>` is required, `[]` is optional
 
 Example: `C++ (cpp.png) (https://en.wikipedia.org/wiki/C%2B%2B)`
 
-#### List:
+#### List
 
--   Mojo ([mojo.png](https://modular-mojotools.gallerycdn.vsassets.io/extensions/modular-mojotools/vscode-mojo/0.2.1/1694073556578/Microsoft.VisualStudio.Services.Icons.Default)) [Website](https://www.modular.com/mojo)
+- Example ([example.png](https://example.com)) [Website](https://example.com)

@@ -5,8 +5,16 @@
             "image": "text"
         },
         {
+            "language": "agda",
+            "image": "agda"
+        },
+        {
             "language": "ansible",
             "image": "ansible"
+        },
+        {
+            "language": "asciidoc",
+            "image": "asciidoc"
         },
         {
             "language": "bat",
@@ -21,8 +29,16 @@
             "image": "text"
         },
         {
+            "language": "citrinescript",
+            "image": "citrinescript"
+        },
+        {
             "language": "clojure",
             "image": "clojure"
+        },
+        {
+            "language": "cobol",
+            "image": "cobol"
         },
         {
             "language": "coffeescript",
@@ -81,6 +97,14 @@
             "image": "glsl"
         },
         {
+            "language": "gml",
+            "image": "gml"
+        },
+        {
+            "language": "gleam",
+            "image": "gleam"
+        },
+        {
             "language": "go",
             "image": "go"
         },
@@ -103,6 +127,10 @@
         {
             "language": "haml",
             "image": "text"
+        },
+        {
+            "language": "holyc",
+            "image": "holyc"
         },
         {
             "language": "html-eex",
@@ -181,12 +209,20 @@
             "image": "lua"
         },
         {
+            "language": "luau",
+            "image": "luau"
+        },
+        {
             "language": "makefile",
             "image": "makefile"
         },
         {
             "language": "markdown",
             "image": "markdown"
+        },
+        {
+            "language": "MATLAB",
+            "image": "matlab"
         },
         {
             "language": "moonscript",
@@ -207,6 +243,22 @@
         {
             "language": "odin",
             "image": "odin"
+        },
+        {
+            "language": "onyx",
+            "image": "onyx"
+        },
+        {
+            "language": "opengoal",
+            "image": "opengoal"
+        },
+        {
+            "language": "opengoal-goos",
+            "image": "opengoal-goos"
+        },
+        {
+            "language": "opengoal-ir",
+            "image": "opengoal-ir"
         },
         {
             "language": "perl",
@@ -243,6 +295,10 @@
         {
             "language": "python",
             "image": "python"
+        },
+        {
+            "language": "qml",
+            "image": "qml"
         },
         {
             "language": "r",
@@ -329,8 +385,20 @@
             "image": "tsx"
         },
         {
+            "language": "templ",
+            "image": "templ"
+        },
+        {
             "language": "tex",
             "image": "tex"
+        },
+        {
+            "language": "typst",
+            "image": "typst"
+        },
+        {
+            "language": "umjunsik",
+            "image": "umm"
         },
         {
             "language": "vb",
@@ -363,6 +431,10 @@
         {
             "language": "yaml",
             "image": "yaml"
+        },
+        {
+            "language": "zenscript",
+            "image": "zs"
         }
     ],
     "KNOWN_EXTENSIONS": {
@@ -420,6 +492,18 @@
         ".ahkl": {
             "image": "ahk"
         },
+        ".adoc": {
+            "image": "asciidoc"
+        },
+        ".agda": {
+            "image": "agda"
+        },
+        ".lagda": {
+            "image": "agda"
+        },
+        ".asciidoc": {
+            "image": "asciidoc"
+        },
         ".astro": {
             "image": "astro"
         },
@@ -427,6 +511,9 @@
             "image": "astroconfig"
         },
         "androidmanifest.xml": {
+            "image": "android"
+        },
+        ".bp": {
             "image": "android"
         },
         "/^angular[^.]*\\.js$/i": {
@@ -561,6 +648,9 @@
         ".cas": {
             "image": "casc"
         },
+        ".ces": {
+            "image": "citrinescript"
+        },
         ".cfc": {
             "image": "coldfusion"
         },
@@ -597,6 +687,12 @@
         "/\\.codeclimate\\.(yml|json)/i": {
             "image": "codeclimate"
         },
+        ".cbl": {
+            "image": "cobol"
+        },
+        ".cob": {
+            "image": "cobol"
+        },
         ".coffee": {
             "image": "coffee"
         },
@@ -605,6 +701,9 @@
         },
         ".coffee.ecr": {
             "image": "coffee"
+        },
+        "/contenthook\\.config\\.(ts|cjs|mjs|js)$/i": {
+            "image": "contenthook"
         },
         ".coffee.erb": {
             "image": "coffee"
@@ -780,6 +879,12 @@
         "/^\\.git|^\\.keep$|\\.mailmap$/i": {
             "image": "git"
         },
+        ".gml": {
+            "image": "gml"
+        },
+        ".gleam": {
+            "image": "gleam"
+        },
         ".go": {
             "image": "go"
         },
@@ -813,7 +918,7 @@
         ".gsh": {
             "image": "groovy"
         },
-        "/gruntfile\\.(js|coffee)/i": {
+        "/[Gg]runtfile\\.(js|coffee)/i": {
             "image": "gruntfile"
         },
         "gulpfile.js": {
@@ -875,6 +980,9 @@
         },
         ".hjson": {
             "image": "hjson"
+        },
+        ".hc": {
+            "image": "holyc"
         },
         "/\\.x?html?$/i": {
             "image": "html"
@@ -957,8 +1065,11 @@
         "/\\.([w]|(pd_))?lua$/i": {
             "image": "lua"
         },
-        ".rbxs": {
-            "image": "lua"
+        "/\\.luau$/i": {
+            "image": "luau"
+        },
+        "/\\.rbx(?:lx|l|m|s)?$/i": {
+            "image": "luau"
         },
         "/^Makefile/": {
             "image": "makefile"
@@ -1044,6 +1155,9 @@
         ".ttl": {
             "image": "manifest"
         },
+        ".typ": {
+            "image": "typst"
+        },
         ".rviz": {
             "image": "manifest"
         },
@@ -1089,6 +1203,9 @@
         ".marko": {
             "image": "marko"
         },
+        "/\\.m$/i": {
+            "image": "matlab"
+        },
         ".nim": {
             "image": "nim"
         },
@@ -1130,6 +1247,9 @@
         },
         ".odin": {
             "image": "odin"
+        },
+        ".onyx": {
+            "image": "onyx"
         },
         "/\\.pas(cal)?$/i": {
             "image": "pascal"
@@ -1446,6 +1566,9 @@
         "/\\.(utxt|utf8)$/i": {
             "image": "text"
         },
+        ".templ": {
+            "image": "templ"
+        },
         ".toml": {
             "image": "toml"
         },
@@ -1466,6 +1589,9 @@
         },
         ".twig": {
             "image": "twig"
+        },
+        ".umm": {
+            "image": "umm"
         },
         ".v": {
             "image": "v"
@@ -1550,6 +1676,9 @@
         },
         ".🔥": {
             "image": "mojo"
+        },
+        ".zs": {
+            "image": "zs"
         }
     }
 }
