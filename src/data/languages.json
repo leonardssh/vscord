@@ -5,6 +5,10 @@
             "image": "text"
         },
         {
+            "language": "agda",
+            "image": "agda"
+        },
+        {
             "language": "ansible",
             "image": "ansible"
         },
@@ -490,6 +494,12 @@
         },
         ".adoc": {
             "image": "asciidoc"
+        },
+        ".agda": {
+            "image": "agda"
+        },
+        ".lagda": {
+            "image": "agda"
         },
         ".asciidoc": {
             "image": "asciidoc"
