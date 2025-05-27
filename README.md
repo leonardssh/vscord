@@ -70,36 +70,37 @@ Use the **[Extension Marketplace](https://code.visualstudio.com/docs/editor/exte
 
 The following variables will be replaced with the respective value in custom strings.<br>
 
-| Variable                         | Value                                                             |
-| -------------------------------- | ----------------------------------------------------------------- |
-| `{app_name}`                     | current editor name                                               |
-| `{app_id}`                       | editor name that's suitable for using inside url                  |
-| `{file_name}`                    | name of the file                                                  |
-| `{file_extension}`               | extension of the file                                             |
-| `{file_size}`                    | size of the file                                                  |
-| `{folder_and_file}`              | folder and file name                                              |
-| `{relative_file_path}`           | filepath relative to the workspace folder                         |
-| `{directory_name}`               | directory name                                                    |
-| `{full_directory_name}`          | full directory name                                               |
-| `{workspace}`                    | name of the workspace                                             |
-| `{workspace_folder}`             | name of the workspace folder                                      |
-| `{workspace_and_folder}`         | name of the workspace and folder                                  |
-| `{lang}` \| `{Lang}` \| `{LANG}` | format of the lang string (css, Css, CSS)                         |
-| `{problems}`                     | problems text defined in settings                                 |
-| `{problems_count}`               | number of problems                                                |
-| `{problems_count_errors}`        | number of problems that are errors                                |
-| `{problems_count_warnings}`      | number of problems that are warnings                              |
-| `{problems_count_infos}`         | number of problems that are infos                                 |
-| `{problems_count_hints}`         | number of problems that are hints                                 |
-| `{line_count}`                   | number of lines                                                   |
-| `{current_line}`                 | current line                                                      |
-| `{current_column}`               | current column                                                    |
-| `{git_url}`                      | link to current git repository                                    |
-| `{git_owner}`                    | current git repository owner                                      |
-| `{git_provider}`                 | domain (including .com) to the provider of current git repository |
-| `{git_repo}`                     | repository name for current repository                            |
-| `{git_branch}`                   | current git branch                                                |
-| `{empty}`                        | an empty space                                                    |
+| Variable                              | Value                                                             |
+| ------------------------------------- | ----------------------------------------------------------------- |
+| `{app_name}`                          | current editor name                                               |
+| `{app_id}`                            | editor name that's suitable for using inside url                  |
+| `{file_name}`                         | name of the file                                                  |
+| `{file_extension}`                    | extension of the file                                             |
+| `{file_size}`                         | size of the file                                                  |
+| `{folder_and_file}`                   | folder and file name                                              |
+| `{relative_file_path}`                | filepath relative to the workspace folder                         |
+| `{directory_name}`                    | directory name                                                    |
+| `{full_directory_name}`               | full directory name                                               |
+| `{workspace}`                         | name of the workspace                                             |
+| `{workspace_folder}`                  | name of the workspace folder                                      |
+| `{workspace_and_folder}`              | name of the workspace and folder                                  |
+| `{lang}` \| `{Lang}` \| `{LANG}`      | format of the lang string (css, Css, CSS)                         |
+| `{a_lang}` \| `{a_Lang}`\| `{a_LANG}` | same as the above, but prefixes with "a" or "an"                  |
+| `{problems}`                          | problems text defined in settings                                 |
+| `{problems_count}`                    | number of problems                                                |
+| `{problems_count_errors}`             | number of problems that are errors                                |
+| `{problems_count_warnings}`           | number of problems that are warnings                              |
+| `{problems_count_infos}`              | number of problems that are infos                                 |
+| `{problems_count_hints}`              | number of problems that are hints                                 |
+| `{line_count}`                        | number of lines                                                   |
+| `{current_line}`                      | current line                                                      |
+| `{current_column}`                    | current column                                                    |
+| `{git_url}`                           | link to current git repository                                    |
+| `{git_owner}`                         | current git repository owner                                      |
+| `{git_provider}`                      | domain (including .com) to the provider of current git repository |
+| `{git_repo}`                          | repository name for current repository                            |
+| `{git_branch}`                        | current git branch                                                |
+| `{empty}`                             | an empty space                                                    |
 
 ## 👨‍💻 Contributing
 

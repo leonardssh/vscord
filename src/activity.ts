@@ -1,4 +1,4 @@
-import { resolveLangName, toLower, toTitle, toUpper } from "./helpers/resolveLangName";
+import { resolveLangName, toLower, toTitle, toUpper, getArticle } from "./helpers/resolveLangName";
 import { type GatewayActivityButton } from "discord-api-types/v10";
 import { type SetActivity } from "@xhayper/discord-rpc";
 import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
@@ -492,6 +492,9 @@ export const replaceFileInfo = async (
         ["{lang}", toLower(fileIcon)],
         ["{Lang}", toTitle(fileIcon)],
         ["{LANG}", toUpper(fileIcon)],
+        ["{a_lang}", `${getArticle(toLower(fileIcon))} ${toLower(fileIcon)}`],
+        ["{a_Lang}", `${getArticle(toTitle(fileIcon))} ${toTitle(fileIcon)}`],
+        ["{a_LANG}", `${getArticle(toUpper(fileIcon))} ${toUpper(fileIcon)}`],
         [
             "{problems_count}",
             config.get(CONFIG_KEYS.Status.Problems.Enabled)
