@@ -2,12 +2,12 @@ import { type Disposable, type WindowState, debug, languages, window, workspace,
 import { type SetActivity, type SetActivityResponse, Client } from "@xhayper/discord-rpc";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
+import { StatusBarMode, editor } from "./editor";
 import { throttle } from "./helpers/throttle";
 import { logError, logInfo } from "./logger";
 import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
-import { editor } from "./editor";
 
 export class RPCController {
     listeners: Disposable[] = [];
@@ -29,40 +29,21 @@ export class RPCController {
         this.client = new Client({ clientId });
         this.debug = debug;
 
-        editor.statusBarItem.text = "$(pulse) Connecting to Discord Gateway...";
-        editor.statusBarItem.command = undefined;
+        editor.setStatusBarItem(StatusBarMode.Pending);
 
-        void this.client.login().catch(async (error: Error) => {
+        this.client.login().catch(async (error: Error) => {
             const config = getConfig();
 
             logError("Encountered following error while trying to login:", error);
-
+            editor.setStatusBarItem(StatusBarMode.Disconnected);
+            if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+                window.showErrorMessage("Failed to connect to Discord Gateway");
             await this.client?.destroy();
             logInfo("[002] Destroyed Discord RPC client");
-
-            editor.statusBarItem.text = "$(search-refresh) Reconnect to Discord Gateway";
-            editor.statusBarItem.command = "vscord.reconnect";
-            editor.statusBarItem.tooltip = "Reconnect to Discord Gateway";
-
-            if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
-                const result = await (error?.message?.includes("ENOENT")
-                    ? window.showErrorMessage("No Discord client detected")
-                    : window.showErrorMessage(`Couldn't connect to Discord via RPC: ${error.name}`, "Reconnect"));
-                editor.statusBarItem.text = "$(search-refresh) Reconnect to Discord Gateway";
-                editor.statusBarItem.command = "vscord.reconnect";
-                editor.statusBarItem.tooltip = "Reconnect to Discord Gateway";
-
-                if (result === "Reconnect") {
-                    commands.executeCommand("vscord.reconnect");
-                }
-            }
-
-            editor.statusBarItem.show();
         });
 
         this.client.on("debug", (...data) => {
             if (!this.debug) return;
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             logInfo("[003] Debug:", ...data);
         });
 
@@ -75,18 +56,12 @@ export class RPCController {
         this.cleanUp();
 
         if (this.enabled) void this.enable();
-        editor.statusBarItem.text = "$(globe) Connected to Discord";
-        editor.statusBarItem.tooltip = "Click to disconnect from Discord Gateway";
-        editor.statusBarItem.command = "vscord.disconnect";
-        editor.statusBarItem.show();
+        editor.setStatusBarItem(StatusBarMode.Succeeded);
     }
 
     private onDisconnected() {
         this.cleanUp();
-        editor.statusBarItem.text = "$(search-refresh) Reconnect to Discord Gateway";
-        editor.statusBarItem.command = "vscord.reconnect";
-        editor.statusBarItem.tooltip = "Reconnect to Discord Gateway";
-        editor.statusBarItem.show();
+        editor.setStatusBarItem(StatusBarMode.Disconnected);
     }
 
     private listen() {
@@ -177,8 +152,7 @@ export class RPCController {
 
         if (this.client.isConnected && this.client.clientId === clientId) return;
 
-        editor.statusBarItem.text = "$(search-refresh) Connecting to Discord Gateway...";
-        editor.statusBarItem.tooltip = "Connecting to Discord Gateway...";
+        editor.setStatusBarItem(StatusBarMode.Pending);
 
         if (this.client.clientId !== clientId) await this.updateClientId(clientId);
         else if (!this.client.isConnected) await this.client.login();
@@ -213,13 +187,14 @@ export class RPCController {
         logInfo("[004] Debug:", "Client Should be logged in");
         logInfo("[004] Debug:", `Enable - ${this.client}`);
 
+        editor.setStatusBarItem(StatusBarMode.Succeeded);
+
         logInfo("[004] Debug:", "Enabled - isConnected", this.client.isConnected, "isReady", this.client.clientId);
         await this.sendActivity();
         this.cleanUp();
         this.listen();
 
         if (this.iconTimeout) clearTimeout(this.iconTimeout);
-        this.iconTimeout = setTimeout(() => (editor.statusBarItem.text = "$(smiley)"), 5000);
     }
 
     async updateClientId(clientId: string) {
