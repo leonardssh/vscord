@@ -1029,5 +1029,5 @@
             "description": "Cannot access local Discord RPC when running in virtual workspace"
         }
     },
-    "packageManager": "pnpm@8.15.4"
+    "packageManager": "pnpm@10.11.0"
 }
