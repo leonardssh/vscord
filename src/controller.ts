@@ -13,6 +13,8 @@ export class RPCController {
     listeners: Disposable[] = [];
     enabled = true;
     canSendActivity = true;
+    manualIdleMode = false;
+    manualIdling = false;
     state: SetActivity = {};
     debug = false;
     client: Client;
@@ -26,8 +28,10 @@ export class RPCController {
     );
 
     constructor(clientId: string, debug = false) {
+        const config = getConfig();
         this.client = new Client({ clientId });
         this.debug = debug;
+        this.manualIdleMode = config.get(CONFIG_KEYS.Status.Idle.Check) === false;
 
         editor.setStatusBarItem(StatusBarMode.Pending);
 
@@ -165,6 +169,7 @@ export class RPCController {
 
     async sendActivity(isViewing = false, isIdling = false): Promise<SetActivityResponse | undefined> {
         if (!this.enabled) return;
+        if (this.manualIdleMode) isIdling = this.manualIdling;
         this.checkCanSend(isIdling);
         this.state = await activity(this.state, isViewing, isIdling);
         this.state.instance = true;

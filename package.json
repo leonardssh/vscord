@@ -101,6 +101,16 @@
                 "command": "vscord.disablePrivacyMode",
                 "title": "Disable Privacy Mode",
                 "category": "VSCord"
+            },
+            {
+                "command": "vscord.startIdling",
+                "title": "Start Idle",
+                "category": "VSCord"
+            },
+            {
+                "command": "vscord.stopIdling",
+                "title": "Stop Idle",
+                "category": "VSCord"
             }
         ],
         "configuration": [

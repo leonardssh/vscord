@@ -28,6 +28,8 @@ export const registerListeners = (ctx: ExtensionContext) => {
             await controller.login();
             if (isEnabled) await controller.enable();
         }
+
+        controller.manualIdleMode = config.get(CONFIG_KEYS.Status.Idle.Check) === false;
     });
 
     ctx.subscriptions.push(onConfigurationChanged);
@@ -144,6 +146,26 @@ export const registerCommands = (ctx: ExtensionContext) => {
             await window.showInformationMessage("Disabled Privacy Mode.");
     });
 
+    const startIdlingCommand = commands.registerCommand("vscord.startIdling", async () => {
+        logInfo("Started Idling");
+
+        controller.manualIdling = true;
+        await controller.sendActivity(false, true);
+
+        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+            await window.showInformationMessage("Started Idling.");
+    });
+
+    const stopIdlingCommand = commands.registerCommand("vscord.stopIdling", async () => {
+        logInfo("Stopped Idling");
+
+        controller.manualIdling = false;
+        await controller.sendActivity();
+
+        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+            await window.showInformationMessage("Stopped Idling.");
+    });
+
     ctx.subscriptions.push(
         enableCommand,
         disableCommand,
@@ -152,7 +174,9 @@ export const registerCommands = (ctx: ExtensionContext) => {
         reconnectCommand,
         disconnectCommand,
         enablePrivacyModeCommand,
-        disablePrivacyModeCommand
+        disablePrivacyModeCommand,
+        startIdlingCommand,
+        stopIdlingCommand
     );
 
     logInfo("Registered Discord Rich Presence commands");
