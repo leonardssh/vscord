@@ -127,7 +127,7 @@ class EditorController implements Disposable {
             buttons.push("Don't show again");
         }
 
-        const message = `${error.message}: ${error.name}.`;
+        const message = `Failed to connect to Discord Gateway: ${error.name}.`;
         window
             .showErrorMessage(message, ...buttons)
             .then(selection => this.#errorMessageFailedToConnectSelect(config, suppressConfigKey, selection));
