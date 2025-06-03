@@ -9,5 +9,4 @@
         "dist": true,
         "pnpm-lock.yaml": true
     },
-    "vscord.behaviour.suppressNotifications": false
 }
