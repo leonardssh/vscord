@@ -192,15 +192,15 @@ export class Data implements Disposable {
         this.gitApiListeners.push(
             api.onDidOpenRepository((e) => {
                 this.debug(`listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop() ?? ""}`);
-                this.updateGitInfo();
+                this.updateGitInfo(api);
             }),
             api.onDidCloseRepository((e) => {
                 this.debug(`listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop() ?? ""}`);
-                this.updateGitInfo();
+                this.updateGitInfo(api);
             }),
             api.onDidChangeState((e) => {
                 this.debug("listeners(): Change State", e);
-                this.updateGitInfo();
+                this.updateGitInfo(api);
             })
         );
         return api
@@ -215,7 +215,7 @@ export class Data implements Disposable {
             return;
         }
         this._repo = this.repo(api);
-        this._remote = this.remote();
+        this._remote = this.remote(this._repo);
         this.debug(`updateGit(): repo ${this.gitRepoPath ?? ""}`);
         this.eventEmitter.fire();
     }
@@ -251,8 +251,8 @@ export class Data implements Disposable {
             .shift();
     }
 
-    private remote() {
-        const remotes = this._repo?.state.remotes;
+    private remote(repo?: Repository) {
+        const remotes = repo?.state.remotes;
 
         if (!remotes) return;
 
