@@ -1,4 +1,4 @@
-import { StatusBarAlignment, StatusBarItem, window, commands, ConfigurationTarget, l10n, type Disposable, MessageItem, } from "vscode";
+import { StatusBarAlignment, StatusBarItem, window, commands, ConfigurationTarget, type Disposable, MessageItem, } from "vscode";
 import { ExtensionConfiguration, ExtensionConfigurationType, getConfig } from "./config";
 import { CONFIG_KEYS } from "./constants";
 import { outputChannel } from "./logger";
@@ -105,7 +105,7 @@ class EditorController implements Disposable {
 
         const buttons = ["Reconnect", "Show output"];
         if (!(error instanceof Error)) {
-            const message = l10n.t("Failed to connect to {0}.", "Discord Gateway");
+            const message = "Failed to connect to Discord Gateway.";
             window
                 .showErrorMessage(message, ...buttons)
                 .then(selection => this.#errorMessageFailedToConnectSelect(config, "", selection));
@@ -127,7 +127,7 @@ class EditorController implements Disposable {
             buttons.push("Don't show again");
         }
 
-        const message = l10n.t("Failed to connect to {0}: {1}.", "Discord Gateway", error.name);
+        const message = `Failed to connect to Discord Gateway: ${error.name}.`;
         window
             .showErrorMessage(message, ...buttons)
             .then(selection => this.#errorMessageFailedToConnectSelect(config, suppressConfigKey, selection));
