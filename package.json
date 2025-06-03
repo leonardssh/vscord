@@ -701,7 +701,7 @@
                         "default": false,
                         "description": "Suppresses all notifications from the extension."
                     },
-                    "vscord.behaviour.supressRpcCouldNotConnect": {
+                    "vscord.behaviour.suppressRpcCouldNotConnect": {
                         "type": "boolean",
                         "default": false,
                         "description": "Suppresses \"RPC_COULD_NOT_CONNECT\" notification."
