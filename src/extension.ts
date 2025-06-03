@@ -113,10 +113,10 @@ export const registerCommands = (ctx: ExtensionContext) => {
         await controller
             .login()
             .then(async () => await controller.enable())
-            .catch(() => {
-                if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
-                    window.showErrorMessage("Failed to reconnect to Discord Gateway");
+            .catch((error) => {
+                const config = getConfig()
                 editor.setStatusBarItem(StatusBarMode.Disconnected);
+                editor.errorMessageFailedToConnect(config, error);
             });
     });
 
