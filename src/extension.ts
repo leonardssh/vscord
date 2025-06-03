@@ -64,7 +64,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
             await config.update(CONFIG_KEYS.App.PrivacyMode, activate);
         } catch {}
 
-        await controller.sendActivity(dataClass.editor != null);
+        await controller.sendActivity(Boolean(dataClass.editor));
     };
 
     const enableCommand = commands.registerCommand("vscord.enable", async () => {
