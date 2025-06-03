@@ -192,7 +192,8 @@ export async function activate(ctx: ExtensionContext) {
 
 export async function deactivate() {
     logInfo("Discord Rich Presence for VS Code deactivated.");
-    await controller.destroy();
+    editor.dispose();
     dataClass.dispose();
+    await controller.destroy();
     logInfo("[004] Destroyed Discord RPC client");
 }

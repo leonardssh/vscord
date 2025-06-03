@@ -18,13 +18,9 @@ import {
 
 const ALLOWED_SCHEME = ["file", "vscode-remote", "untitled", "vsls"];
 
-interface DisposableLike {
-    dispose: () => unknown;
-}
-
 const API_VERSION: Parameters<GitExtension["getAPI"]>["0"] = 1;
 
-export class Data implements DisposableLike {
+export class Data implements Disposable {
     protected _repo: Repository | undefined;
     protected _remote: Remote | undefined;
 
@@ -263,9 +259,11 @@ export class Data implements DisposableLike {
         return remotes.find((v) => v.name === "origin") ?? remotes[0];
     }
 
-    public dispose() {
+    public dispose(): void {
         for (const listener of this.gitApiListeners) listener.dispose()
+        this.gitApiListeners = []
         for (const listener of this.rootListeners) listener.dispose()
+        this.rootListeners = []
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -276,4 +274,7 @@ export class Data implements DisposableLike {
     }
 }
 
+/**
+ * Manages Git and opened text editor state.
+ */
 export const dataClass = new Data();

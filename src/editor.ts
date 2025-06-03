@@ -1,4 +1,4 @@
-import { Command, StatusBarAlignment, StatusBarItem, window } from "vscode";
+import { StatusBarAlignment, StatusBarItem, window, type Disposable, } from "vscode";
 import { ExtensionConfiguration, ExtensionConfigurationType, getConfig } from "./config";
 import { CONFIG_KEYS } from "./constants";
 
@@ -9,7 +9,7 @@ export enum StatusBarMode {
     Succeeded
 }
 
-class EditorController {
+class EditorController implements Disposable {
     statusBarItem = window.createStatusBarItem(this.#getAlignmentFromConfig());
 
     #getAlignmentFromConfig(config?: ExtensionConfiguration) {
@@ -82,6 +82,11 @@ class EditorController {
 
         editor.statusBarItem.show();
         old.dispose();
+    }
+
+    public dispose(): void {
+        this.statusBarItem.hide()
+        this.statusBarItem.dispose()
     }
 }
 
