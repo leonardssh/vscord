@@ -112,17 +112,25 @@ class EditorController implements Disposable {
             return;
         }
 
-        if (error.name === "RPC_COULD_NOT_CONNECT") {
-            if (config.get(CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect)) {
+        const configKeyPairs = {
+            "RPC_COULD_NOT_CONNECT": CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect,
+        } as const
+
+        const errorName = error.name
+        const suppressConfigKey: string | undefined = configKeyPairs[errorName as keyof typeof configKeyPairs]
+        if (suppressConfigKey) {
+            const suppressed = config.get(suppressConfigKey)
+            if (suppressed) {
                 return;
             }
+
             buttons.push("Don't show again");
         }
 
         const message = l10n.t("Failed to connect to {0}: {1}.", "Discord Gateway", error.name);
         window
             .showErrorMessage(message, ...buttons)
-            .then(selection => this.#errorMessageFailedToConnectSelect(config, CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect, selection));
+            .then(selection => this.#errorMessageFailedToConnectSelect(config, suppressConfigKey, selection));
         return;
     }
 
