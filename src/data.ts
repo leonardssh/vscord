@@ -28,55 +28,47 @@ export class Data implements DisposableLike {
     protected _repo: Repository | undefined;
     protected _remote: Remote | undefined;
 
-    protected _debug: boolean;
-
     private eventEmitter = new EventEmitter<void>();
 
-    private rootListeners: (Disposable | undefined)[] = [];
-    private gitExtListeners: (Disposable | undefined)[] = [];
-    private gitApiListeners: (Disposable | undefined)[] = [];
-
-    private gitExt: Extension<GitExtension> | undefined;
-    private gitApi: GitApi | undefined;
+    private rootListeners: (Disposable)[] = [];
+    private gitApiListeners: (Disposable)[] = [];
 
     public editor: TextEditor | undefined;
 
-    public constructor(debug = false) {
-        this._debug = debug;
+    public constructor() {
         this.editor = window.activeTextEditor;
-        this.ext();
-        this.api(this.gitExt?.exports.enabled ?? false);
+        this.requireGitApi().then(api => this.updateGitInfo(api))
+        // TODO: there's a small delay when switching file, it will fire a event where e will be null,
+        // then after a few ms, it will fire again with non-null e, figure out how to work around that
         this.rootListeners.push(
-            // TODO: there's a small delay when switching file, it will fire a event where e will be null, then after a few ms, it will fire again with non-null e, figure out how to work around that
             window.onDidChangeActiveTextEditor((e) => {
                 this.debug("root(): window.onDidChangeActiveTextEditor");
+                this.editor = e;
 
-                if (e && !ALLOWED_SCHEME.includes(e.document.uri.scheme))
+                if (!e) {
+                    return;
+                }
+
+                this.debug(`root(): window.onDidChangeActiveTextEditor: got URI '${e.document.uri.scheme}'`);
+                if (!ALLOWED_SCHEME.includes(e.document.uri.scheme)) {
                     return this.debug(
                         `root(): window.onDidChangeActiveTextEditor: got unallowed scheme, got '${e.document.uri.scheme}'`
                     );
-
-                if (e) this.debug(`root(): window.onDidChangeActiveTextEditor: got URI '${e.document.uri.scheme}'`);
-
-                this.editor = e;
+                }
             }),
-            extensions.onDidChange(() => {
-                this.debug("root(): extensions.onDidChange");
-                this.ext();
-            })
         );
     }
 
     public get fileName(): string | undefined {
         const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
-        const v = _file ? _file.name : undefined;
+        const v = _file?.name;
         this.debug(`fileName(): ${v ?? ""}`);
         return v;
     }
 
     public get fileExtension(): string | undefined {
         const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
-        const v = _file ? _file.ext : undefined;
+        const v = _file?.ext;
         this.debug(`fileExtension(): ${v ?? ""}`);
         return v;
     }
@@ -176,116 +168,64 @@ export class Data implements DisposableLike {
         return v;
     }
 
-    public dispose(level = 0): void {
-        let disposeOf: (Disposable | undefined)[] = [];
-        switch (level) {
-            case 0:
-                this.dispose(1);
-                disposeOf = this.rootListeners;
-                this.rootListeners = [];
-                break;
-            case 1:
-                this.dispose(2);
-                disposeOf = this.gitExtListeners;
-                this.gitExtListeners = [];
-                break;
-            case 2:
-                disposeOf = this.gitApiListeners;
-                this.gitApiListeners = [];
-                break;
-        }
-        for (const disposable of disposeOf) disposable?.dispose();
-    }
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public onUpdate(listener: () => any): Disposable {
         return this.eventEmitter.event(listener);
     }
 
-    private ext() {
-        // Our extension
-        this._debug = getConfig().get(CONFIG_KEYS.Behaviour.Debug) ?? false;
-
-        // Git extension
-        try {
-            const ext = extensions.getExtension<GitExtension>("vscode.git");
-            this.debug(`ext(): ${ext ? "Extension" : "undefined"}`);
-            if (ext && !this.gitExt) {
-                this.debug("ext(): Changed to Extension");
-                this.gitExt = ext;
-                if (this.gitExt.isActive) {
-                    this.debug("[data.ts] ext(): Git extension is active");
-                    this.api(this.gitExt.exports.enabled);
-                    this.gitExtListeners.push(this.gitExt.exports.onDidChangeEnablement((e) => this.api(e)));
-                } else {
-                    this.debug("[data.ts] ext(): activate");
-                    void ext.activate();
-                }
-            } else if (!ext && this.gitExt) {
-                this.debug("[data.ts] ext(): Changed to undefined");
-                this.gitExt = undefined;
-                this.api(false);
-                this.dispose(1);
-            }
-        } catch (e) {
-            this.debug(`ext(): Git extension not found: ${e}`);
+    private async requireGit(): Promise<Extension<GitExtension> | undefined> {
+        const ext = extensions.getExtension<GitExtension>("vscode.git");
+        if (!ext) {
+            return;
         }
+
+        await ext.activate();
+        return ext;
     }
 
-    private api(e: boolean) {
+    private async requireGitApi(): Promise<GitApi | undefined> {
+        const ext = await this.requireGit()
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        this.debug(`api(): ${e}`);
+        this.debug(`requireGitApi(): ${ext}`);
 
-        if (e) {
-            this.gitApi = this.gitExt?.exports.getAPI(API_VERSION);
-            this.debug(`api(): ${this.gitApi ? "gitApi" : "undefined"}`);
-            this.listeners();
-        } else {
-            this.gitApi = undefined;
-            this.dispose(2);
+        if (!ext) {
+            return;
         }
-
-        this.updateGit();
-    }
-
-    private listeners() {
-        if (!this.gitApi) return;
-
+        const api = ext.exports.getAPI(API_VERSION);
+        this.debug(`requireGitApi(): ${api ? "got api" : "no api from ext. ext exists."}`);
         this.gitApiListeners.push(
-            this.gitApi.onDidOpenRepository((e) => {
+            api.onDidOpenRepository((e) => {
                 this.debug(`listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop() ?? ""}`);
-                this.updateGit();
+                this.updateGitInfo();
             }),
-            this.gitApi.onDidCloseRepository((e) => {
+            api.onDidCloseRepository((e) => {
                 this.debug(`listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop() ?? ""}`);
-                this.updateGit();
+                this.updateGitInfo();
             }),
-            this.gitApi.onDidChangeState((e) => {
+            api.onDidChangeState((e) => {
                 this.debug("listeners(): Change State", e);
-
-                this.updateGit();
+                this.updateGitInfo();
             })
         );
+        return api
     }
 
-    private updateGit() {
+    private updateGitInfo(api?: GitApi) {
         this.debug("updateGit()");
-        if (!this.gitApi) {
+        if (!api) {
             this._repo = undefined;
             this._remote = undefined;
             this.eventEmitter.fire();
             return;
         }
-        this._repo = this.repo();
+        this._repo = this.repo(api);
         this._remote = this.remote();
         this.debug(`updateGit(): repo ${this.gitRepoPath ?? ""}`);
         this.eventEmitter.fire();
     }
 
-    private repo(): Repository | undefined {
-        if (!this.gitApi) return;
-
-        const repos = this.gitApi.repositories;
+    private repo(api: GitApi): Repository | undefined {
+        const repos = api.repositories;
 
         if (this.editor) {
             const _file = parse(this.editor.document.uri.fsPath);
@@ -323,12 +263,17 @@ export class Data implements DisposableLike {
         return remotes.find((v) => v.name === "origin") ?? remotes[0];
     }
 
+    public dispose() {
+        for (const listener of this.gitApiListeners) listener.dispose()
+        for (const listener of this.rootListeners) listener.dispose()
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private debug(...message: any[]) {
-        if (!this._debug) return;
+        if (!getConfig().get(CONFIG_KEYS.Behaviour.Debug)) return;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         logInfo("[data.ts]", ...message);
     }
 }
 
-export const dataClass = new Data(getConfig().get(CONFIG_KEYS.Behaviour.Debug));
+export const dataClass = new Data();
