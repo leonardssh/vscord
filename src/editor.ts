@@ -1,6 +1,7 @@
-import { StatusBarAlignment, StatusBarItem, window, commands, ConfigurationTarget, l10n, type Disposable, } from "vscode";
+import { StatusBarAlignment, StatusBarItem, window, commands, ConfigurationTarget, l10n, type Disposable, MessageItem, } from "vscode";
 import { ExtensionConfiguration, ExtensionConfigurationType, getConfig } from "./config";
 import { CONFIG_KEYS } from "./constants";
+import { outputChannel } from "./logger";
 
 export enum StatusBarMode {
     Disabled,
@@ -86,8 +87,10 @@ class EditorController implements Disposable {
 
     #errorMessageFailedToConnectSelect(config: ExtensionConfiguration, key: string, selection?: string) {
         if (selection === "Reconnect") {
-            void commands.executeCommand("vscord.reconnect");
-        } else if (selection === "Don't Show Again") {
+            commands.executeCommand("vscord.reconnect");
+        } else if (selection === "Show output") {
+            outputChannel.show(true)
+        } else if (selection === "Don't show again") {
             config.update(
                 key,
                 true,
@@ -96,29 +99,29 @@ class EditorController implements Disposable {
         }
     }
     errorMessageFailedToConnect(config: ExtensionConfiguration, error?: Error) {
-        const message = l10n.t("Failed to connect to {0}.", "Discord Gateway");
         if (config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
             return;
         }
 
+        const buttons = ["Reconnect", "Show output"];
         if (!(error instanceof Error)) {
-            const buttons = ["Reconnect"];
+            const message = l10n.t("Failed to connect to {0}.", "Discord Gateway");
             window
                 .showErrorMessage(message, ...buttons)
                 .then(selection => this.#errorMessageFailedToConnectSelect(config, "", selection));
             return;
         }
 
-        if (
-            "RPC_COULD_NOT_CONNECT" === error.name &&
-            config.get(CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect)
-        ) {
-            return;
+        if (error.name === "RPC_COULD_NOT_CONNECT") {
+            if (config.get(CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect)) {
+                return;
+            }
+            buttons.push("Don't show again");
         }
 
-        const buttons = ["Reconnect", "Don't Show Again"];
+        const message = l10n.t("Failed to connect to {0}: {1}.", "Discord Gateway", error.name);
         window
-            .showErrorMessage(`${error.name}\n${message}`, ...buttons)
+            .showErrorMessage(message, ...buttons)
             .then(selection => this.#errorMessageFailedToConnectSelect(config, CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect, selection));
         return;
     }
