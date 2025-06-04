@@ -409,6 +409,10 @@
             "image": "verse"
         },
         {
+            "language": "vhdl",
+            "image": "vhdl"
+        },
+        {
             "language": "vue",
             "image": "vue"
         },
@@ -1634,6 +1638,12 @@
         },
         ".vue": {
             "image": "vue"
+        },
+        ".vhd": {
+            "image": "vhdl"
+        },
+        ".vhdl": {
+            "image": "vhdl"
         },
         ".zu": {
             "image": "zura"
