@@ -77,11 +77,11 @@ export class RPCController {
 
         const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
         const fileEdit = workspace.onDidChangeTextDocument((e) => {
-            if (e.document !== dataClass.editor?.document) return;
+            if (e.document !== window.activeTextEditor?.document) return;
             void this.activityThrottle.callable();
         });
         const fileSelectionChanged = window.onDidChangeTextEditorSelection((e) => {
-            if (e.textEditor !== dataClass.editor) return;
+            if (e.textEditor !== window.activeTextEditor) return;
             void this.activityThrottle.callable();
         });
         const debugStart = debug.onDidStartDebugSession(() => sendActivity());

@@ -20,6 +20,19 @@ const ALLOWED_SCHEME = ["file", "vscode-remote", "untitled", "vsls"];
 
 const API_VERSION: Parameters<GitExtension["getAPI"]>["0"] = 1;
 
+function extractRepo(repos: Repository[], comparePath: string): Repository | undefined {
+    const filterBySub = repos.filter((v) => {
+        const subCompare = comparePath.substring(0, v.rootUri.fsPath.length)
+        logInfo(`[data.ts] extractRepo(): "${v.rootUri.fsPath}" less than "${comparePath}" and equal to "${subCompare}"`)
+        const byLen = v.rootUri.fsPath.length <= comparePath.length
+        const byEq = v.rootUri.fsPath === subCompare
+        return byLen && byEq
+    })
+    const sortedByLen = filterBySub.sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
+    const repo = sortedByLen.shift()
+    return repo;
+}
+
 export class Data implements Disposable {
     protected _repo: Repository | undefined;
     protected _remote: Remote | undefined;
@@ -29,41 +42,19 @@ export class Data implements Disposable {
     private rootListeners: (Disposable)[] = [];
     private gitApiListeners: (Disposable)[] = [];
 
-    public editor: TextEditor | undefined;
-
     public constructor() {
-        this.editor = window.activeTextEditor;
         this.requireGitApi().then(api => this.updateGitInfo(api))
-        // TODO: there's a small delay when switching file, it will fire a event where e will be null,
-        // then after a few ms, it will fire again with non-null e, figure out how to work around that
-        this.rootListeners.push(
-            window.onDidChangeActiveTextEditor((e) => {
-                this.debug("root(): window.onDidChangeActiveTextEditor");
-                this.editor = e;
-
-                if (!e) {
-                    return;
-                }
-
-                this.debug(`root(): window.onDidChangeActiveTextEditor: got URI '${e.document.uri.scheme}'`);
-                if (!ALLOWED_SCHEME.includes(e.document.uri.scheme)) {
-                    return this.debug(
-                        `root(): window.onDidChangeActiveTextEditor: got unallowed scheme, got '${e.document.uri.scheme}'`
-                    );
-                }
-            }),
-        );
     }
 
     public get fileName(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = window.activeTextEditor ? parse(window.activeTextEditor.document.uri.fsPath) : undefined;
         const v = _file?.name;
         this.debug(`fileName(): ${v ?? ""}`);
         return v;
     }
 
     public get fileExtension(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = window.activeTextEditor ? parse(window.activeTextEditor.document.uri.fsPath) : undefined;
         const v = _file?.ext;
         this.debug(`fileExtension(): ${v ?? ""}`);
         return v;
@@ -72,10 +63,10 @@ export class Data implements Disposable {
     public get fileSize(): Promise<number | undefined> {
         return new Promise((resolve) => {
             void (async () => {
-                if (!this.editor) return resolve(undefined);
+                if (!window.activeTextEditor) return resolve(undefined);
 
                 try {
-                    const v = await workspace.fs.stat(this.editor.document.uri);
+                    const v = await workspace.fs.stat(window.activeTextEditor.document.uri);
                     this.debug(`fileSize(): ${v.size}`);
                     return resolve(v.size);
                 } catch (ignored) {
@@ -86,14 +77,14 @@ export class Data implements Disposable {
     }
 
     public get dirName(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = window.activeTextEditor ? parse(window.activeTextEditor.document.uri.fsPath) : undefined;
         const v = basename(_file?.dir ?? "");
         this.debug(`dirName(): ${v}`);
         return v;
     }
 
     public get folderAndFile(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = window.activeTextEditor ? parse(window.activeTextEditor.document.uri.fsPath) : undefined;
         const directory = basename(_file?.dir ?? "");
         const file = _file ? _file.base : undefined;
 
@@ -105,7 +96,7 @@ export class Data implements Disposable {
     }
 
     public get fullDirName(): string | undefined {
-        const _file = this.editor ? parse(this.editor.document.uri.fsPath) : undefined;
+        const _file = window.activeTextEditor ? parse(window.activeTextEditor.document.uri.fsPath) : undefined;
         const v = _file?.dir;
         this.debug(`fullDirName(): ${v ?? ""}`);
         return v;
@@ -115,14 +106,14 @@ export class Data implements Disposable {
         let v = workspace.name;
 
         // TODO: Find a better way to handle this
-        if (this.editor?.document.uri.scheme === "vscode-remote") v = v?.replaceAll(/\[(SSH|WSL):.*\]$/gm, "");
+        if (window.activeTextEditor?.document.uri.scheme === "vscode-remote") v = v?.replaceAll(/\[(SSH|WSL):.*\]$/gm, "");
 
         this.debug(`workspaceName(): ${v ?? ""}`);
         return v;
     }
 
     public get workspaceFolder(): WorkspaceFolder | undefined {
-        const uri = this.editor?.document.uri;
+        const uri = window.activeTextEditor?.document.uri;
         let v: WorkspaceFolder | undefined;
         if (uri) v = workspace.getWorkspaceFolder(uri);
 
@@ -223,14 +214,9 @@ export class Data implements Disposable {
     private repo(api: GitApi): Repository | undefined {
         const repos = api.repositories;
 
-        if (this.editor) {
-            const _file = parse(this.editor.document.uri.fsPath);
-            const testString = _file.dir;
-            return repos
-                .filter((v) => v.rootUri.fsPath.length <= testString.length)
-                .filter((v) => v.rootUri.fsPath === testString.substring(0, v.rootUri.fsPath.length))
-                .sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
-                .shift();
+        if (window.activeTextEditor) {
+            const _file = parse(window.activeTextEditor.document.uri.fsPath);
+            return extractRepo(repos, _file.dir)
         }
 
         this.debug("repo(): no file open");
@@ -241,13 +227,7 @@ export class Data implements Disposable {
             .map((v) => [v])
             .sort((a, b) => a[0].index - b[0].index)
             .shift()
-            ?.map((workspace) =>
-                repos
-                    .filter((v) => v.rootUri.fsPath.length <= workspace.uri.fsPath.length)
-                    .filter((v) => v.rootUri.fsPath === workspace.uri.fsPath.substring(0, v.rootUri.fsPath.length))
-                    .sort((a, b) => a.rootUri.fsPath.length - b.rootUri.fsPath.length)
-                    .shift()
-            )
+            ?.map((workspace) => extractRepo(repos, workspace.uri.fsPath))
             .shift();
     }
 

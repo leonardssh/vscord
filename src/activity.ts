@@ -130,7 +130,7 @@ export const activity = async (
             dataClass.workspaceName !== undefined &&
             isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName);
 
-    const isNotInFile = !isWorkspaceExcluded && !dataClass.editor;
+    const isNotInFile = !isWorkspaceExcluded && !window.activeTextEditor;
 
     const isDebugging = config.get(CONFIG_KEYS.Status.State.Debugging.Enabled) && !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
@@ -146,8 +146,8 @@ export const activity = async (
         ? await replaceFileInfo(
               replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)!), isGitExcluded),
               isWorkspaceExcluded,
-              dataClass.editor?.document,
-              dataClass.editor?.selection
+              window.activeTextEditor?.document,
+              window.activeTextEditor?.selection
           )
         : FAKE_EMPTY;
 
@@ -161,8 +161,8 @@ export const activity = async (
         replaced = await replaceFileInfo(
             replaced,
             isWorkspaceExcluded,
-            dataClass.editor?.document,
-            dataClass.editor?.selection
+            window.activeTextEditor?.document,
+            window.activeTextEditor?.selection
         );
         return replaced.replaceAll("{problems}", PROBLEMS);
     };
@@ -468,14 +468,14 @@ export const replaceFileInfo = async (
             : workspaceAndFolder;
 
     let fullDirectoryName: string = FAKE_EMPTY;
-    const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
+    const fileIcon = window.activeTextEditor ? resolveLangName(window.activeTextEditor.document) : "text";
     const fileSize = await getFileSize(config, dataClass);
     let relativeFilepath: string = FAKE_EMPTY;
 
-    if (dataClass.editor && dataClass.workspaceName && !excluded) {
+    if (window.activeTextEditor && dataClass.workspaceName && !excluded) {
         const name = dataClass.workspaceName;
-        relativeFilepath = workspace.asRelativePath(dataClass.editor.document.fileName);
-        const relativePath = workspace.asRelativePath(dataClass.editor.document.fileName).split(sep);
+        relativeFilepath = workspace.asRelativePath(window.activeTextEditor.document.fileName);
+        const relativePath = workspace.asRelativePath(window.activeTextEditor.document.fileName).split(sep);
 
         relativePath.splice(-1, 1);
         fullDirectoryName = `${name}${sep}${relativePath.join(sep)}`;
