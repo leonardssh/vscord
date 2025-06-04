@@ -40,13 +40,7 @@ export class RPCController {
 
             logError("Encountered following error while trying to login:", error);
             editor.setStatusBarItem(StatusBarMode.Disconnected);
-            if (
-                !config.get(CONFIG_KEYS.Behaviour.SuppressNotifications) &&
-                (error.name !== "RPC_COULD_NOT_CONNECT" ||
-                    !config.get(CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect))
-            ) {
-                window.showErrorMessage("Failed to connect to Discord Gateway");
-            }
+            editor.errorMessageFailedToConnect(config, error);
             await this.client?.destroy();
             logInfo("[002] Destroyed Discord RPC client");
         });
@@ -83,18 +77,19 @@ export class RPCController {
 
         const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
         const fileEdit = workspace.onDidChangeTextDocument((e) => {
-            if (e.document !== dataClass.editor?.document) return;
+            if (e.document !== window.activeTextEditor?.document) return;
+            dataClass.updateGitInfo();
             void this.activityThrottle.callable();
         });
         const fileSelectionChanged = window.onDidChangeTextEditorSelection((e) => {
-            if (e.textEditor !== dataClass.editor) return;
+            if (e.textEditor !== window.activeTextEditor) return;
+            dataClass.updateGitInfo();
             void this.activityThrottle.callable();
         });
         const debugStart = debug.onDidStartDebugSession(() => sendActivity());
         const debugEnd = debug.onDidTerminateDebugSession(() => sendActivity());
         const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
         const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
-        const gitListener = dataClass.onUpdate(() => this.activityThrottle.callable());
 
         // fire checkIdle at least once after loading
         this.checkIdle(window.state);
@@ -102,7 +97,7 @@ export class RPCController {
         if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
 
-        this.listeners.push(fileSwitch, fileEdit, fileSelectionChanged, debugStart, debugEnd, gitListener);
+        this.listeners.push(fileSwitch, fileEdit, fileSelectionChanged, debugStart, debugEnd);
     }
 
     private checkCanSend(isIdling: boolean): boolean {
