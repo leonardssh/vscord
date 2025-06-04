@@ -34,16 +34,15 @@ function extractRepo(repos: Repository[], comparePath: string): Repository | und
 }
 
 export class Data implements Disposable {
+    protected _gitApi: GitApi | undefined;
     protected _repo: Repository | undefined;
     protected _remote: Remote | undefined;
-
-    private eventEmitter = new EventEmitter<void>();
 
     private rootListeners: (Disposable)[] = [];
     private gitApiListeners: (Disposable)[] = [];
 
     public constructor() {
-        this.requireGitApi().then(api => this.updateGitInfo(api))
+        this.requireGitApi().then(api => {this._gitApi = api; this.updateGitInfo()})
     }
 
     public get fileName(): string | undefined {
@@ -140,6 +139,7 @@ export class Data implements Disposable {
     }
 
     public get gitRemoteUrl(): gitUrlParse.GitUrl | undefined {
+        this.debug(`gitRemoteUrl(): Remote: ${this._remote}`);
         const v = stripCredential(this._remote?.fetchUrl ?? this._remote?.pushUrl ?? "");
         this.debug(`gitRemoteUrl(): Url: ${v ?? ""}`);
         if (!v) return;
@@ -153,11 +153,6 @@ export class Data implements Disposable {
         const v = this._repo?.state.HEAD?.name;
         this.debug(`gitBranchName(): ${v ?? ""}`);
         return v;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public onUpdate(listener: () => any): Disposable {
-        return this.eventEmitter.event(listener);
     }
 
     private async requireGit(): Promise<Extension<GitExtension> | undefined> {
@@ -183,32 +178,30 @@ export class Data implements Disposable {
         this.gitApiListeners.push(
             api.onDidOpenRepository((e) => {
                 this.debug(`listeners(): Open Repo ${e.rootUri.fsPath.split(sep).pop() ?? ""}`);
-                this.updateGitInfo(api);
+                this.updateGitInfo();
             }),
             api.onDidCloseRepository((e) => {
                 this.debug(`listeners(): Open Close ${e.rootUri.fsPath.split(sep).pop() ?? ""}`);
-                this.updateGitInfo(api);
+                this.updateGitInfo();
             }),
             api.onDidChangeState((e) => {
                 this.debug("listeners(): Change State", e);
-                this.updateGitInfo(api);
+                this.updateGitInfo();
             })
         );
         return api
     }
 
-    private updateGitInfo(api?: GitApi) {
-        this.debug("updateGit()");
-        if (!api) {
+    public updateGitInfo() {
+        if (!this._gitApi) {
             this._repo = undefined;
             this._remote = undefined;
-            this.eventEmitter.fire();
+            this.debug(`updateGitInfo(): repo undefined, no api`);
             return;
         }
-        this._repo = this.repo(api);
+        this._repo = this.repo(this._gitApi);
         this._remote = this.remote(this._repo);
-        this.debug(`updateGit(): repo ${this.gitRepoPath ?? ""}`);
-        this.eventEmitter.fire();
+        this.debug(`updateGitInfo(): repo ${this.gitRepoPath ?? ""}`);
     }
 
     private repo(api: GitApi): Repository | undefined {
