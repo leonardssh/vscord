@@ -349,6 +349,10 @@
             "image": "text"
         },
         {
+            "language": "slint",
+            "image": "slint"
+        },
+        {
             "language": "solidity",
             "image": "solidity"
         },
@@ -1472,6 +1476,9 @@
         },
         ".sk": {
             "image": "skript"
+        },
+        ".slint": {
+            "image": "slint"
         },
         ".sqf": {
             "image": "sqf"
