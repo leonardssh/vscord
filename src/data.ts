@@ -7,10 +7,8 @@ import { getConfig } from "./config";
 import { logInfo } from "./logger";
 import {
     type WorkspaceFolder,
-    type TextEditor,
     type Disposable,
     type Extension,
-    EventEmitter,
     extensions,
     window,
     workspace
@@ -41,8 +39,25 @@ export class Data implements Disposable {
     private rootListeners: (Disposable)[] = [];
     private gitApiListeners: (Disposable)[] = [];
 
+    public activeTextEditor = window.activeTextEditor
+
     public constructor() {
         this.requireGitApi().then(api => {this._gitApi = api; this.updateGitInfo()})
+        this.rootListeners.push(
+            // TODO: there's a small delay when switching file, it will fire a event where e will be null, then after a few ms, it will fire again with non-null e, figure out how to work around that
+            window.onDidChangeActiveTextEditor((e) => {
+                this.debug("root(): window.onDidChangeActiveTextEditor");
+
+                if (e && !ALLOWED_SCHEME.includes(e.document.uri.scheme))
+                    return this.debug(
+                        `root(): window.onDidChangeActiveTextEditor: got unallowed scheme, got '${e.document.uri.scheme}'`
+                    );
+
+                if (e) this.debug(`root(): window.onDidChangeActiveTextEditor: got URI '${e.document.uri.scheme}'`);
+
+                this.activeTextEditor = e;
+            }),
+        );
     }
 
     public get fileName(): string | undefined {

@@ -1,4 +1,11 @@
-import { type Disposable, type WindowState, debug, languages, window, workspace, commands } from "vscode";
+import {
+    type Disposable,
+    type WindowState,
+    debug,
+    languages,
+    window,
+    workspace,
+} from "vscode";
 import { type SetActivity, type SetActivityResponse, Client } from "@xhayper/discord-rpc";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
@@ -75,21 +82,29 @@ export class RPCController {
             void this.sendActivity(isViewing, isIdling);
         };
 
-        const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
+        const fileSwitch = window.onDidChangeActiveTextEditor(() => {
+            logInfo("onDidChangeActiveTextEditor()");
+            sendActivity(true)
+        });
         const fileEdit = workspace.onDidChangeTextDocument((e) => {
-            if (e.document !== window.activeTextEditor?.document) return;
+            if (e.document !== dataClass.activeTextEditor?.document) return;
+            logInfo("onDidChangeTextDocument()");
             dataClass.updateGitInfo();
             void this.activityThrottle.callable();
         });
         const fileSelectionChanged = window.onDidChangeTextEditorSelection((e) => {
-            if (e.textEditor !== window.activeTextEditor) return;
+            if (e.textEditor !== dataClass.activeTextEditor) return;
+            logInfo("onDidChangeTextEditorSelection()");
             dataClass.updateGitInfo();
             void this.activityThrottle.callable();
         });
         const debugStart = debug.onDidStartDebugSession(() => sendActivity());
         const debugEnd = debug.onDidTerminateDebugSession(() => sendActivity());
         const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
-        const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
+        const changeWindowState = window.onDidChangeWindowState((e: WindowState) => {
+            logInfo("onDidChangeWindowState()");
+            this.checkIdle(e)
+        });
 
         // fire checkIdle at least once after loading
         this.checkIdle(window.state);
