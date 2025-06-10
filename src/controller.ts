@@ -1,4 +1,11 @@
-import { type Disposable, type WindowState, debug, languages, window, workspace, commands } from "vscode";
+import {
+    type Disposable,
+    type WindowState,
+    debug,
+    languages,
+    window,
+    workspace,
+} from "vscode";
 import { type SetActivity, type SetActivityResponse, Client } from "@xhayper/discord-rpc";
 import type { GatewayActivityButton } from "discord-api-types/v10";
 import { getApplicationId } from "./helpers/getApplicationId";
@@ -42,13 +49,7 @@ export class RPCController {
 
             logError("Encountered following error while trying to login:", error);
             editor.setStatusBarItem(StatusBarMode.Disconnected);
-            if (
-                !config.get(CONFIG_KEYS.Behaviour.SuppressNotifications) &&
-                (error.name !== "RPC_COULD_NOT_CONNECT" ||
-                    !config.get(CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect))
-            ) {
-                window.showErrorMessage("Failed to connect to Discord Gateway");
-            }
+            editor.errorMessageFailedToConnect(config, error);
             await this.client?.destroy();
             logInfo("[002] Destroyed Discord RPC client");
         });
@@ -83,20 +84,29 @@ export class RPCController {
             void this.sendActivity(isViewing, isIdling);
         };
 
-        const fileSwitch = window.onDidChangeActiveTextEditor(() => sendActivity(true));
+        const fileSwitch = window.onDidChangeActiveTextEditor(() => {
+            logInfo("onDidChangeActiveTextEditor()");
+            sendActivity(true)
+        });
         const fileEdit = workspace.onDidChangeTextDocument((e) => {
-            if (e.document !== dataClass.editor?.document) return;
+            if (e.document !== dataClass.activeTextEditor?.document) return;
+            logInfo("onDidChangeTextDocument()");
+            dataClass.updateGitInfo();
             void this.activityThrottle.callable();
         });
         const fileSelectionChanged = window.onDidChangeTextEditorSelection((e) => {
-            if (e.textEditor !== dataClass.editor) return;
+            if (e.textEditor !== dataClass.activeTextEditor) return;
+            logInfo("onDidChangeTextEditorSelection()");
+            dataClass.updateGitInfo();
             void this.activityThrottle.callable();
         });
         const debugStart = debug.onDidStartDebugSession(() => sendActivity());
         const debugEnd = debug.onDidTerminateDebugSession(() => sendActivity());
         const diagnosticsChange = languages.onDidChangeDiagnostics(() => onDiagnosticsChange());
-        const changeWindowState = window.onDidChangeWindowState((e: WindowState) => this.checkIdle(e));
-        const gitListener = dataClass.onUpdate(() => this.activityThrottle.callable());
+        const changeWindowState = window.onDidChangeWindowState((e: WindowState) => {
+            logInfo("onDidChangeWindowState()");
+            this.checkIdle(e)
+        });
 
         // fire checkIdle at least once after loading
         this.checkIdle(window.state);
@@ -104,7 +114,7 @@ export class RPCController {
         if (config.get(CONFIG_KEYS.Status.Problems.Enabled)) this.listeners.push(diagnosticsChange);
         if (config.get(CONFIG_KEYS.Status.Idle.Check)) this.listeners.push(changeWindowState);
 
-        this.listeners.push(fileSwitch, fileEdit, fileSelectionChanged, debugStart, debugEnd, gitListener);
+        this.listeners.push(fileSwitch, fileEdit, fileSelectionChanged, debugStart, debugEnd);
     }
 
     private checkCanSend(isIdling: boolean): boolean {
