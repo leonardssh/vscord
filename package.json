@@ -53,6 +53,7 @@
         "discord-api-types": "^0.38.8",
         "filesize": "^10.1.6",
         "git-url-parse": "^16.1.0",
+        "prettier": "^3.5.3",
         "source-map-support": "^0.5.21",
         "tsup": "^8.5.0",
         "typescript": "^5.8.3"
@@ -701,7 +702,7 @@
                         "default": false,
                         "description": "Suppresses all notifications from the extension."
                     },
-                    "vscord.behaviour.supressRpcCouldNotConnect": {
+                    "vscord.behaviour.suppressRpcCouldNotConnect": {
                         "type": "boolean",
                         "default": false,
                         "description": "Suppresses \"RPC_COULD_NOT_CONNECT\" notification."

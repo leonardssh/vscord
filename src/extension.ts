@@ -64,7 +64,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
             await config.update(CONFIG_KEYS.App.PrivacyMode, activate);
         } catch {}
 
-        await controller.sendActivity(dataClass.editor != null);
+        await controller.sendActivity(Boolean(window.activeTextEditor));
     };
 
     const enableCommand = commands.registerCommand("vscord.enable", async () => {
@@ -113,10 +113,10 @@ export const registerCommands = (ctx: ExtensionContext) => {
         await controller
             .login()
             .then(async () => await controller.enable())
-            .catch(() => {
-                if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
-                    window.showErrorMessage("Failed to reconnect to Discord Gateway");
+            .catch((error) => {
+                const config = getConfig()
                 editor.setStatusBarItem(StatusBarMode.Disconnected);
+                editor.errorMessageFailedToConnect(config, error);
             });
     });
 
@@ -192,6 +192,8 @@ export async function activate(ctx: ExtensionContext) {
 
 export async function deactivate() {
     logInfo("Discord Rich Presence for VS Code deactivated.");
+    editor.dispose();
+    dataClass.dispose();
     await controller.destroy();
     logInfo("[004] Destroyed Discord RPC client");
 }
