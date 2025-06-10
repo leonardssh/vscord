@@ -440,7 +440,8 @@ export const replaceGitInfo = (text: string, excluded = false): string => {
         // github.com, gitlab.com, bitbucket.org, etc. (include port)
         ["{git_host}", (!excluded ? dataClass.gitRemoteUrl?.source : undefined) ?? FAKE_EMPTY],
         ["{git_port}", (!excluded ? dataClass.gitRemoteUrl?.port?.toString() : undefined) ?? FAKE_EMPTY],
-        ["{git_href}", (!excluded ? dataClass.gitRemoteUrl?.href : undefined) ?? FAKE_EMPTY]
+        ["{git_href}", (!excluded ? dataClass.gitRemoteUrl?.href : undefined) ?? FAKE_EMPTY],
+        ["{git_url}", (!excluded ? dataClass.gitRemoteUrl?.toString("https") : undefined) ?? FAKE_EMPTY]
     ]);
 
     for (const [key, value] of replaceMap) text = text.replaceAll(key, value);

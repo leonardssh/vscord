@@ -102,7 +102,8 @@ The following variables will be replaced with the respective value in custom str
 | `{git_resource}`                      | git resource link (etc: github.com) (exclude port) |
 | `{git_host}`                          | git host link (etc: github.com) (include port)     |
 | `{git_port}`                          | pot for the git link                               |
-| `{git_href}`                          | full link to the git repository                    |
+| `{git_href}`                          | href to the git repository                         |
+| `{git_url}`                           | url link to the git repository                     |
 | `{empty}`                             | an empty space                                     |
 
 ## 👨‍💻 Contributing
