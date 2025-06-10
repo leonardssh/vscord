@@ -22,14 +22,16 @@ const API_VERSION: Parameters<GitExtension["getAPI"]>["0"] = 1;
 
 function extractRepo(repos: Repository[], comparePath: string): Repository | undefined {
     const filterBySub = repos.filter((v) => {
-        const subCompare = comparePath.substring(0, v.rootUri.fsPath.length)
-        logInfo(`[data.ts] extractRepo(): "${v.rootUri.fsPath}" less than "${comparePath}" and equal to "${subCompare}"`)
-        const byLen = v.rootUri.fsPath.length <= comparePath.length
-        const byEq = v.rootUri.fsPath === subCompare
-        return byLen && byEq
-    })
-    const sortedByLen = filterBySub.sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length)
-    const repo = sortedByLen.shift()
+        const subCompare = comparePath.substring(0, v.rootUri.fsPath.length);
+        logInfo(
+            `[data.ts] extractRepo(): "${v.rootUri.fsPath}" less than "${comparePath}" and equal to "${subCompare}"`
+        );
+        const byLen = v.rootUri.fsPath.length <= comparePath.length;
+        const byEq = v.rootUri.fsPath === subCompare;
+        return byLen && byEq;
+    });
+    const sortedByLen = filterBySub.sort((a, b) => b.rootUri.fsPath.length - a.rootUri.fsPath.length);
+    const repo = sortedByLen.shift();
     return repo;
 }
 
@@ -38,11 +40,14 @@ export class Data implements Disposable {
     protected _repo: Repository | undefined;
     protected _remote: Remote | undefined;
 
-    private rootListeners: (Disposable)[] = [];
-    private gitApiListeners: (Disposable)[] = [];
+    private rootListeners: Disposable[] = [];
+    private gitApiListeners: Disposable[] = [];
 
     public constructor() {
-        this.requireGitApi().then(api => {this._gitApi = api; this.updateGitInfo()})
+        this.requireGitApi().then((api) => {
+            this._gitApi = api;
+            this.updateGitInfo();
+        });
     }
 
     public get fileName(): string | undefined {
@@ -105,7 +110,8 @@ export class Data implements Disposable {
         let v = workspace.name;
 
         // TODO: Find a better way to handle this
-        if (window.activeTextEditor?.document.uri.scheme === "vscode-remote") v = v?.replaceAll(/\[(SSH|WSL):.*\]$/gm, "");
+        if (window.activeTextEditor?.document.uri.scheme === "vscode-remote")
+            v = v?.replaceAll(/\[(SSH|WSL):.*\]$/gm, "");
 
         this.debug(`workspaceName(): ${v ?? ""}`);
         return v;
@@ -166,7 +172,7 @@ export class Data implements Disposable {
     }
 
     private async requireGitApi(): Promise<GitApi | undefined> {
-        const ext = await this.requireGit()
+        const ext = await this.requireGit();
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         this.debug(`requireGitApi(): ${ext}`);
 
@@ -189,7 +195,7 @@ export class Data implements Disposable {
                 this.updateGitInfo();
             })
         );
-        return api
+        return api;
     }
 
     public updateGitInfo() {
@@ -209,7 +215,7 @@ export class Data implements Disposable {
 
         if (window.activeTextEditor) {
             const _file = parse(window.activeTextEditor.document.uri.fsPath);
-            return extractRepo(repos, _file.dir)
+            return extractRepo(repos, _file.dir);
         }
 
         this.debug("repo(): no file open");
@@ -233,10 +239,10 @@ export class Data implements Disposable {
     }
 
     public dispose(): void {
-        for (const listener of this.gitApiListeners) listener.dispose()
-        this.gitApiListeners = []
-        for (const listener of this.rootListeners) listener.dispose()
-        this.rootListeners = []
+        for (const listener of this.gitApiListeners) listener.dispose();
+        this.gitApiListeners = [];
+        for (const listener of this.rootListeners) listener.dispose();
+        this.rootListeners = [];
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

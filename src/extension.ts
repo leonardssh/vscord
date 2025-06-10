@@ -1,13 +1,13 @@
 import "source-map-support/register";
 
-import { commands, window, workspace, type ExtensionContext } from "vscode";
+import { type ExtensionContext, commands, window, workspace } from "vscode";
 import { getApplicationId } from "./helpers/getApplicationId";
+import { StatusBarMode, editor } from "./editor";
 import { RPCController } from "./controller";
 import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { logInfo } from "./logger";
 import { dataClass } from "./data";
-import { StatusBarMode, editor } from "./editor";
 
 const controller = new RPCController(
     getApplicationId(getConfig()).clientId,
@@ -114,7 +114,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
             .login()
             .then(async () => await controller.enable())
             .catch((error) => {
-                const config = getConfig()
+                const config = getConfig();
                 editor.setStatusBarItem(StatusBarMode.Disconnected);
                 editor.errorMessageFailedToConnect(config, error);
             });

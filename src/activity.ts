@@ -5,7 +5,6 @@ import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
 import { isObject } from "./helpers/isObject";
-import gitUrlParse from "git-url-parse";
 import { getConfig } from "./config";
 import { dataClass } from "./data";
 import { sep } from "node:path";
@@ -303,9 +302,10 @@ async function createButton(
 ): Promise<GatewayActivityButton | undefined> {
     const config = getConfig();
     const currentState = CONFIG_KEYS.Status.Buttons[currentButton];
-    const configKeyEnabled = isGit && state != "Inactive" ? currentState.Git[state].Enabled : currentState[state].Enabled
-    const enabled = config.get(configKeyEnabled)
-    logInfo("[activity.ts] createButton(): enabled", enabled)
+    const configKeyEnabled =
+        isGit && state != "Inactive" ? currentState.Git[state].Enabled : currentState[state].Enabled;
+    const enabled = config.get(configKeyEnabled);
+    logInfo("[activity.ts] createButton(): enabled", enabled);
     if (!enabled) {
         return undefined;
     }
@@ -364,11 +364,11 @@ export const getPresenceButtons = async (
             : "Inactive";
     if ((!button1Enabled && !button2Enabled) || !state) return [];
     let isGit = !isGitExcluded && Boolean(dataClass.gitRemoteUrl);
-    logInfo("[activity.ts] repo button1#gitRemoteUrl:", dataClass.gitRemoteUrl, "isGit", isGit)
+    logInfo("[activity.ts] repo button1#gitRemoteUrl:", dataClass.gitRemoteUrl, "isGit", isGit);
     let button1 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button1"), "Button1");
     let button2 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button2"), "Button2");
-    logInfo("[activity.ts] getPresenceButtons button1:", state, button1)
-    logInfo("[activity.ts] getPresenceButtons button2:", state, button2)
+    logInfo("[activity.ts] getPresenceButtons button1:", state, button1);
+    logInfo("[activity.ts] getPresenceButtons button2:", state, button2);
     if (
         (button1.validationError || button2.validationError) &&
         !config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)

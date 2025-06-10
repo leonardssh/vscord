@@ -1,4 +1,4 @@
-import { type Disposable, type WindowState, debug, languages, window, workspace, commands } from "vscode";
+import { type Disposable, type WindowState, debug, languages, window, workspace } from "vscode";
 import { type SetActivity, type SetActivityResponse, Client } from "@xhayper/discord-rpc";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
