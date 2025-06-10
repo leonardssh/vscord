@@ -1,8 +1,10 @@
 import { type Disposable, type WindowState, debug, languages, window, workspace, commands } from "vscode";
 import { type SetActivity, type SetActivityResponse, Client } from "@xhayper/discord-rpc";
+import type { GatewayActivityButton } from "discord-api-types/v10";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { activity, onDiagnosticsChange } from "./activity";
 import { StatusBarMode, editor } from "./editor";
+import { validURL } from "./helpers/validURL";
 import { throttle } from "./helpers/throttle";
 import { logError, logInfo } from "./logger";
 import { CONFIG_KEYS } from "./constants";
@@ -175,6 +177,20 @@ export class RPCController {
         this.state.instance = true;
         if (!this.state || Object.keys(this.state).length === 0 || !this.canSendActivity)
             return void this.client.user?.clearActivity(process.pid);
+        const filteredButton: GatewayActivityButton[] = [];
+        this.state.buttons = (this.state.buttons ?? []).filter((button) => {
+            const isValid = validURL(button.url);
+            if (!isValid) filteredButton.push(button);
+            return isValid;
+        });
+
+        if (filteredButton.length > 0)
+            logInfo(
+                "[005]",
+                "Invalid buttons!\n",
+                filteredButton.map((button) => JSON.stringify(button, null, 2)).join("\n")
+            );
+
         return this.client.user?.setActivity(this.state, process.pid);
     }
 
