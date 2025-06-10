@@ -1,7 +1,7 @@
 {
     "name": "vscord",
     "displayName": "Discord Rich Presence",
-    "version": "5.3.2",
+    "version": "5.3.4",
     "description": "Highly customizable Discord Rich Presence extension for Visual Studio Code",
     "main": "dist/extension.js",
     "repository": "github:LeonardSSH/vscord",
@@ -701,7 +701,7 @@
                         "default": false,
                         "description": "Suppresses all notifications from the extension."
                     },
-                    "vscord.behaviour.supressRpcCouldNotConnect": {
+                    "vscord.behaviour.suppressRpcCouldNotConnect": {
                         "type": "boolean",
                         "default": false,
                         "description": "Suppresses \"RPC_COULD_NOT_CONNECT\" notification."
