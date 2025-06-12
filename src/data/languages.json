@@ -1665,6 +1665,9 @@
         ".yarnrc": {
             "image": "yarn"
         },
+        "/yumma\\.config\\.(cjs|js|mjs|ts)/i": {
+            "image": "yummacss"
+        },
         ".zig": {
             "image": "zig"
         },
