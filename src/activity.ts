@@ -174,6 +174,7 @@ export const activity = async (
         replaced = replaced.replaceAll("{folder_and_file}", "a file in a folder");
         replaced = replaced.replaceAll("{directory_name}", "a folder");
         replaced = replaced.replaceAll("{full_directory_name}", "a folder");
+        replaced = replaced.replaceAll("{parent_directory_name}", "a folder");
         replaced = replaced.replaceAll("{workspace}", "a workspace");
         replaced = replaced.replaceAll("{workspace_folder}", "a workspace");
         replaced = replaced.replaceAll("{workspace_and_folder}", "a workspace");
@@ -498,6 +499,7 @@ export const replaceFileInfo = async (
         ["{relative_file_path}", relativeFilepath],
         ["{directory_name}", dataClass.dirName ?? FAKE_EMPTY],
         ["{full_directory_name}", fullDirectoryName],
+        ["{parent_directory_name}", dataClass.dirName ? dataClass.dirName.split(sep).slice(-2, -1)[0] ?? FAKE_EMPTY : FAKE_EMPTY],
         ["{workspace}", workspaceName],
         ["{workspace_folder}", workspaceFolderName],
         ["{workspace_and_folder}", workspaceAndFolder],
