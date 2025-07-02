@@ -181,6 +181,7 @@ export const CONFIG_KEYS = {
             Timeout: "status.idle.timeout" as const
         } as const,
         ShowElapsedTime: "status.showElapsedTime" as const,
+        RestoreElapsedTime: "status.RestoreElapsedTime" as const,
         ResetElapsedTimePerFile: "status.resetElapsedTimePerFile" as const
     } as const,
     Ignore: {
