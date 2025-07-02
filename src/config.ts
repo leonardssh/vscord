@@ -97,6 +97,7 @@ export interface ExtensionConfigurationType {
     "status.idle.resetElapsedTime": boolean;
     "status.idle.timeout": number;
     "status.showElapsedTime": boolean;
+    "status.RestoreElapsedTime": boolean;
     "status.resetElapsedTimePerFile": boolean;
     "ignore.workspaces": Array<string>;
     "ignore.workspacesText": string | Record<string, string>;
@@ -267,19 +268,19 @@ export type WorkspaceConfigurationWithType<Configuration extends Record<string, 
      * @param section Configuration name, supports _dotted_ names.
      * @param value The new value.
      * @param configurationTarget The {@link ConfigurationTarget configuration target} or a boolean value.
-     *	- If `true` updates {@link ConfigurationTarget.Global Global settings}.
-     *	- If `false` updates {@link ConfigurationTarget.Workspace Workspace settings}.
-     *	- If `undefined` or `null` updates to {@link ConfigurationTarget.WorkspaceFolder Workspace folder settings} if configuration is resource specific,
-     * 	otherwise to {@link ConfigurationTarget.Workspace Workspace settings}.
+     *  - If `true` updates {@link ConfigurationTarget.Global Global settings}.
+     *  - If `false` updates {@link ConfigurationTarget.Workspace Workspace settings}.
+     *  - If `undefined` or `null` updates to {@link ConfigurationTarget.WorkspaceFolder Workspace folder settings} if configuration is resource specific,
+     *  otherwise to {@link ConfigurationTarget.Workspace Workspace settings}.
      * @param overrideInLanguage Whether to update the value in the scope of requested languageId or not.
-     *	- If `true` updates the value under the requested languageId.
-     *	- If `undefined` updates the value under the requested languageId only if the configuration is defined for the language.
+     *  - If `true` updates the value under the requested languageId.
+     *  - If `undefined` updates the value under the requested languageId only if the configuration is defined for the language.
      * @throws error while updating
-     *	- configuration which is not registered.
-     *	- window configuration to workspace folder
-     *	- configuration to workspace or workspace folder when no workspace is opened.
-     *	- configuration to workspace folder when there is no workspace folder settings.
-     *	- configuration to workspace folder when {@link WorkspaceConfiguration} is not scoped to a resource.
+     *  - configuration which is not registered.
+     *  - window configuration to workspace folder
+     *  - configuration to workspace or workspace folder when no workspace is opened.
+     *  - configuration to workspace folder when there is no workspace folder settings.
+     *  - configuration to workspace folder when {@link WorkspaceConfiguration} is not scoped to a resource.
      */
     update<S extends keyof Configuration | (string & Record<never, never>)>(
         section: S,

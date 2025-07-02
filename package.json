@@ -175,6 +175,11 @@
                         "default": true,
                         "description": "Should elapsed time be shown?"
                     },
+                    "vscord.status.RestoreElapsedTime": {
+                        "type": "boolean",
+                        "default": true,
+                        "description": "Should elapsed time be saved and restored on different sessions?"
+                    },
                     "vscord.status.resetElapsedTimePerFile": {
                         "type": "boolean",
                         "default": false,

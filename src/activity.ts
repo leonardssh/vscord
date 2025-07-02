@@ -20,6 +20,8 @@ import {
     type TextDocument
 } from "vscode";
 
+import { sessionStart, previousTotal } from "./extension"
+
 export enum CURRENT_STATUS {
     IDLE = "idle",
     NOT_IN_FILE = "notInFile",
@@ -98,11 +100,23 @@ export const activity = async (
 
     if (isIdling && !config.get(CONFIG_KEYS.Status.Idle.Enabled)) return {};
 
-    if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
-        presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
-            ? Date.now()
-            : (previous.startTimestamp ?? Date.now());
-    } else {
+    if( config.get( CONFIG_KEYS.Status.ShowElapsedTime ) )
+    {
+        if( config.get( CONFIG_KEYS.Status.RestoreElapsedTime ) )
+        {
+            presence.startTimestamp = sessionStart - previousTotal;
+        }
+        else if( config.get( CONFIG_KEYS.Status.ResetElapsedTimePerFile ) || !previous.startTimestamp )
+        {
+            presence.startTimestamp = Date.now();
+        }
+        else
+        {
+            presence.startTimestamp = previous.startTimestamp;
+        }
+    }
+    else
+    {
         delete presence.startTimestamp;
     }
 
