@@ -102,20 +102,17 @@ export const activity = async (
 
     if( config.get( CONFIG_KEYS.Status.ShowElapsedTime ) )
     {
-        if( config.get( CONFIG_KEYS.Status.ResetElapsedTimePerFile ) )
+        if( config.get( CONFIG_KEYS.Status.RestoreElapsedTime ) )
+        {
+            presence.startTimestamp = sessionStart - previousTotal;
+        }
+        else if( config.get( CONFIG_KEYS.Status.ResetElapsedTimePerFile ) || !previous.startTimestamp )
         {
             presence.startTimestamp = Date.now();
         }
         else
         {
-            if( config.get( CONFIG_KEYS.Status.RestoreElapsedTime ) )
-            {
-                presence.startTimestamp = sessionStart - previousTotal;
-            }
-            else if( previous.startTimestamp )
-            {
-                presence.startTimestamp = previous.startTimestamp;
-            }
+            presence.startTimestamp = previous.startTimestamp;
         }
     }
     else
