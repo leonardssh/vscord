@@ -187,7 +187,7 @@
                     },
                     "vscord.status.problems.text": {
                         "type": "string",
-                        "default": "- {problems_count} problems found",
+                        "default": "- {problems_count} {problems_pluralize} found",
                         "description": "This text will be shown when there is a problem."
                     },
                     "vscord.status.problems.countedSeverities": {
