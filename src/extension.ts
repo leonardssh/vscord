@@ -9,6 +9,11 @@ import { logInfo } from "./logger";
 import { dataClass } from "./data";
 import { StatusBarMode, editor } from "./editor";
 
+import { loadTotalTime, saveTotalTime } from './session';
+
+export let sessionStart = Math.floor( Date.now() / 1000 );
+export let previousTotal = loadTotalTime();
+
 const controller = new RPCController(
     getApplicationId(getConfig()).clientId,
     getConfig().get(CONFIG_KEYS.Behaviour.Debug)
@@ -192,6 +197,9 @@ export async function activate(ctx: ExtensionContext) {
 
 export async function deactivate() {
     logInfo("Discord Rich Presence for VS Code deactivated.");
+    const now = Math.floor( Date.now() / 1000 );
+    const elapsed = now - sessionStart;
+    saveTotalTime( previousTotal + elapsed );
     await controller.destroy();
     logInfo("[004] Destroyed Discord RPC client");
 }
