@@ -19,6 +19,7 @@ import {
     type Selection,
     type TextDocument
 } from "vscode";
+import { logInfo } from "./logger";
 
 export enum CURRENT_STATUS {
     IDLE = "idle",
@@ -130,7 +131,7 @@ export const activity = async (
             dataClass.workspaceName !== undefined &&
             isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName);
 
-    const isNotInFile = !isWorkspaceExcluded && !dataClass.editor;
+    const isNotInFile = !isWorkspaceExcluded && !dataClass.activeTextEditor;
 
     const isDebugging = config.get(CONFIG_KEYS.Status.State.Debugging.Enabled) && !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
@@ -146,8 +147,8 @@ export const activity = async (
         ? await replaceFileInfo(
               replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)!), isGitExcluded),
               isWorkspaceExcluded,
-              dataClass.editor?.document,
-              dataClass.editor?.selection
+              dataClass.activeTextEditor?.document,
+              dataClass.activeTextEditor?.selection
           )
         : FAKE_EMPTY;
 
@@ -161,8 +162,8 @@ export const activity = async (
         replaced = await replaceFileInfo(
             replaced,
             isWorkspaceExcluded,
-            dataClass.editor?.document,
-            dataClass.editor?.selection
+            dataClass.activeTextEditor?.document,
+            dataClass.activeTextEditor?.selection
         );
         return replaced.replaceAll("{problems}", PROBLEMS);
     };
@@ -297,13 +298,17 @@ export const activity = async (
 async function createButton(
     replaceAllText: (text: string) => Promise<string>,
     state: "Idle" | "Active" | "Inactive",
-    isGit: false | gitUrlParse.GitUrl | undefined,
+    isGit: boolean,
     currentButton: "Button1" | "Button2"
 ): Promise<GatewayActivityButton | undefined> {
     const config = getConfig();
-    let currentState = CONFIG_KEYS.Status.Buttons[currentButton];
-    if (!config.get(isGit && state != "Inactive" ? currentState.Git[state].Enabled : currentState[state].Enabled))
+    const currentState = CONFIG_KEYS.Status.Buttons[currentButton];
+    const configKeyEnabled = isGit && state != "Inactive" ? currentState.Git[state].Enabled : currentState[state].Enabled
+    const enabled = config.get(configKeyEnabled)
+    logInfo("[activity.ts] createButton(): enabled", enabled)
+    if (!enabled) {
         return undefined;
+    }
 
     return {
         label: await replaceAllText(
@@ -358,9 +363,12 @@ export const getPresenceButtons = async (
             ? "Active"
             : "Inactive";
     if ((!button1Enabled && !button2Enabled) || !state) return [];
-    let isGit = !isGitExcluded && dataClass.gitRemoteUrl;
+    let isGit = !isGitExcluded && Boolean(dataClass.gitRemoteUrl);
+    logInfo("[activity.ts] repo button1#gitRemoteUrl:", dataClass.gitRemoteUrl, "isGit", isGit)
     let button1 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button1"), "Button1");
     let button2 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button2"), "Button2");
+    logInfo("[activity.ts] getPresenceButtons button1:", state, button1)
+    logInfo("[activity.ts] getPresenceButtons button2:", state, button2)
     if (
         (button1.validationError || button2.validationError) &&
         !config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)
@@ -469,14 +477,14 @@ export const replaceFileInfo = async (
             : workspaceAndFolder;
 
     let fullDirectoryName: string = FAKE_EMPTY;
-    const fileIcon = dataClass.editor ? resolveLangName(dataClass.editor.document) : "text";
+    const fileIcon = dataClass.activeTextEditor ? resolveLangName(dataClass.activeTextEditor.document) : "text";
     const fileSize = await getFileSize(config, dataClass);
     let relativeFilepath: string = FAKE_EMPTY;
 
-    if (dataClass.editor && dataClass.workspaceName && !excluded) {
+    if (dataClass.activeTextEditor && dataClass.workspaceName && !excluded) {
         const name = dataClass.workspaceName;
-        relativeFilepath = workspace.asRelativePath(dataClass.editor.document.fileName);
-        const relativePath = workspace.asRelativePath(dataClass.editor.document.fileName).split(sep);
+        relativeFilepath = workspace.asRelativePath(dataClass.activeTextEditor.document.fileName);
+        const relativePath = workspace.asRelativePath(dataClass.activeTextEditor.document.fileName).split(sep);
 
         relativePath.splice(-1, 1);
         fullDirectoryName = `${name}${sep}${relativePath.join(sep)}`;
