@@ -490,6 +490,10 @@ export const replaceFileInfo = async (
         relativeFilepath = FAKE_EMPTY;
     }
 
+    const totalProblems = config.get(CONFIG_KEYS.Status.Problems.Enabled)
+        ? getTotalProblems(config.get(CONFIG_KEYS.Status.Problems.countedSeverities)!)
+        : 0;
+
     const replaceMap = new Map([
         ["{file_name}", dataClass.fileName ?? FAKE_EMPTY],
         ["{file_extension}", dataClass.fileExtension ?? FAKE_EMPTY],
@@ -509,10 +513,9 @@ export const replaceFileInfo = async (
         ["{a_LANG}", `${getArticle(toUpper(fileIcon))} ${toUpper(fileIcon)}`],
         [
             "{problems_count}",
-            config.get(CONFIG_KEYS.Status.Problems.Enabled)
-                ? getTotalProblems(config.get(CONFIG_KEYS.Status.Problems.countedSeverities)!).toLocaleString()
-                : FAKE_EMPTY
+            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? totalProblems.toLocaleString() : FAKE_EMPTY
         ],
+        ["{problems_pluralize}", totalProblems === 1 ? "problem" : "problems"],
         ["{problems_count_errors}", COUNTED_SEVERITIES.error.toLocaleString()],
         ["{problems_count_warnings}", COUNTED_SEVERITIES.warning.toLocaleString()],
         ["{problems_count_infos}", COUNTED_SEVERITIES.info.toLocaleString()],
