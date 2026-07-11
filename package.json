@@ -182,7 +182,33 @@
                     "vscord.status.showElapsedTime": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Should elapsed time be shown?"
+                        "description": "Should elapsed time be shown?",
+                        "deprecationMessage": "Deprecated: Please use vscord.status.time.mode instead.",
+                        "markdownDeprecationMessage": "**Deprecated**: Please use `#vscord.status.time.mode#` instead."
+                    },
+                    "vscord.status.time.mode": {
+                        "type": "string",
+                        "enum": [
+                            "Hidden",
+                            "Elapsed",
+                            "Current Interface",
+                            "Custom",
+                            "Fixed"
+                        ],
+                        "default": "Elapsed",
+                        "description": "Choose the time mode.",
+                        "enumDescriptions": [
+                            "Hide the timestamp.",
+                            "Show the elapsed time.",
+                            "Show the elapsed time since the start of the day (Local Time).",
+                            "Show the elapsed time since the custom timestamp.",
+                            "Show a fixed timestamp (00:00)."
+                        ]
+                    },
+                    "vscord.status.time.customTimestamp": {
+                        "type": "number",
+                        "default": 0,
+                        "description": "The custom timestamp to use when `mode` is set to `Custom`."
                     },
                     "vscord.status.resetElapsedTimePerFile": {
                         "type": "boolean",
