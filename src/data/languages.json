@@ -1,6 +1,10 @@
 {
     "KNOWN_LANGUAGES": [
         {
+            "language": "algo",
+            "image": "algo"
+        },
+        {
             "language": "bat",
             "image": "bat"
         },
@@ -451,6 +455,9 @@
         },
         "/\\.ahkl?$/": {
             "image": "ahk"
+        },
+        "/\\.algo$/": {
+            "image": "algo"
         },
         "/\\.applescript$/": {
             "image": "applescript"
