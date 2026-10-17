@@ -1,7 +1,6 @@
 import type { API as GitApi, GitExtension, Remote, Repository } from "./@types/git";
 import { stripCredential } from "./helpers/stripCredential";
 import { basename, parse, sep } from "node:path";
-import { CONFIG_KEYS } from "./constants";
 import gitUrlParse from "git-url-parse";
 import { getConfig } from "./config";
 import { logInfo } from "./logger";
@@ -268,7 +267,7 @@ export class Data implements Disposable {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private debug(...message: any[]) {
-        if (!getConfig().get(CONFIG_KEYS.Behaviour.Debug)) return;
+        if (!getConfig().get("vscord.behaviour.debug")) return;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         logInfo("[data.ts]", ...message);
     }

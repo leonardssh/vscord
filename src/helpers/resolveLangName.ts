@@ -1,4 +1,4 @@
-import { CONFIG_KEYS, KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from "../constants";
+import { KNOWN_EXTENSIONS, KNOWN_LANGUAGES } from "../constants";
 import { type TextDocument } from "vscode";
 import { getConfig } from "../config";
 import { basename } from "node:path";
@@ -38,7 +38,7 @@ export const resolveLangName = (document: TextDocument): string => {
     const config = getConfig();
 
     const ADDITIONAL_FILE_MAPPING = Object.fromEntries(
-        Object.entries(config.get(CONFIG_KEYS.Behaviour.AdditionalFileMapping)!).map(([key, value]) => [
+        Object.entries(config.get("vscord.behaviour.additionalFileMapping")!).map(([key, value]) => [
             key,
             { image: value }
         ])
