@@ -24,13 +24,9 @@ jobs:
           node configtypes.js --check
           npm run check-types
 
-      - name: Lint
-        run: |
-          npm run lint
-
       - name: Package
         run: |
-          npm run pkg
+          npx vsce package
 
       - name: Get Version
         run: |

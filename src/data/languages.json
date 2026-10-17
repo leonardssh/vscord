@@ -73,6 +73,10 @@
             "image": "manifest"
         },
         {
+            "language": "gitlab-ci",
+            "image": "gitlab"
+        },
+        {
             "language": "go",
             "image": "go"
         },
@@ -179,6 +183,10 @@
         {
             "language": "wat",
             "image": "wasm"
+        },
+        {
+            "language": "wikitext",
+            "image": "wikitext"
         },
         {
             "language": "objective-c",
@@ -330,6 +338,9 @@
         },
         "/\\.flowconfig$/": {
             "image": "flowconfig"
+        },
+        "/(\\.)?gitlab-ci(\\.[\\w-]+)?\\.ya?ml$/i": {
+            "image": "gitlab"
         },
         "/\\.jest\\.config\\.(js|ts)/i": {
             "image": "jest"
@@ -736,6 +747,9 @@
         "/\\.pde$/": {
             "image": "processing"
         },
+        "/\\.puml$|\\.pu$/": {
+            "image": "plantuml"
+        },
         "/\\.p(er)?l$|\\.al$|\\.p([hm]|(lx))$|\\.(psgi|xs)$|\\.pl6$|\\.[tp]6$|\\.6pl$|\\.(pm6|p6m)$|\\.6pm$|\\.nqp$|\\.p6l$|\\.pod6$|^Rexfile$/": {
             "image": "perl"
         },
@@ -880,6 +894,9 @@
         "/\\.wa(sm|t|st)$/": {
             "image": "wasm"
         },
+        "/\\.(wiki(text)?|mediawiki)$/": {
+            "image": "wikitext"
+        },
         "/\\.x(ml|aml)$/": {
             "image": "xml"
         },
@@ -897,6 +914,9 @@
         },
         "/^ipynb$/": {
             "image": "jupyter"
+        },
+        "/\\.kiro$/": {
+            "image": "kiro"
         },
         "/^ks$/": {
             "image": "kag-script"

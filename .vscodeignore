@@ -2,16 +2,17 @@ assets/icons/
 node_modules/
 .github/
 .vscode/
+out/
 src/
 
 ADDING_LANGUAGE.md
 package-lock.json
+rspack.config.js
 .prettierignore
 .gitattributes
 tsconfig.json
 .vscodeignore
 .prettierrc
 .gitignore
-esbuild.js
 configtypes.js
 suckmyass

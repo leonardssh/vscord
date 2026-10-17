@@ -1,6 +1,7 @@
 name: Continuous Delivery
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "*"
@@ -19,7 +20,7 @@ jobs:
 
       - run: npm install
 
-      - run: npm run pkg
+      - run: npx vsce package
 
       - name: Publish to Visual Studio Marketplace
         uses: HaaLeo/publish-vscode-extension@v2

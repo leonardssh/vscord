@@ -45,7 +45,6 @@ export const resolveLangName = (document: TextDocument): string => {
     );
 
     const filename = basename(document.fileName);
-    console.log(filename);
     const findKnownExtension =
         (objectFindEntryOf(ADDITIONAL_FILE_MAPPING, ([extension]) =>
             regexFromStr(extension.toString()).test(filename)

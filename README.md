@@ -4,11 +4,6 @@
 
 <br />
 
-[![Visual Studio Marketplace Version][shield-vsmp-version]][vsmp-link]
-[![Visual Studio Marketplace Downloads][shield-vsmp-downloads]][vsmp-link]
-[![Visual Studio Marketplace Installs][shield-vsmp-installs]][vsmp-link]
-[![Visual Studio Marketplace Rating][shield-vsmp-rating]][vsmp-link]
-
 [![Open VSX Version][shield-ovsx-version]][ovsx-link]
 [![Open VSX Downloads][shield-ovsx-downloads]][ovsx-link]
 [![Open VSX Rating][shield-ovsx-rating]][ovsx-link]
