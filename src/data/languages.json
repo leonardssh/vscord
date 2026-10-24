@@ -37,6 +37,10 @@
             "image": "cuda"
         },
         {
+            "language": "csv"
+            "image": "csv"
+        },
+        {
             "language": "csharp",
             "image": "csharp"
         },
@@ -528,6 +532,9 @@
         },
         "/\\.css$/": {
             "image": "css"
+        },
+        "/\\.csv$/": {
+            "image": "csv"
         },
         "/\\.cu$/": {
             "image": "cuda"
