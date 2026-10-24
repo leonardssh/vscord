@@ -77,6 +77,10 @@
             "image": "manifest"
         },
         {
+            "language": "gitlab-ci",
+            "image": "gitlab"
+        },
+        {
             "language": "go",
             "image": "go"
         },
@@ -338,6 +342,9 @@
         },
         "/\\.flowconfig$/": {
             "image": "flowconfig"
+        },
+        "/(\\.)?gitlab-ci(\\.[\\w-]+)?\\.ya?ml$/i": {
+            "image": "gitlab"
         },
         "/\\.jest\\.config\\.(js|ts)/i": {
             "image": "jest"
