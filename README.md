@@ -1,6 +1,6 @@
 <div align="center">
 
-[<img width="256" alt="VSCord Logo" src="https://i.imgur.com/n7ieZfW.png" />][vsmp-link]
+[<img width="256" alt="VSCord Logo" src="https://raw.githubusercontent.com/leonardssh/vscord/main/assets/icon.png" />][vsmp-link]
 
 <br />
 
