@@ -98,12 +98,44 @@ export const activity = async (
 
     if (isIdling && !config.get(CONFIG_KEYS.Status.Idle.Enabled)) return {};
 
-    if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
-        presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
-            ? Date.now()
-            : (previous.startTimestamp ?? Date.now());
-    } else {
-        delete presence.startTimestamp;
+    const timeMode = config.get(CONFIG_KEYS.Status.Time.Mode);
+
+    switch (timeMode) {
+        case "Hidden":
+            delete presence.startTimestamp;
+            delete presence.endTimestamp;
+            break;
+        case "Elapsed":
+            if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
+                presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
+                    ? Date.now()
+                    : (previous.startTimestamp ?? Date.now());
+            } else {
+                delete presence.startTimestamp;
+            }
+            break;
+        case "Current Interface": {
+            const now = new Date();
+            const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+            presence.startTimestamp = midnight.getTime();
+            break;
+        }
+        case "Custom":
+            presence.startTimestamp = config.get(CONFIG_KEYS.Status.Time.CustomTimestamp);
+            break;
+        case "Fixed":
+            delete presence.startTimestamp;
+            delete presence.endTimestamp;
+            break;
+        default:
+            if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
+                presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
+                    ? Date.now()
+                    : (previous.startTimestamp ?? Date.now());
+            } else {
+                delete presence.startTimestamp;
+            }
+            break;
     }
 
     const detailsEnabled = config.get(CONFIG_KEYS.Status.Details.Enabled);
