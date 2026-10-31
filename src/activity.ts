@@ -1,7 +1,8 @@
+import type { SetActivity } from "@xhayper/discord-rpc";
+import type { ExtensionConfigGenerated } from "./@types/configtypes.d.ts";
+import type { GatewayActivityButton } from "discord-api-types/v10";
 import { resolveLangName, toLower, toTitle, toUpper, getArticle } from "./helpers/resolveLangName";
-import { type GatewayActivityButton } from "discord-api-types/v10";
-import { type SetActivity } from "@xhayper/discord-rpc";
-import { CONFIG_KEYS, FAKE_EMPTY } from "./constants";
+import { FAKE_EMPTY } from "./constants";
 import { getFileSize } from "./helpers/getFileSize";
 import { isExcluded } from "./helpers/isExcluded";
 import { isObject } from "./helpers/isObject";
@@ -28,15 +29,8 @@ export enum CURRENT_STATUS {
     VIEWING = "viewing"
 }
 
-export enum PROBLEM_LEVEL {
-    ERROR = "error",
-    WARNING = "warning",
-    INFO = "info",
-    HINT = "hint"
-}
-
 // TODO: move this to data class
-const COUNTED_SEVERITIES: { [key in PROBLEM_LEVEL]: number } = {
+const COUNTED_SEVERITIES = {
     error: 0,
     warning: 0,
     info: 0,
@@ -89,50 +83,50 @@ export const activity = async (
 
     if (
         isIdling &&
-        config.get(CONFIG_KEYS.Status.Idle.DisconnectOnIdle) &&
-        config.get(CONFIG_KEYS.Status.Idle.ResetElapsedTime)
+        config.get("vscord.status.idle.disconnectOnIdle") &&
+        config.get("vscord.status.idle.resetElapsedTime")
     ) {
         delete presence.startTimestamp;
         return {};
     }
 
-    if (isIdling && !config.get(CONFIG_KEYS.Status.Idle.Enabled)) return {};
+    if (isIdling && !config.get("vscord.status.idle.enabled")) return {};
 
-    if (config.get(CONFIG_KEYS.Status.ShowElapsedTime)) {
-        presence.startTimestamp = config.get(CONFIG_KEYS.Status.ResetElapsedTimePerFile)
+    if (config.get("vscord.status.showElapsedTime")) {
+        presence.startTimestamp = config.get("vscord.status.resetElapsedTimePerFile")
             ? Date.now()
             : (previous.startTimestamp ?? Date.now());
     } else {
         delete presence.startTimestamp;
     }
 
-    const detailsEnabled = config.get(CONFIG_KEYS.Status.Details.Enabled);
-    const detailsIdleEnabled = config.get(CONFIG_KEYS.Status.Details.Idle.Enabled);
-    const stateEnabled = config.get(CONFIG_KEYS.Status.State.Enabled);
-    const stateIdleEnabled = config.get(CONFIG_KEYS.Status.State.Idle.Enabled);
-    const privacyModeEnabled = config.get(CONFIG_KEYS.App.PrivacyMode) as boolean;
+    const detailsEnabled = config.get("vscord.status.details.enabled");
+    const detailsIdleEnabled = config.get("vscord.status.details.idle.enabled");
+    const stateEnabled = config.get("vscord.status.state.enabled");
+    const stateIdleEnabled = config.get("vscord.status.state.idle.enabled");
+    const privacyModeEnabled = config.get("vscord.app.privacyMode.enable") ?? false;
 
     const gitRepo = dataClass.gitRemoteUrl?.toString("https").replace(/\.git$/, "");
     const gitOrg = dataClass.gitRemoteUrl?.organization ?? dataClass.gitRemoteUrl?.owner;
     const gitHost = dataClass.gitRemoteUrl?.source;
 
-    const isRepositoryExcluded = !!gitRepo && isExcluded(config.get(CONFIG_KEYS.Ignore.Repositories)!, gitRepo);
-    const isOrganizationExcluded = !!gitOrg && isExcluded(config.get(CONFIG_KEYS.Ignore.Organizations)!, gitOrg);
-    const isGitHostExcluded = !!gitHost && isExcluded(config.get(CONFIG_KEYS.Ignore.GitHosts)!, gitHost);
+    const isRepositoryExcluded = !!gitRepo && isExcluded(config.get("vscord.ignore.repositories")!, gitRepo);
+    const isOrganizationExcluded = !!gitOrg && isExcluded(config.get("vscord.ignore.organizations")!, gitOrg);
+    const isGitHostExcluded = !!gitHost && isExcluded(config.get("vscord.ignore.gitHosts")!, gitHost);
     const isGitExcluded = isRepositoryExcluded || isOrganizationExcluded || isGitHostExcluded || privacyModeEnabled;
 
     let isWorkspaceExcluded =
         dataClass.workspaceFolder !== undefined &&
-        isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceFolder.uri.fsPath);
+        isExcluded(config.get("vscord.ignore.workspaces")!, dataClass.workspaceFolder.uri.fsPath);
 
     if (!isWorkspaceExcluded)
         isWorkspaceExcluded =
             dataClass.workspaceName !== undefined &&
-            isExcluded(config.get(CONFIG_KEYS.Ignore.Workspaces)!, dataClass.workspaceName);
+            isExcluded(config.get("vscord.ignore.workspaces")!, dataClass.workspaceName);
 
     const isNotInFile = !isWorkspaceExcluded && !dataClass.editor;
 
-    const isDebugging = config.get(CONFIG_KEYS.Status.State.Debugging.Enabled) && !!debug.activeDebugSession;
+    const isDebugging = config.get("vscord.status.state.debugging.enabled") && !!debug.activeDebugSession;
     isViewing = !isDebugging && isViewing;
 
     let status: CURRENT_STATUS;
@@ -142,9 +136,9 @@ export const activity = async (
     else if (isViewing) status = CURRENT_STATUS.VIEWING;
     else status = CURRENT_STATUS.EDITING;
 
-    const PROBLEMS = config.get(CONFIG_KEYS.Status.Problems.Enabled)
+    const PROBLEMS = config.get("vscord.status.problems.enabled")
         ? await replaceFileInfo(
-              replaceGitInfo(replaceAppInfo(config.get(CONFIG_KEYS.Status.Problems.Text)!), isGitExcluded),
+              replaceGitInfo(replaceAppInfo(config.get("vscord.status.problems.text") ?? ""), isGitExcluded),
               isWorkspaceExcluded,
               dataClass.editor?.document,
               dataClass.editor?.selection
@@ -182,12 +176,12 @@ export const activity = async (
     };
 
     let workspaceExcludedText = "No workspace ignore text provided.";
-    const ignoreWorkspacesText = config.get(CONFIG_KEYS.Ignore.WorkspacesText)!;
+    const ignoreWorkspacesText = config.get("vscord.ignore.workspacesText") ?? "";
 
     if (isObject(ignoreWorkspacesText)) {
         workspaceExcludedText =
             (dataClass.workspaceFolder
-                ? await replaceAllText(ignoreWorkspacesText[dataClass.workspaceFolder.name])
+                ? await replaceAllText(String(ignoreWorkspacesText[dataClass.workspaceFolder.name]))
                 : undefined) ?? workspaceExcludedText;
     } else {
         const text = await replaceAllText(ignoreWorkspacesText);
@@ -207,68 +201,65 @@ export const activity = async (
         case CURRENT_STATUS.IDLE: {
             if (!isWorkspaceExcluded) {
                 if (detailsIdleEnabled && detailsEnabled)
-                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Idle)!);
+                    details = await replaceAllText(config.get("vscord.status.details.text.idle")!);
                 if (stateIdleEnabled && stateEnabled)
-                    state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Idle)!);
+                    state = await replaceAllText(config.get("vscord.status.state.text.idle")!);
             }
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Idle.Key)!);
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Idle.Text)!);
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Idle.Key)!);
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Idle.Text)!);
+            largeImageKey = await replaceAllText(config.get("vscord.status.image.large.idle.key")!);
+            largeImageText = await replaceAllText(config.get("vscord.status.image.large.idle.text")!);
+            smallImageKey = await replaceAllText(config.get("vscord.status.image.small.idle.key")!);
+            smallImageText = await replaceAllText(config.get("vscord.status.image.small.idle.text")!);
             break;
         }
         case CURRENT_STATUS.EDITING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled)
-                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Editing)!);
-                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Editing)!);
+                if (detailsEnabled) details = await replaceAllText(config.get("vscord.status.details.text.editing")!);
+                if (stateEnabled) state = await replaceAllText(config.get("vscord.status.state.text.editing")!);
             }
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Editing.Key)!);
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Editing.Text)!);
+            largeImageKey = await replaceAllText(config.get("vscord.status.image.large.editing.key")!);
+            largeImageText = await replaceAllText(config.get("vscord.status.image.large.editing.text")!);
 
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Editing.Key)!);
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Editing.Text)!);
+            smallImageKey = await replaceAllText(config.get("vscord.status.image.small.editing.key")!);
+            smallImageText = await replaceAllText(config.get("vscord.status.image.small.editing.text")!);
             break;
         }
         case CURRENT_STATUS.DEBUGGING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled)
-                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Debugging)!);
-                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Debugging)!);
+                if (detailsEnabled) details = await replaceAllText(config.get("vscord.status.details.text.debugging")!);
+                if (stateEnabled) state = await replaceAllText(config.get("vscord.status.state.text.debugging")!);
             }
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Key)!);
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Debugging.Text)!);
+            largeImageKey = await replaceAllText(config.get("vscord.status.image.large.debugging.key")!);
+            largeImageText = await replaceAllText(config.get("vscord.status.image.large.debugging.text")!);
 
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Key)!);
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Debugging.Text)!);
+            smallImageKey = await replaceAllText(config.get("vscord.status.image.small.debugging.key")!);
+            smallImageText = await replaceAllText(config.get("vscord.status.image.small.debugging.text")!);
             break;
         }
         case CURRENT_STATUS.VIEWING: {
             if (!isWorkspaceExcluded) {
-                if (detailsEnabled)
-                    details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.Viewing)!);
-                if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.Viewing)!);
+                if (detailsEnabled) details = await replaceAllText(config.get("vscord.status.details.text.viewing")!);
+                if (stateEnabled) state = await replaceAllText(config.get("vscord.status.state.text.viewing")!);
             }
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Key)!);
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.Viewing.Text)!);
+            largeImageKey = await replaceAllText(config.get("vscord.status.image.large.viewing.key")!);
+            largeImageText = await replaceAllText(config.get("vscord.status.image.large.viewing.text")!);
 
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Key)!);
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.Viewing.Text)!);
+            smallImageKey = await replaceAllText(config.get("vscord.status.image.small.viewing.key")!);
+            smallImageText = await replaceAllText(config.get("vscord.status.image.small.viewing.text")!);
             break;
         }
         case CURRENT_STATUS.NOT_IN_FILE: {
-            if (detailsEnabled) details = await replaceAllText(config.get(CONFIG_KEYS.Status.Details.Text.NotInFile)!);
-            if (stateEnabled) state = await replaceAllText(config.get(CONFIG_KEYS.Status.State.Text.NotInFile)!);
+            if (detailsEnabled) details = await replaceAllText(config.get("vscord.status.details.text.notInFile")!);
+            if (stateEnabled) state = await replaceAllText(config.get("vscord.status.state.text.notInFile")!);
 
-            largeImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFile.Key)!);
-            largeImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Large.NotInFile.Text)!);
+            largeImageKey = await replaceAllText(config.get("vscord.status.image.large.notInFile.key")!);
+            largeImageText = await replaceAllText(config.get("vscord.status.image.large.notInFile.text")!);
 
-            smallImageKey = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Key)!);
-            smallImageText = await replaceAllText(config.get(CONFIG_KEYS.Status.Image.Small.NotInFile.Text)!);
+            smallImageKey = await replaceAllText(config.get("vscord.status.image.small.notInFile.key")!);
+            smallImageText = await replaceAllText(config.get("vscord.status.image.small.notInFile.text")!);
             break;
         }
     }
@@ -301,22 +292,24 @@ async function createButton(
     currentButton: "Button1" | "Button2"
 ): Promise<GatewayActivityButton | undefined> {
     const config = getConfig();
-    const currentState = CONFIG_KEYS.Status.Buttons[currentButton];
-    const configKeyEnabled =
-        isGit && state != "Inactive" ? currentState.Git[state].Enabled : currentState[state].Enabled;
-    const enabled = config.get(configKeyEnabled);
+
+    const b = ({ Button1: "button1", Button2: "button2" } as const)[currentButton];
+    const g = isGit ? (".git" as const) : ("" as const);
+    const s = ({ Idle: "idle", Active: "active", Inactive: "inactive" } as const)[state];
+
+    const keyEnabled = `vscord.status.buttons.${b}${g}.${s}.enabled` as const satisfies keyof ExtensionConfigGenerated;
+    const keyLabel = `vscord.status.buttons.${b}${g}.${s}.label` as const satisfies keyof ExtensionConfigGenerated;
+    const keyUrl = `vscord.status.buttons.${b}${g}.${s}.url` as const satisfies keyof ExtensionConfigGenerated;
+
+    const enabled = config.get(keyEnabled);
     logInfo("[activity.ts] createButton(): enabled", enabled);
     if (!enabled) {
         return undefined;
     }
 
     return {
-        label: await replaceAllText(
-            config.get(isGit && state != "Inactive" ? currentState.Git[state].Label : currentState[state].Label)!
-        ),
-        url: await replaceAllText(
-            config.get(isGit && state != "Inactive" ? currentState.Git[state].Url : currentState[state].Url)!
-        )
+        label: await replaceAllText(config.get(keyLabel)!),
+        url: await replaceAllText(config.get(keyUrl)!)
     };
 }
 
@@ -350,8 +343,8 @@ export const getPresenceButtons = async (
     replaceAllText: (text: string) => Promise<string>
 ): Promise<GatewayActivityButton[]> => {
     const config = getConfig();
-    let button1Enabled = config.get(CONFIG_KEYS.Status.Buttons.Button1.Enabled)!;
-    let button2Enabled = config.get(CONFIG_KEYS.Status.Buttons.Button2.Enabled)!;
+    let button1Enabled = config.get("vscord.status.buttons.button1.enabled")!;
+    let button2Enabled = config.get("vscord.status.buttons.button2.enabled")!;
     let state: "Idle" | "Active" | "Inactive" | undefined = isIdling
         ? "Idle"
         : isGitExcluded
@@ -369,10 +362,7 @@ export const getPresenceButtons = async (
     let button2 = buttonValidation(await createButton(replaceAllText, state, isGit, "Button2"), "Button2");
     logInfo("[activity.ts] getPresenceButtons button1:", state, button1);
     logInfo("[activity.ts] getPresenceButtons button2:", state, button2);
-    if (
-        (button1.validationError || button2.validationError) &&
-        !config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)
-    )
+    if ((button1.validationError || button2.validationError) && !config.get("vscord.behaviour.suppressNotifications"))
         window.showErrorMessage(`${button1.validationError} ${button2.validationError}`);
     return [button1.button, button2.button].filter(Boolean) as GatewayActivityButton[];
 };
@@ -409,24 +399,26 @@ export const replaceAppInfo = (text: string): string => {
     return text;
 };
 
-export const getTotalProblems = (countedSeverities: PROBLEM_LEVEL[]): number => {
+export const getTotalProblems = (
+    countedSeverities: ExtensionConfigGenerated["vscord.status.problems.countedSeverities"]
+): number => {
     let totalProblems = 0;
 
     for (const severity of countedSeverities) {
         switch (severity) {
-            case PROBLEM_LEVEL.ERROR: {
+            case "error": {
                 totalProblems += COUNTED_SEVERITIES.error;
                 break;
             }
-            case PROBLEM_LEVEL.WARNING: {
+            case "warning": {
                 totalProblems += COUNTED_SEVERITIES.warning;
                 break;
             }
-            case PROBLEM_LEVEL.INFO: {
+            case "info": {
                 totalProblems += COUNTED_SEVERITIES.info;
                 break;
             }
-            case PROBLEM_LEVEL.HINT: {
+            case "hint": {
                 totalProblems += COUNTED_SEVERITIES.hint;
                 break;
             }
@@ -469,14 +461,14 @@ export const replaceFileInfo = async (
     const config = getConfig();
     text = text.slice();
     let workspaceFolderName =
-        dataClass.workspaceFolder?.name ?? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!;
-    let workspaceName = dataClass.workspaceName ?? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!;
+        dataClass.workspaceFolder?.name ?? config.get("vscord.status.details.text.noWorkSpaceText")!;
+    let workspaceName = dataClass.workspaceName ?? config.get("vscord.status.details.text.noWorkSpaceText")!;
     let workspaceAndFolder =
         workspaceName + (workspaceFolderName != FAKE_EMPTY ? ` - ${workspaceFolderName}` : FAKE_EMPTY);
 
     workspaceAndFolder =
         workspaceAndFolder.trim() === ""
-            ? config.get(CONFIG_KEYS.Status.Details.Text.NoWorkspaceText)!
+            ? config.get("vscord.status.details.text.noWorkSpaceText")!
             : workspaceAndFolder;
 
     let fullDirectoryName: string = FAKE_EMPTY;
@@ -501,8 +493,8 @@ export const replaceFileInfo = async (
         relativeFilepath = FAKE_EMPTY;
     }
 
-    const totalProblems = config.get(CONFIG_KEYS.Status.Problems.Enabled)
-        ? getTotalProblems(config.get(CONFIG_KEYS.Status.Problems.countedSeverities)!)
+    const totalProblems = config.get("vscord.status.problems.enabled")
+        ? getTotalProblems(config.get("vscord.status.problems.countedSeverities")!)
         : 0;
 
     const replaceMap = new Map([
@@ -524,7 +516,7 @@ export const replaceFileInfo = async (
         ["{a_LANG}", `${getArticle(toUpper(fileIcon))} ${toUpper(fileIcon)}`],
         [
             "{problems_count}",
-            config.get(CONFIG_KEYS.Status.Problems.Enabled) ? totalProblems.toLocaleString() : FAKE_EMPTY
+            config.get("vscord.status.problems.enabled") ? totalProblems.toLocaleString() : FAKE_EMPTY
         ],
         ["{problems_pluralize}", totalProblems === 1 ? "problem" : "problems"],
         ["{problems_count_errors}", COUNTED_SEVERITIES.error.toLocaleString()],
