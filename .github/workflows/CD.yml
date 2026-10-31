@@ -7,30 +7,29 @@ on:
       - "*"
 
 jobs:
-  deploy:
+  deploy-vsce:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - name: Checkout Project
-        uses: actions/checkout@v6
-
-      - name: Use Node.js 22
-        uses: actions/setup-node@v6
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
+      - run: npm ci
+      - run: npx @vscode/vsce publish --oidc
 
-      - run: npm install
-
-      - run: npx vsce package
-
-      - name: Publish to Visual Studio Marketplace
-        uses: HaaLeo/publish-vscode-extension@v2
+  deploy-ovsx:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-          registryUrl: https://marketplace.visualstudio.com
-
-      - name: Publish to Open VSX Registry
-        uses: HaaLeo/publish-vscode-extension@v2
-        id: publishToOpenVSX
-        with:
-          pat: ${{ secrets.OPEN_VSX_TOKEN }}
-          extensionFile: ${{ steps.publishToOpenVSX.outputs.vsixPath }}
+          node-version: 22
+      - run: npm ci
+      - run: npm run package
+      - run: npx ovsx publish --trusted-publishing
