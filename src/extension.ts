@@ -2,23 +2,19 @@ import { commands, window, workspace, type ExtensionContext } from "vscode";
 import { getApplicationId } from "./helpers/getApplicationId";
 import { StatusBarMode, editor } from "./editor";
 import { RPCController } from "./controller";
-import { CONFIG_KEYS } from "./constants";
 import { getConfig } from "./config";
 import { logInfo } from "./logger";
 import { dataClass } from "./data";
 
-const controller = new RPCController(
-    getApplicationId(getConfig()).clientId,
-    getConfig().get(CONFIG_KEYS.Behaviour.Debug)
-);
+const controller = new RPCController(getApplicationId(getConfig()).clientId, getConfig().get("vscord.behaviour.debug"));
 
 export const registerListeners = (ctx: ExtensionContext) => {
     const onConfigurationChanged = workspace.onDidChangeConfiguration(async () => {
         const config = getConfig();
         const clientId = getApplicationId(config).clientId;
-        const isEnabled = config.get(CONFIG_KEYS.Enable);
+        const isEnabled = config.get("vscord.enable");
 
-        controller.debug = config.get(CONFIG_KEYS.Behaviour.Debug) ?? false;
+        controller.debug = config.get("vscord.behaviour.debug") ?? false;
         editor.updateStatusBarFromConfig();
 
         if (controller.client.clientId !== clientId) {
@@ -27,7 +23,7 @@ export const registerListeners = (ctx: ExtensionContext) => {
             if (isEnabled) await controller.enable();
         }
 
-        controller.manualIdleMode = config.get(CONFIG_KEYS.Status.Idle.Check) === false;
+        controller.manualIdleMode = config.get("vscord.status.idle.check") === false;
     });
 
     ctx.subscriptions.push(onConfigurationChanged);
@@ -39,7 +35,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
     const enable = async (update = true) => {
         if (update)
             try {
-                await config.update(CONFIG_KEYS.Enable, true);
+                await config.update("vscord.enable", true);
             } catch {}
 
         await controller.enable();
@@ -48,7 +44,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
     const disable = async (update = true) => {
         if (update)
             try {
-                await config.update(CONFIG_KEYS.Enable, false);
+                await config.update("vscord.enable", false);
             } catch {}
 
         await controller.disable();
@@ -59,7 +55,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
     const togglePrivacyMode = async (activate: boolean) => {
         try {
-            await config.update(CONFIG_KEYS.App.PrivacyMode, activate);
+            await config.update("vscord.app.privacyMode.enable", activate);
         } catch {}
 
         await controller.sendActivity(dataClass.editor != null);
@@ -71,7 +67,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         logInfo("Enabled Discord Rich Presence.");
 
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+        if (!config.get("vscord.behaviour.suppressNotifications"))
             await window.showInformationMessage("Enabled Discord Rich Presence");
     });
 
@@ -80,7 +76,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         await disable(false);
 
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+        if (!config.get("vscord.behaviour.suppressNotifications"))
             await window.showInformationMessage("Disabled Discord Rich Presence");
     });
 
@@ -90,7 +86,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         await disable();
         await enable();
 
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+        if (!config.get("vscord.behaviour.suppressNotifications"))
             await window.showInformationMessage("Enabled Discord Rich Presence for this workspace");
     });
 
@@ -99,7 +95,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         await disable();
 
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+        if (!config.get("vscord.behaviour.suppressNotifications"))
             await window.showInformationMessage("Disabled Discord Rich Presence for this workspace");
     });
 
@@ -112,7 +108,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
             .login()
             .then(async () => await controller.enable())
             .catch(() => {
-                if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+                if (!config.get("vscord.behaviour.suppressNotifications"))
                     window.showErrorMessage("Failed to reconnect to Discord Gateway");
                 editor.setStatusBarItem(StatusBarMode.Disconnected);
             });
@@ -131,7 +127,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         await togglePrivacyMode(true);
 
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+        if (!config.get("vscord.behaviour.suppressNotifications"))
             await window.showInformationMessage("Enabled Privacy Mode.");
     });
 
@@ -140,7 +136,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
 
         await togglePrivacyMode(false);
 
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+        if (!config.get("vscord.behaviour.suppressNotifications"))
             await window.showInformationMessage("Disabled Privacy Mode.");
     });
 
@@ -150,7 +146,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         controller.manualIdling = true;
         await controller.sendActivity(false, true);
 
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+        if (!config.get("vscord.behaviour.suppressNotifications"))
             await window.showInformationMessage("Started Idling.");
     });
 
@@ -160,7 +156,7 @@ export const registerCommands = (ctx: ExtensionContext) => {
         controller.manualIdling = false;
         await controller.sendActivity();
 
-        if (!config.get(CONFIG_KEYS.Behaviour.SuppressNotifications))
+        if (!config.get("vscord.behaviour.suppressNotifications"))
             await window.showInformationMessage("Stopped Idling.");
     });
 
@@ -186,7 +182,7 @@ export async function activate(ctx: ExtensionContext) {
     registerCommands(ctx);
     registerListeners(ctx);
 
-    if (!getConfig().get(CONFIG_KEYS.Enable)) await controller.disable();
+    if (!getConfig().get("vscord.enable")) await controller.disable();
 }
 
 export async function deactivate() {

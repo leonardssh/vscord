@@ -1,143 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { type ConfigurationTarget, type WorkspaceConfiguration, workspace } from "vscode";
-import { type PROBLEM_LEVEL } from "./activity";
+import type { ExtensionConfigGenerated } from "./@types/configtypes.d.ts";
 
 export type FileSizeStandard = "iec" | "jedec";
 
-interface ButtonStatus {
-    enabled: boolean;
-    label: string;
-    url: string;
-}
-
-interface Button {
-    enabled: boolean;
-    active: ButtonStatus;
-    idle: ButtonStatus;
-    inactive: ButtonStatus;
-    git: {
-        active: ButtonStatus;
-        idle: ButtonStatus;
-        inactive: ButtonStatus;
-    };
-}
-
-interface Buttons {
-    button1: Button;
-    button2: Button;
-}
-
-export interface ExtensionConfigurationType {
-    enable: string;
-    "app.id": string;
-    "app.name": "Code" | "Visual Studio Code" | "VSCodium" | "Antigravity" | "Cursor" | "Custom";
-    "app.privacyMode.enable": boolean;
-    "app.whitelistEnabled": boolean;
-    "app.whitelistIsBlacklist": boolean;
-    "app.whitelist": string[];
-    "status.details.enabled": boolean;
-    "status.details.idle.enabled": boolean;
-    "status.details.text.idle": string;
-    "status.details.text.viewing": string;
-    "status.details.text.editing": string;
-    "status.details.text.debugging": string;
-    "status.details.text.notInFile": string;
-    "status.details.text.noWorkSpaceText": string;
-    "status.state.enabled": boolean;
-    "status.state.debugging.enabled": boolean;
-    "status.state.idle.enabled": boolean;
-    "status.state.text.idle": string;
-    "status.state.text.viewing": string;
-    "status.state.text.editing": string;
-    "status.state.text.debugging": string;
-    "status.state.text.notInFile": string;
-    "status.state.text.noWorkspaceFound": string;
-    "status.buttons": Buttons;
-    "status.buttons.button1.enabled": boolean;
-    "status.buttons.button1.active.enabled": boolean;
-    "status.buttons.button1.active.label": string;
-    "status.buttons.button1.active.url": string;
-    "status.buttons.button1.inactive.enabled": boolean;
-    "status.buttons.button1.inactive.label": string;
-    "status.buttons.button1.inactive.url": string;
-    "status.buttons.button1.idle.enabled": boolean;
-    "status.buttons.button1.idle.label": string;
-    "status.buttons.button1.idle.url": string;
-    "status.buttons.button1.git.active.enabled": boolean;
-    "status.buttons.button1.git.active.label": string;
-    "status.buttons.button1.git.active.url": string;
-    "status.buttons.button1.git.inactive.enabled": boolean;
-    "status.buttons.button1.git.inactive.label": string;
-    "status.buttons.button1.git.inactive.url": string;
-    "status.buttons.button1.git.idle.enabled": boolean;
-    "status.buttons.button1.git.idle.label": string;
-    "status.buttons.button1.git.idle.url": string;
-    "status.buttons.button2.enabled": boolean;
-    "status.buttons.button2.active.enabled": boolean;
-    "status.buttons.button2.active.label": string;
-    "status.buttons.button2.active.url": string;
-    "status.buttons.button2.inactive.enabled": boolean;
-    "status.buttons.button2.inactive.label": string;
-    "status.buttons.button2.inactive.url": string;
-    "status.buttons.button2.idle.enabled": boolean;
-    "status.buttons.button2.idle.label": string;
-    "status.buttons.button2.idle.url": string;
-    "status.buttons.button2.git.active.enabled": boolean;
-    "status.buttons.button2.git.active.label": string;
-    "status.buttons.button2.git.active.url": string;
-    "status.buttons.button2.git.inactive.enabled": boolean;
-    "status.buttons.button2.git.inactive.label": string;
-    "status.buttons.button2.git.inactive.url": string;
-    "status.buttons.button2.git.idle.enabled": boolean;
-    "status.buttons.button2.git.idle.label": string;
-    "status.buttons.button2.git.idle.url": string;
-    "status.image.large.idle.key": string;
-    "status.image.large.idle.text": string;
-    "status.image.large.viewing.key": string;
-    "status.image.large.viewing.text": string;
-    "status.image.large.editing.key": string;
-    "status.image.large.editing.text": string;
-    "status.image.large.debugging.key": string;
-    "status.image.large.debugging.text": string;
-    "status.image.large.notInFile.key": string;
-    "status.image.large.notInFile.text": string;
-    "status.image.small.idle.key": string;
-    "status.image.small.idle.text": string;
-    "status.image.small.viewing.key": string;
-    "status.image.small.viewing.text": string;
-    "status.image.small.editing.key": string;
-    "status.image.small.editing.text": string;
-    "status.image.small.debugging.key": string;
-    "status.image.small.debugging.text": string;
-    "status.image.small.notInFile.key": string;
-    "status.image.small.notInFile.text": string;
-    "status.image.problems.enabled": boolean;
-    "status.image.problems.text": string;
-    "status.problems.enabled": boolean;
-    "status.problems.text": string;
-    "status.problems.countedSeverities": Array<PROBLEM_LEVEL>;
-    "status.idle.enabled": boolean;
-    "status.idle.check": boolean;
-    "status.idle.disconnectOnIdle": boolean;
-    "status.idle.resetElapsedTime": boolean;
-    "status.idle.timeout": number;
-    "status.showElapsedTime": boolean;
-    "status.resetElapsedTimePerFile": boolean;
-    "ignore.workspaces": Array<string>;
-    "ignore.workspacesText": string | Record<string, string>;
-    "ignore.repositories": Array<string>;
-    "ignore.organizations": Array<string>;
-    "ignore.gitHosts": Array<string>;
-    "file.size.humanReadable": boolean;
-    "file.size.standard": FileSizeStandard;
-    "file.size.round": number;
-    "file.size.spacer": string;
-    "behaviour.additionalFileMapping": Record<string, string>;
-    "behaviour.suppressNotifications": boolean;
-    "behaviour.suppressRpcCouldNotConnect": boolean;
-    "behaviour.statusBarAlignment": "Right" | "Left";
-    "behaviour.debug": boolean;
-}
+// export interface ExtensionConfigurationType was here
 
 // Created by hayper1919, you may use it inside your extension
 /**
@@ -318,6 +185,6 @@ export type WorkspaceConfigurationWithType<Configuration extends Record<string, 
     readonly [key: string]: any;
 } & WorkspaceConfiguration;
 
-export type ExtensionConfiguration = WorkspaceConfigurationWithType<ExtensionConfigurationType>;
+export type ExtensionConfiguration = WorkspaceConfigurationWithType<ExtensionConfigGenerated>;
 
-export const getConfig = () => workspace.getConfiguration("vscord") as ExtensionConfiguration;
+export const getConfig = () => workspace.getConfiguration() as ExtensionConfiguration;

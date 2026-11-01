@@ -1,6 +1,6 @@
+import type { ExtensionConfigGenerated } from "./@types/configtypes.d.ts";
 import { Disposable, ConfigurationTarget, StatusBarAlignment, StatusBarItem, window, commands } from "vscode";
-import { type ExtensionConfiguration, type ExtensionConfigurationType, getConfig } from "./config";
-import { CONFIG_KEYS } from "./constants";
+import { type ExtensionConfiguration, getConfig } from "./config";
 import { logInfo, outputChannel } from "./logger";
 
 export enum StatusBarMode {
@@ -15,14 +15,14 @@ class EditorController implements Disposable {
     statusBarItemMode: StatusBarMode = StatusBarMode.Disabled;
 
     #getAlignmentFromConfig(config: ExtensionConfiguration): StatusBarAlignment {
-        const value = config.get(CONFIG_KEYS.Behaviour.StatusBarAlignment);
+        const value = config.get("vscord.behaviour.statusBarAlignment");
         return StatusBarAlignment[value ?? "Right"];
     }
 
     setStatusBarItem(mode: StatusBarMode) {
         this.statusBarItemMode = mode;
         const config = getConfig();
-        if (!config.get(CONFIG_KEYS.Enable)) {
+        if (!config.get("vscord.enable")) {
             mode = StatusBarMode.Disabled;
         }
         if (!this.statusBarItem) {
@@ -60,10 +60,10 @@ class EditorController implements Disposable {
 
     toggleStatusBarAlignment(align: StatusBarAlignment = StatusBarAlignment.Right): StatusBarAlignment {
         const config = getConfig();
-        const cfgKey = CONFIG_KEYS.Behaviour.StatusBarAlignment;
+        const cfgKey = "vscord.behaviour.statusBarAlignment" as const satisfies keyof ExtensionConfigGenerated;
         const literalAlign = (
             align === StatusBarAlignment.Right ? "Right" : "Left"
-        ) satisfies ExtensionConfigurationType[typeof cfgKey];
+        ) satisfies ExtensionConfigGenerated[typeof cfgKey];
 
         config.update(cfgKey, literalAlign);
         // updateStatusBarFromConfig() // called from config listener
@@ -110,7 +110,7 @@ class EditorController implements Disposable {
         }
     }
     errorMessageFailedToConnect(config: ExtensionConfiguration, error?: Error) {
-        if (config.get(CONFIG_KEYS.Behaviour.SuppressNotifications)) {
+        if (config.get("vscord.behaviour.suppressNotifications")) {
             return;
         }
 
@@ -124,7 +124,8 @@ class EditorController implements Disposable {
         }
 
         const configKeyPairs = {
-            RPC_COULD_NOT_CONNECT: CONFIG_KEYS.Behaviour.SuppressRpcCouldNotConnect
+            RPC_COULD_NOT_CONNECT:
+                "vscord.behaviour.suppressRpcCouldNotConnect" satisfies keyof ExtensionConfigGenerated
         } as const;
 
         const errorName = error.name;
