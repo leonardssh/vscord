@@ -1,6 +1,10 @@
 {
     "KNOWN_LANGUAGES": [
         {
+            "language": "algo",
+            "image": "algo"
+        },
+        {
             "language": "bat",
             "image": "bat"
         },
@@ -31,6 +35,10 @@
         {
             "language": "cuda-cpp",
             "image": "cuda"
+        },
+        {
+            "language": "csv"
+            "image": "csv"
         },
         {
             "language": "csharp",
@@ -459,6 +467,9 @@
         "/\\.ahkl?$/": {
             "image": "ahk"
         },
+        "/\\.algo$/": {
+            "image": "algo"
+        },
         "/\\.applescript$/": {
             "image": "applescript"
         },
@@ -521,6 +532,9 @@
         },
         "/\\.css$/": {
             "image": "css"
+        },
+        "/\\.csv$/": {
+            "image": "csv"
         },
         "/\\.cu$/": {
             "image": "cuda"
