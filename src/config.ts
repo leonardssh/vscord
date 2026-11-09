@@ -121,6 +121,8 @@ export interface ExtensionConfigurationType {
     "status.idle.disconnectOnIdle": boolean;
     "status.idle.resetElapsedTime": boolean;
     "status.idle.timeout": number;
+    "status.time.mode": "Hidden" | "Elapsed" | "Current Interface" | "Custom" | "Fixed";
+    "status.time.customTimestamp": number;
     "status.showElapsedTime": boolean;
     "status.resetElapsedTimePerFile": boolean;
     "ignore.workspaces": Array<string>;
